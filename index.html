@@ -141,6 +141,22 @@
   .footer-text{font-size:13px;color:var(--ink-faint);}
 
   /* MOBILE */
+  /* DARK ACCENT SECTIONS */
+  .dark-section{background:linear-gradient(150deg,#141927 0%,#1a2744 100%);padding:72px 48px;}
+  .dark-section .section-eyebrow{color:#8fc6f5;}
+  .dark-section .section-title{color:#ffffff;}
+  .dark-section .section-sub{color:rgba(255,255,255,0.55);}
+  .dark-section .step{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);}
+  .dark-section .step h3{color:#ffffff;}
+  .dark-section .step p{color:rgba(255,255,255,0.5);}
+  .dark-section .step-num{color:#4A8FD4;}
+  .dark-section .step-num::before{background:rgba(74,143,212,0.4);}
+  .dark-section .steps-grid{background:rgba(255,255,255,0.04);}
+  .dark-section .btn-link{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:#fff;}
+  .dark-section .btn-link:hover{background:rgba(255,255,255,0.18);}
+  .dark-section .btn-link.blue{background:var(--blue);border:none;}
+  @media(max-width:768px){.dark-section{padding:52px 20px;}}
+
   @media(max-width:768px){
     nav{padding:0 16px;}
     .nav-links,.nav-cta{display:none;}
@@ -193,8 +209,8 @@
 <div class="hero-wrap" id="quiz-area">
   <div class="hero-inner">
     <div class="hero-tag"><div class="hero-dot"></div>Lagos, Nigeria</div>
-    <h1 class="hero-title">Connecting rent seekers to <em>existing</em> Lagos tenants</h1>
-    <p class="hero-desc">If you're packing out of your apartment soon, let us know — we have serious seekers already waiting. Or sign up to be alerted when a verified apartment becomes available.</p>
+    <h1 class="hero-title">Good places in Lagos are rare.<br>If you're leaving one, <em>don't let it go to waste.</em></h1>
+    <p class="hero-desc">Finding a decent place in Lagos is genuinely hard. If you live somewhere good and you're packing out soon — help the next person skip the agents and the rubbish listings. Or sign up to be the first to know when a verified place becomes available.</p>
 
     <div class="quiz-progress" id="quiz-progress" style="display:none;">
       <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="qpfill"></div></div>
@@ -510,8 +526,8 @@
 <!-- HOW IT WORKS — TENANTS -->
 <div id="how-it-works" class="section" style="padding-bottom:48px;">
   <div class="section-eyebrow">For tenants</div>
-  <h2 class="section-title">Moving out soon?<br>Don't leave without listing.</h2>
-  <p class="section-sub">You already have something valuable — an apartment someone else needs. Here's how we help you hand it over smoothly.</p>
+  <h2 class="section-title">You found a good place.<br>Help someone else find it next.</h2>
+  <p class="section-sub">Good apartments in Lagos don't come easy. If you're packing out of somewhere decent, listing it with us means the next person gets a real shot — not another agent showing them overpriced rubbish.</p>
   <div class="steps-grid">
     <div class="step"><div class="step-num">Step 01</div><h3>Submit your apartment</h3><p>Answer a few quick questions above — type, location, rent, pack-out timeline. Takes about 3 minutes.</p></div>
     <div class="step"><div class="step-num">Step 02</div><h3>We verify and list it</h3><p>We'll reach out to confirm the details and collect photos. Once verified, your apartment goes live.</p></div>
@@ -525,10 +541,11 @@
 <hr class="full-divider">
 
 <!-- HOW IT WORKS — SEEKERS -->
-<div class="section" style="padding-bottom:48px;">
+<div class="dark-section">
+<div class="section" style="padding-bottom:48px;background:transparent;padding-top:0;">
   <div class="section-eyebrow">For seekers</div>
-  <h2 class="section-title">Looking for a place in Lagos?<br>We've got something different.</h2>
-  <p class="section-sub">Most listings online are taken, fake, or overpriced. RentPal works from the supply side — we find apartments before they're publicly available.</p>
+  <h2 class="section-title">Done with agents showing<br>you places that aren't real?</h2>
+  <p class="section-sub">We go to the source. We find people already living in good apartments in Lagos who are packing out soon — and we connect you directly, before the place ever hits the market.</p>
   <div class="steps-grid">
     <div class="step"><div class="step-num">Step 01</div><h3>Sign up above</h3><p>Tell us your budget, preferred areas, and apartment type. We save your preferences and match against them.</p></div>
     <div class="step"><div class="step-num">Step 02</div><h3>We alert you on a match</h3><p>When a verified apartment matching your search comes in, you hear about it via email and Telegram — before it goes wide.</p></div>
@@ -542,6 +559,7 @@
     </a>
   </div>
 </div>
+</div>
 
 <hr class="full-divider">
 
@@ -550,7 +568,7 @@
   <div class="honesty-grid">
     <div>
       <div class="section-eyebrow">How we share</div>
-      <h2 class="section-title" style="font-size:26px;">We only share when it's real</h2>
+      <h2 class="section-title" style="font-size:26px;">We only put out what we've confirmed ourselves.</h2>
       <p style="font-size:15px;font-weight:300;color:var(--ink-muted);line-height:1.8;margin-bottom:14px;">We don't pad our list with unverified leads or old listings. Every apartment we share is from someone we've confirmed is actually leaving — photos, timeline, rent details and all.</p>
       <p style="font-size:15px;font-weight:300;color:var(--ink-muted);line-height:1.8;">That means sometimes it takes a while between drops. That's intentional. When something lands in your inbox or Telegram, it's worth your attention.</p>
     </div>
@@ -582,7 +600,7 @@
 
 <script>
   window.dataLayer = window.dataLayer || [];
-  var GAS_URL = "https://script.google.com/macros/s/AKfycbydl8TFyESxsDVBabwYI8IWr64zFF0MHRGtQE5QLgh4_kixVOUDG8p-bIkDMDDOugMZ9w/exec";
+  var GAS_URL = "YOUR_GAS_DEPLOYMENT_URL_HERE";
   var vals = {}, currentStep = 'step-0', userType = '';
   var countdownTimer = null;
 
