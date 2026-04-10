@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RentPal — Connecting rent seekers to existing Lagos tenants</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --blue:#4A8FD4; --blue-dark:#185FA5; --blue-deep:#0C447C;
+    --blue-light:#E6F1FB; --blue-mid:#B5D4F4;
+    --green:#4CAF85; --green-light:#EAF3DE; --green-dark:#27500A;
+    --ink:#0f1117; --ink-muted:#5a6072; --ink-faint:#9299a8;
+    --surface:#f8f9fc; --white:#ffffff; --border:rgba(0,0,0,0.08);
+  }
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+
+  /* NAV */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+  .nav-logo img{height:28px;display:block;}
+  .nav-links{display:flex;align-items:center;gap:28px;list-style:none;}
+  .nav-links a{font-size:14px;font-weight:400;color:var(--ink-muted);text-decoration:none;transition:color .2s;}
+  .nav-links a:hover{color:var(--ink);}
+  .nav-cta{background:var(--blue);color:#fff;border:none;padding:9px 20px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;text-decoration:none;display:inline-block;transition:background .2s;}
+  .nav-cta:hover{background:var(--blue-dark);}
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
+  .hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px;}
+  .mobile-menu{display:none;flex-direction:column;background:var(--white);border-bottom:1px solid var(--border);padding:14px 20px 18px;gap:4px;}
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{font-size:15px;color:var(--ink-muted);text-decoration:none;padding:9px 0;border-bottom:1px solid var(--border);}
+  .mobile-menu a:last-child{border-bottom:none;}
+  .mobile-menu .mob-cta{margin-top:8px;background:var(--blue);color:#fff;padding:12px 20px;border-radius:9px;text-align:center;font-weight:500;border-bottom:none;}
+
+  /* HERO / QUIZ AREA */
+  .hero-wrap{background:var(--surface);border-bottom:1px solid var(--border);padding:64px 24px 72px;}
+  .hero-inner{max-width:620px;margin:0 auto;}
+  .hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--blue-light);color:var(--blue-deep);font-size:12px;font-weight:500;padding:5px 14px;border-radius:100px;margin-bottom:18px;border:1px solid var(--blue-mid);}
+  .hero-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);}
+  .hero-title{font-family:'Syne',sans-serif;font-size:38px;font-weight:700;line-height:1.1;letter-spacing:-1.2px;color:var(--ink);margin-bottom:12px;}
+  .hero-title em{font-style:normal;color:var(--blue);}
+  .hero-desc{font-size:16px;font-weight:300;color:var(--ink-muted);line-height:1.75;margin-bottom:32px;max-width:500px;}
+
+  /* QUIZ */
+  .quiz-progress{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+  .quiz-progress-bar{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+  .quiz-progress-fill{height:100%;background:var(--blue);border-radius:2px;width:0%;transition:width .4s ease;}
+  .quiz-progress-label{font-size:12px;color:var(--ink-faint);white-space:nowrap;}
+  .quiz-step{display:none;animation:fadeUp .28s ease both;}
+  .quiz-step.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .step-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin-bottom:7px;}
+  .quiz-q{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:5px;}
+  .quiz-hint{font-size:14px;font-weight:300;color:var(--ink-muted);margin-bottom:18px;line-height:1.6;}
+
+  /* OPTIONS */
+  .opts{display:flex;flex-direction:column;gap:8px;}
+  .opts.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .opt{border:1.5px solid var(--border);border-radius:11px;padding:13px 16px;cursor:pointer;background:var(--white);text-align:left;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:10px;transition:border-color .15s,background .15s;width:100%;}
+  .opt:hover,.opt.selected{border-color:var(--blue);background:var(--blue-light);}
+  .opt-icon{width:32px;height:32px;border-radius:8px;background:var(--surface);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .opt-title{font-size:14px;font-weight:500;color:var(--ink);line-height:1.3;}
+  .opt-sub{font-size:12px;font-weight:300;color:var(--ink-muted);margin-top:1px;}
+
+  /* QUIZ INPUTS */
+  .qinput-group{margin-bottom:13px;}
+  .qinput-group label{display:block;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-muted);margin-bottom:5px;}
+  .qinput-group input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);background:var(--white);outline:none;transition:border-color .2s,box-shadow .2s;}
+  .qinput-group input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(74,143,212,.1);}
+  .qrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .qgroup-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--ink-faint);margin:14px 0 7px;}
+
+  /* BUTTONS */
+  .next-btn{width:100%;padding:14px;background:var(--blue);color:#fff;border:none;border-radius:11px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:18px;transition:background .2s,transform .15s;}
+  .next-btn:hover{background:var(--blue-dark);transform:translateY(-1px);}
+  .next-btn.dark{background:var(--ink);}
+  .next-btn.dark:hover{background:#1a1d26;}
+  .next-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;}
+  .back-btn{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--ink-faint);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0;margin-top:11px;}
+  .back-btn:hover{color:var(--ink-muted);}
+
+  /* THANK YOU */
+  .ty-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:30px 26px;text-align:center;}
+  .ty-icon{width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+  .ty-card h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:7px;}
+  .ty-card p{font-size:14px;font-weight:300;color:var(--ink-muted);line-height:1.75;margin-bottom:14px;}
+  .ty-steps{background:var(--surface);border-radius:10px;padding:15px 17px;text-align:left;margin-top:13px;border:1px solid var(--border);}
+  .ty-steps-lbl{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.8px;color:var(--ink-faint);margin-bottom:9px;}
+  .ty-step{display:flex;gap:9px;font-size:13px;font-weight:300;color:var(--ink-muted);line-height:1.6;margin-bottom:7px;}
+  .ty-step:last-child{margin-bottom:0;}
+  .ty-dot{width:5px;height:5px;border-radius:50%;margin-top:7px;flex-shrink:0;}
+  .tg-btn{display:inline-flex;align-items:center;gap:7px;background:var(--blue);color:#fff;padding:11px 20px;border-radius:9px;text-decoration:none;font-size:14px;font-weight:500;margin-top:16px;}
+
+  /* PAGE SECTIONS */
+  .full-divider{border:none;border-top:1px solid var(--border);margin:0;}
+  .section{padding:72px 48px;max-width:1100px;margin:0 auto;}
+  .section-eyebrow{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;color:var(--blue);margin-bottom:10px;}
+  .section-title{font-family:'Syne',sans-serif;font-size:32px;font-weight:700;letter-spacing:-.7px;color:var(--ink);margin-bottom:12px;line-height:1.18;}
+  .section-sub{font-size:15px;font-weight:300;color:var(--ink-muted);line-height:1.75;max-width:500px;margin-bottom:44px;}
+  .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border-radius:16px;overflow:hidden;}
+  .step{background:var(--white);padding:32px 28px;}
+  .step-num{font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .step-num::before{content:'';display:block;width:20px;height:1px;background:var(--blue-mid);}
+  .step h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px;line-height:1.3;}
+  .step p{font-size:13px;font-weight:300;color:var(--ink-muted);line-height:1.7;}
+  .btn-link{display:inline-flex;align-items:center;gap:7px;background:var(--ink);color:#fff;border:none;padding:12px 24px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;text-decoration:none;transition:background .2s,transform .15s;}
+  .btn-link:hover{background:#1a1d26;transform:translateY(-1px);}
+  .btn-link.blue{background:var(--blue);}
+  .btn-link.blue:hover{background:var(--blue-dark);}
+  .trust-bar{background:var(--blue-light);border-top:1px solid var(--blue-mid);border-bottom:1px solid var(--blue-mid);padding:13px 48px;display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap;}
+  .trust-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--blue-deep);}
+  .honesty-grid{max-width:820px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
+  .honesty-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;display:flex;gap:13px;align-items:flex-start;margin-bottom:11px;}
+  .honesty-card:last-child{margin-bottom:0;}
+  .honesty-icon{width:33px;height:33px;border-radius:8px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  footer{border-top:1px solid var(--border);padding:28px 48px;display:flex;align-items:center;justify-content:space-between;}
+  .footer-text{font-size:13px;color:var(--ink-faint);}
+
+  /* MOBILE */
+  @media(max-width:768px){
+    nav{padding:0 16px;}
+    .nav-links,.nav-cta{display:none;}
+    .hamburger{display:flex;}
+    .hero-wrap{padding:44px 20px 56px;}
+    .hero-title{font-size:28px;letter-spacing:-.6px;}
+    .hero-desc{font-size:14px;}
+    .opts.g2{grid-template-columns:1fr 1fr;}
+    .qrow{grid-template-columns:1fr;}
+    .trust-bar{padding:12px 16px;gap:12px;justify-content:flex-start;}
+    .trust-item{font-size:12px;}
+    .section{padding:52px 20px;}
+    .steps-grid{grid-template-columns:1fr;}
+    .honesty-grid{grid-template-columns:1fr;gap:24px;}
+    footer{padding:22px 20px;flex-direction:column;gap:8px;text-align:center;}
+  }
+  @media(max-width:380px){.opts.g2{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <img src="rentpal_logo_blue.png" alt="RentPal" onerror="this.style.display='none';document.getElementById('nlogo').style.display='block'">
+    <span id="nlogo" style="display:none;font-family:'Syne',sans-serif;font-size:19px;font-weight:700;color:var(--blue)">rentpal</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#how-it-works">How it works</a></li>
+    <li><a href="#quiz-area">List apartment</a></li>
+    <li><a href="#quiz-area">Find a place</a></li>
+  </ul>
+  <a href="#quiz-area" class="nav-cta">Get started</a>
+  <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#how-it-works" onclick="closeMenu()">How it works</a>
+  <a href="#quiz-area" onclick="closeMenu()">List my apartment</a>
+  <a href="#quiz-area" onclick="closeMenu()">Find a place</a>
+  <a href="#quiz-area" class="mob-cta" onclick="closeMenu()">Get started →</a>
+</div>
+
+<!-- HERO + QUIZ -->
+<div class="hero-wrap" id="quiz-area">
+  <div class="hero-inner">
+    <div class="hero-tag"><div class="hero-dot"></div>Lagos, Nigeria</div>
+    <h1 class="hero-title">Connecting rent seekers to <em>existing</em> Lagos tenants</h1>
+    <p class="hero-desc">If you're leaving your apartment soon, let us know — we have serious seekers already waiting. Or sign up to be alerted when a verified apartment drops.</p>
+
+    <div class="quiz-progress" id="quiz-progress" style="display:none;">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="qpfill"></div></div>
+      <span class="quiz-progress-label" id="qplabel"></span>
+    </div>
+
+    <!-- STEP 0 -->
+    <div class="quiz-step active" id="step-0">
+      <div class="quiz-q" style="margin-bottom:14px;">What brings you here?</div>
+      <div class="opts">
+        <button class="opt" onclick="setType('tenant');goTo('t-1')">
+          <div class="opt-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <div><div class="opt-title">I'm leaving my apartment soon</div><div class="opt-sub">I want RentPal to find the next tenant for my place</div></div>
+        </button>
+        <button class="opt" onclick="setType('seeker');goTo('s-1')">
+          <div class="opt-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <div><div class="opt-title">I'm looking for a place in Lagos</div><div class="opt-sub">Alert me when a matching apartment is confirmed</div></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- TENANT FLOW -->
+    <div class="quiz-step" id="t-1">
+      <div class="step-label">Your apartment — 1 of 6</div>
+      <div class="quiz-q">What type of apartment is it?</div>
+      <div class="opts g2" style="margin-top:14px;">
+        <button class="opt" onclick="setVal('t-apt-type','Self contain');goTo('t-2')"><div class="opt-title">Self contain</div></button>
+        <button class="opt" onclick="setVal('t-apt-type','Mini flat');goTo('t-2')"><div class="opt-title">Mini flat</div></button>
+        <button class="opt" onclick="setVal('t-apt-type','1 bedroom flat');goTo('t-2')"><div class="opt-title">1 bed flat</div></button>
+        <button class="opt" onclick="setVal('t-apt-type','2 bedroom flat');goTo('t-2')"><div class="opt-title">2 bed flat</div></button>
+        <button class="opt" onclick="setVal('t-apt-type','3 bedroom flat');goTo('t-2')"><div class="opt-title">3 bed flat</div></button>
+        <button class="opt" onclick="setVal('t-apt-type','Room & parlour');goTo('t-2')"><div class="opt-title">Room &amp; parlour</div></button>
+      </div>
+      <button class="back-btn" onclick="goTo('step-0')">← Back</button>
+    </div>
+
+    <div class="quiz-step" id="t-2">
+      <div class="step-label">Your apartment — 2 of 6</div>
+      <div class="quiz-q">Where is it?</div>
+      <div class="quiz-hint">Select Mainland or Island, then enter the area or bus stop.</div>
+      <div class="opts" style="margin-bottom:12px;">
+        <button class="opt" id="opt-mainland" onclick="setVal('t-location','Mainland');selectOnly(this)"><div><div class="opt-title">Mainland</div><div class="opt-sub">Yaba, Surulere, Ikeja, Ikorodu…</div></div></button>
+        <button class="opt" id="opt-island" onclick="setVal('t-location','Island');selectOnly(this)"><div><div class="opt-title">Island</div><div class="opt-sub">Lekki, VI, Ajah, Ikoyi…</div></div></button>
+      </div>
+      <div class="qinput-group">
+        <label>Area / Bus stop</label>
+        <input type="text" id="t-area-input" placeholder="e.g. Ojota, Yaba, Lekki Phase 1" oninput="setVal('t-area',this.value)">
+      </div>
+      <button class="next-btn" onclick="if(vals['t-location']&&vals['t-area'])goTo('t-3');else alert('Please select Mainland/Island and enter your area.')">Next →</button>
+      <button class="back-btn" onclick="goTo('t-1')">← Back</button>
+    </div>
+
+    <div class="quiz-step" id="t-3">
+      <div class="step-label">Your apartment — 3 of 6</div>
+      <div class="quiz-q">What's the current yearly rent?</div>
+      <div class="opts g2" style="margin-top:14px;">
+        <button class="opt" onclick="setVal('t-rent','Under ₦300k');goTo('t-4')"><div class="opt-title">Under ₦300k</div></button>
+        <button class="opt" onclick="setVal('t-rent','₦300k – ₦500k');goTo('t-4')"><div class="opt-title">₦300k – ₦500k</div></button>
+        <button class="opt" onclick="setVal('t-rent','₦500k – ₦800k');goTo('t-4')"><div class="opt-title">₦500k – ₦800k</div></button>
+        <button class="opt" onclick="setVal('t-rent','₦800k – ₦1.2m');goTo('t-4')"><div class="opt-title">₦800k – ₦1.2m</div></button>
+        <button class="opt" onclick="setVal('t-rent','₦1.2m – ₦2m');goTo('t-4')"><div class="opt-title">₦1.2m – ₦2m</div></button>
+        <button class="opt" onclick="setVal('t-rent','Above ₦2m');goTo('t-4')"><div class="opt-title">Above ₦2m</div></button>
+      </div>
+      <button class="back-btn" onclick="goTo('t-2')">← Back</button>
+    </div>
+
+    <div class="quiz-step" id="t-4">
+      <div class="step-label">Your apartment — 4 of 6</div>
+      <div class="quiz-q">When are you planning to move out?</div>
+      <div class="opts" style="margin-top:14px;">
+        <button class="opt" onclick="setVal('t-movingout','Within 1 month');goTo('t-5')"><div><div class="opt-title">Within 1 month</div><div class="opt-sub">Urgent — we'll fast-track your listing</div></div></button>
+        <button class="opt" onclick="setVal('t-movingout','1–3 months');goTo('t-5')"><div class="opt-title">1–3 months</div></button>
+        <button class="opt" onclick="setVal('t-movingout','3–6 months');goTo('t-5')"><div class="opt-title">3–6 months</div></button>
+        <button class="opt" onclick="setVal('t-movingout','6–12 months');goTo('t-5')"><div><div class="opt-title">6–12 months</div><div class="opt-sub">Planning ahead</div></div></button>
+      </div>
+      <button class="back-btn" onclick="goTo('t-3')">← Back</button>
+    </div>
+
+    <div class="quiz-step" id="t-5">
+      <div class="step-label">Your apartment — 5 of 6</div>
+      <div class="quiz-q">Quick details</div>
+      <div class="quiz-hint">Seekers always ask about these.</div>
+      <div class="qgroup-label">Light situation</div>
+      <div class="opts g2">
+        <button class="opt" onclick="setVal('t-light','Good (frequent NEPA)');selectInGroup(this,'light')"><div class="opt-title">Good NEPA</div></button>
+        <button class="opt" onclick="setVal('t-light','Average');selectInGroup(this,'light')"><div class="opt-title">Average</div></button>
+        <button class="opt" onclick="setVal('t-light','Generator dependent');selectInGroup(this,'light')"><div class="opt-title">Gen-dependent</div></button>
+        <button class="opt" onclick="setVal('t-light','Solar available');selectInGroup(this,'light')"><div class="opt-title">Solar</div></button>
+      </div>
+      <div class="qgroup-label">Water</div>
+      <div class="opts g2">
+        <button class="opt" onclick="setVal('t-water','Borehole');selectInGroup(this,'water')"><div class="opt-title">Borehole</div></button>
+        <button class="opt" onclick="setVal('t-water','Well water');selectInGroup(this,'water')"><div class="opt-title">Well water</div></button>
+        <button class="opt" onclick="setVal('t-water','Tap water');selectInGroup(this,'water')"><div class="opt-title">Tap water</div></button>
+        <button class="opt" onclick="setVal('t-water','Water tanker');selectInGroup(this,'water')"><div class="opt-title">Tanker</div></button>
+      </div>
+      <div class="qgroup-label">Parking</div>
+      <div class="opts g2">
+        <button class="opt" onclick="setVal('t-parking','Private');selectInGroup(this,'parking')"><div class="opt-title">Private</div></button>
+        <button class="opt" onclick="setVal('t-parking','Shared');selectInGroup(this,'parking')"><div class="opt-title">Shared</div></button>
+        <button class="opt" onclick="setVal('t-parking','Street only');selectInGroup(this,'parking')"><div class="opt-title">Street only</div></button>
+        <button class="opt" onclick="setVal('t-parking','No parking');selectInGroup(this,'parking')"><div class="opt-title">None</div></button>
+      </div>
+      <button class="next-btn" onclick="goTo('t-6')">Next →</button>
+      <button class="back-btn" onclick="goTo('t-4')">← Back</button>
+    </div>
+
+    <div class="quiz-step" id="t-6">
+      <div class="step-label">Your apartment — 6 of 6</div>
+      <div class="quiz-q">Almost done — how do we reach you?</div>
+      <div class="quiz-hint">We'll use this to verify your listing and connect you with a seeker.</div>
+      <div class="qrow">
+        <div class="qinput-group"><label>First name</label><input type="text" id="t-fname" placeholder="Ada" oninput="setVal('firstName',this.value)"></div>
+        <div class="qinput-group"><label>Last name</label><input type="text" id="t-lname" placeholder="Okonkwo" oninput="setVal('lastName',this.value)"></div>
+      </div>
+      <div class="qinput-group"><label>Email</label><input type="email" id="t-email" placeholder="ada@email.com" oninput="setVal('email',this.value)"></div>
+      <div class="qinput-group"><label>Phone / WhatsApp</label><input type="tel" id="t-phone" placeholder="0801 234 5678" oninput="setVal('phone',this.value)"></div>
+      <div class="qinput-group"><label>Anything else? (optional)</label><input type="text" id="t-comments" placeholder="Extra details, quirks, things you love about the place…" oninput="setVal('comments',this.value)"></div>
+      <button class="next-btn blue" id="t-submit-btn" onclick="submitQuiz('tenant')">Submit my apartment →</button>
+      <button class="back-btn" onclick="goTo('t-5')">← Back</button>
+    </div>
+
+    <div class="quiz-step" id="t-ty">
+      <div class="ty-card">
+        <div class="ty-icon" style="background:var(--blue-light);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <h3>Apartment submitted!</h3>
+        <p>We've got your details. Expect a message from us within 24–48 hours to verify and list your place.</p>
+        <div class="ty-steps">
+          <div class="ty-steps-lbl">Next steps</div>
+          <div class="ty-step"><div class="ty-dot" style="background:var(--blue);"></div><span>Send photos &amp; a short video to our WhatsApp: <strong>+234 000 000 0000</strong></span></div>
+          <div class="ty-step"><div class="ty-dot" style="background:var(--blue);"></div><span>We'll confirm your details and get the listing in front of serious seekers.</span></div>
+          <div class="ty-step"><div class="ty-dot" style="background:var(--blue);"></div><span>No agents. No middlemen. Direct connection.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEEKER FLOW -->
+    <div class="quiz-step" id="s-1">
+      <div class="step-label">Finding you a place — 1 of 5</div>
+      <div class="quiz-q">Where in Lagos are you looking?</div>
+      <div class="opts" style="margin-top:14px;">
+        <button class="opt" onclick="setVal('preferredLocation','Mainland');goTo('s-2')"><div><div class="opt-title">Mainland</div><div class="opt-sub">Yaba, Surulere, Ikeja, Ikorodu and surrounding areas</div></div></button>
+        <button class="opt" onclick="setVal('preferredLocation','Island');goTo('s-2')"><div><div class="opt-title">Island</div><div class="opt-sub">Lekki, VI, Ajah, Ikoyi and surrounding areas</div></div></button>
+        <button class="opt" onclick="setVal('preferredLocation','Both / flexible');goTo('s-2')"><div><div class="opt-title">Both — I'm flexible</div><div class="opt-sub">Show me the best matches anywhere in Lagos</div></div></button>
+      </div>
+      <button class="back-btn" onclick="goTo('step-0')">← Back</button>
+    </div>
+
+    <div class="quiz-step" id="s-2">
+      <div class="step-label">Finding you a place — 2 of 5</div>
+      <div class="quiz-q">What type of apartment?</div>
+      <div class="opts g2" style="margin-top:14px;">
+        <button class="opt" onclick="setVal('aptType','Self contain');goTo('s-3')"><div class="opt-title">Self contain</div></button>
+        <button class="opt" onclick="setVal('aptType','Mini flat');goTo('s-3')"><div class="opt-title">Mini flat</div></button>
+        <button class="opt" onclick="setVal('aptType','1 bedroom flat');goTo('s-3')"><div class="opt-title">1 bed flat</div></button>
+        <button class="opt" onclick="setVal('aptType','2 bedroom flat');goTo('s-3')"><div class="opt-title">2 bed flat</div></button>
+        <button class="opt" onclick="setVal('aptType','3 bedroom flat');goTo('s-3')"><div class="opt-title">3 bed flat</div></button>
+        <button class="opt" onclick="setVal('aptType','Flexible / open');goTo('s-3')"><div class="opt-title">Flexible</div></button>
+      </div>
+      <button class="back-btn" onclick="goTo('s-1')">← Back</button>
+    </div>
+
+    <div class="quiz-step" id="s-3">
+      <div class="step-label">Finding you a place — 3 of 5</div>
+      <div class="quiz-q">What's your yearly budget?</div>
+      <div class="opts" style="margin-top:14px;">
+        <button class="opt" onclick="setVal('budgetMin','0');setVal('budgetMax','300000');goTo('s-4')"><div class="opt-title">Under ₦300k / year</div></button>
+        <button class="opt" onclick="setVal('budgetMin','300000');setVal('budgetMax','500000');goTo('s-4')"><div class="opt-title">₦300k – ₦500k</div></button>
+        <button class="opt" onclick="setVal('budgetMin','500000');setVal('budgetMax','800000');goTo('s-4')"><div class="opt-title">₦500k – ₦800k</div></button>
+        <button class="opt" onclick="setVal('budgetMin','800000');setVal('budgetMax','1200000');goTo('s-4')"><div class="opt-title">₦800k – ₦1.2m</div></button>
+        <button class="opt" onclick="setVal('budgetMin','1200000');setVal('budgetMax','2000000');goTo('s-4')"><div class="opt-title">₦1.2m – ₦2m</div></button>
+        <button class="opt" onclick="setVal('budgetMin','2000000');setVal('budgetMax','');goTo('s-4')"><div class="opt-title">Above ₦2m</div></button>
+      </div>
+      <button class="back-btn" onclick="goTo('s-2')">← Back</button>
+    </div>
+
+    <div class="quiz-step" id="s-4">
+      <div class="step-label">Finding you a place — 4 of 5</div>
+      <div class="quiz-q">When do you need to move in?</div>
+      <div class="opts" style="margin-top:14px;">
+        <button class="opt" onclick="setVal('moveTiming','As soon as possible');goTo('s-5')"><div><div class="opt-title">As soon as possible</div><div class="opt-sub">I need something now</div></div></button>
+        <button class="opt" onclick="setVal('moveTiming','Within 1 month');goTo('s-5')"><div class="opt-title">Within 1 month</div></button>
+        <button class="opt" onclick="setVal('moveTiming','1–3 months');goTo('s-5')"><div class="opt-title">1–3 months</div></button>
+        <button class="opt" onclick="setVal('moveTiming','3–6 months');goTo('s-5')"><div><div class="opt-title">3–6 months</div><div class="opt-sub">Planning ahead</div></div></button>
+      </div>
+      <button class="back-btn" onclick="goTo('s-3')">← Back</button>
+    </div>
+
+    <div class="quiz-step" id="s-5">
+      <div class="step-label">Finding you a place — 5 of 5</div>
+      <div class="quiz-q">Last step — how do we reach you?</div>
+      <div class="quiz-hint">We'll alert you when a matching apartment is confirmed.</div>
+      <div class="qrow">
+        <div class="qinput-group"><label>First name</label><input type="text" id="s-fname" placeholder="Emeka" oninput="setVal('firstName',this.value)"></div>
+        <div class="qinput-group"><label>Last name</label><input type="text" id="s-lname" placeholder="Eze" oninput="setVal('lastName',this.value)"></div>
+      </div>
+      <div class="qinput-group"><label>Email</label><input type="email" id="s-email" placeholder="emeka@email.com" oninput="setVal('email',this.value)"></div>
+      <div class="qinput-group"><label>Phone / WhatsApp</label><input type="tel" id="s-phone" placeholder="0801 234 5678" oninput="setVal('phone',this.value)"></div>
+      <div class="qinput-group"><label>Specific areas (optional)</label><input type="text" id="s-areas" placeholder="e.g. Yaba, Surulere, Ikeja" oninput="setVal('preferredAreas',this.value)"></div>
+      <button class="next-btn dark" id="s-submit-btn" onclick="submitQuiz('seeker')">Sign up →</button>
+      <button class="back-btn" onclick="goTo('s-4')">← Back</button>
+    </div>
+
+    <div class="quiz-step" id="s-ty">
+      <div class="ty-card">
+        <div class="ty-icon" style="background:var(--green-light);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B6D11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <h3>You're on the list!</h3>
+        <p>We've saved your preferences. When a verified match comes in, you'll hear from us — by email and on Telegram.</p>
+        <div class="ty-steps">
+          <div class="ty-steps-lbl">What happens next</div>
+          <div class="ty-step"><div class="ty-dot" style="background:var(--green);"></div><span>We only share apartments that are confirmed and verified — no filler.</span></div>
+          <div class="ty-step"><div class="ty-dot" style="background:var(--green);"></div><span>Drops can be spaced out. When one lands — act fast.</span></div>
+          <div class="ty-step"><div class="ty-dot" style="background:var(--green);"></div><span>Join our Telegram for real-time listing alerts.</span></div>
+        </div>
+        <a href="https://t.me/rentpal_lagos" target="_blank" class="tg-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Join t.me/rentpal_lagos
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#185FA5" stroke-width="1.3" stroke-linejoin="round"><path d="M8 1L10.163 5.382L15 6.09L11.5 9.502L12.326 14.319L8 12.045L3.674 14.319L4.5 9.502L1 6.09L5.837 5.382L8 1Z"/></svg>No agents. No commission.</div>
+  <div class="trust-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#185FA5" stroke-width="1.3"><circle cx="8" cy="8" r="6.5"/><path d="M5 8L7 10L11 6" stroke-linecap="round" stroke-linejoin="round"/></svg>Every listing manually verified</div>
+  <div class="trust-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#185FA5" stroke-width="1.3"><rect x="2" y="4" width="12" height="9" rx="1.5"/><path d="M5 4V3C5 2.448 5.448 2 6 2H10C10.552 2 11 2.448 11 3V4"/></svg>Finder's fee held in escrow</div>
+  <div class="trust-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#185FA5" stroke-width="1.3"><path d="M8 1.5C8 1.5 2.5 4 2.5 8.5C2.5 11.538 4.962 14 8 14C11.038 14 13.5 11.538 13.5 8.5C13.5 4 8 1.5 8 1.5Z"/></svg>Lagos-focused, built for locals</div>
+</div>
+
+<hr class="full-divider">
+
+<!-- HOW IT WORKS — TENANTS -->
+<div id="how-it-works" class="section" style="padding-bottom:48px;">
+  <div class="section-eyebrow">For tenants</div>
+  <h2 class="section-title">Moving out soon?<br>Don't leave without listing.</h2>
+  <p class="section-sub">You already have something valuable — an apartment someone else needs. Here's how we help you hand it over smoothly.</p>
+  <div class="steps-grid">
+    <div class="step"><div class="step-num">Step 01</div><h3>Submit your apartment</h3><p>Answer a few quick questions above — type, location, rent, move-out timeline. Takes about 3 minutes.</p></div>
+    <div class="step"><div class="step-num">Step 02</div><h3>We verify and list it</h3><p>We'll reach out to confirm the details and collect photos. Once verified, your apartment goes live.</p></div>
+    <div class="step"><div class="step-num">Step 03</div><h3>We find the next tenant</h3><p>We match your listing to serious seekers already waiting. You leave without the hassle of finding a replacement yourself.</p></div>
+  </div>
+  <div style="margin-top:28px;">
+    <a href="#quiz-area" class="btn-link blue">List my apartment →</a>
+  </div>
+</div>
+
+<hr class="full-divider">
+
+<!-- HOW IT WORKS — SEEKERS -->
+<div class="section" style="padding-bottom:48px;">
+  <div class="section-eyebrow">For seekers</div>
+  <h2 class="section-title">Looking for a place in Lagos?<br>We've got something different.</h2>
+  <p class="section-sub">Most listings online are taken, fake, or overpriced. RentPal works from the supply side — we find apartments before they're publicly available.</p>
+  <div class="steps-grid">
+    <div class="step"><div class="step-num">Step 01</div><h3>Sign up above</h3><p>Tell us your budget, preferred areas, and apartment type. We save your preferences and match against them.</p></div>
+    <div class="step"><div class="step-num">Step 02</div><h3>We alert you on a match</h3><p>When a verified apartment matching your search comes in, you hear about it via email and Telegram — before it goes wide.</p></div>
+    <div class="step"><div class="step-num">Step 03</div><h3>Move fast</h3><p>Good apartments go quickly. A small finder's fee applies when you confirm interest — held in escrow until everything checks out.</p></div>
+  </div>
+  <div style="margin-top:28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+    <a href="#quiz-area" class="btn-link">Sign up as a seeker →</a>
+    <a href="https://t.me/rentpal_lagos" target="_blank" style="display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:500;color:var(--blue);text-decoration:none;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Join our Telegram channel
+    </a>
+  </div>
+</div>
+
+<hr class="full-divider">
+
+<!-- HONESTY SECTION -->
+<div class="section">
+  <div class="honesty-grid">
+    <div>
+      <div class="section-eyebrow">How we share</div>
+      <h2 class="section-title" style="font-size:26px;">We only share when it's real</h2>
+      <p style="font-size:15px;font-weight:300;color:var(--ink-muted);line-height:1.8;margin-bottom:14px;">We don't pad our list with unverified leads or old listings. Every apartment we share is from someone we've confirmed is actually leaving — photos, timeline, rent details and all.</p>
+      <p style="font-size:15px;font-weight:300;color:var(--ink-muted);line-height:1.8;">That means sometimes it takes a while between drops. That's intentional. When something lands in your inbox or Telegram, it's worth your attention.</p>
+    </div>
+    <div>
+      <div class="honesty-card">
+        <div class="honesty-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <div><div style="font-size:14px;font-weight:500;color:var(--ink);margin-bottom:2px;">Confirmed before it's shared</div><div style="font-size:13px;font-weight:300;color:var(--ink-muted);line-height:1.6;">We speak directly with the tenant and verify every key detail first.</div></div>
+      </div>
+      <div class="honesty-card">
+        <div class="honesty-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div><div style="font-size:14px;font-weight:500;color:var(--ink);margin-bottom:2px;">Be on the lookout</div><div style="font-size:13px;font-weight:300;color:var(--ink-muted);line-height:1.6;">Drops can be spaced out. When one lands — act fast. Good places go quickly.</div></div>
+      </div>
+      <div class="honesty-card">
+        <div class="honesty-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
+        <div><div style="font-size:14px;font-weight:500;color:var(--ink);margin-bottom:2px;">No spam. No filler.</div><div style="font-size:13px;font-weight:300;color:var(--ink-muted);line-height:1.6;">You'll only hear from us when there's something real to share.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div>
+    <img src="rentpal_logo_blue.png" height="22" alt="RentPal" style="opacity:.65;" onerror="this.style.display='none';document.getElementById('flogo').style.display='block'">
+    <span id="flogo" style="display:none;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--blue);opacity:.65;">rentpal</span>
+  </div>
+  <p class="footer-text">© 2025 RentPal · Lagos, Nigeria</p>
+  <p class="footer-text">Connecting rent seekers to existing tenants.</p>
+</footer>
+
+<script>
+  var GAS_URL = "YOUR_GAS_DEPLOYMENT_URL_HERE";
+  var vals = {}, currentStep = 'step-0', userType = '';
+  var tenantSteps = ['step-0','t-1','t-2','t-3','t-4','t-5','t-6','t-ty'];
+  var seekerSteps = ['step-0','s-1','s-2','s-3','s-4','s-5','s-ty'];
+
+  function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
+  function closeMenu(){ document.getElementById('mobile-menu').classList.remove('open'); }
+  function setType(t){ userType=t; }
+  function setVal(k,v){ vals[k]=v; }
+
+  function selectOnly(btn){
+    btn.closest('.opts').querySelectorAll('.opt').forEach(function(b){b.classList.remove('selected');});
+    btn.classList.add('selected');
+  }
+
+  function selectInGroup(btn){
+    btn.closest('.opts').querySelectorAll('.opt').forEach(function(b){b.classList.remove('selected');});
+    btn.classList.add('selected');
+  }
+
+  function goTo(stepId){
+    document.getElementById(currentStep).classList.remove('active');
+    document.getElementById(stepId).classList.add('active');
+    currentStep = stepId;
+    updateProgress();
+    document.getElementById('quiz-area').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  function updateProgress(){
+    var steps = userType==='seeker' ? seekerSteps : tenantSteps;
+    var idx = steps.indexOf(currentStep);
+    var pw = document.getElementById('quiz-progress');
+    if(currentStep==='step-0'){ pw.style.display='none'; return; }
+    pw.style.display='flex';
+    var pct = Math.round((idx/(steps.length-1))*100);
+    document.getElementById('qpfill').style.width = pct+'%';
+    document.getElementById('qplabel').textContent = currentStep.endsWith('-ty') ? 'Done ✓' : 'Step '+idx+' of '+(steps.length-2);
+  }
+
+  function submitQuiz(type){
+    var fn = document.getElementById(type==='tenant'?'t-fname':'s-fname').value;
+    var em = document.getElementById(type==='tenant'?'t-email':'s-email').value;
+    if(!fn||!em){ alert('Please enter your name and email.'); return; }
+    var btn = document.getElementById(type+'-submit-btn');
+    btn.disabled=true; btn.textContent='Submitting…';
+    vals.type=type; vals.firstName=fn;
+    vals.lastName=document.getElementById(type==='tenant'?'t-lname':'s-lname').value;
+    vals.email=em;
+    vals.phone=document.getElementById(type==='tenant'?'t-phone':'s-phone').value;
+    fetch(GAS_URL,{method:'POST',body:JSON.stringify(vals)})
+      .then(function(){ goTo(type==='tenant'?'t-ty':'s-ty'); })
+      .catch(function(){ goTo(type==='tenant'?'t-ty':'s-ty'); });
+  }
+</script>
+</body>
+</html>
