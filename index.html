@@ -611,7 +611,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <script>
   window.dataLayer = window.dataLayer || [];
-  var GAS_URL = "https://script.google.com/macros/s/AKfycbydl8TFyESxsDVBabwYI8IWr64zFF0MHRGtQE5QLgh4_kixVOUDG8p-bIkDMDDOugMZ9w/exec";
+  var GAS_URL = "YOUR_GAS_DEPLOYMENT_URL_HERE";
   var vals = {}, currentStep = 'step-0', userType = '';
   var countdownTimer = null;
 
@@ -715,7 +715,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var fn = document.getElementById(type==='tenant'?'t-fname':'s-fname').value;
     var em = document.getElementById(type==='tenant'?'t-email':'s-email').value;
     if(!fn||!em){ alert('Please enter your name and email.'); return; }
-    var btn = document.getElementById(type+'-submit-btn');
+    var btn = document.getElementById(type==='tenant' ? 't-submit-btn' : 's-submit-btn');
     btn.disabled=true; btn.textContent='Submitting…';
     vals.type = type === 'tenant' ? userType : 'seeker';
     vals.firstName=fn;
