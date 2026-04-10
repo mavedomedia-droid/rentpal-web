@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You're on the list — RentPal</title>
+<style>
+  body{margin:0;padding:0;background:#f0f2f5;font-family:Arial,sans-serif;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:560px;margin:32px auto;padding:0 12px 40px;}
+  .header{background:linear-gradient(135deg,#141927 0%,#0C447C 100%);padding:24px 32px;border-radius:12px 12px 0 0;text-align:center;}
+  .logo{font-size:22px;font-weight:700;color:#4A8FD4;letter-spacing:-0.5px;}
+  .body{background:#fff;padding:36px 32px;border:1px solid #e4e7ed;border-top:none;border-radius:0 0 12px 12px;}
+  h1{font-size:21px;font-weight:700;color:#0f1117;line-height:1.3;margin:0 0 16px;text-align:center;}
+  p{font-size:14px;color:#5a6072;line-height:1.85;margin:0 0 16px;font-weight:300;}
+  .divider{border:none;border-top:1px solid #f0f2f5;margin:24px 0;}
+  .section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#9299a8;margin-bottom:10px;}
+  .how-box{background:#f8f9fc;border-radius:10px;padding:18px 20px;margin:16px 0;border:1px solid #e8eaee;}
+  .how-row{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;}
+  .how-row:last-child{margin-bottom:0;}
+  .how-num{font-size:11px;font-weight:700;color:#4A8FD4;flex-shrink:0;width:18px;margin-top:2px;}
+  .how-text{font-size:13px;color:#5a6072;line-height:1.75;font-weight:300;}
+  strong{color:#0f1117;font-weight:500;}
+  .speed-section{background:#141927;border-radius:10px;padding:24px 24px;margin:8px 0;text-align:center;}
+  .speed-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#4A8FD4;margin-bottom:10px;}
+  .speed-title{font-size:17px;font-weight:700;color:#fff;margin:0 0 10px;line-height:1.3;}
+  .speed-desc{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.8;margin:0 0 18px;}
+  .speed-btn{display:inline-block;background:#4A8FD4;color:#fff;padding:12px 26px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;}
+  .cta-wrap{text-align:center;margin:20px 0 4px;}
+  .tg-btn{display:inline-block;background:#0088cc;color:#fff;padding:13px 28px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;}
+  .footer{font-size:11px;color:#b0b6c3;line-height:1.7;margin-top:24px;text-align:center;}
+  .footer a{color:#b0b6c3;}
+  @media(max-width:600px){.wrap{padding:0 0 24px;margin:0 auto;}.header,.body{border-radius:0;border-left:none;border-right:none;}.header{padding:20px 20px;}.body{padding:28px 20px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="logo">rentpal</div>
+  </div>
+  <div class="body">
+
+    <h1>You're on the list, {{firstName}}.</h1>
+
+    <p>Your preferences are saved. When we have a confirmed apartment that matches what you're looking for, you'll hear from us — by email and on Telegram first.</p>
+
+    <div class="section-label">How RentPal works</div>
+    <div class="how-box">
+      <div class="how-row"><div class="how-num">1.</div><div class="how-text">We find people living in good places in Lagos who are packing out soon — through ads and direct outreach.</div></div>
+      <div class="how-row"><div class="how-num">2.</div><div class="how-text">We verify that the place is real — photos, timeline, rent details confirmed directly with the tenant.</div></div>
+      <div class="how-row"><div class="how-num">3.</div><div class="how-text">Once confirmed, we connect you and help facilitate the move. Plain and simple.</div></div>
+    </div>
+
+    <p>Drops can be spaced out — we only share when it's real. When a listing lands, move on it quickly. Good places in Lagos don't sit around.</p>
+
+    <hr class="divider">
+
+    <div class="speed-section">
+      <div class="speed-label">Can't wait?</div>
+      <div class="speed-title">Speed up your search.</div>
+      <p class="speed-desc">If you need to move sooner and your budget allows for it, we can fast-track your search — including running targeted ads specifically to find what you're looking for. Reply and we'll take a look at what's possible.</p>
+      <a href="mailto:hello@rentpal.com?subject=Speed%20up%20my%20search&body=Hi%2C%20I%27m%20interested%20in%20fast-tracking%20my%20apartment%20search." class="speed-btn">I'm interested →</a>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section-label" style="text-align:center;">Stay in the loop</div>
+    <p style="text-align:center;">Confirmed listings drop on our Telegram first. Join and be ready to move when something posts.</p>
+    <div class="cta-wrap">
+      <a href="https://t.me/rentpal_lagos" class="tg-btn">Join t.me/rentpal_lagos →</a>
+    </div>
+
+    <div class="footer">
+      — The RentPal Team<br>
+      <a href="https://rentpal.com">rentpal.com</a> · Lagos, Nigeria<br><br>
+      You're receiving this because you signed up at rentpal.com
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
