@@ -673,15 +673,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if(countdownTimer){ clearInterval(countdownTimer); countdownTimer = null; }
     if(stepId === 't-ty'){
       window.dataLayer.push({ event: 'rentpal_packing_complete', userType: 'packing' });
+      window.dataLayer.push({ event: 'rentpal_listing_complete', userType: 'packing' });
       startCountdown('ct-packing');
     } else if(stepId === 's-ty'){
       window.dataLayer.push({ event: 'rentpal_seeker_complete', userType: 'seeker' });
       startCountdown('ct-seeker');
     } else if(stepId === 'b-ty'){
       window.dataLayer.push({ event: 'rentpal_both_complete', userType: 'both' });
+      window.dataLayer.push({ event: 'rentpal_listing_complete', userType: 'both' });
       startCountdown('ct-both');
     }
-  }
 
   function startCountdown(ctId){
     var secs = 10;
