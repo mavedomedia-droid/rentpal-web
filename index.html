@@ -406,6 +406,69 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
 
+    <!-- BOTH SEEKER FLOW (after tenant info) -->
+    <div class="quiz-step" id="b-s-1">
+      <div class="step-label">Your next place — 1 of 5</div>
+      <div class="quiz-q">Where in Lagos are you looking?</div>
+      <div class="opts" style="margin-top:14px;">
+        <button class="opt" onclick="setVal('preferredLocation','Mainland');goTo('b-s-2')"><div><div class="opt-title">Mainland</div><div class="opt-sub">Yaba, Surulere, Ikeja, Ikorodu…</div></div></button>
+        <button class="opt" onclick="setVal('preferredLocation','Island');goTo('b-s-2')"><div><div class="opt-title">Island</div><div class="opt-sub">Lekki, VI, Ajah, Ikoyi…</div></div></button>
+        <button class="opt" onclick="setVal('preferredLocation','Both / flexible');goTo('b-s-2')"><div><div class="opt-title">Both — I'm flexible</div><div class="opt-sub">Show me the best matches anywhere in Lagos</div></div></button>
+      </div>
+      <button class="back-btn" onclick="goTo('t-6')">← Back</button>
+    </div>
+
+    <div class="quiz-step" id="b-s-2">
+      <div class="step-label">Your next place — 2 of 5</div>
+      <div class="quiz-q">What type of apartment?</div>
+      <div class="opts g2" style="margin-top:14px;">
+        <button class="opt" onclick="setVal('aptType','Self contain');goTo('b-s-3')"><div class="opt-title">Self contain</div></button>
+        <button class="opt" onclick="setVal('aptType','Mini flat');goTo('b-s-3')"><div class="opt-title">Mini flat</div></button>
+        <button class="opt" onclick="setVal('aptType','1 bedroom flat');goTo('b-s-3')"><div class="opt-title">1 bed flat</div></button>
+        <button class="opt" onclick="setVal('aptType','2 bedroom flat');goTo('b-s-3')"><div class="opt-title">2 bed flat</div></button>
+        <button class="opt" onclick="setVal('aptType','3 bedroom flat');goTo('b-s-3')"><div class="opt-title">3 bed flat</div></button>
+        <button class="opt" onclick="setVal('aptType','Flexible / open');goTo('b-s-3')"><div class="opt-title">Flexible</div></button>
+      </div>
+      <button class="back-btn" onclick="goTo('b-s-1')">← Back</button>
+    </div>
+
+    <div class="quiz-step" id="b-s-3">
+      <div class="step-label">Your next place — 3 of 5</div>
+      <div class="quiz-q">What's your yearly budget?</div>
+      <div class="opts" style="margin-top:14px;">
+        <button class="opt" onclick="setVal('budgetMin','0');setVal('budgetMax','600000');goTo('b-s-4')"><div class="opt-title">Under ₦600k / year</div></button>
+        <button class="opt" onclick="setVal('budgetMin','700000');setVal('budgetMax','900000');goTo('b-s-4')"><div class="opt-title">₦700k – ₦900k</div></button>
+        <button class="opt" onclick="setVal('budgetMin','1000000');setVal('budgetMax','1500000');goTo('b-s-4')"><div class="opt-title">₦1m – ₦1.5m</div></button>
+        <button class="opt" onclick="setVal('budgetMin','1600000');setVal('budgetMax','2000000');goTo('b-s-4')"><div class="opt-title">₦1.6m – ₦2m</div></button>
+        <button class="opt" onclick="setVal('budgetMin','2100000');setVal('budgetMax','3000000');goTo('b-s-4')"><div class="opt-title">₦2.1m – ₦3m</div></button>
+        <button class="opt" onclick="setVal('budgetMin','3100000');setVal('budgetMax','4000000');goTo('b-s-4')"><div class="opt-title">₦3.1m – ₦4m</div></button>
+        <button class="opt" onclick="setVal('budgetMin','4100000');setVal('budgetMax','5000000');goTo('b-s-4')"><div class="opt-title">₦4.1m – ₦5m</div></button>
+        <button class="opt" onclick="setVal('budgetMin','5000000');setVal('budgetMax','');goTo('b-s-4')"><div class="opt-title">Above ₦5m</div></button>
+      </div>
+      <button class="back-btn" onclick="goTo('b-s-2')">← Back</button>
+    </div>
+
+    <div class="quiz-step" id="b-s-4">
+      <div class="step-label">Your next place — 4 of 5</div>
+      <div class="quiz-q">When do you need to move in?</div>
+      <div class="opts" style="margin-top:14px;">
+        <button class="opt" onclick="setVal('moveTiming','As soon as possible');goTo('b-s-5')"><div><div class="opt-title">As soon as possible</div><div class="opt-sub">I need something now</div></div></button>
+        <button class="opt" onclick="setVal('moveTiming','Within 1 month');goTo('b-s-5')"><div class="opt-title">Within 1 month</div></button>
+        <button class="opt" onclick="setVal('moveTiming','1–3 months');goTo('b-s-5')"><div class="opt-title">1–3 months</div></button>
+        <button class="opt" onclick="setVal('moveTiming','3–6 months');goTo('b-s-5')"><div><div class="opt-title">3–6 months</div><div class="opt-sub">Planning ahead</div></div></button>
+      </div>
+      <button class="back-btn" onclick="goTo('b-s-3')">← Back</button>
+    </div>
+
+    <div class="quiz-step" id="b-s-5">
+      <div class="step-label">Your next place — 5 of 5</div>
+      <div class="quiz-q">Last step — how do we reach you?</div>
+      <div class="quiz-hint">We'll alert you when a place that fits your search comes in.</div>
+      <div class="qinput-group"><label>Specific areas (optional)</label><input type="text" id="b-s-areas" placeholder="e.g. Yaba, Surulere, Ikeja" oninput="setVal('preferredAreas',this.value)"></div>
+      <button class="next-btn dark" id="both-submit-btn" onclick="submitQuiz('both')">Finish →</button>
+      <button class="back-btn" onclick="goTo('b-s-4')">← Back</button>
+    </div>
+
     <!-- BOTH THANK YOU -->
     <div class="quiz-step" id="b-ty">
       <div class="ty-card">
@@ -615,7 +678,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   var countdownTimer = null;
 
   var packingSteps = ['step-0','p-confirm','t-1','t-2','t-3','t-4','t-5','t-6','t-ty'];
-  var bothSteps    = ['step-0','b-confirm','t-1','t-2','t-3','t-4','t-5','t-6','b-ty'];
+  var bothSteps    = ['step-0','b-confirm','t-1','t-2','t-3','t-4','t-5','t-6','b-s-1','b-s-2','b-s-3','b-s-4','b-s-5','b-ty'];
   var seekerSteps  = ['step-0','s-1','s-2','s-3','s-4','s-5','s-ty'];
 
   function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
@@ -713,18 +776,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 
   function submitQuiz(type){
-    var fn = document.getElementById(type==='tenant'?'t-fname':'s-fname').value;
-    var em = document.getElementById(type==='tenant'?'t-email':'s-email').value;
-    if(!fn||!em){ alert('Please enter your name and email.'); return; }
-    var btn = document.getElementById(type==='tenant' ? 't-submit-btn' : 's-submit-btn');
-    btn.disabled=true; btn.textContent='Submitting…';
-    vals.type = type === 'tenant' ? userType : 'seeker';
-    vals.firstName=fn;
-    vals.lastName=document.getElementById(type==='tenant'?'t-lname':'s-lname').value;
-    vals.email=em;
-    vals.phone=document.getElementById(type==='tenant'?'t-phone':'s-phone').value;
-    // Determine correct ty screen
-    var tyScreen = type === 'seeker' ? 's-ty' : (userType === 'both' ? 'b-ty' : 't-ty');
+    var fn, em;
+    if(type === 'tenant'){
+      fn = document.getElementById('t-fname').value;
+      em = document.getElementById('t-email').value;
+    } else if(type === 'seeker'){
+      fn = document.getElementById('s-fname').value;
+      em = document.getElementById('s-email').value;
+    } else if(type === 'both'){
+      // already captured from t-6; use stored values
+      fn = vals.firstName;
+      em = vals.email;
+    }
+    if(!fn || !em){ alert('Please enter your name and email.'); return; }
+    var btnId = type==='tenant' ? 't-submit-btn' : (type==='seeker' ? 's-submit-btn' : 'both-submit-btn');
+    var btn = document.getElementById(btnId);
+    if(btn){ btn.disabled=true; btn.textContent='Submitting…'; }
+    vals.type = type === 'seeker' ? 'seeker' : (type === 'both' ? 'both' : userType);
+    if(type !== 'both'){
+      vals.firstName = fn;
+      vals.lastName = document.getElementById(type==='tenant'?'t-lname':'s-lname').value;
+      vals.email = em;
+      vals.phone = document.getElementById(type==='tenant'?'t-phone':'s-phone').value;
+    }
+    var tyScreen = type === 'seeker' ? 's-ty' : (type === 'both' ? 'b-ty' : 't-ty');
     fetch(GAS_URL,{method:'POST',body:JSON.stringify(vals)})
       .then(function(){ goTo(tyScreen); })
       .catch(function(){ goTo(tyScreen); });
