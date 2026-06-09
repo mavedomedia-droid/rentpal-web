@@ -380,7 +380,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <label>Any comments about the place? (optional)</label>
         <textarea id="t-comments" rows="3" placeholder="Anything about the place that can help the next person know what they're getting into — good or not so good." oninput="setVal('comments',this.value)"></textarea>
       </div>
-      <button class="next-btn" style="background:var(--blue);" id="t-submit-btn" onclick="submitQuiz('tenant')">Submit my apartment →</button>
+      <button class="next-btn" style="background:var(--blue);" id="t-submit-btn" onclick="if(userType==='both'){goTo('b-s-1')}else{submitQuiz('tenant')}">Submit my apartment →</button>
       <button class="back-btn" onclick="goTo('t-5')">← Back</button>
     </div>
 
