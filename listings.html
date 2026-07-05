@@ -26,7 +26,7 @@
         body{font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
         main{flex:1}a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{cursor:pointer;font-family:'DM Sans',sans-serif}
 
-        /* NAV */
+        /* NAV unchanged */
         nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
         .nav-logo{display:flex;align-items:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:700;color:var(--blue)}
         .nav-logo svg{width:28px;height:28px}
@@ -57,7 +57,7 @@
         .trust-item{display:flex;align-items:center;gap:6px}
         .trust-item svg{color:var(--blue)}
 
-        /* FILTER CHIPS */
+        /* FILTERS */
         .filters-wrap{background:var(--white);border-bottom:1px solid var(--border);padding:12px 48px;position:sticky;top:64px;z-index:50;transition:box-shadow var(--transition)}
         .filters-wrap.scrolled{box-shadow:0 2px 12px rgba(0,0,0,0.06)}
         .filters-inner{max-width:1200px;margin:0 auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
@@ -73,6 +73,16 @@
         .filter-clear{background:none;border:none;color:var(--blue);font-size:13px;font-weight:500;cursor:pointer;padding:8px 12px;border-radius:var(--radius-sm);transition:background var(--transition);white-space:nowrap;flex-shrink:0}
         .filter-clear:hover{background:var(--blue-light)}
         .results-count{font-size:13px;color:var(--ink-muted);white-space:nowrap;flex-shrink:0;padding:0 4px}
+
+        /* Mobile filter toggle */
+        .filter-toggle{display:none;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 14px;font-size:13px;font-weight:500;color:var(--ink-muted);cursor:pointer;align-items:center;gap:6px}
+        @media(max-width:768px){
+            .filter-toggle{display:inline-flex}
+            .chip-group, .filter-clear, .results-count{display:none}
+            .filters-inner.open .chip-group, .filters-inner.open .filter-clear, .filters-inner.open .results-count{display:flex}
+            .filters-inner{flex-direction:column;align-items:flex-start;gap:8px}
+            .filter-search{width:100%}
+        }
 
         /* LISTINGS GRID */
         .listings-section{max-width:1200px;margin:0 auto;padding:24px 48px 56px}
@@ -106,7 +116,12 @@
         .card-btn:hover{background:var(--blue);color:#fff}
         .paystack-badge{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--ink-faint);margin-left:8px}
 
-        /* SKELETON etc (unchanged) */
+        /* New badge */
+        .badge-new{position:absolute;top:10px;right:10px;background:var(--green-light);color:var(--green-dark);border-radius:100px;padding:3px 8px;font-size:10px;font-weight:600;letter-spacing:0.3px;z-index:3}
+        /* Finder fee tag */
+        .fee-tag{display:inline-flex;align-items:center;gap:3px;font-size:10px;color:var(--ink-faint);background:var(--surface);border-radius:100px;padding:2px 8px;margin-left:6px}
+
+        /* SKELETON */
         .skeleton-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden}
         .skeleton-photo{height:180px;background:linear-gradient(90deg,#e8ecf1 25%,#f0f2f5 50%,#e8ecf1 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
         .skeleton-body{padding:16px 18px;display:flex;flex-direction:column;gap:10px}
@@ -122,7 +137,7 @@
         .load-more-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
         .load-more-btn:disabled{opacity:0.4;cursor:not-allowed}
 
-        /* Detail (unchanged) */
+        /* Detail (unchanged mostly) */
         .detail-page{max-width:900px;margin:0 auto;padding:32px 48px 56px}
         .detail-back{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-muted);cursor:pointer;background:none;border:none;margin-bottom:20px;padding:6px 0;transition:color var(--transition)}
         .detail-back:hover{color:var(--ink)}
@@ -149,41 +164,19 @@
         .detail-comments{margin-top:8px;padding-top:12px;border-top:1px solid var(--border)}
         .detail-comments .field-label{margin-bottom:4px}
         .detail-comments .field-value{font-size:14px;color:var(--ink);line-height:1.7;font-weight:300}
-        .intro-form-wrap{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 28px;margin-bottom:20px;animation:fadeUp 0.3s ease both}
-        @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-        .form-group{margin-bottom:14px}
-        .form-group label{display:block;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);margin-bottom:5px}
-        .form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;color:var(--ink);background:var(--surface);outline:none;transition:border-color var(--transition)}
-        .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(74,143,212,0.12)}
-        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-        .btn-submit-request{width:100%;padding:14px;background:var(--blue);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:500;cursor:pointer;transition:background var(--transition);margin-top:6px}
-        .btn-submit-request:hover{background:var(--blue-dark)}
-        .btn-submit-request:disabled{opacity:0.5;cursor:not-allowed}
-        .request-confirmation{text-align:center;padding:28px 20px;animation:fadeUp 0.3s ease both}
-        .confirm-icon{width:52px;height:52px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
-        .request-confirmation h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:8px}
-        .request-confirmation p{font-size:14px;color:var(--ink-muted);line-height:1.7;max-width:440px;margin:0 auto 16px}
-        .try-again-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:var(--white);border:1.5px solid var(--blue);color:var(--blue);border-radius:var(--radius);font-size:14px;font-weight:500;cursor:pointer;transition:all var(--transition)}
-        .try-again-btn:hover{background:var(--blue-light)}
-        .similar-section{margin-top:12px}
-        .similar-section h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:16px}
-        .similar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-        .recently-viewed{max-width:1200px;margin:0 auto 0;padding:0 48px 20px}
-        .recently-viewed h3{font-size:13px;font-weight:500;color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px}
-        .rv-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:4px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
-        .rv-card{flex:0 0 200px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;cursor:pointer;scroll-snap-align:start;transition:box-shadow var(--transition);flex-shrink:0}
-        .rv-card:hover{box-shadow:var(--card-shadow-hover)}
-        .rv-ref{font-size:10px;font-weight:500;color:var(--blue);text-transform:uppercase}
-        .rv-type{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:var(--ink);margin:2px 0}
-        .rv-rent{font-family:'DM Mono',monospace;font-size:14px;color:var(--ink)}
-        .toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-        .toast{background:var(--ink);color:#fff;padding:12px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;box-shadow:0 8px 28px rgba(0,0,0,0.18);animation:toastIn 0.35s ease both,toastOut 0.3s ease 2.5s forwards;pointer-events:auto;max-width:380px;display:flex;align-items:center;gap:8px}
-        .toast.success{border-left:3px solid var(--green)}
-        .toast.error{border-left:3px solid #e74c3c}
-        @keyframes toastIn{from{opacity:0;transform:translateY(20px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
-        @keyframes toastOut{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(-10px) scale(0.95)}}
-        footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--white)}
-        .footer-text{font-size:13px;color:var(--ink-faint)}
+
+        /* Unavailable banner */
+        .unavailable-banner{background:var(--orange-light);border:1px solid #fbbf24;border-radius:var(--radius);padding:16px 20px;text-align:center;margin-bottom:20px}
+        .unavailable-banner h3{font-size:16px;color:#92400e;margin-bottom:4px}
+        .unavailable-banner p{font-size:14px;color:#a16207}
+
+        /* Countdown */
+        .countdown{font-size:13px;color:var(--ink-muted);margin-top:8px}
+
+        /* Random button */
+        .random-btn{background:none;border:1.5px solid var(--border);border-radius:100px;padding:6px 12px;font-size:13px;color:var(--ink-muted);display:inline-flex;align-items:center;gap:5px;cursor:pointer;transition:all var(--transition)}
+        .random-btn:hover{border-color:var(--blue);color:var(--blue)}
+
         @media(max-width:1024px){.listings-grid{grid-template-columns:repeat(2,1fr);gap:16px}.similar-grid{grid-template-columns:repeat(2,1fr);gap:12px}}
         @media(max-width:768px){
             nav{padding:0 16px}.nav-links,.nav-cta{display:none}.hamburger{display:flex}
@@ -191,8 +184,6 @@
             .directory-hero{padding:32px 20px 28px}
             .directory-hero h1{font-size:26px}
             .filters-wrap{padding:10px 16px;top:64px}
-            .filter-search{flex:1 1 100%;min-width:100%}
-            .chip{font-size:12px;padding:5px 12px}
             .listings-section{padding:16px 16px 40px}
             .listings-grid{grid-template-columns:1fr;gap:14px}
             .detail-page{padding:20px 16px 40px}
@@ -204,6 +195,14 @@
             footer{padding:18px 16px;flex-direction:column;text-align:center;gap:6px}
             .toast-container{bottom:12px;right:12px;left:12px}.toast{max-width:100%}
         }
+        .toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+        .toast{background:var(--ink);color:#fff;padding:12px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;box-shadow:0 8px 28px rgba(0,0,0,0.18);animation:toastIn 0.35s ease both,toastOut 0.3s ease 2.5s forwards;pointer-events:auto;max-width:380px;display:flex;align-items:center;gap:8px}
+        .toast.success{border-left:3px solid var(--green)}
+        .toast.error{border-left:3px solid #e74c3c}
+        @keyframes toastIn{from{opacity:0;transform:translateY(20px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+        @keyframes toastOut{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(-10px) scale(0.95)}}
+        footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--white)}
+        .footer-text{font-size:13px;color:var(--ink-faint)}
     </style>
 </head>
 <body>
@@ -218,7 +217,6 @@
     </nav>
     <div class="mobile-menu" id="mobile-menu"><a href="/listing">Listings</a><a href="#how-it-works">How it works</a><a href="https://t.me/rentpal_lagos" target="_blank">Telegram</a></div>
 
-    <!-- Trust bar -->
     <div class="trust-bar">
         <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Real listings by current occupants</div>
         <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Payment protected by Paystack</div>
@@ -240,8 +238,10 @@
             filters: { area: '', aptType: '', rentRange: '', location: '', residentStatus: '' },
             savedListings: JSON.parse(localStorage.getItem('rp_saved') || '[]'),
             recentlyViewed: JSON.parse(localStorage.getItem('rp_recent') || '[]'),
+            introRequestSentAt: null   // for countdown
         };
 
+        // Utility functions
         function formatNaira(n){if(!n||isNaN(n))return'—';return'₦'+parseInt(n).toLocaleString('en-NG')}
         function timeAgo(d){if(!d)return'';const n=new Date(),t=new Date(d),e=n-t,a=Math.floor(e/864e5);if(a<0)return'Just now';if(a===0)return'Today';if(a===1)return'1 day ago';if(a<7)return a+' days ago';if(a<30)return Math.floor(a/7)+' week'+(Math.floor(a/7)>1?'s':'')+' ago';if(a<365)return Math.floor(a/30)+' month'+(Math.floor(a/30)>1?'s':'')+' ago';return Math.floor(a/365)+' year'+(Math.floor(a/365)>1?'s':'')+' ago'}
         function debounce(fn,ms){let t;return function(...a){clearTimeout(t);t=setTimeout(()=>fn.apply(this,a),ms)}}
@@ -252,6 +252,7 @@
         function addToRecentlyViewed(l){const e=state.recentlyViewed.find(r=>r.listingId===l.listingId);if(e){state.recentlyViewed=[e,...state.recentlyViewed.filter(r=>r.listingId!==l.listingId)]}else{state.recentlyViewed.unshift({listingId:l.listingId,apartmentType:l.apartmentType,area:l.area,location:l.location,rentExact:l.rentExact});if(state.recentlyViewed.length>10)state.recentlyViewed.pop()}localStorage.setItem('rp_recent',JSON.stringify(state.recentlyViewed))}
         function isSaved(id){return state.savedListings.indexOf(id)>-1}
 
+        // API
         async function apiFetch(a,p={},m='GET'){const u=new URL(CONFIG.GAS_URL);u.searchParams.set('action',a);if(m==='GET')Object.entries(p).forEach(([k,v])=>u.searchParams.set(k,v));try{const o={method:m};if(m==='POST'){o.body=JSON.stringify(p);o.headers={'Content-Type':'application/json'}}const r=await fetch(u.toString(),o);if(!r.ok)throw new Error('API error');return await r.json()}catch(e){console.warn('API fail, mock',e);return getMockResponse(a,p)}}
         function getMockResponse(a,p){if(a==='listings')return{success:true,listings:getMockListings()};if(a==='listing'&&p.id){const l=getMockListings().find(l=>l.listingId===p.id);return{success:true,listing:l||null}}if(a==='requestIntroduction')return{success:true,requestId:'REQ'+Date.now(),message:'OK',status:'pending'};return{success:false}}
         function getMockListings(){
@@ -273,19 +274,22 @@
             } return list;
         }
 
+        // Router
         function getRouteInfo(){const p=window.location.pathname;const m=p.match(/^\/listing\/(RP\d{4})\/?$/);if(m)return{view:'detail',listingId:m[1]};if(p==='/listing'||p==='/listing/')return{view:'directory'};const q=new URLSearchParams(window.location.search);const id=q.get('id');if(id&&/^RP\d{4}$/.test(id))return{view:'detail',listingId:id};return{view:'directory'}}
         function navigateTo(u,push=true){if(push)history.pushState(null,'',u);handleRoute();window.scrollTo({top:0,behavior:'smooth'})}
         async function handleRoute(){const r=getRouteInfo();const m=document.getElementById('app-main');if(r.view==='directory'){state.currentDetailId=null;state.currentDetailData=null;state.introductionStatus=null;await renderDirectory(m)}else{state.currentDetailId=r.listingId;state.introductionStatus=null;await renderDetail(m,r.listingId)}}
         window.addEventListener('popstate',handleRoute);
 
+        // Directory rendering
         async function renderDirectory(container){
             container.innerHTML = getDirectorySkeletonHTML();
             let data; try{data=await apiFetch('listings')}catch(e){data={success:true,listings:getMockListings()}}
-            const all = (data.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available');
+            let all = (data.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available');
+            all.sort((a,b)=> new Date(b.postedDate) - new Date(a.postedDate)); // newest first
             state.allListings=all; state.filteredListings=[...all]; state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,all.length);
             container.innerHTML = getDirectoryHTML();
             applyFilters(); renderCards(); renderRecentlyViewed(); bindEvents(); updateCount();
-            startAutoRefresh();  // 🔁 begin background refresh
+            startAutoRefresh();
         }
         function getDirectorySkeletonHTML(){let s='';for(let i=0;i<6;i++)s+=`<div class="skeleton-card"><div class="skeleton-photo"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line xl"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div></div>`;return`<div class="directory-hero"><div class="hero-tag"><div class="hero-dot"></div>Lagos, Nigeria</div><h1>Available <em>Apartments</em></h1><p class="hero-sub">Resident-listed apartments before they reach the wider market.</p></div><div class="filters-wrap"><div class="filters-inner" style="justify-content:center;padding:8px"><span style="color:var(--ink-faint)">Loading filters…</span></div></div><div class="listings-section"><div class="listings-grid">${s}</div></div>`}
 
@@ -304,9 +308,11 @@
                 <div class="hero-tag"><div class="hero-dot"></div>Lagos, Nigeria</div>
                 <h1>Available <em>Apartments</em></h1>
                 <p class="hero-sub">Resident-listed apartments before they reach the wider market.</p>
+                <button class="random-btn" id="random-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 15 18 15 18 9 15 3 9 3 6 9"/></svg> Random</button>
             </div>
             <div class="filters-wrap" id="filters-wrap">
-                <div class="filters-inner">
+                <div class="filters-inner" id="filters-inner">
+                    <button class="filter-toggle" id="filter-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg> Filters</button>
                     <div class="filter-search">
                         <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                         <input type="text" id="filter-search" placeholder="Search by area, type, or ref…">
@@ -342,6 +348,12 @@
             if(f.residentStatus) filtered=filtered.filter(l=>l.residentStatus===f.residentStatus);
             state.filteredListings=filtered;
             state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,filtered.length);
+            // Sync URL
+            const params = new URLSearchParams();
+            Object.entries(state.filters).forEach(([k,v])=>{ if(v) params.set(k,v); });
+            const qs = params.toString();
+            const newUrl = window.location.pathname + (qs ? '?'+qs : '');
+            history.replaceState(null, '', newUrl);
         }
 
         function renderCards(){
@@ -360,13 +372,16 @@
         function getCardHTML(l){
             const saved=isSaved(l.listingId);
             const comment=l.comments&&l.comments.trim()?l.comments:null;
-            const commentHTML=comment?`<div class="comment-quote">“</div><div class="comment-text">${escapeHTML(comment)}</div>`:`<div class="comment-text no-comment">No description provided</div>`;
+            const commentHTML=comment?`<div class="comment-quote">“</div><div class="comment-text">${escapeHTML(comment)}</div>`:`<div class="comment-text no-comment">📝 No description yet</div>`;
             const meta=`<span class="meta-tag meta-light">⚡ ${escapeHTML(l.light)}</span><span class="meta-tag meta-water">💧 ${escapeHTML(l.water)}</span><span class="meta-tag meta-parking">🅿️ ${escapeHTML(l.parking)}</span><span class="meta-tag meta-status">📅 ${escapeHTML(l.residentStatus)}</span>`;
+            const isNew = new Date(l.postedDate) > new Date(Date.now() - 2*86400000);
+            const newBadge = isNew ? '<div class="badge-new">New</div>' : '';
             return `
             <div class="listing-card" onclick="goToDetail('${l.listingId}')">
                 <div class="card-comment-area">
                     <div class="comment-overlay"></div>
                     ${commentHTML}
+                    ${newBadge}
                     <div class="badge-real"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Real listing</div>
                     <button class="card-save ${saved?'saved':''}" onclick="event.stopPropagation();toggleSaveListing('${l.listingId}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="${saved?'#e74c3c':'none'}" stroke="${saved?'#e74c3c':'currentColor'}" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
                 </div>
@@ -379,7 +394,8 @@
                 </div>
                 <div class="card-footer">
                     <span class="card-date">${timeAgo(l.postedDate)}</span>
-                    <div style="display:flex;align-items:center;gap:8px">
+                    <div style="display:flex;align-items:center;gap:6px">
+                        <span class="fee-tag">₦2,000 finder's fee</span>
                         <span class="paystack-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Paystack</span>
                         <button class="card-btn" onclick="event.stopPropagation();goToDetail('${l.listingId}')">View Listing</button>
                     </div>
@@ -398,31 +414,100 @@
         function updateCount(){const el=document.getElementById('results-count');if(!el)return;const t=state.filteredListings.length,s=Math.min(state.displayedCount,t);el.textContent=s===t?t+' listing'+(t!==1?'s':''):s+' of '+t+' listings'}
 
         function bindEvents(){
+            // Chips
             const chips=document.querySelectorAll('.chip');
             chips.forEach(c=>{c.addEventListener('click',()=>{const filter=c.dataset.filter,val=c.dataset.value;if(state.filters[filter]===val){state.filters[filter]='';c.classList.remove('active')}else{chips.forEach(ch=>{if(ch.dataset.filter===filter)ch.classList.remove('active')});state.filters[filter]=val;c.classList.add('active')}applyFilters();renderCards();})});
             document.getElementById('filter-search').addEventListener('input',debounce(()=>{applyFilters();renderCards()},CONFIG.DEBOUNCE_MS));
             document.getElementById('filter-clear').addEventListener('click',()=>{state.filters={area:'',aptType:'',rentRange:'',location:'',residentStatus:''};document.getElementById('filter-search').value='';chips.forEach(c=>c.classList.remove('active'));applyFilters();renderCards();showToast('Filters cleared')});
             document.getElementById('load-more-btn')?.addEventListener('click',()=>{state.displayedCount=Math.min(state.displayedCount+CONFIG.ITEMS_PER_PAGE,state.filteredListings.length);renderCards()});
             window.addEventListener('scroll',()=>{const fw=document.getElementById('filters-wrap');if(window.scrollY>80)fw.classList.add('scrolled');else fw.classList.remove('scrolled')},{passive:true});
+
+            // Mobile filter toggle
+            const toggleBtn = document.getElementById('filter-toggle');
+            const filtersInner = document.getElementById('filters-inner');
+            if(toggleBtn){
+                toggleBtn.addEventListener('click', ()=>{
+                    filtersInner.classList.toggle('open');
+                });
+            }
+
+            // Random listing button
+            document.getElementById('random-btn')?.addEventListener('click', ()=>{
+                if(state.allListings.length===0) return;
+                const random = state.allListings[Math.floor(Math.random() * state.allListings.length)];
+                goToDetail(random.listingId);
+            });
+
+            // Read filters from URL on directory load
+            const params = new URLSearchParams(window.location.search);
+            if(params.toString()){
+                ['area','aptType','location','residentStatus'].forEach(k=>{
+                    const val = params.get(k);
+                    if(val) state.filters[k] = val;
+                });
+                // Re-apply active chips visually
+                document.querySelectorAll('.chip').forEach(c=>{
+                    if(c.dataset.filter && state.filters[c.dataset.filter] === c.dataset.value) c.classList.add('active');
+                });
+            }
         }
 
-        // Detail page (unchanged)
+        // Detail page with unavailable state and countdown
         async function renderDetail(container,listingId){
             container.innerHTML=`<div class="detail-page"><div class="skeleton-line short" style="width:80px;margin-bottom:20px"></div><div class="detail-header"><div class="detail-photo-main"><div class="skeleton-photo" style="width:100%;height:100%"></div></div><div class="detail-info"><div class="skeleton-line short"></div><div class="skeleton-line xl" style="width:70%"></div><div class="skeleton-line med"></div><div class="skeleton-line long" style="height:28px"></div></div></div></div>`;
             let data; try{data=await apiFetch('listing',{id:listingId})}catch(e){data={success:true,listing:getMockListings().find(l=>l.listingId===listingId)||null}}
             const listing=data.listing;
-            if(!listing){container.innerHTML=`<div class="detail-page" style="text-align:center;padding:80px 20px"><h2>Listing not found</h2><p style="color:var(--ink-muted)">This listing may have been removed.</p><a href="/listing" style="color:var(--blue)">← Back to listings</a></div>`;return}
+            if(!listing){
+                container.innerHTML=`<div class="detail-page" style="text-align:center;padding:80px 20px"><h2>Listing not found</h2><p style="color:var(--ink-muted)">This listing may have been removed.</p><a href="/listing" style="color:var(--blue)">← Back to listings</a></div>`;return;
+            }
             state.currentDetailData=listing; addToRecentlyViewed(listing);
+            if(listing.listingStatus !== 'Available'){
+                // Unavailable state
+                container.innerHTML = `
+                <div class="detail-page" style="text-align:center;padding:80px 20px">
+                    <div class="unavailable-banner">
+                        <h3>This apartment is no longer available</h3>
+                        <p>The resident has marked it as taken off the market.</p>
+                    </div>
+                    <a href="/listing" style="display:inline-block;margin-top:20px;color:var(--blue);font-weight:500;">← Browse other listings</a>
+                </div>`;
+                return;
+            }
             container.innerHTML=getDetailHTML(listing);
             loadSimilarListings(listing);
         }
+
         function getDetailHTML(l){
             const photo=l.photosAvailable==='Yes'&&l.primaryPhoto?`<img src="${l.primaryPhoto}" alt="${l.apartmentType}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="no-photo-large" style="display:none"><p>No photos available.</p></div>`:`<div class="no-photo-large"><p>No photos available for this listing.</p></div>`;
             const fields=[{label:'Rent',value:formatNaira(l.rentExact)+'/year'},{label:'Light',value:l.light},{label:'Water',value:l.water},{label:'Parking',value:l.parking},{label:'Building Size',value:l.buildingSize},{label:'Building Condition',value:l.buildingCondition},{label:'Time Stayed',value:l.timeStayed},{label:'Resident Status',value:l.residentStatus}].filter(f=>f.value&&f.value.trim()!=='');
-            const introSection=state.introductionStatus==='submitted'?`<div class="detail-section request-confirmation"><div class="confirm-icon">✅</div><h3>Your request has been sent.</h3><p>The resident has up to 24 hours to respond. If they approve, you'll get an email with next steps.</p></div>`:state.introductionStatus==='form'?`<div class="intro-form-wrap"><h2>Request Introduction</h2><p class="form-subtitle" style="font-size:13px;color:var(--ink-muted);margin-bottom:18px">Fill in your details – the resident will review your request. No payment required at this stage.</p><form id="intro-request-form" onsubmit="submitIntroductionRequest(event,'${l.listingId}')"><div class="form-row"><div class="form-group"><label>Your Name *</label><input type="text" id="req-name" required></div><div class="form-group"><label>Email *</label><input type="email" id="req-email" required></div></div><div class="form-row"><div class="form-group"><label>Phone *</label><input type="tel" id="req-phone" required></div><div class="form-group"><label>Telegram (optional)</label><input type="text" id="req-telegram"></div></div><div class="form-group"><label>Reason *</label><select id="req-reason" required><option value="">Select reason</option><option>I'd like to rent this apartment.</option><option>I'd like to ask about the building.</option><option>Other</option></select></div><div class="form-group"><label>Move Timeline *</label><select id="req-timeline" required><option value="">Select timeline</option><option>Immediately</option><option>Within 30 Days</option><option>Within 3 Months</option><option>Just Exploring</option></select></div><button type="submit" class="btn-submit-request">Send Request</button></form></div>`:'';
+            const introSection=state.introductionStatus==='submitted'? (()=>{
+                const sentAt = state.introRequestSentAt || new Date();
+                const deadline = new Date(sentAt.getTime() + 24*3600000);
+                const countdownHTML = `<div class="countdown" id="countdown">Resident has <span id="countdown-display"></span> to respond.</div>`;
+                setTimeout(()=> startCountdown(deadline), 100);
+                return `<div class="detail-section request-confirmation"><div class="confirm-icon">✅</div><h3>Your request has been sent.</h3><p>The resident has up to 24 hours to respond. If they approve, you'll get an email with next steps.</p>${countdownHTML}</div>`;
+            })() : (state.introductionStatus==='form'?`<div class="intro-form-wrap"><h2>Request Introduction</h2><p class="form-subtitle" style="font-size:13px;color:var(--ink-muted);margin-bottom:18px">Fill in your details – the resident will review your request. No payment required at this stage.</p><form id="intro-request-form" onsubmit="submitIntroductionRequest(event,'${l.listingId}')"><div class="form-row"><div class="form-group"><label>Your Name *</label><input type="text" id="req-name" required></div><div class="form-group"><label>Email *</label><input type="email" id="req-email" required></div></div><div class="form-row"><div class="form-group"><label>Phone *</label><input type="tel" id="req-phone" required></div><div class="form-group"><label>Telegram (optional)</label><input type="text" id="req-telegram"></div></div><div class="form-group"><label>Reason *</label><select id="req-reason" required><option value="">Select reason</option><option>I'd like to rent this apartment.</option><option>I'd like to ask about the building.</option><option>Other</option></select></div><div class="form-group"><label>Move Timeline *</label><select id="req-timeline" required><option value="">Select timeline</option><option>Immediately</option><option>Within 30 Days</option><option>Within 3 Months</option><option>Just Exploring</option></select></div><button type="submit" class="btn-submit-request">Send Request</button></form></div>`:'');
             return `<div class="detail-page"><button class="detail-back" onclick="goToDirectory()">← Back to listings</button><div class="detail-header"><div class="detail-photo-main">${photo}</div><div class="detail-info"><span class="detail-ref">${l.listingId}</span><h1>${l.apartmentType}</h1><div class="detail-loc">📍 ${l.area}, ${l.location}</div><div class="detail-rent">${formatNaira(l.rentExact)}<span>/year</span></div><div class="detail-actions"><button class="btn-primary" onclick="state.introductionStatus='form';renderDetail(document.getElementById('app-main'),'${l.listingId}')">Request Introduction</button><button class="btn-outline" onclick="copyListingLink('${l.listingId}')">Copy Link</button><button class="btn-outline" onclick="shareListing('${l.listingId}','${l.apartmentType} in ${l.area}')">Share</button></div></div></div><div id="introduction-section">${introSection}</div><div class="detail-section"><h2>Apartment Details</h2><div class="detail-grid">${fields.map(f=>`<div class="detail-field"><span class="field-label">${f.label}</span><span class="field-value">${f.value}</span></div>`).join('')}</div>${l.comments?`<div class="detail-comments"><span class="field-label">Comments from the resident</span><p class="field-value">${l.comments}</p></div>`:''}</div><div class="similar-section"><h2>Similar Listings</h2><div class="similar-grid" id="similar-grid"></div></div></div>`;
         }
-        function submitIntroductionRequest(e,listingId){e.preventDefault();const btn=document.getElementById('btn-submit-intro');if(btn){btn.disabled=true;btn.textContent='Sending…'}const payload={listingId,listingUrl:window.location.href,requesterName:document.getElementById('req-name')?.value||'',requesterEmail:document.getElementById('req-email')?.value||'',requesterPhone:document.getElementById('req-phone')?.value||'',requesterTelegram:document.getElementById('req-telegram')?.value||'',reason:document.getElementById('req-reason')?.value||'',moveTimeline:document.getElementById('req-timeline')?.value||''};apiFetch('requestIntroduction',payload,'POST').then(()=>{state.introductionStatus='submitted';renderDetail(document.getElementById('app-main'),listingId);showToast('Request sent!')}).catch(()=>{state.introductionStatus='submitted';renderDetail(document.getElementById('app-main'),listingId)})}
+
+        function startCountdown(deadline){
+            const display = document.getElementById('countdown-display');
+            if(!display) return;
+            function update(){
+                const diff = deadline - new Date();
+                if(diff <= 0){
+                    display.textContent = '0h 0m';
+                    return;
+                }
+                const h = Math.floor(diff/3600000);
+                const m = Math.floor((diff%3600000)/60000);
+                display.textContent = `${h}h ${m}m`;
+            }
+            update();
+            setInterval(update, 60000);
+        }
+
+        function submitIntroductionRequest(e,listingId){e.preventDefault();const btn=document.getElementById('btn-submit-intro');if(btn){btn.disabled=true;btn.textContent='Sending…'}const payload={listingId,listingUrl:window.location.href,requesterName:document.getElementById('req-name')?.value||'',requesterEmail:document.getElementById('req-email')?.value||'',requesterPhone:document.getElementById('req-phone')?.value||'',requesterTelegram:document.getElementById('req-telegram')?.value||'',reason:document.getElementById('req-reason')?.value||'',moveTimeline:document.getElementById('req-timeline')?.value||''};apiFetch('requestIntroduction',payload,'POST').then(()=>{state.introductionStatus='submitted'; state.introRequestSentAt = new Date(); renderDetail(document.getElementById('app-main'),listingId); showToast('Request sent!')}).catch(()=>{state.introductionStatus='submitted'; state.introRequestSentAt = new Date(); renderDetail(document.getElementById('app-main'),listingId)})}
         function copyListingLink(id){const url=window.location.origin+'/listing/'+id;navigator.clipboard.writeText(url).then(()=>showToast('Link copied!'))}
         function shareListing(id,title){const url=window.location.origin+'/listing/'+id;if(navigator.share)navigator.share({title:'RentPal Listing',text:title,url});else copyListingLink(id)}
         async function loadSimilarListings(listing){
@@ -431,10 +516,10 @@
             const others=all.filter(l=>l.listingId!==listing.listingId);
             const scored=others.map(l=>{let s=0;if(l.area===listing.area)s+=3;if(l.apartmentType===listing.apartmentType)s+=2;if(l.location===listing.location)s+=1;const rd=Math.abs(getRentNumeric(String(l.rentExact||0))-getRentNumeric(String(listing.rentExact||0)));if(rd<300000)s+=2;else if(rd<600000)s+=1;return{listing:l,score:s}});
             scored.sort((a,b)=>b.score-a.score);const similar=scored.slice(0,6);
-            grid.innerHTML=similar.map(s=>{const l=s.listing;return`<div class="listing-card" onclick="goToDetail('${l.listingId}')"><div class="card-comment-area" style="height:140px"><div class="comment-overlay"></div><div class="comment-quote">“</div><div class="comment-text">${escapeHTML(l.comments||'No description')}</div></div><div class="card-body"><span class="card-ref">${l.listingId}</span><div class="card-type" style="font-size:15px">${escapeHTML(l.apartmentType)}</div><div class="card-location" style="font-size:12px">${escapeHTML(l.area)}, ${escapeHTML(l.location)}</div><div class="card-rent" style="font-size:17px">${formatNaira(l.rentExact)}<span>/year</span></div></div></div>`}).join('')||'<p style="color:var(--ink-faint)">No similar listings</p>';
+            grid.innerHTML=similar.map(s=>{const l=s.listing;return`<div class="listing-card" onclick="goToDetail('${l.listingId}')"><div class="card-comment-area" style="height:140px"><div class="comment-overlay"></div><div class="comment-quote">“</div><div class="comment-text">${escapeHTML(l.comments||'📝 No description yet')}</div></div><div class="card-body"><span class="card-ref">${l.listingId}</span><div class="card-type" style="font-size:15px">${escapeHTML(l.apartmentType)}</div><div class="card-location" style="font-size:12px">${escapeHTML(l.area)}, ${escapeHTML(l.location)}</div><div class="card-rent" style="font-size:17px">${formatNaira(l.rentExact)}<span>/year</span></div></div></div>`}).join('')||'<p style="color:var(--ink-faint)">No similar listings</p>';
         }
 
-        // ---- 🔄 AUTO‑REFRESH (new) ----
+        // Auto-refresh
         let autoRefreshInterval;
         function startAutoRefresh() {
             if (autoRefreshInterval) clearInterval(autoRefreshInterval);
@@ -444,6 +529,7 @@
                 try {
                     const data = await apiFetch('listings');
                     const fresh = (data.listings || []).filter(l => l.verificationStatus === 'Verified' && l.listingStatus === 'Available');
+                    fresh.sort((a,b)=> new Date(b.postedDate) - new Date(a.postedDate));
                     const oldIds = state.allListings.map(l => l.listingId).sort().join(',');
                     const newIds = fresh.map(l => l.listingId).sort().join(',');
                     if (oldIds !== newIds) {
@@ -458,14 +544,13 @@
                 } catch (e) { /* silent */ }
             }, 30000);
         }
-
-        // Refresh when user returns to the tab
         document.addEventListener('visibilitychange', () => {
             if (!document.hidden) {
                 const route = getRouteInfo();
                 if (route.view === 'directory') {
                     apiFetch('listings').then(data => {
                         const fresh = (data.listings || []).filter(l => l.verificationStatus === 'Verified' && l.listingStatus === 'Available');
+                        fresh.sort((a,b)=> new Date(b.postedDate) - new Date(a.postedDate));
                         state.allListings = fresh;
                         state.filteredListings = [...fresh];
                         state.displayedCount = Math.min(CONFIG.ITEMS_PER_PAGE, fresh.length);
@@ -476,7 +561,6 @@
                 }
             }
         });
-        // ---- end auto‑refresh ----
 
         function goToDetail(id){navigateTo('/listing/'+id)}
         function goToDirectory(){navigateTo('/listing')}
