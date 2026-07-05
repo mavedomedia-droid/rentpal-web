@@ -223,15 +223,15 @@
 </head>
 <body>
     <nav>
-        <a href="/listing" class="nav-logo">
+        <a href="/listings" class="nav-logo">
             <svg viewBox="0 0 28 28"><rect x="2" y="6" width="24" height="17" rx="3" stroke="#4A8FD4" stroke-width="2.2" fill="none"/><path d="M9 6V3.5C9 2.67 9.67 2 10.5 2h7c.83 0 1.5.67 1.5 1.5V6" stroke="#4A8FD4" stroke-width="2.2" fill="none"/><line x1="8" y1="13" x2="20" y2="13" stroke="#4A8FD4" stroke-width="1.8" stroke-linecap="round"/></svg>
             rentpal
         </a>
-        <ul class="nav-links"><li><a href="/listing" class="active">Listings</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="https://t.me/rentpal_lagos" target="_blank">Telegram</a></li></ul>
-        <a href="/listing" class="nav-cta">Browse listings</a>
+        <ul class="nav-links"><li><a href="/listings" class="active">Listings</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="https://t.me/rentpal_lagos" target="_blank">Telegram</a></li></ul>
+        <a href="/listings" class="nav-cta">Browse listings</a>
         <button class="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
     </nav>
-    <div class="mobile-menu" id="mobile-menu"><a href="/listing">Listings</a><a href="#how-it-works">How it works</a><a href="https://t.me/rentpal_lagos" target="_blank">Telegram</a></div>
+    <div class="mobile-menu" id="mobile-menu"><a href="/listings">Listings</a><a href="#how-it-works">How it works</a><a href="https://t.me/rentpal_lagos" target="_blank">Telegram</a></div>
 
     <div class="trust-bar">
         <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Real listings by current occupants</div>
@@ -268,7 +268,7 @@
         function isSaved(id){return state.savedListings.indexOf(id)>-1}
 
         async function apiFetch(a,p={},m='GET'){const u=new URL(CONFIG.GAS_URL);u.searchParams.set('action',a);if(m==='GET')Object.entries(p).forEach(([k,v])=>u.searchParams.set(k,v));try{const o={method:m};if(m==='POST'){o.body=JSON.stringify(p);o.headers={'Content-Type':'application/json'}}const r=await fetch(u.toString(),o);if(!r.ok)throw new Error('API error');return await r.json()}catch(e){console.warn('API fail, mock',e);return getMockResponse(a,p)}}
-        function getMockResponse(a,p){if(a==='listings')return{success:true,listings:getMockListings()};if(a==='listing'&&p.id){const l=getMockListings().find(l=>l.listingId===p.id);return{success:true,listing:l||null}}if(a==='requestIntroduction')return{success:true,requestId:'REQ'+Date.now(),message:'OK',status:'pending'};return{success:false}}
+        function getMockResponse(a,p){if(a==='listings')return{success:true,listings:getMockListings()};if(a==='listings'&&p.id){const l=getMockListings().find(l=>l.listingId===p.id);return{success:true,listings:l||null}}if(a==='requestIntroduction')return{success:true,requestId:'REQ'+Date.now(),message:'OK',status:'pending'};return{success:false}}
         function getMockListings(){
             const areas=['Yaba','Surulere','Ikeja','Lekki Phase 1','Ajah','Ikoyi','Victoria Island','Gbagada','Ogba','Magodo','Maryland','Ojodu','Egbeda','Ipaja','Ketu'];
             const apts=['Self contain','Mini flat','1 bedroom flat','2 bedroom flat','3 bedroom flat','Room & parlour'];
@@ -288,7 +288,7 @@
             } return list;
         }
 
-        function getRouteInfo(){const p=window.location.pathname;const m=p.match(/^\/listing\/(RP\d{4})\/?$/);if(m)return{view:'detail',listingId:m[1]};if(p==='/listing'||p==='/listing/')return{view:'directory'};const q=new URLSearchParams(window.location.search);const id=q.get('id');if(id&&/^RP\d{4}$/.test(id))return{view:'detail',listingId:id};return{view:'directory'}}
+        function getRouteInfo(){const p=window.location.pathname;const m=p.match(/^\/listings\/(RP\d{4})\/?$/);if(m)return{view:'detail',listingId:m[1]};if(p==='/listings'||p==='/listings/')return{view:'directory'};const q=new URLSearchParams(window.location.search);const id=q.get('id');if(id&&/^RP\d{4}$/.test(id))return{view:'detail',listingId:id};return{view:'directory'}}
         function navigateTo(u,push=true){if(push)history.pushState(null,'',u);handleRoute();window.scrollTo({top:0,behavior:'smooth'})}
         async function handleRoute(){const r=getRouteInfo();const m=document.getElementById('app-main');if(r.view==='directory'){state.currentDetailId=null;state.currentDetailData=null;state.introductionStatus=null;await renderDirectory(m)}else{state.currentDetailId=r.listingId;state.introductionStatus=null;await renderDetail(m,r.listingId)}}
         window.addEventListener('popstate',handleRoute);
@@ -393,7 +393,7 @@
                     <div class="comment-overlay"></div>
                     ${commentHTML}
                     ${newBadge}
-                    <div class="badge-real"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Real listing</div>
+                    <div class="badge-real"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Real listings</div>
                     <button class="card-save ${saved?'saved':''}" onclick="event.stopPropagation();toggleSaveListing('${l.listingId}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="${saved?'#e74c3c':'none'}" stroke="${saved?'#e74c3c':'currentColor'}" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
                 </div>
                 <div class="card-body">
@@ -408,7 +408,7 @@
                     <div style="display:flex;align-items:center;gap:6px">
                         <span class="fee-tag">₦2,000 after approval</span>
                         <span class="paystack-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Paystack</span>
-                        <button class="card-btn" onclick="event.stopPropagation();goToDetail('${l.listingId}')">View Listing</button>
+                        <button class="card-btn" onclick="event.stopPropagation();goToDetail('${l.listingId}')">View listings</button>
                     </div>
                 </div>
             </div>`;
@@ -437,16 +437,16 @@
         // Detail page with new comment hero and better fields
         async function renderDetail(container,listingId){
             container.innerHTML=`<div class="detail-page"><div class="skeleton-line short" style="width:80px;margin-bottom:20px"></div><div class="detail-header"><div class="detail-photo-main"><div class="skeleton-photo" style="width:100%;height:100%"></div></div><div class="detail-info"><div class="skeleton-line short"></div><div class="skeleton-line xl" style="width:70%"></div><div class="skeleton-line med"></div><div class="skeleton-line long" style="height:28px"></div></div></div></div>`;
-            let data; try{data=await apiFetch('listing',{id:listingId})}catch(e){data={success:true,listing:getMockListings().find(l=>l.listingId===listingId)||null}}
-            const listing=data.listing;
-            if(!listing){ container.innerHTML=`<div class="detail-page" style="text-align:center;padding:80px 20px"><h2>Listing not found</h2><p style="color:var(--ink-muted)">This listing may have been removed.</p><a href="/listing" style="color:var(--blue)">← Back to listings</a></div>`;return; }
-            state.currentDetailData=listing; addToRecentlyViewed(listing);
+            let data; try{data=await apiFetch('listings',{id:listingId})}catch(e){data={success:true,listings:getMockListings().find(l=>l.listingId===listingId)||null}}
+            const listings=data.listing;
+            if(!listings){ container.innerHTML=`<div class="detail-page" style="text-align:center;padding:80px 20px"><h2>listings not found</h2><p style="color:var(--ink-muted)">This listings may have been removed.</p><a href="/listings" style="color:var(--blue)">← Back to listings</a></div>`;return; }
+            state.currentDetailData=listings; addToRecentlyViewed(listings);
             if(listing.listingStatus !== 'Available'){
-                container.innerHTML = `<div class="detail-page" style="text-align:center;padding:80px 20px"><div class="unavailable-banner"><h3>This apartment is no longer available</h3><p>The resident has marked it as taken off the market.</p></div><a href="/listing" style="display:inline-block;margin-top:20px;color:var(--blue);font-weight:500;">← Browse other listings</a></div>`;
+                container.innerHTML = `<div class="detail-page" style="text-align:center;padding:80px 20px"><div class="unavailable-banner"><h3>This apartment is no longer available</h3><p>The resident has marked it as taken off the market.</p></div><a href="/listings" style="display:inline-block;margin-top:20px;color:var(--blue);font-weight:500;">← Browse other listings</a></div>`;
                 return;
             }
-            container.innerHTML=getDetailHTML(listing);
-            loadSimilarListings(listing);
+            container.innerHTML=getDetailHTML(listings);
+            loadSimilarListings(listings);
         }
 
         function getDetailHTML(l){
@@ -531,7 +531,7 @@
         function submitIntroductionRequest(e,listingId){ /* same with extra questions */ }
         function copyListingLink(id){ /* same */ }
         function shareListing(id,title){ /* same */ }
-        async function loadSimilarListings(listing){ /* same comment cards */ }
+        async function loadSimilarListings(listings){ /* same comment cards */ }
 
         // ... rest of the script identical (auto-refresh, etc.) ...
         // (I've truncated the script for brevity; the full version would include all previous logic unchanged.)
