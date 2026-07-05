@@ -227,7 +227,11 @@
             <select class="filter-select" id="filter-area"><option value="">📍 Area</option></select>
             <select class="filter-select" id="filter-apt-type">
                 <option value="">🛏 Type</option>
-                <option value="Self contain">Self contain</option><option value="Mini flat">Mini flat</option><option value="1 bedroom flat">1 bedroom flat</option><option value="2 bedroom flat">2 bedroom flat</option><option value="3 bedroom flat">3 bedroom flat</option><option value="Room & parlour">Room & parlour</option>
+                <option value="Self contain">Self contain</option>
+                <option value="Mini flat">Mini flat</option>
+                <option value="1 bedroom flat">1 bedroom flat</option>
+                <option value="2 bedroom flat">2 bedroom flat</option>
+                <option value="3 bedroom flat">3 bedroom flat</option>
             </select>
             <select class="filter-select" id="filter-location"><option value="">🗺 Location</option><option value="Mainland">Mainland</option><option value="Island">Island</option></select>
             <select class="filter-select" id="filter-resident-status">
@@ -270,7 +274,7 @@
         function getMockResponse(a,p){if(a==='listings')return{success:true,listings:getMockListings()};if(a==='listing'&&p.id){const l=getMockListings().find(l=>l.listingId===p.id);return{success:true,listing:l||null}}if(a==='requestIntroduction')return{success:true,requestId:'REQ'+Date.now(),message:'OK',status:'pending'};return{success:false}}
         function getMockListings(){
             const areas=['Yaba','Surulere','Ikeja','Lekki Phase 1','Ajah','Ikoyi','Victoria Island','Gbagada','Ogba','Magodo','Maryland','Ojodu','Egbeda','Ipaja','Ketu'];
-            const apts=['Self contain','Mini flat','1 bedroom flat','2 bedroom flat','3 bedroom flat','Room & parlour'];
+            const apts=['Self contain','Mini flat','1 bedroom flat','2 bedroom flat','3 bedroom flat'];
             const lights=['Band A','Band B','Band C','Band D','No light'];
             const waters=['Running water','Water but not running','No water'];
             const parks=['Compound parking','Parking nearby, not in compound','Street parking only','No parking'];
@@ -303,14 +307,14 @@
             applyFilters(); renderCards(); renderRecentlyViewed(); bindEvents(); updateCount(); updateClearButton();
             startAutoRefresh();
         }
-        function getDirectorySkeletonHTML(){let s='';for(let i=0;i<8;i++)s+=`<div class="skeleton-card"><div class="skeleton-photo"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div></div>`;return`<div class="directory-hero"><div class="hero-tag"><div class="hero-dot"></div>Lagos, Nigeria</div><h1>Available <em>Apartments</em></h1><p class="hero-sub">Resident-listed apartments before they reach the wider market.</p><button class="random-btn" id="random-btn">🎲 Random</button></div><div class="listings-section"><div class="listings-grid">${s}</div></div>`}
+        function getDirectorySkeletonHTML(){let s='';for(let i=0;i<8;i++)s+=`<div class="skeleton-card"><div class="skeleton-photo"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div></div>`;return`<div class="directory-hero"><div class="hero-tag"><div class="hero-dot"></div>Available houses</div><h1>Available <em>Apartments</em></h1><p class="hero-sub">Available places — you can request an introduction on any listing. If it's no longer available, the occupant will let you know before you proceed.</p><button class="random-btn" id="random-btn">🎲 Random</button></div><div class="listings-section"><div class="listings-grid">${s}</div></div>`}
 
         function getDirectoryHTML(){
             return `
             <div class="directory-hero">
-                <div class="hero-tag"><div class="hero-dot"></div>Lagos, Nigeria</div>
+                <div class="hero-tag"><div class="hero-dot"></div>Available houses</div>
                 <h1>Available <em>Apartments</em></h1>
-                <p class="hero-sub">Resident-listed apartments before they reach the wider market.</p>
+                <p class="hero-sub">Available places — you can request an introduction on any listing. If it's no longer available, the occupant will let you know before you proceed.</p>
                 <button class="random-btn" id="random-btn">🎲 Random</button>
             </div>
             <div class="listings-section">
