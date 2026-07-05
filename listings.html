@@ -44,13 +44,18 @@
         .mobile-menu a:last-child{border-bottom:none}
 
         /* HERO */
-        .directory-hero{background:linear-gradient(135deg, #f0f4fb 0%, #e1eaf6 50%, #f8f9fc 100%);border-bottom:1px solid var(--border);padding:48px 48px 40px;text-align:center}
+        .directory-hero{background:linear-gradient(135deg,#f0f4fb 0%,#e1eaf6 50%,#f8f9fc 100%);border-bottom:1px solid var(--border);padding:48px 48px 40px;text-align:center}
         .hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--blue-light);color:var(--blue-dark);font-size:12px;font-weight:500;padding:5px 14px;border-radius:100px;margin-bottom:16px;border:1px solid var(--blue-mid)}
         .hero-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:pulse-dot 2s infinite}
         @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.6)}}
         .directory-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:38px;font-weight:800;letter-spacing:-1.4px;color:var(--ink);margin-bottom:8px;line-height:1.15}
         .directory-hero h1 em{font-style:normal;color:var(--blue)}
         .hero-sub{font-size:16px;font-weight:300;color:var(--ink-muted);line-height:1.7;max-width:480px;margin:0 auto}
+
+        /* Trust bar */
+        .trust-bar{background:var(--white);border-bottom:1px solid var(--border);padding:10px 48px;display:flex;justify-content:center;gap:32px;flex-wrap:wrap;font-size:13px;color:var(--ink-muted)}
+        .trust-item{display:flex;align-items:center;gap:6px}
+        .trust-item svg{color:var(--blue)}
 
         /* FILTER CHIPS */
         .filters-wrap{background:var(--white);border-bottom:1px solid var(--border);padding:12px 48px;position:sticky;top:64px;z-index:50;transition:box-shadow var(--transition)}
@@ -75,10 +80,12 @@
         .listing-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;transition:box-shadow var(--transition),transform var(--transition);cursor:pointer;display:flex;flex-direction:column;position:relative}
         .listing-card:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-3px)}
         .card-comment-area{height:180px;background:linear-gradient(135deg,#f0f4fb 0%,#e6f0fa 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:20px 16px}
-        .comment-text{font-size:14px;line-height:1.6;color:#1e293b;font-style:italic;text-align:center;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;position:relative;z-index:1}
+        .comment-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to top,rgba(0,0,0,0.03) 0%,transparent 50%);z-index:1}
+        .comment-text{font-size:14px;line-height:1.6;color:#1e293b;font-style:italic;text-align:center;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;position:relative;z-index:2}
         .comment-quote{position:absolute;top:10px;left:12px;font-size:38px;color:rgba(74,143,212,0.15);font-family:'Georgia',serif;line-height:1;z-index:0}
         .no-comment{color:#94a3b8;font-size:13px;font-style:normal}
-        .card-save{position:absolute;top:10px;left:10px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.85);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition);backdrop-filter:blur(4px);z-index:2}
+        .badge-real{position:absolute;top:10px;right:10px;background:rgba(255,255,255,0.85);backdrop-filter:blur(4px);border-radius:100px;padding:4px 10px;font-size:10px;font-weight:500;color:var(--green-dark);display:flex;align-items:center;gap:4px;z-index:3}
+        .card-save{position:absolute;top:10px;left:10px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.85);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition);backdrop-filter:blur(4px);z-index:3}
         .card-save:hover{background:#fff;transform:scale(1.08)}
         .card-save.saved svg{fill:#e74c3c;stroke:#e74c3c}
         .card-body{padding:16px 18px;flex:1;display:flex;flex-direction:column;gap:10px}
@@ -97,15 +104,15 @@
         .card-date{font-size:12px;color:var(--ink-faint)}
         .card-btn{font-size:13px;font-weight:500;color:var(--blue);background:none;border:1.5px solid var(--blue);padding:7px 16px;border-radius:var(--radius-sm);transition:all var(--transition);white-space:nowrap}
         .card-btn:hover{background:var(--blue);color:#fff}
+        .paystack-badge{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--ink-faint);margin-left:8px}
 
-        /* SKELETON */
+        /* SKELETON etc (unchanged) */
         .skeleton-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden}
         .skeleton-photo{height:180px;background:linear-gradient(90deg,#e8ecf1 25%,#f0f2f5 50%,#e8ecf1 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
         .skeleton-body{padding:16px 18px;display:flex;flex-direction:column;gap:10px}
         .skeleton-line{height:14px;border-radius:6px;background:linear-gradient(90deg,#e8ecf1 25%,#f0f2f5 50%,#e8ecf1 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
         .skeleton-line.short{width:40%}.skeleton-line.med{width:70%}.skeleton-line.long{width:90%}.skeleton-line.xl{height:22px;width:55%}
         @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
         .empty-state{text-align:center;padding:60px 20px;grid-column:1/-1}
         .empty-state svg{width:80px;height:80px;color:var(--ink-faint);opacity:0.5;margin-bottom:16px}
         .empty-state h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px}
@@ -115,14 +122,13 @@
         .load-more-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
         .load-more-btn:disabled{opacity:0.4;cursor:not-allowed}
 
-        /* DETAIL (unchanged mostly, using photo area from original) */
+        /* Detail (unchanged) */
         .detail-page{max-width:900px;margin:0 auto;padding:32px 48px 56px}
         .detail-back{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-muted);cursor:pointer;background:none;border:none;margin-bottom:20px;padding:6px 0;transition:color var(--transition)}
         .detail-back:hover{color:var(--ink)}
         .detail-header{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start;margin-bottom:24px}
         .detail-photo-main{width:100%;max-width:420px;aspect-ratio:4/3;border-radius:var(--radius-lg);overflow:hidden;background:var(--surface);flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1px solid var(--border)}
         .detail-photo-main img{width:100%;height:100%;object-fit:cover}
-        .detail-photo-main .no-photo-large{text-align:center;color:var(--ink-faint);padding:20px}
         .detail-info{flex:1;min-width:260px}
         .detail-ref{font-size:12px;font-weight:500;color:var(--blue);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
         .detail-info h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;letter-spacing:-0.8px;color:var(--ink);margin-bottom:6px;line-height:1.2}
@@ -143,10 +149,7 @@
         .detail-comments{margin-top:8px;padding-top:12px;border-top:1px solid var(--border)}
         .detail-comments .field-label{margin-bottom:4px}
         .detail-comments .field-value{font-size:14px;color:var(--ink);line-height:1.7;font-weight:300}
-
-        /* Introduction form, similar listings, toast etc. unchanged (for brevity, I'll keep them exactly as before) */
-        /* (Actually I'll include them but minimized) */
-        .request-form-wrap{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 28px;margin-bottom:20px;animation:fadeUp 0.3s ease both}
+        .intro-form-wrap{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 28px;margin-bottom:20px;animation:fadeUp 0.3s ease both}
         @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
         .form-group{margin-bottom:14px}
         .form-group label{display:block;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);margin-bottom:5px}
@@ -179,16 +182,12 @@
         .toast.error{border-left:3px solid #e74c3c}
         @keyframes toastIn{from{opacity:0;transform:translateY(20px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
         @keyframes toastOut{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(-10px) scale(0.95)}}
-
         footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--white)}
         .footer-text{font-size:13px;color:var(--ink-faint)}
-
-        @media(max-width:1024px){
-            .listings-grid{grid-template-columns:repeat(2,1fr);gap:16px}
-            .similar-grid{grid-template-columns:repeat(2,1fr);gap:12px}
-        }
+        @media(max-width:1024px){.listings-grid{grid-template-columns:repeat(2,1fr);gap:16px}.similar-grid{grid-template-columns:repeat(2,1fr);gap:12px}}
         @media(max-width:768px){
             nav{padding:0 16px}.nav-links,.nav-cta{display:none}.hamburger{display:flex}
+            .trust-bar{padding:10px 16px;gap:16px}
             .directory-hero{padding:32px 20px 28px}
             .directory-hero h1{font-size:26px}
             .filters-wrap{padding:10px 16px;top:64px}
@@ -219,6 +218,13 @@
     </nav>
     <div class="mobile-menu" id="mobile-menu"><a href="/listing">Listings</a><a href="#how-it-works">How it works</a><a href="https://t.me/rentpal_lagos" target="_blank">Telegram</a></div>
 
+    <!-- Trust bar -->
+    <div class="trust-bar">
+        <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Real listings by current occupants</div>
+        <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Payment protected by Paystack</div>
+        <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 24‑hour resident response time</div>
+    </div>
+
     <main id="app-main"></main>
     <div class="toast-container" id="toast-container"></div>
     <footer><span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--blue);opacity:0.65">rentpal</span><p class="footer-text">© 2026 RentPal · Lagos, Nigeria</p><p class="footer-text">Verified listings. Real people. No agents.</p></footer>
@@ -236,7 +242,6 @@
             recentlyViewed: JSON.parse(localStorage.getItem('rp_recent') || '[]'),
         };
 
-        // Utilities (formatNaira, timeAgo, debounce, etc.)
         function formatNaira(n){if(!n||isNaN(n))return'—';return'₦'+parseInt(n).toLocaleString('en-NG')}
         function timeAgo(d){if(!d)return'';const n=new Date(),t=new Date(d),e=n-t,a=Math.floor(e/864e5);if(a<0)return'Just now';if(a===0)return'Today';if(a===1)return'1 day ago';if(a<7)return a+' days ago';if(a<30)return Math.floor(a/7)+' week'+(Math.floor(a/7)>1?'s':'')+' ago';if(a<365)return Math.floor(a/30)+' month'+(Math.floor(a/30)>1?'s':'')+' ago';return Math.floor(a/365)+' year'+(Math.floor(a/365)>1?'s':'')+' ago'}
         function debounce(fn,ms){let t;return function(...a){clearTimeout(t);t=setTimeout(()=>fn.apply(this,a),ms)}}
@@ -247,7 +252,6 @@
         function addToRecentlyViewed(l){const e=state.recentlyViewed.find(r=>r.listingId===l.listingId);if(e){state.recentlyViewed=[e,...state.recentlyViewed.filter(r=>r.listingId!==l.listingId)]}else{state.recentlyViewed.unshift({listingId:l.listingId,apartmentType:l.apartmentType,area:l.area,location:l.location,rentExact:l.rentExact});if(state.recentlyViewed.length>10)state.recentlyViewed.pop()}localStorage.setItem('rp_recent',JSON.stringify(state.recentlyViewed))}
         function isSaved(id){return state.savedListings.indexOf(id)>-1}
 
-        // API & Mock Data (unchanged)
         async function apiFetch(a,p={},m='GET'){const u=new URL(CONFIG.GAS_URL);u.searchParams.set('action',a);if(m==='GET')Object.entries(p).forEach(([k,v])=>u.searchParams.set(k,v));try{const o={method:m};if(m==='POST'){o.body=JSON.stringify(p);o.headers={'Content-Type':'application/json'}}const r=await fetch(u.toString(),o);if(!r.ok)throw new Error('API error');return await r.json()}catch(e){console.warn('API fail, mock',e);return getMockResponse(a,p)}}
         function getMockResponse(a,p){if(a==='listings')return{success:true,listings:getMockListings()};if(a==='listing'&&p.id){const l=getMockListings().find(l=>l.listingId===p.id);return{success:true,listing:l||null}}if(a==='requestIntroduction')return{success:true,requestId:'REQ'+Date.now(),message:'OK',status:'pending'};return{success:false}}
         function getMockListings(){
@@ -269,13 +273,11 @@
             } return list;
         }
 
-        // Router
         function getRouteInfo(){const p=window.location.pathname;const m=p.match(/^\/listing\/(RP\d{4})\/?$/);if(m)return{view:'detail',listingId:m[1]};if(p==='/listing'||p==='/listing/')return{view:'directory'};const q=new URLSearchParams(window.location.search);const id=q.get('id');if(id&&/^RP\d{4}$/.test(id))return{view:'detail',listingId:id};return{view:'directory'}}
         function navigateTo(u,push=true){if(push)history.pushState(null,'',u);handleRoute();window.scrollTo({top:0,behavior:'smooth'})}
         async function handleRoute(){const r=getRouteInfo();const m=document.getElementById('app-main');if(r.view==='directory'){state.currentDetailId=null;state.currentDetailData=null;state.introductionStatus=null;await renderDirectory(m)}else{state.currentDetailId=r.listingId;state.introductionStatus=null;await renderDetail(m,r.listingId)}}
         window.addEventListener('popstate',handleRoute);
 
-        // Directory rendering
         async function renderDirectory(container){
             container.innerHTML = getDirectorySkeletonHTML();
             let data; try{data=await apiFetch('listings')}catch(e){data={success:true,listings:getMockListings()}}
@@ -291,7 +293,6 @@
             const aptTypes = ['Self contain','Mini flat','1 bedroom flat','2 bedroom flat','3 bedroom flat','Room & parlour'];
             const locations = ['Mainland','Island'];
             const statuses = ['Still living there','Packing out within 1 month','Packing out in 1-3 months','Already packed out'];
-            // Build chip HTML
             const areaChips = areas.map(a=>`<button class="chip" data-filter="area" data-value="${a}"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${a}</button>`).join('');
             const aptChips = aptTypes.map(t=>`<button class="chip" data-filter="aptType" data-value="${t}">🛏 ${t}</button>`).join('');
             const locChips = locations.map(l=>`<button class="chip" data-filter="location" data-value="${l}">📍 ${l}</button>`).join('');
@@ -362,7 +363,10 @@
             const meta=`<span class="meta-tag meta-light">⚡ ${escapeHTML(l.light)}</span><span class="meta-tag meta-water">💧 ${escapeHTML(l.water)}</span><span class="meta-tag meta-parking">🅿️ ${escapeHTML(l.parking)}</span><span class="meta-tag meta-status">📅 ${escapeHTML(l.residentStatus)}</span>`;
             return `
             <div class="listing-card" onclick="goToDetail('${l.listingId}')">
-                <div class="card-comment-area">${commentHTML}
+                <div class="card-comment-area">
+                    <div class="comment-overlay"></div>
+                    ${commentHTML}
+                    <div class="badge-real"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Real listing</div>
                     <button class="card-save ${saved?'saved':''}" onclick="event.stopPropagation();toggleSaveListing('${l.listingId}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="${saved?'#e74c3c':'none'}" stroke="${saved?'#e74c3c':'currentColor'}" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
                 </div>
                 <div class="card-body">
@@ -374,7 +378,10 @@
                 </div>
                 <div class="card-footer">
                     <span class="card-date">${timeAgo(l.postedDate)}</span>
-                    <button class="card-btn" onclick="event.stopPropagation();goToDetail('${l.listingId}')">View Listing</button>
+                    <div style="display:flex;align-items:center;gap:8px">
+                        <span class="paystack-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Paystack</span>
+                        <button class="card-btn" onclick="event.stopPropagation();goToDetail('${l.listingId}')">View Listing</button>
+                    </div>
                 </div>
             </div>`;
         }
@@ -398,7 +405,7 @@
             window.addEventListener('scroll',()=>{const fw=document.getElementById('filters-wrap');if(window.scrollY>80)fw.classList.add('scrolled');else fw.classList.remove('scrolled')},{passive:true});
         }
 
-        // Detail page (abbreviated but functional)
+        // Detail page (slightly streamlined)
         async function renderDetail(container,listingId){
             container.innerHTML=`<div class="detail-page"><div class="skeleton-line short" style="width:80px;margin-bottom:20px"></div><div class="detail-header"><div class="detail-photo-main"><div class="skeleton-photo" style="width:100%;height:100%"></div></div><div class="detail-info"><div class="skeleton-line short"></div><div class="skeleton-line xl" style="width:70%"></div><div class="skeleton-line med"></div><div class="skeleton-line long" style="height:28px"></div></div></div></div>`;
             let data; try{data=await apiFetch('listing',{id:listingId})}catch(e){data={success:true,listing:getMockListings().find(l=>l.listingId===listingId)||null}}
@@ -406,13 +413,13 @@
             if(!listing){container.innerHTML=`<div class="detail-page" style="text-align:center;padding:80px 20px"><h2>Listing not found</h2><p style="color:var(--ink-muted)">This listing may have been removed.</p><a href="/listing" style="color:var(--blue)">← Back to listings</a></div>`;return}
             state.currentDetailData=listing; addToRecentlyViewed(listing);
             container.innerHTML=getDetailHTML(listing);
-            bindDetailEvents(); loadSimilarListings(listing);
+            loadSimilarListings(listing);
         }
         function getDetailHTML(l){
-            const photo=l.photosAvailable==='Yes'&&l.primaryPhoto?`<img src="${l.primaryPhoto}" alt="${l.apartmentType}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="no-photo-large" style="display:none"><p>No photos available.</p></div>`:`<div class="no-photo-large"><p>No photos available.</p></div>`;
+            const photo=l.photosAvailable==='Yes'&&l.primaryPhoto?`<img src="${l.primaryPhoto}" alt="${l.apartmentType}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="no-photo-large" style="display:none"><p>No photos available.</p></div>`:`<div class="no-photo-large"><p>No photos available for this listing.</p></div>`;
             const fields=[{label:'Rent',value:formatNaira(l.rentExact)+'/year'},{label:'Light',value:l.light},{label:'Water',value:l.water},{label:'Parking',value:l.parking},{label:'Building Size',value:l.buildingSize},{label:'Building Condition',value:l.buildingCondition},{label:'Time Stayed',value:l.timeStayed},{label:'Resident Status',value:l.residentStatus}].filter(f=>f.value&&f.value.trim()!=='');
-            const introSection=state.introductionStatus==='submitted'?`<div class="detail-section request-confirmation"><div class="confirm-icon">✅</div><h3>Your request has been sent.</h3><p>The resident has up to 24 hours to respond.</p></div>`:state.introductionStatus==='form'?`<div class="request-form-wrap"><h2>Request Introduction</h2><form id="intro-request-form" onsubmit="submitIntroductionRequest(event,'${l.listingId}')"><div class="form-row"><div class="form-group"><label>Your Name *</label><input type="text" id="req-name" required></div><div class="form-group"><label>Email *</label><input type="email" id="req-email" required></div></div><div class="form-row"><div class="form-group"><label>Phone *</label><input type="tel" id="req-phone" required></div><div class="form-group"><label>Telegram (optional)</label><input type="text" id="req-telegram"></div></div><div class="form-group"><label>Reason *</label><select id="req-reason" required><option value="">Select reason</option><option>I'd like to rent this apartment.</option><option>I'd like to ask about the building.</option><option>Other</option></select></div><div class="form-group"><label>Move Timeline *</label><select id="req-timeline" required><option value="">Select timeline</option><option>Immediately</option><option>Within 30 Days</option><option>Within 3 Months</option><option>Just Exploring</option></select></div><button type="submit" class="btn-submit-request">Send Request</button></form></div>`:'';
-            return `<div class="detail-page"><button class="detail-back" onclick="goToDirectory()">← Back to listings</button><div class="detail-header"><div class="detail-photo-main">${photo}</div><div class="detail-info"><span class="detail-ref">${l.listingId}</span><h1>${l.apartmentType}</h1><div class="detail-loc">📍 ${l.area}, ${l.location}</div><div class="detail-rent">${formatNaira(l.rentExact)}<span>/year</span></div><div class="detail-actions"><button class="btn-primary" onclick="state.introductionStatus='form';renderDetail(document.getElementById('app-main'),'${l.listingId}')">Request Introduction</button><button class="btn-outline" onclick="copyListingLink('${l.listingId}')">Copy Link</button><button class="btn-outline" onclick="shareListing('${l.listingId}','${l.apartmentType} in ${l.area}')">Share</button></div></div></div><div id="introduction-section">${introSection}</div><div class="detail-section"><h2>Apartment Details</h2><div class="detail-grid">${fields.map(f=>`<div class="detail-field"><span class="field-label">${f.label}</span><span class="field-value">${f.value}</span></div>`).join('')}</div>${l.comments?`<div class="detail-comments"><span class="field-label">Comments</span><p class="field-value">${l.comments}</p></div>`:''}</div><div class="similar-section"><h2>Similar Listings</h2><div class="similar-grid" id="similar-grid"></div></div></div>`;
+            const introSection=state.introductionStatus==='submitted'?`<div class="detail-section request-confirmation"><div class="confirm-icon">✅</div><h3>Your request has been sent.</h3><p>The resident has up to 24 hours to respond. If they approve, you'll get an email with next steps.</p></div>`:state.introductionStatus==='form'?`<div class="intro-form-wrap"><h2>Request Introduction</h2><p class="form-subtitle" style="font-size:13px;color:var(--ink-muted);margin-bottom:18px">Fill in your details – the resident will review your request. No payment required at this stage.</p><form id="intro-request-form" onsubmit="submitIntroductionRequest(event,'${l.listingId}')"><div class="form-row"><div class="form-group"><label>Your Name *</label><input type="text" id="req-name" required></div><div class="form-group"><label>Email *</label><input type="email" id="req-email" required></div></div><div class="form-row"><div class="form-group"><label>Phone *</label><input type="tel" id="req-phone" required></div><div class="form-group"><label>Telegram (optional)</label><input type="text" id="req-telegram"></div></div><div class="form-group"><label>Reason *</label><select id="req-reason" required><option value="">Select reason</option><option>I'd like to rent this apartment.</option><option>I'd like to ask about the building.</option><option>Other</option></select></div><div class="form-group"><label>Move Timeline *</label><select id="req-timeline" required><option value="">Select timeline</option><option>Immediately</option><option>Within 30 Days</option><option>Within 3 Months</option><option>Just Exploring</option></select></div><button type="submit" class="btn-submit-request">Send Request</button></form></div>`:'';
+            return `<div class="detail-page"><button class="detail-back" onclick="goToDirectory()">← Back to listings</button><div class="detail-header"><div class="detail-photo-main">${photo}</div><div class="detail-info"><span class="detail-ref">${l.listingId}</span><h1>${l.apartmentType}</h1><div class="detail-loc">📍 ${l.area}, ${l.location}</div><div class="detail-rent">${formatNaira(l.rentExact)}<span>/year</span></div><div class="detail-actions"><button class="btn-primary" onclick="state.introductionStatus='form';renderDetail(document.getElementById('app-main'),'${l.listingId}')">Request Introduction</button><button class="btn-outline" onclick="copyListingLink('${l.listingId}')">Copy Link</button><button class="btn-outline" onclick="shareListing('${l.listingId}','${l.apartmentType} in ${l.area}')">Share</button></div></div></div><div id="introduction-section">${introSection}</div><div class="detail-section"><h2>Apartment Details</h2><div class="detail-grid">${fields.map(f=>`<div class="detail-field"><span class="field-label">${f.label}</span><span class="field-value">${f.value}</span></div>`).join('')}</div>${l.comments?`<div class="detail-comments"><span class="field-label">Comments from the resident</span><p class="field-value">${l.comments}</p></div>`:''}</div><div class="similar-section"><h2>Similar Listings</h2><div class="similar-grid" id="similar-grid"></div></div></div>`;
         }
         function submitIntroductionRequest(e,listingId){e.preventDefault();const btn=document.getElementById('btn-submit-intro');if(btn){btn.disabled=true;btn.textContent='Sending…'}const payload={listingId,listingUrl:window.location.href,requesterName:document.getElementById('req-name')?.value||'',requesterEmail:document.getElementById('req-email')?.value||'',requesterPhone:document.getElementById('req-phone')?.value||'',requesterTelegram:document.getElementById('req-telegram')?.value||'',reason:document.getElementById('req-reason')?.value||'',moveTimeline:document.getElementById('req-timeline')?.value||''};apiFetch('requestIntroduction',payload,'POST').then(()=>{state.introductionStatus='submitted';renderDetail(document.getElementById('app-main'),listingId);showToast('Request sent!')}).catch(()=>{state.introductionStatus='submitted';renderDetail(document.getElementById('app-main'),listingId)})}
         function copyListingLink(id){const url=window.location.origin+'/listing/'+id;navigator.clipboard.writeText(url).then(()=>showToast('Link copied!'))}
@@ -423,7 +430,7 @@
             const others=all.filter(l=>l.listingId!==listing.listingId);
             const scored=others.map(l=>{let s=0;if(l.area===listing.area)s+=3;if(l.apartmentType===listing.apartmentType)s+=2;if(l.location===listing.location)s+=1;const rd=Math.abs(getRentNumeric(String(l.rentExact||0))-getRentNumeric(String(listing.rentExact||0)));if(rd<300000)s+=2;else if(rd<600000)s+=1;return{listing:l,score:s}});
             scored.sort((a,b)=>b.score-a.score);const similar=scored.slice(0,6);
-            grid.innerHTML=similar.map(s=>{const l=s.listing;return`<div class="listing-card" onclick="goToDetail('${l.listingId}')"><div class="card-comment-area" style="height:140px"><div class="comment-quote">“</div><div class="comment-text">${escapeHTML(l.comments||'No description')}</div></div><div class="card-body"><span class="card-ref">${l.listingId}</span><div class="card-type" style="font-size:15px">${escapeHTML(l.apartmentType)}</div><div class="card-location" style="font-size:12px">${escapeHTML(l.area)}, ${escapeHTML(l.location)}</div><div class="card-rent" style="font-size:17px">${formatNaira(l.rentExact)}<span>/year</span></div></div></div>`}).join('')||'<p style="color:var(--ink-faint)">No similar listings</p>';
+            grid.innerHTML=similar.map(s=>{const l=s.listing;return`<div class="listing-card" onclick="goToDetail('${l.listingId}')"><div class="card-comment-area" style="height:140px"><div class="comment-overlay"></div><div class="comment-quote">“</div><div class="comment-text">${escapeHTML(l.comments||'No description')}</div></div><div class="card-body"><span class="card-ref">${l.listingId}</span><div class="card-type" style="font-size:15px">${escapeHTML(l.apartmentType)}</div><div class="card-location" style="font-size:12px">${escapeHTML(l.area)}, ${escapeHTML(l.location)}</div><div class="card-rent" style="font-size:17px">${formatNaira(l.rentExact)}<span>/year</span></div></div></div>`}).join('')||'<p style="color:var(--ink-faint)">No similar listings</p>';
         }
 
         function goToDetail(id){navigateTo('/listing/'+id)}
