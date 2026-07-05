@@ -26,7 +26,7 @@
         body{font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
         main{flex:1}a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{cursor:pointer;font-family:'DM Sans',sans-serif}
 
-        /* NAV unchanged */
+        /* NAV */
         nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
         .nav-logo{display:flex;align-items:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:700;color:var(--blue)}
         .nav-logo svg{width:28px;height:28px}
@@ -115,11 +115,10 @@
         .card-btn{font-size:13px;font-weight:500;color:var(--blue);background:none;border:1.5px solid var(--blue);padding:7px 16px;border-radius:var(--radius-sm);transition:all var(--transition);white-space:nowrap}
         .card-btn:hover{background:var(--blue);color:#fff}
         .paystack-badge{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--ink-faint);margin-left:8px}
+        .fee-tag{display:inline-flex;align-items:center;gap:3px;font-size:10px;color:var(--ink-faint);background:var(--surface);border-radius:100px;padding:2px 8px;margin-left:6px}
 
         /* New badge */
         .badge-new{position:absolute;top:10px;right:10px;background:var(--green-light);color:var(--green-dark);border-radius:100px;padding:3px 8px;font-size:10px;font-weight:600;letter-spacing:0.3px;z-index:3}
-        /* Finder fee tag */
-        .fee-tag{display:inline-flex;align-items:center;gap:3px;font-size:10px;color:var(--ink-faint);background:var(--surface);border-radius:100px;padding:2px 8px;margin-left:6px}
 
         /* SKELETON */
         .skeleton-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden}
@@ -137,7 +136,7 @@
         .load-more-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
         .load-more-btn:disabled{opacity:0.4;cursor:not-allowed}
 
-        /* Detail (unchanged mostly) */
+        /* Detail */
         .detail-page{max-width:900px;margin:0 auto;padding:32px 48px 56px}
         .detail-back{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-muted);cursor:pointer;background:none;border:none;margin-bottom:20px;padding:6px 0;transition:color var(--transition)}
         .detail-back:hover{color:var(--ink)}
@@ -170,7 +169,6 @@
         .unavailable-banner h3{font-size:16px;color:#92400e;margin-bottom:4px}
         .unavailable-banner p{font-size:14px;color:#a16207}
 
-        /* Countdown */
         .countdown{font-size:13px;color:var(--ink-muted);margin-top:8px}
 
         /* Random button */
@@ -238,10 +236,9 @@
             filters: { area: '', aptType: '', rentRange: '', location: '', residentStatus: '' },
             savedListings: JSON.parse(localStorage.getItem('rp_saved') || '[]'),
             recentlyViewed: JSON.parse(localStorage.getItem('rp_recent') || '[]'),
-            introRequestSentAt: null   // for countdown
+            introRequestSentAt: null
         };
 
-        // Utility functions
         function formatNaira(n){if(!n||isNaN(n))return'—';return'₦'+parseInt(n).toLocaleString('en-NG')}
         function timeAgo(d){if(!d)return'';const n=new Date(),t=new Date(d),e=n-t,a=Math.floor(e/864e5);if(a<0)return'Just now';if(a===0)return'Today';if(a===1)return'1 day ago';if(a<7)return a+' days ago';if(a<30)return Math.floor(a/7)+' week'+(Math.floor(a/7)>1?'s':'')+' ago';if(a<365)return Math.floor(a/30)+' month'+(Math.floor(a/30)>1?'s':'')+' ago';return Math.floor(a/365)+' year'+(Math.floor(a/365)>1?'s':'')+' ago'}
         function debounce(fn,ms){let t;return function(...a){clearTimeout(t);t=setTimeout(()=>fn.apply(this,a),ms)}}
@@ -252,7 +249,6 @@
         function addToRecentlyViewed(l){const e=state.recentlyViewed.find(r=>r.listingId===l.listingId);if(e){state.recentlyViewed=[e,...state.recentlyViewed.filter(r=>r.listingId!==l.listingId)]}else{state.recentlyViewed.unshift({listingId:l.listingId,apartmentType:l.apartmentType,area:l.area,location:l.location,rentExact:l.rentExact});if(state.recentlyViewed.length>10)state.recentlyViewed.pop()}localStorage.setItem('rp_recent',JSON.stringify(state.recentlyViewed))}
         function isSaved(id){return state.savedListings.indexOf(id)>-1}
 
-        // API
         async function apiFetch(a,p={},m='GET'){const u=new URL(CONFIG.GAS_URL);u.searchParams.set('action',a);if(m==='GET')Object.entries(p).forEach(([k,v])=>u.searchParams.set(k,v));try{const o={method:m};if(m==='POST'){o.body=JSON.stringify(p);o.headers={'Content-Type':'application/json'}}const r=await fetch(u.toString(),o);if(!r.ok)throw new Error('API error');return await r.json()}catch(e){console.warn('API fail, mock',e);return getMockResponse(a,p)}}
         function getMockResponse(a,p){if(a==='listings')return{success:true,listings:getMockListings()};if(a==='listing'&&p.id){const l=getMockListings().find(l=>l.listingId===p.id);return{success:true,listing:l||null}}if(a==='requestIntroduction')return{success:true,requestId:'REQ'+Date.now(),message:'OK',status:'pending'};return{success:false}}
         function getMockListings(){
@@ -274,18 +270,16 @@
             } return list;
         }
 
-        // Router
         function getRouteInfo(){const p=window.location.pathname;const m=p.match(/^\/listing\/(RP\d{4})\/?$/);if(m)return{view:'detail',listingId:m[1]};if(p==='/listing'||p==='/listing/')return{view:'directory'};const q=new URLSearchParams(window.location.search);const id=q.get('id');if(id&&/^RP\d{4}$/.test(id))return{view:'detail',listingId:id};return{view:'directory'}}
         function navigateTo(u,push=true){if(push)history.pushState(null,'',u);handleRoute();window.scrollTo({top:0,behavior:'smooth'})}
         async function handleRoute(){const r=getRouteInfo();const m=document.getElementById('app-main');if(r.view==='directory'){state.currentDetailId=null;state.currentDetailData=null;state.introductionStatus=null;await renderDirectory(m)}else{state.currentDetailId=r.listingId;state.introductionStatus=null;await renderDetail(m,r.listingId)}}
         window.addEventListener('popstate',handleRoute);
 
-        // Directory rendering
         async function renderDirectory(container){
             container.innerHTML = getDirectorySkeletonHTML();
             let data; try{data=await apiFetch('listings')}catch(e){data={success:true,listings:getMockListings()}}
             let all = (data.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available');
-            all.sort((a,b)=> new Date(b.postedDate) - new Date(a.postedDate)); // newest first
+            all.sort((a,b)=> new Date(b.postedDate) - new Date(a.postedDate));
             state.allListings=all; state.filteredListings=[...all]; state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,all.length);
             container.innerHTML = getDirectoryHTML();
             applyFilters(); renderCards(); renderRecentlyViewed(); bindEvents(); updateCount();
@@ -348,7 +342,6 @@
             if(f.residentStatus) filtered=filtered.filter(l=>l.residentStatus===f.residentStatus);
             state.filteredListings=filtered;
             state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,filtered.length);
-            // Sync URL
             const params = new URLSearchParams();
             Object.entries(state.filters).forEach(([k,v])=>{ if(v) params.set(k,v); });
             const qs = params.toString();
@@ -395,7 +388,7 @@
                 <div class="card-footer">
                     <span class="card-date">${timeAgo(l.postedDate)}</span>
                     <div style="display:flex;align-items:center;gap:6px">
-                        <span class="fee-tag">₦2,000 finder's fee</span>
+                        <span class="fee-tag">₦2,000 after approval</span>
                         <span class="paystack-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Paystack</span>
                         <button class="card-btn" onclick="event.stopPropagation();goToDetail('${l.listingId}')">View Listing</button>
                     </div>
@@ -414,7 +407,6 @@
         function updateCount(){const el=document.getElementById('results-count');if(!el)return;const t=state.filteredListings.length,s=Math.min(state.displayedCount,t);el.textContent=s===t?t+' listing'+(t!==1?'s':''):s+' of '+t+' listings'}
 
         function bindEvents(){
-            // Chips
             const chips=document.querySelectorAll('.chip');
             chips.forEach(c=>{c.addEventListener('click',()=>{const filter=c.dataset.filter,val=c.dataset.value;if(state.filters[filter]===val){state.filters[filter]='';c.classList.remove('active')}else{chips.forEach(ch=>{if(ch.dataset.filter===filter)ch.classList.remove('active')});state.filters[filter]=val;c.classList.add('active')}applyFilters();renderCards();})});
             document.getElementById('filter-search').addEventListener('input',debounce(()=>{applyFilters();renderCards()},CONFIG.DEBOUNCE_MS));
@@ -422,7 +414,6 @@
             document.getElementById('load-more-btn')?.addEventListener('click',()=>{state.displayedCount=Math.min(state.displayedCount+CONFIG.ITEMS_PER_PAGE,state.filteredListings.length);renderCards()});
             window.addEventListener('scroll',()=>{const fw=document.getElementById('filters-wrap');if(window.scrollY>80)fw.classList.add('scrolled');else fw.classList.remove('scrolled')},{passive:true});
 
-            // Mobile filter toggle
             const toggleBtn = document.getElementById('filter-toggle');
             const filtersInner = document.getElementById('filters-inner');
             if(toggleBtn){
@@ -431,21 +422,18 @@
                 });
             }
 
-            // Random listing button
             document.getElementById('random-btn')?.addEventListener('click', ()=>{
                 if(state.allListings.length===0) return;
                 const random = state.allListings[Math.floor(Math.random() * state.allListings.length)];
                 goToDetail(random.listingId);
             });
 
-            // Read filters from URL on directory load
             const params = new URLSearchParams(window.location.search);
             if(params.toString()){
                 ['area','aptType','location','residentStatus'].forEach(k=>{
                     const val = params.get(k);
                     if(val) state.filters[k] = val;
                 });
-                // Re-apply active chips visually
                 document.querySelectorAll('.chip').forEach(c=>{
                     if(c.dataset.filter && state.filters[c.dataset.filter] === c.dataset.value) c.classList.add('active');
                 });
@@ -462,7 +450,6 @@
             }
             state.currentDetailData=listing; addToRecentlyViewed(listing);
             if(listing.listingStatus !== 'Available'){
-                // Unavailable state
                 container.innerHTML = `
                 <div class="detail-page" style="text-align:center;padding:80px 20px">
                     <div class="unavailable-banner">
@@ -486,7 +473,66 @@
                 const countdownHTML = `<div class="countdown" id="countdown">Resident has <span id="countdown-display"></span> to respond.</div>`;
                 setTimeout(()=> startCountdown(deadline), 100);
                 return `<div class="detail-section request-confirmation"><div class="confirm-icon">✅</div><h3>Your request has been sent.</h3><p>The resident has up to 24 hours to respond. If they approve, you'll get an email with next steps.</p>${countdownHTML}</div>`;
-            })() : (state.introductionStatus==='form'?`<div class="intro-form-wrap"><h2>Request Introduction</h2><p class="form-subtitle" style="font-size:13px;color:var(--ink-muted);margin-bottom:18px">Fill in your details – the resident will review your request. No payment required at this stage.</p><form id="intro-request-form" onsubmit="submitIntroductionRequest(event,'${l.listingId}')"><div class="form-row"><div class="form-group"><label>Your Name *</label><input type="text" id="req-name" required></div><div class="form-group"><label>Email *</label><input type="email" id="req-email" required></div></div><div class="form-row"><div class="form-group"><label>Phone *</label><input type="tel" id="req-phone" required></div><div class="form-group"><label>Telegram (optional)</label><input type="text" id="req-telegram"></div></div><div class="form-group"><label>Reason *</label><select id="req-reason" required><option value="">Select reason</option><option>I'd like to rent this apartment.</option><option>I'd like to ask about the building.</option><option>Other</option></select></div><div class="form-group"><label>Move Timeline *</label><select id="req-timeline" required><option value="">Select timeline</option><option>Immediately</option><option>Within 30 Days</option><option>Within 3 Months</option><option>Just Exploring</option></select></div><button type="submit" class="btn-submit-request">Send Request</button></form></div>`:'');
+            })() : (state.introductionStatus==='form'?`
+            <div class="intro-form-wrap">
+                <h2>Request Introduction</h2>
+                <p class="form-subtitle" style="font-size:13px;color:var(--ink-muted);margin-bottom:18px">Fill in your details – the resident will review your request. No payment required now.</p>
+
+                <div style="background:var(--blue-light);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    <div style="font-size:13px;color:var(--blue-dark);line-height:1.5">
+                        <strong>Introduction fee: ₦2,000</strong><br>
+                        This covers the cost of connecting you with the resident. It's only charged <b>after</b> the resident approves your request and you choose to proceed.
+                    </div>
+                </div>
+
+                <form id="intro-request-form" onsubmit="submitIntroductionRequest(event,'${l.listingId}')">
+                    <div class="form-row">
+                        <div class="form-group"><label>Your Name *</label><input type="text" id="req-name" required></div>
+                        <div class="form-group"><label>Email *</label><input type="email" id="req-email" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Phone *</label><input type="tel" id="req-phone" required></div>
+                        <div class="form-group"><label>Telegram (optional)</label><input type="text" id="req-telegram"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Reason *</label>
+                        <select id="req-reason" required>
+                            <option value="">Select reason</option>
+                            <option>I'd like to rent this apartment.</option>
+                            <option>I'd like to ask about the building.</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Move Timeline *</label>
+                        <select id="req-timeline" required>
+                            <option value="">Select timeline</option>
+                            <option>Immediately</option>
+                            <option>Within 30 Days</option>
+                            <option>Within 3 Months</option>
+                            <option>Just Exploring</option>
+                        </select>
+                    </div>
+
+                    <div style="background:var(--orange-light);border:1px solid #fbbf24;border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" style="flex-shrink:0;margin-top:2px"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                        <div style="font-size:13px;color:#92400e;line-height:1.5">
+                            <strong>Finder's Fee</strong><br>
+                            If you <b>successfully rent this apartment</b>, you'll be invoiced a <b>finder's fee</b> (separate from the introduction fee). This covers the cost of advertising and matching — we only get paid when you find your home.
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="display:flex;align-items:flex-start;gap:8px;margin-bottom:20px">
+                        <input type="checkbox" id="req-agree-finder" required style="width:18px;height:18px;margin-top:3px;flex-shrink:0;accent-color:var(--orange)">
+                        <label for="req-agree-finder" style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink-muted);font-size:13px">
+                            I agree that if I rent this apartment, I will be invoiced for the <strong>finder's fee</strong> as described above.
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-submit-request" id="btn-submit-intro">Send Request</button>
+                </form>
+            </div>`:'');
             return `<div class="detail-page"><button class="detail-back" onclick="goToDirectory()">← Back to listings</button><div class="detail-header"><div class="detail-photo-main">${photo}</div><div class="detail-info"><span class="detail-ref">${l.listingId}</span><h1>${l.apartmentType}</h1><div class="detail-loc">📍 ${l.area}, ${l.location}</div><div class="detail-rent">${formatNaira(l.rentExact)}<span>/year</span></div><div class="detail-actions"><button class="btn-primary" onclick="state.introductionStatus='form';renderDetail(document.getElementById('app-main'),'${l.listingId}')">Request Introduction</button><button class="btn-outline" onclick="copyListingLink('${l.listingId}')">Copy Link</button><button class="btn-outline" onclick="shareListing('${l.listingId}','${l.apartmentType} in ${l.area}')">Share</button></div></div></div><div id="introduction-section">${introSection}</div><div class="detail-section"><h2>Apartment Details</h2><div class="detail-grid">${fields.map(f=>`<div class="detail-field"><span class="field-label">${f.label}</span><span class="field-value">${f.value}</span></div>`).join('')}</div>${l.comments?`<div class="detail-comments"><span class="field-label">Comments from the resident</span><p class="field-value">${l.comments}</p></div>`:''}</div><div class="similar-section"><h2>Similar Listings</h2><div class="similar-grid" id="similar-grid"></div></div></div>`;
         }
 
@@ -507,7 +553,33 @@
             setInterval(update, 60000);
         }
 
-        function submitIntroductionRequest(e,listingId){e.preventDefault();const btn=document.getElementById('btn-submit-intro');if(btn){btn.disabled=true;btn.textContent='Sending…'}const payload={listingId,listingUrl:window.location.href,requesterName:document.getElementById('req-name')?.value||'',requesterEmail:document.getElementById('req-email')?.value||'',requesterPhone:document.getElementById('req-phone')?.value||'',requesterTelegram:document.getElementById('req-telegram')?.value||'',reason:document.getElementById('req-reason')?.value||'',moveTimeline:document.getElementById('req-timeline')?.value||''};apiFetch('requestIntroduction',payload,'POST').then(()=>{state.introductionStatus='submitted'; state.introRequestSentAt = new Date(); renderDetail(document.getElementById('app-main'),listingId); showToast('Request sent!')}).catch(()=>{state.introductionStatus='submitted'; state.introRequestSentAt = new Date(); renderDetail(document.getElementById('app-main'),listingId)})}
+        function submitIntroductionRequest(e,listingId){
+            e.preventDefault();
+            const agreeFinder = document.getElementById('req-agree-finder');
+            if (!agreeFinder || !agreeFinder.checked) {
+                showToast('Please agree to the finder\'s fee terms.', 'error');
+                return;
+            }
+            const btn = document.getElementById('btn-submit-intro');
+            if(btn){btn.disabled=true;btn.textContent='Sending…'}
+            const payload={
+                listingId, listingUrl:window.location.href,
+                requesterName:document.getElementById('req-name')?.value||'',
+                requesterEmail:document.getElementById('req-email')?.value||'',
+                requesterPhone:document.getElementById('req-phone')?.value||'',
+                requesterTelegram:document.getElementById('req-telegram')?.value||'',
+                reason:document.getElementById('req-reason')?.value||'',
+                moveTimeline:document.getElementById('req-timeline')?.value||''
+            };
+            apiFetch('requestIntroduction',payload,'POST').then(()=>{
+                state.introductionStatus='submitted'; state.introRequestSentAt = new Date();
+                renderDetail(document.getElementById('app-main'),listingId); showToast('Request sent!')
+            }).catch(()=>{
+                state.introductionStatus='submitted'; state.introRequestSentAt = new Date();
+                renderDetail(document.getElementById('app-main'),listingId)
+            });
+        }
+
         function copyListingLink(id){const url=window.location.origin+'/listing/'+id;navigator.clipboard.writeText(url).then(()=>showToast('Link copied!'))}
         function shareListing(id,title){const url=window.location.origin+'/listing/'+id;if(navigator.share)navigator.share({title:'RentPal Listing',text:title,url});else copyListingLink(id)}
         async function loadSimilarListings(listing){
@@ -519,7 +591,6 @@
             grid.innerHTML=similar.map(s=>{const l=s.listing;return`<div class="listing-card" onclick="goToDetail('${l.listingId}')"><div class="card-comment-area" style="height:140px"><div class="comment-overlay"></div><div class="comment-quote">“</div><div class="comment-text">${escapeHTML(l.comments||'📝 No description yet')}</div></div><div class="card-body"><span class="card-ref">${l.listingId}</span><div class="card-type" style="font-size:15px">${escapeHTML(l.apartmentType)}</div><div class="card-location" style="font-size:12px">${escapeHTML(l.area)}, ${escapeHTML(l.location)}</div><div class="card-rent" style="font-size:17px">${formatNaira(l.rentExact)}<span>/year</span></div></div></div>`}).join('')||'<p style="color:var(--ink-faint)">No similar listings</p>';
         }
 
-        // Auto-refresh
         let autoRefreshInterval;
         function startAutoRefresh() {
             if (autoRefreshInterval) clearInterval(autoRefreshInterval);
@@ -541,7 +612,7 @@
                         updateCount();
                         showToast('📣 Listings updated');
                     }
-                } catch (e) { /* silent */ }
+                } catch (e) {}
             }, 30000);
         }
         document.addEventListener('visibilitychange', () => {
