@@ -1,682 +1,1046 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RentPal — Verified Apartment Listings in Lagos</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --blue: #4A8FD4; --blue-dark: #185FA5; --blue-deep: #0C447C;
-            --blue-light: #E6F1FB; --blue-mid: #B5D4F4;
-            --green: #4CAF85; --green-light: #EAF3DE; --green-dark: #27500A;
-            --orange: #F59E0B; --orange-light: #FEF3C7;
-            --purple: #8B5CF6; --purple-light: #EDE9FE;
-            --ink: #0f1117; --ink-muted: #5a6072; --ink-faint: #9299a8;
-            --surface: #f8f9fc; --white: #ffffff;
-            --border: rgba(0,0,0,0.06);
-            --card-shadow: 0 4px 12px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.05);
-            --card-shadow-hover: 0 12px 28px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.06);
-            --radius-sm: 8px; --radius: 12px; --radius-lg: 18px; --radius-xl: 24px;
-            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+// ============================================================
+// RentPal — Google Apps Script (directory API + existing quiz +
+// introduction flow with resident notifications, Paystack placeholder,
+// Telegram messages with listing URL, and Python bot webhook calls)
+// Deploy as Web App: Execute as Me, Anyone can access
+//
+// SCRIPT PROPERTIES (Project Settings → Script Properties):
+//   TELEGRAM_BOT_TOKEN
+//   ADMIN_CHAT_ID
+//   CHANNEL_CHAT_ID
+//   CHANNEL_USERNAME         (optional)
+//   SHEET_NAME               (default "intro req")
+//   INTRO_SHEET_NAME         (default "users")
+//   SENDER_EMAIL             (optional sender name for Gmail)
+//   EMAIL_BASE_URL           (base URL for hosted HTML email templates)
+//   BOT_WEBHOOK_URL          (optional, e.g. https://your-bot.up.railway.app/introduction-event)
+//   PAYSTACK_SECRET_KEY      (to be added later)
+//   PAYSTACK_PUBLIC_KEY      (to be added later)
+//
+// INSTALLABLE TRIGGER (required for verification → Telegram):
+//   Triggers → Add Trigger → Function: onVerificationEdit
+//   → Event source: From spreadsheet → Event type: On edit
+// ============================================================
+
+// ── COLUMN INDICES (1‑based) — MATCHES YOUR ACTUAL "intro req" SHEET ──
+var COL = {
+  SUBMITTED_AT:         1,
+  TYPE:                 2,
+  USER_ID:              3,
+  FIRST_NAME:           4,
+  LAST_NAME:            5,
+  EMAIL:                6,
+  PHONE:                7,
+  APT_TYPE:             8,
+  LOCATION:             9,
+  AREA:                 10,
+  RENT_RANGE:           11,
+  RENT_EXACT:           12,
+  PACK_OUT_TIMELINE:    13,
+  LIGHT:                14,
+  WATER:                15,
+  PARKING:              16,
+  COMMENTS:             17,
+  PREF_LOCATION:        18,
+  PREF_APT_TYPE:        19,
+  BUDGET_MIN:           20,
+  BUDGET_MAX:           21,
+  MOVE_IN_TIMING:       22,
+  PREF_AREAS:           23,
+  LIST_APARTMENT:       24,
+  VERIFICATION_STATUS:  25,
+  LISTING_ID:           26,
+  LISTING_STATUS:       27,
+  LISTING_SOURCE:       28,
+  PUBLISHED_TO_TG:      29,
+  TELEGRAM_POST_URL:    30,
+  PUBLIC_URL:           31,
+  INTRO_STATUS:         32,
+  INTRO_REQUESTS:       33,
+  LAST_INTRO_REQUEST:   34,
+  LAST_RESIDENT_RESPONSE:35,
+  LAST_AVAILABILITY_CHECK:36,
+  AVAILABILITY_CONFIRMED:37,
+  PHOTOS_AVAILABLE:     38,
+  PRIMARY_PHOTO:        39,
+  URL_SLUG:             40
+};
+
+var TOTAL_COLUMNS = 40;
+
+// ── INTRODUCTION REQUESTS SHEET COLUMNS (matches your "users" sheet) ──
+var INTRO_COL = {
+  REQUEST_ID:           1,
+  LISTING_ID:           2,
+  LISTING_URL:          3,
+  RESIDENT_USER_ID:     4,
+  RESIDENT_NAME:        5,
+  RESIDENT_EMAIL:       6,
+  REQUESTER_NAME:       7,
+  REQUESTER_EMAIL:      8,
+  REQUESTER_PHONE:      9,
+  REQUESTER_TELEGRAM:   10,
+  REASON:               11,
+  MOVE_TIMELINE:        12,
+  REQUEST_STATUS:       13,
+  REQUEST_SENT_AT:      14,
+  RESIDENT_RESPONSE_AT: 15,
+  RESIDENT_RESPONSE:    16,
+  PAYMENT_REQUIRED:     17,
+  PAYMENT_STATUS:       18,
+  PAYSTACK_REFERENCE:   19,
+  PAYMENT_DATE:         20,
+  CONTACT_RELEASED:     21,
+  CONTACT_RELEASED_AT:  22,
+  REQUEST_EXPIRED_AT:   23,
+  NOTES:                24
+};
+
+// ── Value constants ──────────────────────────────────────────
+var STATUS_UNCONFIRMED = 'Unconfirmed';
+var STATUS_VERIFIED    = 'Verified';
+var LISTING_AVAILABLE  = 'Available';
+var LISTING_UNAVAILABLE = 'Unavailable';
+var YES                = 'Yes';
+var NO                 = 'No';
+var BOT_HANDLE         = '@rentpal_bot';
+var DEFAULT_INTRO_SHEET = 'users';
+var DEFAULT_MAIN_SHEET  = 'intro req';
+var LISTING_TYPES = ['packing', 'both'];
+
+// ── Helpers ──────────────────────────────────────────────────
+function getProp(key) {
+  return PropertiesService.getScriptProperties().getProperty(key);
+}
+
+function getSheet() {
+  var name = getProp('SHEET_NAME') || DEFAULT_MAIN_SHEET;
+  return SpreadsheetApp.getActiveSpreadsheet().getSheetByName(name);
+}
+
+function getIntroSheet() {
+  var name = getProp('INTRO_SHEET_NAME') || DEFAULT_INTRO_SHEET;
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(name);
+  if (!sheet) {
+    sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet(name);
+    var headers = [
+      'Request ID','Listing ID','Listing URL','Resident User ID','Resident Name','Resident Email',
+      'Requester Name','Requester Email','Requester Phone','Requester Telegram','Reason for Request',
+      'Move Timeline','Request Status','Request Sent At','Resident Response At','Resident Response',
+      'Payment Required','Payment Status','Paystack Reference','Payment Date','Contact Released',
+      'Contact Released At','Request Expired At','Notes'
+    ];
+    sheet.appendRow(headers);
+    sheet.setFrozenRows(1);
+  }
+  return sheet;
+}
+
+function generateUserId() {
+  var ts = new Date().getTime().toString(36).toUpperCase();
+  return 'RP-' + ts.slice(-6);
+}
+
+function generateRequestId(sheet) {
+  var lastRow = sheet.getLastRow();
+  var maxNum = 0;
+  if (lastRow >= 2) {
+    var ids = sheet.getRange(2, INTRO_COL.REQUEST_ID, lastRow - 1, 1).getValues();
+    for (var i = 0; i < ids.length; i++) {
+      var match = String(ids[i][0] || '').toUpperCase().match(/^REQ(\d+)$/);
+      if (match) {
+        var n = parseInt(match[1], 10);
+        if (n > maxNum) maxNum = n;
+      }
+    }
+  }
+  return 'REQ' + String(maxNum + 1).padStart(4, '0');
+}
+
+function formatNaira(val) {
+  if (!val) return '';
+  var num = parseFloat(String(val).replace(/[^0-9.]/g, ''));
+  if (isNaN(num)) return val;
+  return '\u20a6' + num.toLocaleString('en-NG');
+}
+
+function isListingType(type) {
+  return LISTING_TYPES.indexOf(String(type || '').toLowerCase()) !== -1;
+}
+
+function slugify(text) {
+  if (!text) return '';
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
+// ── Telegram ─────────────────────────────────────────────────
+function sendTelegram(chatId, text) {
+  var token = getProp('TELEGRAM_BOT_TOKEN');
+  if (!token || !chatId) return null;
+  var url = 'https://api.telegram.org/bot' + token + '/sendMessage';
+  try {
+    var res = UrlFetchApp.fetch(url, {
+      method: 'post',
+      contentType: 'application/json',
+      muteHttpExceptions: true,
+      payload: JSON.stringify({
+        chat_id: chatId,
+        text: text,
+        parse_mode: 'HTML',
+        disable_web_page_preview: true
+      })
+    });
+    return JSON.parse(res.getContentText());
+  } catch (err) {
+    return null;
+  }
+}
+
+function buildTelegramPostUrl(channelId, messageId) {
+  if (!messageId) return '';
+  var username = getProp('CHANNEL_USERNAME');
+  if (username) {
+    return 'https://t.me/' + username.replace(/^@/, '') + '/' + messageId;
+  }
+  var id = String(channelId || '');
+  if (id.indexOf('-100') === 0) {
+    return 'https://t.me/c/' + id.slice(4) + '/' + messageId;
+  }
+  return '';
+}
+
+// ── Directory API (doGet) ────────────────────────────────────
+function doGet(e) {
+  var action = e.parameter.action || '';
+
+  if (action === 'residentResponse') {
+    return handleResidentResponse(e);
+  }
+  if (action === 'completeIntroduction') {
+    return handleCompleteIntroduction(e);
+  }
+
+  if (action === 'listings') {
+    return jsonOut(getAllListings());
+  } else if (action === 'listing' && e.parameter.id) {
+    return jsonOut(getSingleListing(e.parameter.id));
+  }
+  return jsonOut({ success: false, message: 'Invalid action or missing parameters' });
+}
+
+function getAllListings() {
+  var sheet = getSheet();
+  if (!sheet) return { success: true, listings: [] };
+  var lastRow = sheet.getLastRow();
+  if (lastRow < 2) return { success: true, listings: [] };
+  
+  var data = sheet.getRange(2, 1, lastRow - 1, TOTAL_COLUMNS).getValues();
+  var listings = [];
+  
+  for (var i = 0; i < data.length; i++) {
+    var row = data[i];
+    var verify = String(row[COL.VERIFICATION_STATUS - 1] || '').trim();
+    var status = String(row[COL.LISTING_STATUS - 1] || '').trim();
+    if (verify === STATUS_VERIFIED && status === LISTING_AVAILABLE) {
+      listings.push(buildListingObject(row));
+    }
+  }
+  return { success: true, listings: listings };
+}
+
+function getSingleListing(listingId) {
+  var sheet = getSheet();
+  if (!sheet) return { success: true, listing: null };
+  var lastRow = sheet.getLastRow();
+  if (lastRow < 2) return { success: true, listing: null };
+  
+  var ids = sheet.getRange(2, COL.LISTING_ID, lastRow - 1, 1).getValues();
+  for (var i = 0; i < ids.length; i++) {
+    if (String(ids[i][0] || '').trim().toUpperCase() === listingId.toUpperCase()) {
+      var row = sheet.getRange(i + 2, 1, 1, TOTAL_COLUMNS).getValues()[0];
+      var verify = String(row[COL.VERIFICATION_STATUS - 1] || '').trim();
+      // Return the listing as long as it's verified (even if unavailable)
+      if (verify === STATUS_VERIFIED) {
+        return { success: true, listing: buildListingObject(row) };
+      }
+      break;
+    }
+  }
+  return { success: true, listing: null };
+}
+
+function buildListingObject(row) {
+  var listingId = String(row[COL.LISTING_ID - 1] || '').trim();
+  var aptType   = row[COL.APT_TYPE - 1] || '';
+  var area      = row[COL.AREA - 1] || '';
+  var location  = row[COL.LOCATION - 1] || '';
+  var rentExact = row[COL.RENT_EXACT - 1] || '';
+  var rentRange = row[COL.RENT_RANGE - 1] || '';
+  var packOut   = row[COL.PACK_OUT_TIMELINE - 1] || '';
+  var light     = row[COL.LIGHT - 1] || '';
+  var water     = row[COL.WATER - 1] || '';
+  var parking   = row[COL.PARKING - 1] || '';
+  var comments  = row[COL.COMMENTS - 1] || '';
+  var submitted = row[COL.SUBMITTED_AT - 1] || '';
+  var photosAvail = row[COL.PHOTOS_AVAILABLE - 1] || 'No';
+  var primaryPhoto = row[COL.PRIMARY_PHOTO - 1] || '';
+  var urlSlug = row[COL.URL_SLUG - 1] || slugify(aptType + '-' + area + '-' + listingId);
+  var listingStatus = String(row[COL.LISTING_STATUS - 1] || LISTING_AVAILABLE).trim();
+
+  return {
+    listingId: listingId,
+    urlSlug: urlSlug,
+    apartmentType: aptType,
+    area: area,
+    location: location,
+    rentRange: rentRange,
+    rentExact: rentExact,
+    light: light,
+    water: water,
+    parking: parking,
+    residentStatus: packOut,
+    postedDate: submitted instanceof Date ? submitted.toISOString().split('T')[0] : String(submitted),
+    photosAvailable: photosAvail,
+    primaryPhoto: primaryPhoto,
+    buildingSize: '',
+    buildingCondition: '',
+    timeStayed: '',
+    comments: comments,
+    views: 0,
+    verificationStatus: STATUS_VERIFIED,
+    listingStatus: listingStatus   // <-- now reflects actual status
+  };
+}
+
+// ── doPost: quiz submission OR introduction request ──────────
+function doPost(e) {
+  try {
+    if (!e || !e.postData || !e.postData.contents) {
+      return jsonOut({ status: 'error', message: 'No data received' });
+    }
+    var data = JSON.parse(e.postData.contents);
+    if (data.action === 'requestIntroduction') {
+      return handleIntroductionRequest(data);
+    }
+    return handleQuizSubmission(data);
+  } catch (err) {
+    return jsonOut({ status: 'error', message: err.message });
+  }
+}
+
+function handleQuizSubmission(data) {
+  var sheet  = getSheet();
+  var type   = String(data.type || '').toLowerCase();
+  var userId = generateUserId();
+
+  var row = new Array(TOTAL_COLUMNS).fill('');
+  row[COL.SUBMITTED_AT - 1]       = new Date();
+  row[COL.TYPE - 1]               = data.type || '';
+  row[COL.USER_ID - 1]            = userId;
+  row[COL.FIRST_NAME - 1]         = data.firstName || '';
+  row[COL.LAST_NAME - 1]          = data.lastName || '';
+  row[COL.EMAIL - 1]              = data.email || '';
+  row[COL.PHONE - 1]              = data.phone || '';
+  row[COL.APT_TYPE - 1]           = data['t-apt-type'] || '';
+  row[COL.LOCATION - 1]           = data['t-location'] || '';
+  row[COL.AREA - 1]               = data['t-area'] || '';
+  row[COL.RENT_RANGE - 1]         = data['t-rent-range'] || '';
+  row[COL.RENT_EXACT - 1]         = data['t-rent-exact'] || '';
+  row[COL.PACK_OUT_TIMELINE - 1]  = data['t-movingout'] || '';
+  row[COL.LIGHT - 1]              = data['t-light'] || '';
+  row[COL.WATER - 1]              = data['t-water'] || '';
+  row[COL.PARKING - 1]            = data['t-parking'] || '';
+  row[COL.COMMENTS - 1]           = data.comments || '';
+  row[COL.PREF_LOCATION - 1]      = data.preferredLocation || '';
+  row[COL.PREF_APT_TYPE - 1]      = data.aptType || '';
+  row[COL.BUDGET_MIN - 1]         = data.budgetMin || '';
+  row[COL.BUDGET_MAX - 1]         = data.budgetMax || '';
+  row[COL.MOVE_IN_TIMING - 1]     = data.moveTiming || '';
+  row[COL.PREF_AREAS - 1]         = data.preferredAreas || '';
+  row[COL.LIST_APARTMENT - 1]     = data.listApartment || '';
+  row[COL.VERIFICATION_STATUS - 1] = STATUS_UNCONFIRMED;
+  row[COL.PUBLISHED_TO_TG - 1]    = NO;
+  row[COL.PHOTOS_AVAILABLE - 1]   = 'No';
+
+  var lock = LockService.getScriptLock();
+  try { lock.waitLock(10000); } catch (lockErr) { /* best-effort */ }
+
+  var listingId = '';
+  if (isListingType(type)) {
+    listingId = generateListingId(sheet);
+    row[COL.LISTING_ID - 1] = listingId;
+    row[COL.URL_SLUG - 1] = slugify(
+      (data['t-apt-type'] || '') + '-' + (data['t-area'] || '') + '-' + listingId
+    );
+  }
+  sheet.appendRow(row);
+  var newRow = sheet.getLastRow();
+  sheet.getRange(newRow, COL.PHONE).setNumberFormat('@').setValue(String(data.phone || ''));
+  lock.releaseLock();
+
+  if (isListingType(type)) {
+    sendAdminAlert(data, userId, listingId);
+  }
+  sendWelcomeEmail(data, type);
+  sendPublicNotification(data, type);
+
+  return jsonOut({ status: 'ok', userId: userId });
+}
+
+function handleIntroductionRequest(data) {
+  var sheet = getIntroSheet();
+  var requestId = generateRequestId(sheet);
+  var now = new Date();
+  var row = new Array(24).fill('');
+  row[INTRO_COL.REQUEST_ID - 1]      = requestId;
+  row[INTRO_COL.LISTING_ID - 1]      = data.listingId || '';
+  row[INTRO_COL.LISTING_URL - 1]     = data.listingUrl || '';
+  row[INTRO_COL.RESIDENT_USER_ID - 1]= data.residentUserId || '';
+  row[INTRO_COL.RESIDENT_NAME - 1]   = data.residentName || '';
+  row[INTRO_COL.RESIDENT_EMAIL - 1]  = data.residentEmail || '';
+  row[INTRO_COL.REQUESTER_NAME - 1]  = data.requesterName || '';
+  row[INTRO_COL.REQUESTER_EMAIL - 1] = data.requesterEmail || '';
+  row[INTRO_COL.REQUESTER_PHONE - 1] = data.requesterPhone || '';
+  row[INTRO_COL.REQUESTER_TELEGRAM - 1] = data.requesterTelegram || '';
+  row[INTRO_COL.REASON - 1]          = data.reason || '';
+  row[INTRO_COL.MOVE_TIMELINE - 1]   = data.moveTimeline || '';
+  row[INTRO_COL.REQUEST_STATUS - 1]  = 'Pending';
+  row[INTRO_COL.REQUEST_SENT_AT - 1] = now;
+  sheet.appendRow(row);
+
+  // Send resident notification email
+  var listingData = getListingDataForEmail(data.listingId);
+  if (listingData && listingData.residentEmail) {
+    sendResidentNotification(row, listingData);
+  }
+
+  // Notify Python bot (admin group)
+  var botUrl = getProp('BOT_WEBHOOK_URL');
+  if (botUrl) {
+    var payload = {
+      event: 'new_request',
+      listing_id: data.listingId,
+      listing_url: data.listingUrl || '',
+      apt_type: listingData ? listingData.apartmentType : '',
+      area: listingData ? listingData.area : '',
+      requester_name: data.requesterName || '',
+      requester_email: data.requesterEmail || '',
+      requester_phone: data.requesterPhone || '',
+      reason: data.reason || '',
+      move_timeline: data.moveTimeline || ''
+    };
+    UrlFetchApp.fetch(botUrl, {
+      method: 'post',
+      contentType: 'application/json',
+      payload: JSON.stringify(payload),
+      muteHttpExceptions: true
+    });
+  }
+
+  return jsonOut({
+    success: true,
+    requestId: requestId,
+    message: 'Introduction request submitted.',
+    status: 'pending'
+  });
+}
+
+// ── Listing ID generation ────────────────────────────────────
+function generateListingId(sheet) {
+  var lastRow = sheet.getLastRow();
+  var maxNum = 0;
+  if (lastRow >= 2) {
+    var ids = sheet.getRange(2, COL.LISTING_ID, lastRow - 1, 1).getValues();
+    for (var i = 0; i < ids.length; i++) {
+      var match = String(ids[i][0] || '').trim().toUpperCase().match(/^RP(\d+)$/);
+      if (match) {
+        var n = parseInt(match[1], 10);
+        if (n > maxNum) maxNum = n;
+      }
+    }
+  }
+  return 'RP' + String(maxNum + 1).padStart(4, '0');
+}
+
+// ── TELEGRAM NOTIFICATIONS ───────────────────────────────────
+function sendPublicNotification(data, type) {
+  var channelId = getProp('CHANNEL_CHAT_ID');
+  if (!channelId) return;
+  sendTelegram(channelId, buildPublicNotification(data, type));
+}
+
+function buildPublicNotification(data, type) {
+  if (type === 'seeker') {
+    var loc    = data.preferredLocation || 'N/A';
+    var apt    = data.aptType || 'N/A';
+    var bmin   = data.budgetMin || '';
+    var bmax   = data.budgetMax || '';
+    var budget = (bmin && bmax)
+      ? '\u20a6' + parseInt(bmin).toLocaleString('en-NG') + ' \u2013 \u20a6' + parseInt(bmax).toLocaleString('en-NG')
+      : bmin ? 'From \u20a6' + parseInt(bmin).toLocaleString('en-NG') : 'N/A';
+    var timing = data.moveTiming || 'N/A';
+    var areas  = data.preferredAreas || '';
+
+    var lines = [
+      '\ud83d\udd0d <b>New seeker signed up</b>',
+      '<i>This is NOT a new apartment \u2014 someone is looking for a place.</i>',
+      '',
+      '\ud83d\udccd Location: ' + loc,
+      '\ud83c\udfe8 Looking for: ' + apt,
+      '\ud83d\udcb0 Budget: ' + budget + '/yr',
+      '\ud83d\udcc5 Move-in: ' + timing
+    ];
+    if (areas) lines.push('\ud83d\uddfa Areas: ' + areas);
+    return lines.join('\n');
+  }
+
+  var apt      = data['t-apt-type'] || 'N/A';
+  var area     = data['t-area'] || 'N/A';
+  var location = data['t-location'] || 'N/A';
+  var rentStr  = data['t-rent-exact']
+    ? formatNaira(data['t-rent-exact']) + '/yr'
+    : (data['t-rent-range'] || 'N/A');
+  var timeline = data['t-movingout'] || 'N/A';
+  var light    = data['t-light'] || 'N/A';
+  var water    = data['t-water'] || 'N/A';
+  var parking  = data['t-parking'] || 'N/A';
+  var comments = data.comments || '';
+
+  if (type === 'packing') {
+    var lines = [
+      '\ud83c\udfe0 <b>New apartment submitted \u2014 pending verification</b>',
+      '<i>A tenant is packing out and listing their place.</i>',
+      '',
+      '\ud83d\udecf ' + apt + '  \u00b7  \ud83d\udccd ' + area + ', ' + location,
+      '\ud83d\udcb0 ' + rentStr,
+      '\ud83d\udcc5 Pack\u2011out: ' + timeline,
+      '\ud83d\udca1 ' + light + '  \u00b7  \ud83d\udebf ' + water + '  \u00b7  \ud83d\ude97 ' + parking
+    ];
+    if (comments) lines.push('\ud83d\udcac ' + comments);
+    lines.push('');
+    lines.push('<i>Admin is following up \u2014 if confirmed, full listing drops here.</i>');
+    return lines.join('\n');
+  }
+
+  var seekerLoc   = data.preferredLocation || 'N/A';
+  var seekerApt   = data.aptType || 'N/A';
+  var seekerBmin  = data.budgetMin || '';
+  var seekerBmax  = data.budgetMax || '';
+  var seekerBudget = (seekerBmin && seekerBmax)
+    ? '\u20a6' + parseInt(seekerBmin).toLocaleString('en-NG') + ' \u2013 \u20a6' + parseInt(seekerBmax).toLocaleString('en-NG')
+    : seekerBmin ? 'From \u20a6' + parseInt(seekerBmin).toLocaleString('en-NG') : 'N/A';
+  var seekerTiming = data.moveTiming || 'N/A';
+  var seekerAreas  = data.preferredAreas || '';
+
+  var lines = [
+    '\ud83c\udfe0\ud83d\udd0d <b>New apartment + seeker \u2014 pending verification</b>',
+    '<i>A tenant is packing out AND also looking for a new place.</i>',
+    '',
+    '\u2500\u2500 LEAVING THIS PLACE \u2500\u2500',
+    '\ud83d\udecf ' + apt + '  \u00b7  \ud83d\udccd ' + area + ', ' + location,
+    '\ud83d\udcb0 ' + rentStr,
+    '\ud83d\udcc5 Pack\u2011out: ' + timeline,
+    '\ud83d\udca1 ' + light + '  \u00b7  \ud83d\udebf ' + water + '  \u00b7  \ud83d\ude97 ' + parking
+  ];
+  if (comments) lines.push('\ud83d\udcac ' + comments);
+  lines.push('');
+  lines.push('\u2500\u2500 ALSO LOOKING FOR \u2500\u2500');
+  lines.push('\ud83d\udccd ' + seekerLoc + '  \u00b7  \ud83c\udfe8 ' + seekerApt);
+  lines.push('\ud83d\udcb0 Budget: ' + seekerBudget + '/yr');
+  lines.push('\ud83d\udcc5 Move-in: ' + seekerTiming);
+  if (seekerAreas) lines.push('\ud83d\uddfa Areas: ' + seekerAreas);
+  lines.push('');
+  lines.push('<i>Admin is following up on the listing.</i>');
+
+  return lines.join('\n');
+}
+
+function sendAdminAlert(data, userId, listingId) {
+  var adminId = getProp('ADMIN_CHAT_ID');
+  if (!adminId) return;
+
+  var name    = ((data.firstName || '') + ' ' + (data.lastName || '')).trim();
+  var rentStr = data['t-rent-exact']
+    ? formatNaira(data['t-rent-exact']) + ' /yr'
+    : (data['t-rent-range'] || '\u2014');
+  var typeLabel = (data.type || '').toLowerCase() === 'both'
+    ? '\ud83c\udfe0\ud83d\udd0d Packing out + also looking'
+    : '\ud83c\udfe0 Packing out';
+
+  var lines = [
+    '\ud83d\udd14 <b>New listing to verify</b>  \u2014  ' + typeLabel,
+    '',
+    '\ud83c\udff7 Listing: <b>' + (listingId || '\u2014') + '</b>',
+    '\ud83c\udd94 ' + userId,
+    '\ud83d\udc64 ' + (name || '\u2014'),
+    '\ud83d\udce7 ' + (data.email || '\u2014') + '  |  \ud83d\udcf1 ' + (data.phone || '\u2014'),
+    '',
+    '\ud83c\udfe0 <b>Their apartment</b>',
+    '\ud83d\udecf ' + (data['t-apt-type'] || '\u2014'),
+    '\ud83d\udccd ' + (data['t-area'] || '\u2014') + ', ' + (data['t-location'] || '\u2014'),
+    '\ud83d\udcb0 ' + rentStr,
+    '\ud83d\udcc5 Pack-out: ' + (data['t-movingout'] || '\u2014'),
+    '\ud83d\udca1 Light: ' + (data['t-light'] || '\u2014'),
+    '\ud83d\udebf Water: ' + (data['t-water'] || '\u2014'),
+    '\ud83d\ude97 Parking: ' + (data['t-parking'] || '\u2014')
+  ];
+  if (data.comments) lines.push('\ud83d\udcac ' + data.comments);
+
+  if ((data.type || '').toLowerCase() === 'both') {
+    var sLoc  = data.preferredLocation || 'N/A';
+    var sApt  = data.aptType || 'N/A';
+    var sBmin = data.budgetMin || '';
+    var sBmax = data.budgetMax || '';
+    var sBudget = (sBmin && sBmax)
+      ? '\u20a6' + parseInt(sBmin).toLocaleString('en-NG') + ' \u2013 \u20a6' + parseInt(sBmax).toLocaleString('en-NG')
+      : sBmin ? 'From \u20a6' + parseInt(sBmin).toLocaleString('en-NG') : 'N/A';
+    lines.push('');
+    lines.push('\ud83d\udd0d <b>Also looking for</b>');
+    lines.push('\ud83d\udccd ' + sLoc + '  \u00b7  \ud83c\udfe8 ' + sApt);
+    lines.push('\ud83d\udcb0 Budget: ' + sBudget + '/yr');
+    if (data.moveTiming) lines.push('\ud83d\udcc5 Move-in: ' + data.moveTiming);
+    if (data.preferredAreas) lines.push('\ud83d\uddfa Areas: ' + data.preferredAreas);
+  }
+
+  lines.push('');
+  lines.push('\u26a0\ufe0f Set Verification Status to <b>Verified</b> to publish.');
+
+  sendTelegram(adminId, lines.join('\n'));
+}
+
+// ── VERIFICATION TRIGGER ─────────────────────────────────────
+function onVerificationEdit(e) {
+  if (!e || !e.range) return;
+  var sheet = getSheet();
+  if (!sheet) return;
+  if (e.range.getSheet().getName() !== sheet.getName()) return;
+
+  var row = e.range.getRow();
+  if (row === 1) return;
+  if (e.range.getColumn() !== COL.VERIFICATION_STATUS) return;
+  if (String(e.range.getValue()).trim() !== STATUS_VERIFIED) return;
+
+  var rowData = sheet.getRange(row, 1, 1, TOTAL_COLUMNS).getValues()[0];
+  var type    = String(rowData[COL.TYPE - 1] || '').toLowerCase();
+  if (!isListingType(type)) return;
+
+  var listingId = String(rowData[COL.LISTING_ID - 1] || '').trim();
+  if (!listingId) {
+    listingId = generateListingId(sheet);
+    sheet.getRange(row, COL.LISTING_ID).setValue(listingId);
+    rowData[COL.LISTING_ID - 1] = listingId;
+  }
+
+  sheet.getRange(row, COL.LISTING_STATUS).setValue(LISTING_AVAILABLE);
+  sheet.getRange(row, COL.LISTING_SOURCE).setValue(type === 'both' ? 'Both' : 'Packing');
+
+  if (String(rowData[COL.PUBLISHED_TO_TG - 1] || '').trim().toLowerCase() === 'yes') return;
+  publishListing(sheet, row, rowData, listingId);
+}
+
+function publishListing(sheet, rowNum, rowData, listingId) {
+  var channelId = getProp('CHANNEL_CHAT_ID');
+  var response  = sendTelegram(channelId, buildListingPost(rowData, listingId));
+
+  if (response && response.ok && response.result) {
+    sheet.getRange(rowNum, COL.PUBLISHED_TO_TG).setValue(YES);
+    var url = buildTelegramPostUrl(channelId, response.result.message_id);
+    if (url) sheet.getRange(rowNum, COL.TELEGRAM_POST_URL).setValue(url);
+  }
+}
+
+function buildListingPost(rowData, listingId) {
+  var rentStr = rowData[COL.RENT_EXACT - 1]
+    ? formatNaira(rowData[COL.RENT_EXACT - 1]) + ' /yr'
+    : (rowData[COL.RENT_RANGE - 1] || '\u2014');
+  var publicUrl = rowData[COL.PUBLIC_URL - 1] ||
+      'https://rentpal.ng/listing/' + (rowData[COL.URL_SLUG - 1] || listingId);
+
+  var lines = [
+    '\ud83c\udfe0 <b>Verified apartment available</b>',
+    '',
+    '\ud83d\udccd ' + (rowData[COL.AREA - 1] || '\u2014') + ', ' + (rowData[COL.LOCATION - 1] || '\u2014'),
+    '\ud83d\udecf ' + (rowData[COL.APT_TYPE - 1] || '\u2014'),
+    '\ud83d\udcb0 ' + rentStr,
+    '\ud83d\udcc5 Available: ' + (rowData[COL.PACK_OUT_TIMELINE - 1] || '\u2014'),
+    '',
+    '\ud83d\udca1 Light: ' + (rowData[COL.LIGHT - 1] || '\u2014'),
+    '\ud83d\udebf Water: ' + (rowData[COL.WATER - 1] || '\u2014'),
+    '\ud83d\ude97 Parking: ' + (rowData[COL.PARKING - 1] || '\u2014')
+  ];
+
+  var comments = rowData[COL.COMMENTS - 1];
+  if (comments) {
+    lines.push('');
+    lines.push('\ud83d\udcac <i>"' + comments + '"</i>');
+  }
+
+  lines.push('');
+  lines.push('\ud83d\udd17 <a href="' + publicUrl + '">View listing →</a>');
+  lines.push('');
+  lines.push('Interested? Click the link above to request an introduction.');
+  lines.push('Ref: <code>' + listingId + '</code>');
+
+  return lines.join('\n');
+}
+
+// ── New: Listing unavailable Telegram message ────────────────
+function buildListingUnavailableMessage(rowData, listingId) {
+  var aptType = rowData[COL.APT_TYPE - 1] || 'N/A';
+  var area = rowData[COL.AREA - 1] || 'N/A';
+  var location = rowData[COL.LOCATION - 1] || 'N/A';
+  return [
+    '\ud83d\udeab <b>Apartment no longer available</b>',
+    '',
+    '\ud83c\udfe0 ' + aptType + '  \u00b7  \ud83d\udccd ' + area + ', ' + location,
+    '\ud83c\udff7 Ref: <code>' + (listingId || 'N/A') + '</code>',
+    '',
+    '<i>The resident has marked this listing as unavailable.</i>'
+  ].join('\n');
+}
+
+// ── WELCOME EMAILS ──────────────────────────────────────────
+function sendWelcomeEmail(data, type) {
+  if (!isListingType(type)) return;
+  var to = data.email;
+  if (!to) return;
+
+  var firstName  = data.firstName || 'there';
+  var senderName = getProp('SENDER_EMAIL') || 'RentPal';
+  var baseUrl    = getProp('EMAIL_BASE_URL') || '';
+
+  var subject, htmlFile, fallbackText;
+  if (type === 'packing') {
+    subject      = 'Your apartment listing is on its way \u2014 RentPal';
+    htmlFile     = '/emails/packing-welcome.html';
+    fallbackText = packingFallback(firstName);
+  } else {
+    subject      = "We've got you on both sides \u2014 RentPal";
+    htmlFile     = '/emails/both-welcome.html';
+    fallbackText = bothFallback(firstName);
+  }
+
+  var htmlBody = null;
+  if (baseUrl) {
+    try {
+      var res = UrlFetchApp.fetch(baseUrl + htmlFile, { muteHttpExceptions: true });
+      if (res.getResponseCode() === 200) {
+        htmlBody = res.getContentText().replace(/{{firstName}}/g, firstName);
+      }
+    } catch (err) { /* fall back to plain text */ }
+  }
+
+  var options = { name: senderName };
+  if (htmlBody) options.htmlBody = htmlBody;
+  GmailApp.sendEmail(to, subject, fallbackText, options);
+}
+
+function packingFallback(firstName) {
+  return [
+    'Hi ' + firstName + ',',
+    '',
+    "You just did something a lot of Lagos tenants don't bother to do \u2014 you chose to make the handoff easier for whoever comes next. We appreciate that.",
+    '',
+    "Here's what happens next:",
+    "- We'll reach out within 24\u201348 hours to verify your details and collect photos.",
+    '- Once verified, your apartment goes in front of serious seekers already waiting.',
+    "- You don't need to chase anyone. We handle the matching.",
+    '',
+    'To speed things up, send photos and a short video to our WhatsApp: +234 816 2373 553',
+    '',
+    'Join our Telegram for updates: https://t.me/rentpal_lagos',
+    '',
+    '\u2014 The RentPal Team',
+    'rentpal.com \u00b7 Lagos, Nigeria'
+  ].join('\n');
+}
+
+function bothFallback(firstName) {
+  return [
+    'Hi ' + firstName + ',',
+    '',
+    "You're doing two things at once \u2014 packing out and looking for a new place. We've got you covered on both.",
+    '',
+    "Listing side: we'll reach out within 24\u201348 hours to verify your apartment and get it listed.",
+    'Send photos and a short video to our WhatsApp: +234 816 2373 553',
+    '',
+    "Search side: your preferences are saved. We'll alert you when a match comes in.",
+    '',
+    'Join Telegram for real-time alerts on both: https://t.me/rentpal_lagos',
+    '',
+    '\u2014 The RentPal Team',
+    'rentpal.com \u00b7 Lagos, Nigeria'
+  ].join('\n');
+}
+
+// ============================================================
+// INTRODUCTION FLOW — NEW FUNCTIONS
+// ============================================================
+
+function getListingDataForEmail(listingId) {
+  var sheet = getSheet();
+  if (!sheet) return {};
+  var lastRow = sheet.getLastRow();
+  var ids = sheet.getRange(2, COL.LISTING_ID, lastRow - 1, 1).getValues();
+  for (var i = 0; i < ids.length; i++) {
+    if (String(ids[i][0] || '').trim().toUpperCase() === listingId.toUpperCase()) {
+      var row = sheet.getRange(i + 2, 1, 1, TOTAL_COLUMNS).getValues()[0];
+      return {
+        apartmentType: row[COL.APT_TYPE - 1] || '',
+        area: row[COL.AREA - 1] || '',
+        location: row[COL.LOCATION - 1] || '',
+        listingId: listingId,
+        rentExact: formatNaira(row[COL.RENT_EXACT - 1]),
+        residentEmail: row[COL.EMAIL - 1] || ''
+      };
+    }
+  }
+  return {};
+}
+
+function sendResidentNotification(introRow, listingData) {
+  var residentEmail = listingData.residentEmail;
+  if (!residentEmail) return;
+
+  var baseUrl = getProp('EMAIL_BASE_URL') || '';
+  var scriptUrl = ScriptApp.getService().getUrl();
+  var requestId = introRow[INTRO_COL.REQUEST_ID - 1];
+
+  var approveUrl = scriptUrl + '?action=residentResponse&requestId=' + requestId + '&response=approve';
+  var declineUrl = scriptUrl + '?action=residentResponse&requestId=' + requestId + '&response=decline';
+  var unavailableUrl = scriptUrl + '?action=residentResponse&requestId=' + requestId + '&response=noLongerAvailable';
+
+  var htmlBody = '';
+  if (baseUrl) {
+    try {
+      var res = UrlFetchApp.fetch(baseUrl + '/emails/intro-req.html', { muteHttpExceptions: true });
+      if (res.getResponseCode() === 200) {
+        htmlBody = res.getContentText()
+          .replace(/{{requesterName}}/g, introRow[INTRO_COL.REQUESTER_NAME - 1] || '')
+          .replace(/{{requesterEmail}}/g, introRow[INTRO_COL.REQUESTER_EMAIL - 1] || '')
+          .replace(/{{requesterPhone}}/g, introRow[INTRO_COL.REQUESTER_PHONE - 1] || '')
+          .replace(/{{requesterTelegram}}/g, introRow[INTRO_COL.REQUESTER_TELEGRAM - 1] || '')
+          .replace(/{{reason}}/g, introRow[INTRO_COL.REASON - 1] || '')
+          .replace(/{{moveTimeline}}/g, introRow[INTRO_COL.MOVE_TIMELINE - 1] || '')
+          .replace(/{{apartmentType}}/g, listingData.apartmentType || '')
+          .replace(/{{area}}/g, listingData.area || '')
+          .replace(/{{location}}/g, listingData.location || '')
+          .replace(/{{listingId}}/g, listingData.listingId || '')
+          .replace(/{{rentExact}}/g, listingData.rentExact || '')
+          .replace(/{{approveUrl}}/g, approveUrl)
+          .replace(/{{declineUrl}}/g, declineUrl)
+          .replace(/{{noLongerAvailableUrl}}/g, unavailableUrl);
+      }
+    } catch (err) { /* fallback to plain text */ }
+  }
+
+  var subject = 'Someone is interested in your apartment – RentPal';
+  var plainText = 'Hi,\n\n' + (introRow[INTRO_COL.REQUESTER_NAME - 1] || 'Someone') + ' wants to be introduced. Please respond within 24 hours.';
+  GmailApp.sendEmail(residentEmail, subject, plainText, {
+    htmlBody: htmlBody || undefined,
+    name: getProp('SENDER_EMAIL') || 'RentPal'
+  });
+}
+
+function handleResidentResponse(e) {
+  var requestId = e.parameter.requestId;
+  var response = e.parameter.response;
+  if (!requestId || !response) {
+    return HtmlService.createHtmlOutput('<h3>Invalid request</h3>');
+  }
+
+  var introSheet = getIntroSheet();
+  var lastRow = introSheet.getLastRow();
+  var rowIndex = -1;
+  var rowData = null;
+
+  for (var i = 2; i <= lastRow; i++) {
+    var row = introSheet.getRange(i, 1, 1, 24).getValues()[0];
+    if (String(row[INTRO_COL.REQUEST_ID - 1] || '').trim() === requestId) {
+      rowIndex = i;
+      rowData = row;
+      break;
+    }
+  }
+
+  if (rowIndex < 0) {
+    return HtmlService.createHtmlOutput('<h3>Request not found</h3>');
+  }
+
+  var currentStatus = String(rowData[INTRO_COL.REQUEST_STATUS - 1] || '').trim();
+  if (currentStatus !== 'Pending') {
+    return HtmlService.createHtmlOutput('<h3>This request has already been processed.</h3>');
+  }
+
+  var now = new Date();
+  var status = '';
+  var responseText = '';
+  var listingId = rowData[INTRO_COL.LISTING_ID - 1] || '';
+
+  if (response === 'approve') {
+    status = 'Approved';
+    responseText = 'Approved';
+    introSheet.getRange(rowIndex, INTRO_COL.PAYMENT_REQUIRED).setValue('Yes');
+    // Update main sheet's INTRO_STATUS column to "Pending Introduction"
+    updateMainSheetStatus(listingId, 'Pending Introduction');
+  } else if (response === 'decline') {
+    status = 'Declined';
+    responseText = 'Declined';
+  } else if (response === 'noLongerAvailable') {
+    status = 'Unavailable';
+    responseText = 'No Longer Available';
+    // Mark the listing as Unavailable in main sheet
+    var mainSheet = getSheet();
+    var lastMain = mainSheet.getLastRow();
+    var mainIds = mainSheet.getRange(2, COL.LISTING_ID, lastMain - 1, 1).getValues();
+    for (var j = 0; j < mainIds.length; j++) {
+      if (String(mainIds[j][0] || '').trim().toUpperCase() === listingId.toUpperCase()) {
+        var mainRow = j + 2;
+        mainSheet.getRange(mainRow, COL.LISTING_STATUS).setValue(LISTING_UNAVAILABLE);
+        // Send Telegram main channel message
+        var channelId = getProp('CHANNEL_CHAT_ID');
+        if (channelId) {
+          var mainRowData = mainSheet.getRange(mainRow, 1, 1, TOTAL_COLUMNS).getValues()[0];
+          sendTelegram(channelId, buildListingUnavailableMessage(mainRowData, listingId));
         }
-        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        html{scroll-behavior:smooth;font-size:16px}
-        body{font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column}
-        main{flex:1}a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{cursor:pointer;font-family:'DM Sans',sans-serif}
+        break;
+      }
+    }
+  } else {
+    return HtmlService.createHtmlOutput('<h3>Unknown response</h3>');
+  }
 
-        /* NAV */
-        nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
-        .nav-logo{display:flex;align-items:center;gap:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:700;color:var(--blue)}
-        .nav-logo svg{width:28px;height:28px}
-        .nav-links{display:flex;align-items:center;gap:28px;list-style:none}
-        .nav-links a{font-size:14px;font-weight:400;color:var(--ink-muted);transition:color var(--transition)}
-        .nav-links a:hover,.nav-links a.active{color:var(--ink)}
-        .nav-links a.active{font-weight:500;color:var(--blue)}
-        .nav-cta{background:var(--blue);color:#fff;border:none;padding:9px 20px;border-radius:var(--radius-sm);font-size:14px;font-weight:500;transition:background var(--transition);white-space:nowrap}
-        .nav-cta:hover{background:var(--blue-dark)}
-        .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
-        .hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px}
-        .mobile-menu{display:none;flex-direction:column;background:var(--white);border-bottom:1px solid var(--border);padding:14px 20px 18px;gap:4px;position:sticky;top:64px;z-index:99}
-        .mobile-menu.open{display:flex}
-        .mobile-menu a{font-size:15px;color:var(--ink-muted);padding:9px 0;border-bottom:1px solid var(--border)}
-        .mobile-menu a:last-child{border-bottom:none}
+  introSheet.getRange(rowIndex, INTRO_COL.REQUEST_STATUS).setValue(status);
+  introSheet.getRange(rowIndex, INTRO_COL.RESIDENT_RESPONSE_AT).setValue(now);
+  introSheet.getRange(rowIndex, INTRO_COL.RESIDENT_RESPONSE).setValue(responseText);
 
-        /* HERO with pattern */
-        .directory-hero{
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234A8FD4' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
-            linear-gradient(135deg,#f0f4fb 0%,#e1eaf6 50%,#f8f9fc 100%);
-            border-bottom:1px solid var(--border);padding:48px 48px 40px;text-align:center;position:relative;overflow:hidden;
-        }
-        .hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--blue-light);color:var(--blue-dark);font-size:12px;font-weight:500;padding:5px 14px;border-radius:100px;margin-bottom:16px;border:1px solid var(--blue-mid);position:relative;z-index:1}
-        .hero-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:pulse-dot 2s infinite}
-        @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.6)}}
-        .directory-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:38px;font-weight:800;letter-spacing:-1.4px;color:var(--ink);margin-bottom:8px;line-height:1.15;position:relative;z-index:1}
-        .directory-hero h1 em{font-style:normal;color:var(--blue)}
-        .hero-sub{font-size:16px;font-weight:300;color:var(--ink-muted);line-height:1.7;max-width:480px;margin:0 auto;position:relative;z-index:1}
+  // Send requester follow-up email
+  var requesterEmail = rowData[INTRO_COL.REQUESTER_EMAIL - 1] || '';
+  if (requesterEmail) {
+    sendRequesterFollowUp(rowData, status);
+  }
 
-        /* Trust bar */
-        .trust-bar{background:var(--white);border-bottom:1px solid var(--border);padding:10px 48px;display:flex;justify-content:center;gap:32px;flex-wrap:wrap;font-size:13px;color:var(--ink-muted)}
-        .trust-item{display:flex;align-items:center;gap:6px}
-        .trust-item svg{color:var(--blue)}
+  // Notify Python bot (admin group)
+  var botUrl = getProp('BOT_WEBHOOK_URL');
+  if (botUrl) {
+    var eventPayload = {
+      event: response === 'approve' ? 'resident_approved' :
+             response === 'decline' ? 'resident_declined' : 'listing_unavailable',
+      listing_id: listingId,
+      listing_url: rowData[INTRO_COL.LISTING_URL - 1] || '',
+      apt_type: '', // can be fetched but optional for admin notification
+      area: '',
+      requester_name: rowData[INTRO_COL.REQUESTER_NAME - 1] || ''
+    };
+    // If you want to include listing details, fetch them from main sheet (optional)
+    if (listingId) {
+      var mainRowData = getMainListingRow(listingId);
+      if (mainRowData) {
+        eventPayload.apt_type = mainRowData[COL.APT_TYPE - 1] || '';
+        eventPayload.area = mainRowData[COL.AREA - 1] || '';
+      }
+    }
+    UrlFetchApp.fetch(botUrl, {
+      method: 'post',
+      contentType: 'application/json',
+      payload: JSON.stringify(eventPayload),
+      muteHttpExceptions: true
+    });
+  }
 
-        /* FILTERS */
-        .filters-wrap{background:var(--white);border-bottom:1px solid var(--border);padding:12px 48px;position:sticky;top:64px;z-index:50;transition:box-shadow var(--transition)}
-        .filters-wrap.scrolled{box-shadow:0 2px 12px rgba(0,0,0,0.06)}
-        .filters-inner{max-width:1200px;margin:0 auto;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-        .chip-group{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-        .chip{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:var(--surface);border:1.5px solid var(--border);border-radius:100px;font-size:13px;font-weight:500;color:var(--ink-muted);cursor:pointer;transition:all var(--transition);white-space:nowrap}
-        .chip:hover{border-color:var(--blue-mid);background:var(--blue-light);color:var(--blue-dark)}
-        .chip.active{background:var(--blue);border-color:var(--blue);color:#fff}
-        .chip .chip-icon{width:14px;height:14px;flex-shrink:0}
-        .filter-search{flex:1 1 200px;min-width:160px;position:relative}
-        .filter-search input{width:100%;padding:10px 14px 10px 38px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;color:var(--ink);background:var(--surface);outline:none;transition:border-color var(--transition)}
-        .filter-search input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(74,143,212,0.12)}
-        .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink-faint)}
-        .filter-clear{background:none;border:none;color:var(--blue);font-size:13px;font-weight:500;cursor:pointer;padding:8px 12px;border-radius:var(--radius-sm);transition:background var(--transition);white-space:nowrap;flex-shrink:0}
-        .filter-clear:hover{background:var(--blue-light)}
-        .results-count{font-size:13px;color:var(--ink-muted);white-space:nowrap;flex-shrink:0;padding:0 4px}
-        .filter-toggle{display:none;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 14px;font-size:13px;font-weight:500;color:var(--ink-muted);cursor:pointer;align-items:center;gap:6px}
+  return HtmlService.createHtmlOutput('<h3>Thank you for your response.</h3>');
+}
 
-        /* LISTINGS GRID */
-        .listings-section{max-width:1200px;margin:0 auto;padding:24px 48px 56px}
-        .listings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-        .listing-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;transition:box-shadow var(--transition),transform var(--transition);cursor:pointer;display:flex;flex-direction:column;position:relative}
-        .listing-card:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-3px)}
-        .card-comment-area{height:180px;background:linear-gradient(135deg,#f0f4fb 0%,#e6f0fa 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:20px 16px}
-        .comment-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to top,rgba(0,0,0,0.03) 0%,transparent 50%);z-index:1}
-        .comment-text{font-size:14px;line-height:1.6;color:#1e293b;font-style:italic;text-align:center;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;position:relative;z-index:2}
-        .comment-quote{position:absolute;top:10px;left:12px;font-size:38px;color:rgba(74,143,212,0.15);font-family:'Georgia',serif;line-height:1;z-index:0}
-        .no-comment{color:#94a3b8;font-size:13px;font-style:normal}
-        .badge-real{position:absolute;top:10px;right:10px;background:rgba(255,255,255,0.85);backdrop-filter:blur(4px);border-radius:100px;padding:4px 10px;font-size:10px;font-weight:500;color:var(--green-dark);display:flex;align-items:center;gap:4px;z-index:3}
-        .card-save{position:absolute;top:10px;left:10px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.85);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition);backdrop-filter:blur(4px);z-index:3}
-        .card-save:hover{background:#fff;transform:scale(1.08)}
-        .card-save.saved svg{fill:#e74c3c;stroke:#e74c3c}
-        .card-body{padding:16px 18px;flex:1;display:flex;flex-direction:column;gap:10px}
-        .card-ref{font-size:11px;font-weight:500;color:var(--blue);text-transform:uppercase;letter-spacing:0.8px}
-        .card-type{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700;color:var(--ink);line-height:1.2}
-        .card-location{font-size:13px;color:var(--ink-muted);display:flex;align-items:center;gap:5px}
-        .card-rent{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:var(--ink);letter-spacing:-0.5px}
-        .card-rent span{font-size:12px;color:var(--ink-muted);font-family:'DM Sans',sans-serif;font-weight:400}
-        .card-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
-        .meta-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:500}
-        .meta-light{background:var(--orange-light);color:#b45309}
-        .meta-water{background:var(--blue-light);color:var(--blue-dark)}
-        .meta-parking{background:var(--purple-light);color:#6d28d9}
-        .meta-status{background:var(--green-light);color:var(--green-dark)}
-        .card-footer{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-top:1px solid var(--border);gap:10px}
-        .card-date{font-size:12px;color:var(--ink-faint)}
-        .card-btn{font-size:13px;font-weight:500;color:var(--blue);background:none;border:1.5px solid var(--blue);padding:7px 16px;border-radius:var(--radius-sm);transition:all var(--transition);white-space:nowrap}
-        .card-btn:hover{background:var(--blue);color:#fff}
-        .paystack-badge{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--ink-faint);margin-left:8px}
-        .fee-tag{display:inline-flex;align-items:center;gap:3px;font-size:10px;color:var(--ink-faint);background:var(--surface);border-radius:100px;padding:2px 8px;margin-left:6px}
-        .badge-new{position:absolute;top:10px;right:10px;background:var(--green-light);color:var(--green-dark);border-radius:100px;padding:3px 8px;font-size:10px;font-weight:600;letter-spacing:0.3px;z-index:3}
+// Helper to update main sheet's INTRO_STATUS column
+function updateMainSheetStatus(listingId, value) {
+  if (!listingId || !value) return;
+  var sheet = getSheet();
+  var lastRow = sheet.getLastRow();
+  var ids = sheet.getRange(2, COL.LISTING_ID, lastRow - 1, 1).getValues();
+  for (var i = 0; i < ids.length; i++) {
+    if (String(ids[i][0] || '').trim().toUpperCase() === listingId.toUpperCase()) {
+      sheet.getRange(i + 2, COL.INTRO_STATUS).setValue(value);
+      break;
+    }
+  }
+}
 
-        /* SKELETON */
-        .skeleton-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden}
-        .skeleton-photo{height:180px;background:linear-gradient(90deg,#e8ecf1 25%,#f0f2f5 50%,#e8ecf1 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
-        .skeleton-body{padding:16px 18px;display:flex;flex-direction:column;gap:10px}
-        .skeleton-line{height:14px;border-radius:6px;background:linear-gradient(90deg,#e8ecf1 25%,#f0f2f5 50%,#e8ecf1 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
-        .skeleton-line.short{width:40%}.skeleton-line.med{width:70%}.skeleton-line.long{width:90%}.skeleton-line.xl{height:22px;width:55%}
-        @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-        .empty-state{text-align:center;padding:60px 20px;grid-column:1/-1}
-        .empty-state svg{width:80px;height:80px;color:var(--ink-faint);opacity:0.5;margin-bottom:16px}
-        .empty-state h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px}
-        .empty-state p{font-size:14px;color:var(--ink-muted);max-width:400px;margin:0 auto}
-        .pagination-wrap{text-align:center;margin-top:24px}
-        .load-more-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius);font-size:14px;font-weight:500;color:var(--ink);transition:all var(--transition)}
-        .load-more-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
-        .load-more-btn:disabled{opacity:0.4;cursor:not-allowed}
+// Helper to fetch a main sheet row by listingId
+function getMainListingRow(listingId) {
+  var sheet = getSheet();
+  var lastRow = sheet.getLastRow();
+  var ids = sheet.getRange(2, COL.LISTING_ID, lastRow - 1, 1).getValues();
+  for (var i = 0; i < ids.length; i++) {
+    if (String(ids[i][0] || '').trim().toUpperCase() === listingId.toUpperCase()) {
+      return sheet.getRange(i + 2, 1, 1, TOTAL_COLUMNS).getValues()[0];
+    }
+  }
+  return null;
+}
 
-        /* DETAIL PAGE */
-        .detail-page{max-width:900px;margin:0 auto;padding:32px 48px 56px}
-        .detail-back{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--ink-muted);cursor:pointer;background:none;border:none;margin-bottom:24px;padding:6px 0;transition:color var(--transition)}
-        .detail-back:hover{color:var(--ink)}
-        .detail-comment-hero{background:linear-gradient(135deg,#f0f4fb 0%,#e6f0fa 100%);border-radius:var(--radius-lg);padding:40px 32px;margin-bottom:24px;position:relative;overflow:hidden}
-        .detail-comment-hero .detail-quote{position:absolute;top:12px;left:20px;font-size:64px;color:rgba(74,143,212,0.12);font-family:'Georgia',serif;line-height:1;z-index:0}
-        .detail-comment-hero .detail-comment-body{font-size:18px;line-height:1.7;color:#1e293b;font-style:italic;text-align:center;position:relative;z-index:1}
-        .detail-comment-hero .no-comment-detail{color:#94a3b8;font-size:16px;font-style:normal}
-        .detail-summary{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:24px;align-items:flex-start}
-        .detail-photo-wrap{flex:0 0 300px;max-width:300px;aspect-ratio:4/3;border-radius:var(--radius-lg);overflow:hidden;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center}
-        .detail-photo-wrap img{width:100%;height:100%;object-fit:cover}
-        .detail-photo-wrap .no-photo-placeholder{text-align:center;color:var(--ink-faint);padding:20px}
-        .detail-info{flex:1;min-width:260px}
-        .detail-info .detail-ref{font-size:12px;font-weight:500;color:var(--blue);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
-        .detail-info h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;letter-spacing:-0.8px;color:var(--ink);margin-bottom:8px;line-height:1.2}
-        .detail-loc{font-size:15px;color:var(--ink-muted);margin-bottom:16px;display:flex;align-items:center;gap:6px}
-        .detail-rent{font-family:'DM Mono',monospace;font-size:28px;font-weight:500;color:var(--ink);margin-bottom:20px}
-        .detail-rent span{font-size:14px;color:var(--ink-muted)}
-        .detail-actions{display:flex;gap:8px;flex-wrap:wrap}
-        .btn-primary{display:inline-flex;align-items:center;gap:7px;padding:12px 22px;background:var(--blue);color:#fff;border:none;border-radius:var(--radius);font-size:14px;font-weight:500;transition:background var(--transition),transform var(--transition)}
-        .btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px)}
-        .btn-outline{display:inline-flex;align-items:center;gap:6px;padding:11px 18px;background:var(--white);color:var(--ink);border:1.5px solid var(--border);border-radius:var(--radius);font-size:13px;font-weight:500;transition:all var(--transition)}
-        .btn-outline:hover{border-color:var(--ink-muted);background:var(--surface)}
-        .detail-section{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 28px;margin-bottom:20px}
-        .detail-section h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:20px}
-        .detail-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-        .detail-item{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface);border-radius:var(--radius-sm);border:1px solid var(--border)}
-        .detail-item-icon{font-size:18px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:var(--white);border-radius:8px;color:var(--blue);flex-shrink:0}
-        .detail-item-content{font-size:14px;color:var(--ink)}
-        .detail-item-content .item-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-faint);margin-bottom:2px}
-        .detail-item-content .item-value{font-weight:500}
-        .detail-comments-original{margin-top:24px;padding-top:16px;border-top:1px solid var(--border);font-size:14px;color:var(--ink-muted);line-height:1.7}
-        .similar-section{margin-top:32px}
-        .similar-section h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:16px}
-        .similar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+function sendRequesterFollowUp(introRow, status) {
+  var templateFile = '';
+  if (status === 'Approved') {
+    templateFile = '/emails/intro-approved.html';
+  } else if (status === 'Declined') {
+    templateFile = '/emails/intro-declined.html';
+  } else if (status === 'Unavailable') {
+    templateFile = '/emails/intro-unavailable.html';
+  } else {
+    return;
+  }
 
-        .unavailable-banner{background:var(--orange-light);border:1px solid #fbbf24;border-radius:var(--radius);padding:16px 20px;text-align:center;margin-bottom:20px}
-        .unavailable-banner h3{font-size:16px;color:#92400e;margin-bottom:4px}
-        .unavailable-banner p{font-size:14px;color:#a16207}
-        .countdown{font-size:13px;color:var(--ink-muted);margin-top:8px}
+  var baseUrl = getProp('EMAIL_BASE_URL') || '';
+  var scriptUrl = ScriptApp.getService().getUrl();
+  var requestId = introRow[INTRO_COL.REQUEST_ID - 1];
+  var completeIntroUrl = scriptUrl + '?action=completeIntroduction&requestId=' + requestId;
 
-        .random-btn{background:none;border:1.5px solid var(--border);border-radius:100px;padding:6px 12px;font-size:13px;color:var(--ink-muted);display:inline-flex;align-items:center;gap:5px;cursor:pointer;transition:all var(--transition)}
-        .random-btn:hover{border-color:var(--blue);color:var(--blue)}
+  var htmlBody = '';
+  if (baseUrl) {
+    try {
+      var res = UrlFetchApp.fetch(baseUrl + templateFile, { muteHttpExceptions: true });
+      if (res.getResponseCode() === 200) {
+        htmlBody = res.getContentText()
+          .replace(/{{requesterName}}/g, introRow[INTRO_COL.REQUESTER_NAME - 1] || '')
+          .replace(/{{residentName}}/g, introRow[INTRO_COL.RESIDENT_NAME - 1] || 'the resident')
+          .replace(/{{apartmentType}}/g, '')   // can be enhanced later
+          .replace(/{{area}}/g, '')
+          .replace(/{{location}}/g, '')
+          .replace(/{{listingId}}/g, introRow[INTRO_COL.LISTING_ID - 1] || '')
+          .replace(/{{rentExact}}/g, '')
+          .replace(/{{completeIntroductionUrl}}/g, completeIntroUrl);
+      }
+    } catch (err) { /* fallback */ }
+  }
 
-        .recently-viewed{max-width:1200px;margin:0 auto 0;padding:0 48px 20px}
-        .recently-viewed h3{font-size:13px;font-weight:500;color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px}
-        .rv-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:4px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
-        .rv-card{flex:0 0 200px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;cursor:pointer;scroll-snap-align:start;transition:box-shadow var(--transition);flex-shrink:0}
-        .rv-card:hover{box-shadow:var(--card-shadow-hover)}
-        .rv-ref{font-size:10px;font-weight:500;color:var(--blue);text-transform:uppercase}
-        .rv-type{font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;color:var(--ink);margin:2px 0}
-        .rv-rent{font-family:'DM Mono',monospace;font-size:14px;color:var(--ink)}
+  var subject = status === 'Approved' ? 'Your introduction request has been approved – RentPal' :
+                status === 'Declined' ? 'Update on your introduction request – RentPal' :
+                'The apartment is no longer available – RentPal';
+  var plainText = 'Your request status has changed to: ' + status + '.';
+  GmailApp.sendEmail(introRow[INTRO_COL.REQUESTER_EMAIL - 1], subject, plainText, {
+    htmlBody: htmlBody || undefined,
+    name: getProp('SENDER_EMAIL') || 'RentPal'
+  });
+}
 
-        @media(max-width:1024px){
-            .listings-grid,.similar-grid{grid-template-columns:repeat(2,1fr);gap:16px}
-            .detail-photo-wrap{flex:0 0 250px}
-        }
-        @media(max-width:768px){
-            nav{padding:0 16px}.nav-links,.nav-cta{display:none}.hamburger{display:flex}
-            .trust-bar{padding:10px 16px;gap:16px}
-            .directory-hero{padding:32px 20px 28px}
-            .directory-hero h1{font-size:26px}
-            .filters-wrap{padding:10px 16px;top:64px}
-            .filter-toggle{display:inline-flex}
-            .chip-group, .filter-clear, .results-count{display:none}
-            .filters-inner.open .chip-group, .filters-inner.open .filter-clear, .filters-inner.open .results-count{display:flex}
-            .filters-inner{flex-direction:column;align-items:flex-start;gap:8px}
-            .filter-search{width:100%}
-            .listings-section{padding:16px 16px 40px}
-            .listings-grid,.similar-grid{grid-template-columns:1fr;gap:14px}
-            .detail-page{padding:20px 16px 40px}
-            .detail-summary{flex-direction:column}
-            .detail-photo-wrap{max-width:100%;flex:1}
-            .detail-info h1{font-size:22px}
-            .detail-rent{font-size:22px}
-            .detail-grid{grid-template-columns:1fr}
-            .recently-viewed{padding:0 16px 16px}
-            footer{padding:18px 16px;flex-direction:column;text-align:center;gap:6px}
-            .toast-container{bottom:12px;right:12px;left:12px}.toast{max-width:100%}
-        }
-        .toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-        .toast{background:var(--ink);color:#fff;padding:12px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;box-shadow:0 8px 28px rgba(0,0,0,0.18);animation:toastIn 0.35s ease both,toastOut 0.3s ease 2.5s forwards;pointer-events:auto;max-width:380px;display:flex;align-items:center;gap:8px}
-        .toast.success{border-left:3px solid var(--green)}
-        .toast.error{border-left:3px solid #e74c3c}
-        @keyframes toastIn{from{opacity:0;transform:translateY(20px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
-        @keyframes toastOut{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(-10px) scale(0.95)}}
-        footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--white)}
-        .footer-text{font-size:13px;color:var(--ink-faint)}
-    </style>
-</head>
-<body>
-    <nav>
-        <a href="/listing" class="nav-logo">
-            <svg viewBox="0 0 28 28"><rect x="2" y="6" width="24" height="17" rx="3" stroke="#4A8FD4" stroke-width="2.2" fill="none"/><path d="M9 6V3.5C9 2.67 9.67 2 10.5 2h7c.83 0 1.5.67 1.5 1.5V6" stroke="#4A8FD4" stroke-width="2.2" fill="none"/><line x1="8" y1="13" x2="20" y2="13" stroke="#4A8FD4" stroke-width="1.8" stroke-linecap="round"/></svg>
-            rentpal
-        </a>
-        <ul class="nav-links"><li><a href="/listing" class="active">Listings</a></li><li><a href="#how-it-works">How it works</a></li><li><a href="https://t.me/rentpal_lagos" target="_blank">Telegram</a></li></ul>
-        <a href="/listing" class="nav-cta">Browse listings</a>
-        <button class="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
-    </nav>
-    <div class="mobile-menu" id="mobile-menu"><a href="/listing">Listings</a><a href="#how-it-works">How it works</a><a href="https://t.me/rentpal_lagos" target="_blank">Telegram</a></div>
+function handleCompleteIntroduction(e) {
+  var requestId = e.parameter.requestId;
+  return HtmlService.createHtmlOutput(
+    '<div style="font-family:sans-serif;text-align:center;padding:40px;">' +
+    '<h2>Complete Your Introduction</h2>' +
+    '<p>Payment of ₦2,000 is required to release the resident\'s contact details.</p>' +
+    '<p><strong>Paystack integration coming soon.</strong></p>' +
+    '</div>'
+  );
+}
 
-    <div class="trust-bar">
-        <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Real listings by current occupants</div>
-        <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Payment protected by Paystack</div>
-        <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 24‑hour resident response time</div>
-    </div>
+// ── Test helpers ─────────────────────────────────────────────
+function testTelegram() {
+  sendTelegram(getProp('ADMIN_CHAT_ID'), 'Test from RentPal GAS \u2705');
+}
 
-    <main id="app-main"></main>
-    <div class="toast-container" id="toast-container"></div>
-    <footer><span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--blue);opacity:0.65">rentpal</span><p class="footer-text">© 2026 RentPal · Lagos, Nigeria</p><p class="footer-text">Verified listings. Real people. No agents.</p></footer>
-
-    <script>
-        const CONFIG = {
-            GAS_URL: 'https://script.google.com/macros/s/AKfycbwBXLmZ9BXwtNmmrpnqHfAaI9bauF5HDcdCLnAZ2j6zI2iSJWo0gQZv-UhxlGeJJpFvXA/exec',
-            ITEMS_PER_PAGE: 9, DEBOUNCE_MS: 300, SIMULATE_DELAY_MS: 0
-        };
-        const state = {
-            allListings: [], filteredListings: [], displayedCount: 0,
-            currentDetailId: null, currentDetailData: null, introductionStatus: null,
-            filters: { area: '', aptType: '', rentRange: '', location: '', residentStatus: '' },
-            savedListings: JSON.parse(localStorage.getItem('rp_saved') || '[]'),
-            recentlyViewed: JSON.parse(localStorage.getItem('rp_recent') || '[]'),
-            introRequestSentAt: null
-        };
-
-        function formatNaira(n){if(!n||isNaN(n))return'—';return'₦'+parseInt(n).toLocaleString('en-NG')}
-        function timeAgo(d){if(!d)return'';const n=new Date(),t=new Date(d),e=n-t,a=Math.floor(e/864e5);if(a<0)return'Just now';if(a===0)return'Today';if(a===1)return'1 day ago';if(a<7)return a+' days ago';if(a<30)return Math.floor(a/7)+' week'+(Math.floor(a/7)>1?'s':'')+' ago';if(a<365)return Math.floor(a/30)+' month'+(Math.floor(a/30)>1?'s':'')+' ago';return Math.floor(a/365)+' year'+(Math.floor(a/365)>1?'s':'')+' ago'}
-        function debounce(fn,ms){let t;return function(...a){clearTimeout(t);t=setTimeout(()=>fn.apply(this,a),ms)}}
-        function slugify(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')}
-        function getRentNumeric(s){if(!s)return 0;const n=parseInt(s.replace(/[^0-9]/g,''));return isNaN(n)?0:n}
-        function showToast(m,t='success'){const c=document.getElementById('toast-container');const d=document.createElement('div');d.className='toast '+t;d.innerHTML=(t==='success'?'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4CAF85" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>':'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>')+'<span>'+m+'</span>';c.appendChild(d);setTimeout(()=>{if(d.parentNode)d.remove()},3000)}
-        function toggleSaveListing(id){const i=state.savedListings.indexOf(id);if(i>-1){state.savedListings.splice(i,1);showToast('Removed from saved')}else{state.savedListings.push(id);showToast('Saved!')}localStorage.setItem('rp_saved',JSON.stringify(state.savedListings));refreshCurrentView()}
-        function addToRecentlyViewed(l){const e=state.recentlyViewed.find(r=>r.listingId===l.listingId);if(e){state.recentlyViewed=[e,...state.recentlyViewed.filter(r=>r.listingId!==l.listingId)]}else{state.recentlyViewed.unshift({listingId:l.listingId,apartmentType:l.apartmentType,area:l.area,location:l.location,rentExact:l.rentExact});if(state.recentlyViewed.length>10)state.recentlyViewed.pop()}localStorage.setItem('rp_recent',JSON.stringify(state.recentlyViewed))}
-        function isSaved(id){return state.savedListings.indexOf(id)>-1}
-
-        async function apiFetch(a,p={},m='GET'){const u=new URL(CONFIG.GAS_URL);u.searchParams.set('action',a);if(m==='GET')Object.entries(p).forEach(([k,v])=>u.searchParams.set(k,v));try{const o={method:m};if(m==='POST'){o.body=JSON.stringify(p);o.headers={'Content-Type':'application/json'}}const r=await fetch(u.toString(),o);if(!r.ok)throw new Error('API error');return await r.json()}catch(e){console.warn('API fail, mock',e);return getMockResponse(a,p)}}
-        function getMockResponse(a,p){if(a==='listings')return{success:true,listings:getMockListings()};if(a==='listing'&&p.id){const l=getMockListings().find(l=>l.listingId===p.id);return{success:true,listing:l||null}}if(a==='requestIntroduction')return{success:true,requestId:'REQ'+Date.now(),message:'OK',status:'pending'};return{success:false}}
-        function getMockListings(){
-            const areas=['Yaba','Surulere','Ikeja','Lekki Phase 1','Ajah','Ikoyi','Victoria Island','Gbagada','Ogba','Magodo','Maryland','Ojodu','Egbeda','Ipaja','Ketu'];
-            const apts=['Self contain','Mini flat','1 bedroom flat','2 bedroom flat','3 bedroom flat','Room & parlour'];
-            const lights=['Band A','Band B','Band C','Band D','No light'];
-            const waters=['Running water','Water but not running','No water'];
-            const parks=['Compound parking','Parking nearby, not in compound','Street parking only','No parking'];
-            const statuses=['Still living there','Packing out within 1 month','Packing out in 1-3 months','Already packed out'];
-            const list=[]; for(let i=1;i<=24;i++){
-                const id='RP'+String(i).padStart(4,'0'), area=areas[i%areas.length];
-                const loc=area.includes('Lekki')||area.includes('Ajah')||area.includes('Ikoyi')||area.includes('Victoria Island')?'Island':'Mainland';
-                const apt=apts[i%apts.length];
-                const rr=[{min:4e5,max:6e5},{min:7e5,max:9e5},{min:1e6,max:15e5},{min:16e5,max:2e6},{min:21e5,max:3e6},{min:31e5,max:4e6},{min:41e5,max:5e6},{min:5e6,max:7e6}][i%8];
-                const rent=Math.round((rr.min+Math.random()*(rr.max-rr.min))/5e4)*5e4;
-                const days=Math.floor(Math.random()*45)+1;
-                const comment=i%4===0?'Spacious with good natural light. Quiet neighbours, well-managed compound.':i%4===1?'Close to main road but quiet. Solid security, water runs most days.':i%4===2?'Recently repainted. Tiles in good condition, responsive landlord.':'';
-                list.push({listingId:id,urlSlug:slugify(apt+'-'+area+'-'+id),apartmentType:apt,area,location:loc,rentRange:formatNaira(rr.min)+' – '+formatNaira(rr.max),rentExact:rent,rentMin:rr.min,rentMax:rr.max,light:lights[i%5],water:waters[i%3],parking:parks[i%4],residentStatus:statuses[i%4],postedDate:new Date(Date.now()-days*864e5).toISOString().split('T')[0],photosAvailable:'No',primaryPhoto:'',buildingSize:'',buildingCondition:'',timeStayed:'',comments:comment,views:Math.floor(Math.random()*200)+10,verificationStatus:'Verified',listingStatus:'Available'})
-            } return list;
-        }
-
-        function getRouteInfo(){const p=window.location.pathname;const m=p.match(/^\/listing\/(RP\d{4})\/?$/);if(m)return{view:'detail',listingId:m[1]};if(p==='/listing'||p==='/listing/')return{view:'directory'};const q=new URLSearchParams(window.location.search);const id=q.get('id');if(id&&/^RP\d{4}$/.test(id))return{view:'detail',listingId:id};return{view:'directory'}}
-        function navigateTo(u,push=true){if(push)history.pushState(null,'',u);handleRoute();window.scrollTo({top:0,behavior:'smooth'})}
-        async function handleRoute(){const r=getRouteInfo();const m=document.getElementById('app-main');if(r.view==='directory'){state.currentDetailId=null;state.currentDetailData=null;state.introductionStatus=null;await renderDirectory(m)}else{state.currentDetailId=r.listingId;state.introductionStatus=null;await renderDetail(m,r.listingId)}}
-        window.addEventListener('popstate',handleRoute);
-
-        async function renderDirectory(container){
-            container.innerHTML = getDirectorySkeletonHTML();
-            let data; try{data=await apiFetch('listings')}catch(e){data={success:true,listings:getMockListings()}}
-            let all = (data.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available');
-            all.sort((a,b)=> new Date(b.postedDate) - new Date(a.postedDate));
-            state.allListings=all; state.filteredListings=[...all]; state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,all.length);
-            container.innerHTML = getDirectoryHTML();
-            applyFilters(); renderCards(); renderRecentlyViewed(); bindEvents(); updateCount();
-            startAutoRefresh();
-        }
-        function getDirectorySkeletonHTML(){let s='';for(let i=0;i<6;i++)s+=`<div class="skeleton-card"><div class="skeleton-photo"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line xl"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div></div>`;return`<div class="directory-hero"><div class="hero-tag"><div class="hero-dot"></div>Lagos, Nigeria</div><h1>Available <em>Apartments</em></h1><p class="hero-sub">Resident-listed apartments before they reach the wider market.</p></div><div class="filters-wrap"><div class="filters-inner" style="justify-content:center;padding:8px"><span style="color:var(--ink-faint)">Loading filters…</span></div></div><div class="listings-section"><div class="listings-grid">${s}</div></div>`}
-
-        function getDirectoryHTML(){
-            const areas = [...new Set(state.allListings.map(l=>l.area))].sort();
-            const aptTypes = ['Self contain','Mini flat','1 bedroom flat','2 bedroom flat','3 bedroom flat','Room & parlour'];
-            const locations = ['Mainland','Island'];
-            const statuses = ['Still living there','Packing out within 1 month','Packing out in 1-3 months','Already packed out'];
-            const areaChips = areas.map(a=>`<button class="chip" data-filter="area" data-value="${a}"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${a}</button>`).join('');
-            const aptChips = aptTypes.map(t=>`<button class="chip" data-filter="aptType" data-value="${t}">🛏 ${t}</button>`).join('');
-            const locChips = locations.map(l=>`<button class="chip" data-filter="location" data-value="${l}">📍 ${l}</button>`).join('');
-            const statusChips = statuses.map(s=>`<button class="chip" data-filter="residentStatus" data-value="${s}">⏳ ${s}</button>`).join('');
-
-            return `
-            <div class="directory-hero">
-                <div class="hero-tag"><div class="hero-dot"></div>Lagos, Nigeria</div>
-                <h1>Available <em>Apartments</em></h1>
-                <p class="hero-sub">Resident-listed apartments before they reach the wider market.</p>
-                <button class="random-btn" id="random-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 15 18 15 18 9 15 3 9 3 6 9"/></svg> Random</button>
-            </div>
-            <div class="filters-wrap" id="filters-wrap">
-                <div class="filters-inner" id="filters-inner">
-                    <button class="filter-toggle" id="filter-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg> Filters</button>
-                    <div class="filter-search">
-                        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                        <input type="text" id="filter-search" placeholder="Search by area, type, or ref…">
-                    </div>
-                    <div class="chip-group" id="area-chips">${areaChips}</div>
-                    <div class="chip-group" id="apt-chips">${aptChips}</div>
-                    <div class="chip-group" id="loc-chips">${locChips}</div>
-                    <div class="chip-group" id="status-chips">${statusChips}</div>
-                    <button class="filter-clear" id="filter-clear">Clear</button>
-                    <span class="results-count" id="results-count"></span>
-                </div>
-            </div>
-            <div class="recently-viewed" id="recently-viewed-wrap"></div>
-            <div class="listings-section">
-                <div class="listings-grid" id="listings-grid"></div>
-                <div class="pagination-wrap" id="pagination-wrap"></div>
-                <div class="empty-state" id="empty-state" style="display:none">
-                    <svg viewBox="0 0 80 80"><rect x="15" y="25" width="50" height="38" rx="4" stroke="currentColor" stroke-width="2.5" fill="none"/><line x1="22" y1="34" x2="58" y2="34" stroke="currentColor" stroke-width="2"/><line x1="22" y1="42" x2="50" y2="42" stroke="currentColor" stroke-width="2"/><circle cx="60" cy="20" r="12" stroke="currentColor" stroke-width="2.5" fill="none"/></svg>
-                    <h3>No listings match</h3><p>Try adjusting your filters.</p>
-                </div>
-            </div>`;
-        }
-
-        function applyFilters(){
-            let filtered=[...state.allListings];
-            const f=state.filters;
-            const search=document.getElementById('filter-search')?.value.toLowerCase()||'';
-            if(search){filtered=filtered.filter(l=>l.listingId.toLowerCase().includes(search)||l.area.toLowerCase().includes(search)||l.apartmentType.toLowerCase().includes(search)||l.location.toLowerCase().includes(search)||(l.comments&&l.comments.toLowerCase().includes(search)))}
-            if(f.area) filtered=filtered.filter(l=>l.area===f.area);
-            if(f.aptType) filtered=filtered.filter(l=>l.apartmentType===f.aptType);
-            if(f.rentRange){const[mx,mn]=f.rentRange.split('-').map(Number);filtered=filtered.filter(l=>{const r=getRentNumeric(String(l.rentExact||l.rentMin||0));return r>=mx&&r<=mn})}
-            if(f.location) filtered=filtered.filter(l=>l.location===f.location);
-            if(f.residentStatus) filtered=filtered.filter(l=>l.residentStatus===f.residentStatus);
-            state.filteredListings=filtered;
-            state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,filtered.length);
-            const params = new URLSearchParams();
-            Object.entries(state.filters).forEach(([k,v])=>{ if(v) params.set(k,v); });
-            const qs = params.toString();
-            const newUrl = window.location.pathname + (qs ? '?'+qs : '');
-            history.replaceState(null, '', newUrl);
-        }
-
-        function renderCards(){
-            const grid=document.getElementById('listings-grid'), empty=document.getElementById('empty-state'), pag=document.getElementById('pagination-wrap');
-            if(!grid)return;
-            const visible=state.filteredListings.slice(0,state.displayedCount);
-            if(state.filteredListings.length===0){grid.innerHTML='';if(empty)empty.style.display='block';if(pag)pag.innerHTML='';return}
-            if(empty)empty.style.display='none';
-            grid.innerHTML=visible.map(l=>getCardHTML(l)).join('');
-            if(pag&&state.displayedCount<state.filteredListings.length){pag.innerHTML=`<button class="load-more-btn" id="load-more-btn">Load More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>`}
-            else if(pag&&state.filteredListings.length>CONFIG.ITEMS_PER_PAGE){pag.innerHTML='<span style="font-size:13px;color:var(--ink-faint)">All listings loaded</span>'}
-            else{if(pag)pag.innerHTML=''}
-            updateCount();
-        }
-
-        function getCardHTML(l){
-            const saved=isSaved(l.listingId);
-            const comment=l.comments&&l.comments.trim()?l.comments:null;
-            const commentHTML=comment?`<div class="comment-quote">“</div><div class="comment-text">${escapeHTML(comment)}</div>`:`<div class="comment-text no-comment">📝 No description yet</div>`;
-            const meta=`<span class="meta-tag meta-light">⚡ ${escapeHTML(l.light)}</span><span class="meta-tag meta-water">💧 ${escapeHTML(l.water)}</span><span class="meta-tag meta-parking">🅿️ ${escapeHTML(l.parking)}</span><span class="meta-tag meta-status">📅 ${escapeHTML(l.residentStatus)}</span>`;
-            const isNew = new Date(l.postedDate) > new Date(Date.now() - 2*86400000);
-            const newBadge = isNew ? '<div class="badge-new">New</div>' : '';
-            return `
-            <div class="listing-card" onclick="goToDetail('${l.listingId}')">
-                <div class="card-comment-area">
-                    <div class="comment-overlay"></div>
-                    ${commentHTML}
-                    ${newBadge}
-                    <div class="badge-real"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Real listing</div>
-                    <button class="card-save ${saved?'saved':''}" onclick="event.stopPropagation();toggleSaveListing('${l.listingId}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="${saved?'#e74c3c':'none'}" stroke="${saved?'#e74c3c':'currentColor'}" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
-                </div>
-                <div class="card-body">
-                    <span class="card-ref">${l.listingId}</span>
-                    <div class="card-type">${escapeHTML(l.apartmentType)}</div>
-                    <div class="card-location"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${escapeHTML(l.area)}, ${escapeHTML(l.location)}</div>
-                    <div class="card-rent">${formatNaira(l.rentExact)}<span>/year</span></div>
-                    <div class="card-meta">${meta}</div>
-                </div>
-                <div class="card-footer">
-                    <span class="card-date">${timeAgo(l.postedDate)}</span>
-                    <div style="display:flex;align-items:center;gap:6px">
-                        <span class="fee-tag">₦2,000 after approval</span>
-                        <span class="paystack-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Paystack</span>
-                        <button class="card-btn" onclick="event.stopPropagation();goToDetail('${l.listingId}')">View Listing</button>
-                    </div>
-                </div>
-            </div>`;
-        }
-        function escapeHTML(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
-
-        function renderRecentlyViewed(){
-            const wrap=document.getElementById('recently-viewed-wrap');if(!wrap)return;
-            if(state.recentlyViewed.length===0){wrap.style.display='none';return}
-            wrap.style.display='block';
-            wrap.innerHTML=`<h3>Recently Viewed</h3><div class="rv-scroll">${state.recentlyViewed.map(r=>`<div class="rv-card" onclick="goToDetail('${r.listingId}')"><span class="rv-ref">${r.listingId}</span><div class="rv-type">${escapeHTML(r.apartmentType)}</div><div class="rv-rent">${formatNaira(r.rentExact)}/yr</div><span style="font-size:11px;color:var(--ink-faint)">${escapeHTML(r.area)}, ${escapeHTML(r.location)}</span></div>`).join('')}</div>`;
-        }
-
-        function updateCount(){const el=document.getElementById('results-count');if(!el)return;const t=state.filteredListings.length,s=Math.min(state.displayedCount,t);el.textContent=s===t?t+' listing'+(t!==1?'s':''):s+' of '+t+' listings'}
-
-        function bindEvents(){
-            const chips=document.querySelectorAll('.chip');
-            chips.forEach(c=>{c.addEventListener('click',()=>{const filter=c.dataset.filter,val=c.dataset.value;if(state.filters[filter]===val){state.filters[filter]='';c.classList.remove('active')}else{chips.forEach(ch=>{if(ch.dataset.filter===filter)ch.classList.remove('active')});state.filters[filter]=val;c.classList.add('active')}applyFilters();renderCards();})});
-            document.getElementById('filter-search').addEventListener('input',debounce(()=>{applyFilters();renderCards()},CONFIG.DEBOUNCE_MS));
-            document.getElementById('filter-clear').addEventListener('click',()=>{state.filters={area:'',aptType:'',rentRange:'',location:'',residentStatus:''};document.getElementById('filter-search').value='';chips.forEach(c=>c.classList.remove('active'));applyFilters();renderCards();showToast('Filters cleared')});
-            document.getElementById('load-more-btn')?.addEventListener('click',()=>{state.displayedCount=Math.min(state.displayedCount+CONFIG.ITEMS_PER_PAGE,state.filteredListings.length);renderCards()});
-            window.addEventListener('scroll',()=>{const fw=document.getElementById('filters-wrap');if(window.scrollY>80)fw.classList.add('scrolled');else fw.classList.remove('scrolled')},{passive:true});
-            const toggleBtn = document.getElementById('filter-toggle');
-            const filtersInner = document.getElementById('filters-inner');
-            if(toggleBtn){ toggleBtn.addEventListener('click', ()=>{ filtersInner.classList.toggle('open'); }); }
-            document.getElementById('random-btn')?.addEventListener('click', ()=>{ if(state.allListings.length===0) return; const random = state.allListings[Math.floor(Math.random() * state.allListings.length)]; goToDetail(random.listingId); });
-            const params = new URLSearchParams(window.location.search);
-            if(params.toString()){ ['area','aptType','location','residentStatus'].forEach(k=>{ const val = params.get(k); if(val) state.filters[k] = val; }); document.querySelectorAll('.chip').forEach(c=>{ if(c.dataset.filter && state.filters[c.dataset.filter] === c.dataset.value) c.classList.add('active'); }); }
-        }
-
-        // Detail page with comment hero, fields as cards
-        async function renderDetail(container,listingId){
-            container.innerHTML=`<div class="detail-page"><div class="skeleton-line short" style="width:80px;margin-bottom:20px"></div><div class="detail-header"><div class="detail-photo-main"><div class="skeleton-photo" style="width:100%;height:100%"></div></div><div class="detail-info"><div class="skeleton-line short"></div><div class="skeleton-line xl" style="width:70%"></div><div class="skeleton-line med"></div><div class="skeleton-line long" style="height:28px"></div></div></div></div>`;
-            let data; try{data=await apiFetch('listing',{id:listingId})}catch(e){data={success:true,listing:getMockListings().find(l=>l.listingId===listingId)||null}}
-            const listing=data.listing;
-            if(!listing){ container.innerHTML=`<div class="detail-page" style="text-align:center;padding:80px 20px"><h2>Listing not found</h2><p style="color:var(--ink-muted)">This listing may have been removed.</p><a href="/listing" style="color:var(--blue)">← Back to listings</a></div>`;return; }
-            state.currentDetailData=listing; addToRecentlyViewed(listing);
-            if(listing.listingStatus !== 'Available'){
-                container.innerHTML = `<div class="detail-page" style="text-align:center;padding:80px 20px"><div class="unavailable-banner"><h3>This apartment is no longer available</h3><p>The resident has marked it as taken off the market.</p></div><a href="/listing" style="display:inline-block;margin-top:20px;color:var(--blue);font-weight:500;">← Browse other listings</a></div>`;
-                return;
-            }
-            container.innerHTML=getDetailHTML(listing);
-            loadSimilarListings(listing);
-        }
-
-        function getDetailHTML(l){
-            const photoHTML = l.photosAvailable==='Yes'&&l.primaryPhoto
-                ? `<img src="${l.primaryPhoto}" alt="${l.apartmentType}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="no-photo-placeholder" style="display:none"><p>No photos available.</p></div>`
-                : `<div class="no-photo-placeholder"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><p>No photos available</p></div>`;
-
-            const commentText = l.comments && l.comments.trim() ? l.comments : null;
-            const commentHeroHTML = commentText
-                ? `<div class="detail-comment-hero"><div class="detail-quote">“</div><div class="detail-comment-body">${escapeHTML(commentText)}</div></div>`
-                : `<div class="detail-comment-hero"><div class="detail-quote">“</div><div class="detail-comment-body no-comment-detail">No description provided</div></div>`;
-
-            const fields = [
-                { label:'Rent', value:formatNaira(l.rentExact)+'/year', icon:'💰' },
-                { label:'Light', value:l.light, icon:'💡' },
-                { label:'Water', value:l.water, icon:'🚿' },
-                { label:'Parking', value:l.parking, icon:'🅿️' },
-                { label:'Building Size', value:l.buildingSize, icon:'🏢' },
-                { label:'Building Condition', value:l.buildingCondition, icon:'🔨' },
-                { label:'Time Stayed', value:l.timeStayed, icon:'⏱️' },
-                { label:'Resident Status', value:l.residentStatus, icon:'📅' }
-            ].filter(f => f.value && f.value.trim() !== '');
-            const detailsGridHTML = fields.map(f => `
-                <div class="detail-item">
-                    <div class="detail-item-icon">${f.icon}</div>
-                    <div class="detail-item-content">
-                        <div class="item-label">${f.label}</div>
-                        <div class="item-value">${escapeHTML(f.value)}</div>
-                    </div>
-                </div>
-            `).join('');
-
-            const introSection = state.introductionStatus==='submitted'? (()=>{
-                const sentAt = state.introRequestSentAt || new Date();
-                const deadline = new Date(sentAt.getTime() + 24*3600000);
-                const countdownHTML = `<div class="countdown" id="countdown">Resident has <span id="countdown-display"></span> to respond.</div>`;
-                setTimeout(()=> startCountdown(deadline), 100);
-                return `<div class="detail-section request-confirmation"><div class="confirm-icon">✅</div><h3>Your request has been sent.</h3><p>The resident has up to 24 hours to respond. If they approve, you'll get an email with next steps.</p>${countdownHTML}</div>`;
-            })() : (state.introductionStatus==='form'?`
-            <div class="intro-form-wrap">
-                <h2>Request Introduction</h2>
-                <p class="form-subtitle" style="font-size:13px;color:var(--ink-muted);margin-bottom:18px">Fill in your details – the resident will review your request. No payment required now.</p>
-                <div style="background:var(--blue-light);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                    <div style="font-size:13px;color:var(--blue-dark);line-height:1.5">
-                        <strong>Introduction fee: ₦2,000</strong><br>
-                        This covers the cost of connecting you with the resident. It's only charged <b>after</b> the resident approves your request and you choose to proceed.
-                    </div>
-                </div>
-                <form id="intro-request-form" onsubmit="submitIntroductionRequest(event,'${l.listingId}')">
-                    <div class="form-row">
-                        <div class="form-group"><label>Your Name *</label><input type="text" id="req-name" required></div>
-                        <div class="form-group"><label>Email *</label><input type="email" id="req-email" required></div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group"><label>Phone *</label><input type="tel" id="req-phone" required></div>
-                        <div class="form-group"><label>Telegram (optional)</label><input type="text" id="req-telegram"></div>
-                    </div>
-                    <div class="form-group">
-                        <label>Reason for Request *</label>
-                        <select id="req-reason" required>
-                            <option value="">Select reason…</option>
-                            <option>I'd like to rent this apartment.</option>
-                            <option>I'd like to ask about the building.</option>
-                            <option>I'd like to ask about possible vacancies.</option>
-                            <option>Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Additional questions for the resident</label>
-                        <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
-                            <label style="display:flex;align-items:center;gap:8px;font-weight:400;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink);cursor:pointer">
-                                <input type="checkbox" class="req-extra" value="Can you share photos of the apartment?"> Can you share photos of the apartment?
-                            </label>
-                            <label style="display:flex;align-items:center;gap:8px;font-weight:400;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink);cursor:pointer">
-                                <input type="checkbox" class="req-extra" value="Is there a video tour available?"> Is there a video tour available?
-                            </label>
-                            <label style="display:flex;align-items:center;gap:8px;font-weight:400;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink);cursor:pointer">
-                                <input type="checkbox" class="req-extra" value="What is the condition of the plumbing/electrical?"> What is the condition of the plumbing/electrical?
-                            </label>
-                            <label style="display:flex;align-items:center;gap:8px;font-weight:400;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink);cursor:pointer">
-                                <input type="checkbox" class="req-extra" value="Are there any additional fees?"> Are there any additional fees?
-                            </label>
-                            <div style="display:flex;align-items:center;gap:8px">
-                                <input type="checkbox" id="req-extra-other" class="req-extra" value="Other" onchange="document.getElementById('req-extra-other-text').style.display=this.checked?'block':'none'">
-                                <label for="req-extra-other" style="font-weight:400;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink);cursor:pointer">Other</label>
-                                <input type="text" id="req-extra-other-text" placeholder="Please specify" style="display:none;flex:1;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;margin-left:8px">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Move Timeline *</label>
-                        <select id="req-timeline" required>
-                            <option value="">Select timeline…</option>
-                            <option>Immediately</option>
-                            <option>Within 30 Days</option>
-                            <option>Within 3 Months</option>
-                            <option>Just Exploring</option>
-                        </select>
-                    </div>
-                    <div style="background:var(--orange-light);border:1px solid #fbbf24;border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" style="flex-shrink:0;margin-top:2px"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                        <div style="font-size:13px;color:#92400e;line-height:1.5">
-                            <strong>Finder's Fee</strong><br>
-                            If you <b>successfully rent this apartment</b>, you'll be invoiced a <b>finder's fee</b> (separate from the introduction fee). This covers the cost of advertising and matching — we only get paid when you find your home.
-                        </div>
-                    </div>
-                    <div class="form-group" style="display:flex;align-items:flex-start;gap:8px;margin-bottom:20px">
-                        <input type="checkbox" id="req-agree-finder" required style="width:18px;height:18px;margin-top:3px;flex-shrink:0;accent-color:var(--orange)">
-                        <label for="req-agree-finder" style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink-muted);font-size:13px">
-                            I agree that if I rent this apartment, I will be invoiced for the <strong>finder's fee</strong> as described above.
-                        </label>
-                    </div>
-                    <button type="submit" class="btn-submit-request" id="btn-submit-intro">Send Request</button>
-                </form>
-            </div>`:'');
-            return `<div class="detail-page"><button class="detail-back" onclick="goToDirectory()">← Back to listings</button>${commentHeroHTML}<div class="detail-summary"><div class="detail-photo-wrap">${photoHTML}</div><div class="detail-info"><span class="detail-ref">${l.listingId}</span><h1>${l.apartmentType}</h1><div class="detail-loc">📍 ${l.area}, ${l.location}</div><div class="detail-rent">${formatNaira(l.rentExact)}<span>/year</span></div><div class="detail-actions"><button class="btn-primary" onclick="state.introductionStatus='form';renderDetail(document.getElementById('app-main'),'${l.listingId}')">Request Introduction</button><button class="btn-outline" onclick="copyListingLink('${l.listingId}')">Copy Link</button><button class="btn-outline" onclick="shareListing('${l.listingId}','${l.apartmentType} in ${l.area}')">Share</button></div></div></div><div id="introduction-section">${introSection}</div><div class="detail-section"><h2>Apartment Details</h2><div class="detail-grid">${detailsGridHTML}</div>${l.comments?`<div class="detail-comments-original"><span class="field-label">Resident's comment</span><p>${l.comments}</p></div>`:''}</div><div class="similar-section"><h2>Similar Listings</h2><div class="similar-grid" id="similar-grid"></div></div></div>`;
-        }
-
-        function startCountdown(deadline){
-            const display = document.getElementById('countdown-display');
-            if(!display) return;
-            function update(){
-                const diff = deadline - new Date();
-                if(diff <= 0){ display.textContent = '0h 0m'; return; }
-                const h = Math.floor(diff/3600000);
-                const m = Math.floor((diff%3600000)/60000);
-                display.textContent = `${h}h ${m}m`;
-            }
-            update();
-            setInterval(update, 60000);
-        }
-
-        function submitIntroductionRequest(e,listingId){
-            e.preventDefault();
-            const agreeFinder = document.getElementById('req-agree-finder');
-            if (!agreeFinder || !agreeFinder.checked) {
-                showToast('Please agree to the finder\'s fee terms.', 'error');
-                return;
-            }
-            const btn = document.getElementById('btn-submit-intro');
-            if(btn){btn.disabled=true;btn.textContent='Sending…'}
-            const extras = [];
-            document.querySelectorAll('.req-extra:checked').forEach(cb=>{
-                if(cb.value === 'Other'){
-                    const otherText = document.getElementById('req-extra-other-text').value.trim();
-                    if(otherText) extras.push(otherText);
-                } else { extras.push(cb.value); }
-            });
-            const payload={
-                listingId, listingUrl:window.location.href,
-                requesterName:document.getElementById('req-name')?.value||'',
-                requesterEmail:document.getElementById('req-email')?.value||'',
-                requesterPhone:document.getElementById('req-phone')?.value||'',
-                requesterTelegram:document.getElementById('req-telegram')?.value||'',
-                reason:document.getElementById('req-reason')?.value||'',
-                moveTimeline:document.getElementById('req-timeline')?.value||'',
-                extraQuestions: extras.join('; ')
-            };
-            apiFetch('requestIntroduction',payload,'POST').then(()=>{
-                state.introductionStatus='submitted'; state.introRequestSentAt = new Date();
-                renderDetail(document.getElementById('app-main'),listingId); showToast('Request sent!')
-            }).catch(()=>{
-                state.introductionStatus='submitted'; state.introRequestSentAt = new Date();
-                renderDetail(document.getElementById('app-main'),listingId)
-            });
-        }
-
-        function copyListingLink(id){const url=window.location.origin+'/listing/'+id;navigator.clipboard.writeText(url).then(()=>showToast('Link copied!'))}
-        function shareListing(id,title){const url=window.location.origin+'/listing/'+id;if(navigator.share)navigator.share({title:'RentPal Listing',text:title,url});else copyListingLink(id)}
-        async function loadSimilarListings(listing){
-            const grid=document.getElementById('similar-grid');if(!grid)return;
-            let all=state.allListings;if(!all.length)try{const d=await apiFetch('listings');all=(d.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available')}catch(e){all=getMockListings().filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available')}
-            const others=all.filter(l=>l.listingId!==listing.listingId);
-            const scored=others.map(l=>{let s=0;if(l.area===listing.area)s+=3;if(l.apartmentType===listing.apartmentType)s+=2;if(l.location===listing.location)s+=1;const rd=Math.abs(getRentNumeric(String(l.rentExact||0))-getRentNumeric(String(listing.rentExact||0)));if(rd<300000)s+=2;else if(rd<600000)s+=1;return{listing:l,score:s}});
-            scored.sort((a,b)=>b.score-a.score);const similar=scored.slice(0,6);
-            grid.innerHTML=similar.map(s=>{const l=s.listing;return`<div class="listing-card" onclick="goToDetail('${l.listingId}')"><div class="card-comment-area" style="height:140px"><div class="comment-overlay"></div><div class="comment-quote">“</div><div class="comment-text">${escapeHTML(l.comments||'📝 No description yet')}</div></div><div class="card-body"><span class="card-ref">${l.listingId}</span><div class="card-type" style="font-size:15px">${escapeHTML(l.apartmentType)}</div><div class="card-location" style="font-size:12px">${escapeHTML(l.area)}, ${escapeHTML(l.location)}</div><div class="card-rent" style="font-size:17px">${formatNaira(l.rentExact)}<span>/year</span></div></div></div>`}).join('')||'<p style="color:var(--ink-faint)">No similar listings</p>';
-        }
-
-        let autoRefreshInterval;
-        function startAutoRefresh() {
-            if (autoRefreshInterval) clearInterval(autoRefreshInterval);
-            autoRefreshInterval = setInterval(async () => {
-                const route = getRouteInfo();
-                if (route.view !== 'directory') return;
-                try {
-                    const data = await apiFetch('listings');
-                    const fresh = (data.listings || []).filter(l => l.verificationStatus === 'Verified' && l.listingStatus === 'Available');
-                    fresh.sort((a,b)=> new Date(b.postedDate) - new Date(a.postedDate));
-                    const oldIds = state.allListings.map(l => l.listingId).sort().join(',');
-                    const newIds = fresh.map(l => l.listingId).sort().join(',');
-                    if (oldIds !== newIds) {
-                        state.allListings = fresh;
-                        state.filteredListings = [...fresh];
-                        state.displayedCount = Math.min(CONFIG.ITEMS_PER_PAGE, fresh.length);
-                        applyFilters();
-                        renderCards();
-                        updateCount();
-                        showToast('📣 Listings updated');
-                    }
-                } catch (e) {}
-            }, 30000);
-        }
-        document.addEventListener('visibilitychange', () => {
-            if (!document.hidden) {
-                const route = getRouteInfo();
-                if (route.view === 'directory') {
-                    apiFetch('listings').then(data => {
-                        const fresh = (data.listings || []).filter(l => l.verificationStatus === 'Verified' && l.listingStatus === 'Available');
-                        fresh.sort((a,b)=> new Date(b.postedDate) - new Date(a.postedDate));
-                        state.allListings = fresh;
-                        state.filteredListings = [...fresh];
-                        state.displayedCount = Math.min(CONFIG.ITEMS_PER_PAGE, fresh.length);
-                        applyFilters();
-                        renderCards();
-                        updateCount();
-                    }).catch(() => {});
-                }
-            }
-        });
-
-        function goToDetail(id){navigateTo('/listing/'+id)}
-        function goToDirectory(){navigateTo('/listing')}
-        function toggleMobileMenu(){document.getElementById('mobile-menu').classList.toggle('open')}
-        function refreshCurrentView(){const r=getRouteInfo();if(r.view==='directory'){renderCards();renderRecentlyViewed()}}
-        function init(){handleRoute();document.querySelectorAll('.mobile-menu a').forEach(a=>a.addEventListener('click',()=>document.getElementById('mobile-menu').classList.remove('open')));document.addEventListener('click',(e)=>{const a=e.target.closest('a');if(a&&a.getAttribute('href')?.startsWith('/listing')&&!a.href.startsWith('http')&&a.target!=='_blank'){e.preventDefault();navigateTo(a.getAttribute('href'))}})}
-        document.addEventListener('DOMContentLoaded',init);
-    </script>
-</body>
-</html>
+function getUpdates() {
+  var token = getProp('TELEGRAM_BOT_TOKEN');
+  var res = UrlFetchApp.fetch('https://api.telegram.org/bot' + token + '/getUpdates');
+  Logger.log(res.getContentText());
+}
