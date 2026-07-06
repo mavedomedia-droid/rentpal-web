@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ───── ALL EXISTING CSS (unchanged) ───── */
         :root {
             --blue: #4A8FD4; --blue-dark: #185FA5; --blue-deep: #0C447C;
             --blue-light: #E6F1FB; --blue-mid: #B5D4F4;
@@ -166,7 +167,6 @@
         .no-comment{color:#7a8a9e;font-size:12px;font-style:normal}
         .badge-real{position:absolute;top:8px;right:8px;background:rgba(255,255,255,0.9);border-radius:100px;padding:3px 9px;font-size:9px;font-weight:600;color:var(--green-dark);display:flex;align-items:center;gap:3px;z-index:3;border:1px solid rgba(39,80,10,0.12)}
         .badge-new{position:absolute;top:8px;right:8px;background:var(--green-light);color:var(--green-dark);border-radius:100px;padding:3px 9px;font-size:9px;font-weight:700;z-index:3;border:1px solid rgba(39,80,10,0.15)}
-        /* Also looking badge – now in card body, centred */
         .badge-also-looking{display:inline-flex;align-items:center;justify-content:center;background:#dbeafe;color:#1e40af;border-radius:100px;padding:3px 9px;font-size:9px;font-weight:700;border:1px solid #bfdbfe;margin:0 auto;width:fit-content}
         .card-save{position:absolute;top:8px;left:8px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.9);border:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition);z-index:3;font-size:12px}
         .card-save:hover{background:#fff;transform:scale(1.08)}
@@ -358,7 +358,7 @@
 
     <script>
         const CONFIG = {
-            GAS_URL: 'https://script.google.com/macros/s/AKfycbyHby_E7i0Bc4CZuQBhyJzcp-FSUVUq_z1rxl63uTzNd9FdpgW5ZK0TY_V9l4D3180CWQ/exec',
+            GAS_URL: 'https://script.google.com/macros/s/AKfycbyGO5d4q1rrXvFL65wsRla_I_P4tE9UPGapZO2HOvC1fT0uVbdzhg9UIjo5uOiUJgBo/exec?action=listing&id=RP0013',
             ITEMS_PER_PAGE: 12, DEBOUNCE_MS: 250
         };
         const state = {
@@ -557,7 +557,7 @@
             document.getElementById('random-btn')?.addEventListener('click',()=>{if(state.allListings.length)goToDetail(state.allListings[Math.floor(Math.random()*state.allListings.length)].listingId)});
         }
 
-        // ── DELEGATED MODAL TRIGGER ──
+        // ── DELEGATED MODAL TRIGGER (still active as backup) ──
         document.addEventListener('click', function(e) {
             const btn = e.target.closest('.btn-primary[data-action="intro"]');
             if (btn) {
@@ -566,7 +566,7 @@
             }
         });
 
-        // ── DETAIL PAGE (the button has data-action="intro") ──
+        // ── DETAIL PAGE (button now has inline onclick too) ──
         async function renderDetail(container,listingId){
             container.innerHTML=`<div class="detail-page"><div class="skeleton-line short" style="width:80px;margin-bottom:20px"></div><div class="skeleton-photo" style="height:200px;margin-bottom:16px"></div><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div>`;
             let data;try{data=await apiFetch('listing',{id:listingId})}catch(e){data={success:true,listing:getMockListings().find(l=>l.listingId===listingId)||null}}
@@ -582,7 +582,7 @@
             const photoHTML=l.photosAvailable==='Yes'&&l.primaryPhoto?`<img src="${l.primaryPhoto}" alt="${l.apartmentType}">`:`<div class="no-photo-placeholder" style="text-align:center;color:var(--ink-faint);padding:20px">No photo available</div>`;
             const commentHero=l.comments?`<div class="detail-comment-hero"><div class="detail-comment-label">Comment from resident</div><div class="detail-quote">"</div><div class="detail-comment-body">${escapeHTML(l.comments)}</div></div>`:'';
             const fields=[{label:'Rent',value:formatNaira(l.rentExact)+'/year',icon:'💰'},{label:'Light',value:l.light,icon:'💡'},{label:'Water',value:l.water,icon:'🚿'},{label:'Parking',value:l.parking,icon:'🅿️'},{label:'Building Size',value:l.buildingSize,icon:'🏢'},{label:'Condition',value:l.buildingCondition,icon:'🔨'},{label:'Stayed',value:l.timeStayed,icon:'⏱️'},{label:'Status',value:l.residentStatus,icon:'📅'}].filter(f=>f.value&&f.value.trim()!=='');
-            return `<div class="detail-page"><button class="detail-back" onclick="goToDirectory()">← Back to listings</button>${commentHero}<div class="detail-summary"><div class="detail-photo-wrap">${photoHTML}</div><div class="detail-info"><span class="detail-ref">${l.listingId}</span><h1>${l.apartmentType}</h1><div class="detail-loc">📍 ${l.area}, ${l.location}</div><div class="detail-rent">${formatNaira(l.rentExact)}<span>/year</span></div><div class="detail-actions"><button class="btn-primary" data-action="intro" data-listing-id="${l.listingId}">Request Introduction</button><button class="btn-outline" onclick="copyListingLink('${l.listingId}')">Copy Link</button><button class="btn-outline" onclick="shareListing('${l.listingId}','${l.apartmentType} in ${l.area}')">Share</button></div></div></div><div class="detail-section"><h2>Apartment Details</h2><div class="detail-grid">${fields.map(f=>`<div class="detail-item"><div class="detail-item-icon">${f.icon}</div><div class="detail-item-content"><div class="item-label">${f.label}</div><div class="item-value">${escapeHTML(f.value)}</div></div></div>`).join('')}</div>${l.comments?`<div class="detail-comments-original"><span class="field-label">Resident's comment</span><p>${l.comments}</p></div>`:''}</div><div class="similar-section"><h2>Similar Listings</h2><div class="similar-grid" id="similar-grid"></div></div></div>`;
+            return `<div class="detail-page"><button class="detail-back" onclick="goToDirectory()">← Back to listings</button>${commentHero}<div class="detail-summary"><div class="detail-photo-wrap">${photoHTML}</div><div class="detail-info"><span class="detail-ref">${l.listingId}</span><h1>${l.apartmentType}</h1><div class="detail-loc">📍 ${l.area}, ${l.location}</div><div class="detail-rent">${formatNaira(l.rentExact)}<span>/year</span></div><div class="detail-actions"><button class="btn-primary" data-action="intro" data-listing-id="${l.listingId}" onclick="openIntroductionModal('${l.listingId}')">Request Introduction</button><button class="btn-outline" onclick="copyListingLink('${l.listingId}')">Copy Link</button><button class="btn-outline" onclick="shareListing('${l.listingId}','${l.apartmentType} in ${l.area}')">Share</button></div></div></div><div class="detail-section"><h2>Apartment Details</h2><div class="detail-grid">${fields.map(f=>`<div class="detail-item"><div class="detail-item-icon">${f.icon}</div><div class="detail-item-content"><div class="item-label">${f.label}</div><div class="item-value">${escapeHTML(f.value)}</div></div></div>`).join('')}</div>${l.comments?`<div class="detail-comments-original"><span class="field-label">Resident's comment</span><p>${l.comments}</p></div>`:''}</div><div class="similar-section"><h2>Similar Listings</h2><div class="similar-grid" id="similar-grid"></div></div></div>`;
         }
 
         // ── MODAL LOGIC ──
