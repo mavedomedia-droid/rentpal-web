@@ -253,7 +253,7 @@
         .modal-close{position:absolute;top:12px;right:16px;font-size:22px;background:none;border:none;cursor:pointer;color:var(--ink-muted)}
         .modal-close:hover{color:var(--ink)}
 
-        /* Introduction form inside modal (same as before) */
+        /* Form inside modal */
         .intro-form-wrap{background:transparent;padding:0;margin:0;border:none}
         .form-group{margin-bottom:12px}
         .form-group label{display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);margin-bottom:4px}
@@ -277,7 +277,7 @@
     </style>
 </head>
 <body>
-    <!-- NAV and other HTML identical to original, no changes -->
+    <!-- Navigation, etc. unchanged -->
     <nav>
         <a href="/listings" class="nav-logo">
             <img src="rentpal_logo_blue.png" alt="RentPal" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
@@ -549,7 +549,16 @@
             document.getElementById('random-btn')?.addEventListener('click',()=>{if(state.allListings.length)goToDetail(state.allListings[Math.floor(Math.random()*state.allListings.length)].listingId)});
         }
 
-        // ── DETAIL PAGE (unchanged, but the Request Introduction button triggers the modal) ──
+        // ── DELEGATED MODAL TRIGGER ──
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.btn-primary[data-action="intro"]');
+            if (btn) {
+                const listingId = btn.getAttribute('data-listing-id');
+                openIntroductionModal(listingId);
+            }
+        });
+
+        // ── DETAIL PAGE (the button has data-action="intro") ──
         async function renderDetail(container,listingId){
             container.innerHTML=`<div class="detail-page"><div class="skeleton-line short" style="width:80px;margin-bottom:20px"></div><div class="skeleton-photo" style="height:200px;margin-bottom:16px"></div><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div>`;
             let data;try{data=await apiFetch('listing',{id:listingId})}catch(e){data={success:true,listing:getMockListings().find(l=>l.listingId===listingId)||null}}
@@ -565,7 +574,7 @@
             const photoHTML=l.photosAvailable==='Yes'&&l.primaryPhoto?`<img src="${l.primaryPhoto}" alt="${l.apartmentType}">`:`<div class="no-photo-placeholder" style="text-align:center;color:var(--ink-faint);padding:20px">No photo available</div>`;
             const commentHero=l.comments?`<div class="detail-comment-hero"><div class="detail-comment-label">Comment from resident</div><div class="detail-quote">"</div><div class="detail-comment-body">${escapeHTML(l.comments)}</div></div>`:'';
             const fields=[{label:'Rent',value:formatNaira(l.rentExact)+'/year',icon:'💰'},{label:'Light',value:l.light,icon:'💡'},{label:'Water',value:l.water,icon:'🚿'},{label:'Parking',value:l.parking,icon:'🅿️'},{label:'Building Size',value:l.buildingSize,icon:'🏢'},{label:'Condition',value:l.buildingCondition,icon:'🔨'},{label:'Stayed',value:l.timeStayed,icon:'⏱️'},{label:'Status',value:l.residentStatus,icon:'📅'}].filter(f=>f.value&&f.value.trim()!=='');
-            return `<div class="detail-page"><button class="detail-back" onclick="goToDirectory()">← Back to listings</button>${commentHero}<div class="detail-summary"><div class="detail-photo-wrap">${photoHTML}</div><div class="detail-info"><span class="detail-ref">${l.listingId}</span><h1>${l.apartmentType}</h1><div class="detail-loc">📍 ${l.area}, ${l.location}</div><div class="detail-rent">${formatNaira(l.rentExact)}<span>/year</span></div><div class="detail-actions"><button class="btn-primary" onclick="openIntroductionModal('${l.listingId}')">Request Introduction</button><button class="btn-outline" onclick="copyListingLink('${l.listingId}')">Copy Link</button><button class="btn-outline" onclick="shareListing('${l.listingId}','${l.apartmentType} in ${l.area}')">Share</button></div></div></div><div class="detail-section"><h2>Apartment Details</h2><div class="detail-grid">${fields.map(f=>`<div class="detail-item"><div class="detail-item-icon">${f.icon}</div><div class="detail-item-content"><div class="item-label">${f.label}</div><div class="item-value">${escapeHTML(f.value)}</div></div></div>`).join('')}</div>${l.comments?`<div class="detail-comments-original"><span class="field-label">Resident's comment</span><p>${l.comments}</p></div>`:''}</div><div class="similar-section"><h2>Similar Listings</h2><div class="similar-grid" id="similar-grid"></div></div></div>`;
+            return `<div class="detail-page"><button class="detail-back" onclick="goToDirectory()">← Back to listings</button>${commentHero}<div class="detail-summary"><div class="detail-photo-wrap">${photoHTML}</div><div class="detail-info"><span class="detail-ref">${l.listingId}</span><h1>${l.apartmentType}</h1><div class="detail-loc">📍 ${l.area}, ${l.location}</div><div class="detail-rent">${formatNaira(l.rentExact)}<span>/year</span></div><div class="detail-actions"><button class="btn-primary" data-action="intro" data-listing-id="${l.listingId}">Request Introduction</button><button class="btn-outline" onclick="copyListingLink('${l.listingId}')">Copy Link</button><button class="btn-outline" onclick="shareListing('${l.listingId}','${l.apartmentType} in ${l.area}')">Share</button></div></div></div><div class="detail-section"><h2>Apartment Details</h2><div class="detail-grid">${fields.map(f=>`<div class="detail-item"><div class="detail-item-icon">${f.icon}</div><div class="detail-item-content"><div class="item-label">${f.label}</div><div class="item-value">${escapeHTML(f.value)}</div></div></div>`).join('')}</div>${l.comments?`<div class="detail-comments-original"><span class="field-label">Resident's comment</span><p>${l.comments}</p></div>`:''}</div><div class="similar-section"><h2>Similar Listings</h2><div class="similar-grid" id="similar-grid"></div></div></div>`;
         }
 
         // ── MODAL LOGIC ──
@@ -576,7 +585,6 @@
             modal.classList.add('active');
             // Bind form submit
             document.getElementById('intro-request-form').addEventListener('submit', (e) => submitIntroductionRequest(e, listingId));
-            // Close button inside modal (if any) - we'll add later
         }
 
         function closeModal() {
@@ -692,7 +700,6 @@
             };
             apiFetch('requestIntroduction', payload, 'POST')
                 .then(() => {
-                    // Show success inside modal
                     document.getElementById('introModalContent').innerHTML = `
                         <button class="modal-close" onclick="closeModal()">✕</button>
                         <div class="request-confirmation">
