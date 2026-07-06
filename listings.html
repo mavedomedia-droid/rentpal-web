@@ -36,7 +36,7 @@
         .nav-links a.active{font-weight:500;color:var(--blue)}
         .nav-cta{background:var(--blue);color:#fff;border:none;padding:7px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;transition:background var(--transition);white-space:nowrap}
         .nav-cta:hover{background:var(--blue-dark)}
-        .hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;background:none;border:none;padding:4px}
+        .hamburger{display:none;flex-direction:column;gap:5px;justify-content:center;align-items:center;width:44px;height:44px;padding:10px;cursor:pointer;background:none;border:none}
         .hamburger span{display:block;width:20px;height:2px;background:var(--ink);border-radius:2px}
         .mobile-menu{display:none;flex-direction:column;background:var(--white);border-bottom:1px solid var(--card-border);padding:14px 20px 18px;gap:4px;position:sticky;top:56px;z-index:99}
         .mobile-menu.open{display:flex}
@@ -90,7 +90,7 @@
         .filter-toggle-mobile:hover{background:var(--surface)}
         @media(max-width:768px){
             .filters-inner{display:none}
-            .filter-toggle-mobile{display:flex}
+            .filter-toggle-mobile{display:flex; min-height:44px;}  /* ensure touch height */
             .filter-search-wrap{flex:1}
         }
 
@@ -117,7 +117,17 @@
             .no-comment{font-size:10px}
             .badge-real,.badge-new,.badge-also-looking{font-size:7px;padding:2px 6px}
             .badge-also-looking{font-size:7px;padding:2px 6px}
-            .card-save{width:22px;height:22px;top:5px;left:5px}
+            /* Enlarged touch targets for mobile */
+            .card-save {
+                width: 44px;
+                height: 44px;
+                top: 5px;
+                left: 5px;
+                font-size: 18px;        /* keep heart visible */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
             .card-body{padding:6px 8px;gap:2px}
             .card-ref{font-size:8px}
             .card-type{font-size:12px;line-height:1.2;margin-bottom:2px}
@@ -128,10 +138,27 @@
             .card-tags{display:none}
             .card-footer{padding:5px 8px;border-top:none}
             .card-date{font-size:8px}
-            .card-btn{font-size:9px;padding:3px 10px;border-radius:15px}
+            .card-btn {
+                font-size: 12px;
+                padding: 8px 16px;
+                border-radius: 20px;
+                min-height: 44px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
             .type-silhouette{font-size:50px;bottom:-4px;right:-4px}
             .listing-card{border-radius:var(--radius)}
             .card-tint-mainland,.card-tint-island{border-top-width:2px}
+            .load-more-btn {
+                min-height: 44px;
+                padding: 12px 24px;
+                font-size: 14px;
+            }
+            /* Make sure filter toggle is tall enough */
+            .filter-toggle-mobile {
+                min-height: 44px;
+            }
         }
 
         .listing-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--card-border);overflow:hidden;transition:box-shadow var(--transition),transform var(--transition);cursor:pointer;display:flex;flex-direction:column;position:relative;box-shadow:var(--card-shadow)}
@@ -168,6 +195,26 @@
         .card-date{font-size:10px;color:var(--ink-faint)}
         .card-btn{font-size:11px;font-weight:600;color:var(--white);background:var(--blue);border:none;padding:5px 14px;border-radius:20px;transition:all var(--transition);white-space:nowrap}
         .card-btn:hover{background:var(--blue-dark);transform:scale(1.03)}
+
+        /* Load More button default */
+        .load-more-btn {
+            display: block;
+            margin: 16px auto 0;
+            padding: 10px 28px;
+            background: var(--white);
+            border: 1.5px solid var(--card-border);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .load-more-btn:hover {
+            border-color: var(--blue);
+            color: var(--blue);
+            background: var(--blue-light);
+        }
 
         /* DETAIL PAGE (unchanged) */
         .detail-page{max-width:900px;margin:0 auto;padding:24px 16px 40px}
@@ -231,6 +278,7 @@
     </style>
 </head>
 <body>
+    <!-- NAV and rest of HTML identical to original, no changes needed -->
     <nav>
         <a href="/listings" class="nav-logo">
             <img src="rentpal_logo_blue.png" alt="RentPal" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
@@ -248,7 +296,7 @@
         <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 24h response</div>
     </div>
 
-    <!-- FILTER BAR (desktop only) -->
+    <!-- FILTER BAR (desktop) -->
     <div class="filters-wrap" id="filters-wrap">
         <div class="filters-inner" id="filters-inner">
             <span class="filters-label">🔍 Filters</span>
