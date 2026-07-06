@@ -68,7 +68,13 @@
         .random-btn{background:var(--white);border:1.5px solid var(--card-border);border-radius:100px;padding:5px 14px;font-size:12px;color:var(--ink-muted);display:inline-flex;align-items:center;gap:5px;cursor:pointer;transition:all var(--transition);margin-top:10px}
         .random-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
 
-        /* ─── FILTER BAR (more visible) ─── */
+        /* ─── SUGGESTION CHIPS (auto‑cycle) ─── */
+        .suggestion-row{text-align:center;margin:12px 0 4px;position:relative;height:32px;overflow:hidden}
+        .suggestion-chip{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.8);border:1px solid var(--card-border);border-radius:100px;padding:5px 14px;font-size:12px;color:var(--ink-muted);cursor:pointer;position:absolute;left:50%;transform:translateX(-50%);opacity:0;transition:opacity 1.5s ease;white-space:nowrap}
+        .suggestion-chip.show{opacity:1}
+        .suggestion-chip:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+
+        /* ─── FILTER BAR ─── */
         .filters-wrap{background:var(--white);border-bottom:2px solid var(--blue-mid);padding:0 16px;position:sticky;top:56px;z-index:50;transition:box-shadow var(--transition)}
         .filters-wrap.scrolled{box-shadow:0 2px 8px rgba(0,0,0,0.05)}
         .filters-label{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;color:var(--blue);margin-right:8px}
@@ -82,7 +88,6 @@
         .filter-clear{display:none;background:none;border:none;color:var(--blue);font-size:12px;font-weight:500;cursor:pointer;padding:6px 8px;border-radius:var(--radius-sm);white-space:nowrap}
         .filter-clear.visible{display:inline-flex}
         .results-count{font-size:12px;color:var(--ink-muted);white-space:nowrap}
-
         @media(max-width:768px){
             .filters-inner{gap:6px}
             .filter-search-wrap{flex:1 1 100%;min-width:100%}
@@ -98,6 +103,8 @@
         /* ─── CARD ─── */
         .listing-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--card-border);overflow:hidden;transition:box-shadow var(--transition),transform var(--transition);cursor:pointer;display:flex;flex-direction:column;position:relative;box-shadow:var(--card-shadow)}
         .listing-card:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-3px)}
+        .card-tint-mainland{border-top:3px solid #eab308}
+        .card-tint-island{border-top:3px solid #06b6d4}
         .card-comment-area{height:130px;background:linear-gradient(145deg,#d9e4f0 0%,#c5d6e8 50%,#d0dceb 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:18px 14px}
         .comment-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to top,rgba(0,0,0,0.08) 0%,transparent 55%);z-index:1}
         .comment-text{font-size:13px;line-height:1.55;color:#1a2634;font-style:italic;text-align:center;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;position:relative;z-index:2}
@@ -105,9 +112,11 @@
         .no-comment{color:#7a8a9e;font-size:12px;font-style:normal}
         .badge-real{position:absolute;top:8px;right:8px;background:rgba(255,255,255,0.9);border-radius:100px;padding:3px 9px;font-size:9px;font-weight:600;color:var(--green-dark);display:flex;align-items:center;gap:3px;z-index:3;border:1px solid rgba(39,80,10,0.12)}
         .badge-new{position:absolute;top:8px;right:8px;background:var(--green-light);color:var(--green-dark);border-radius:100px;padding:3px 9px;font-size:9px;font-weight:700;z-index:3;border:1px solid rgba(39,80,10,0.15)}
+        .badge-also-looking{position:absolute;top:8px;right:8px;background:#dbeafe;color:#1e40af;border-radius:100px;padding:3px 9px;font-size:9px;font-weight:700;z-index:3;border:1px solid #bfdbfe}
         .card-save{position:absolute;top:8px;left:8px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.9);border:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition);z-index:3;font-size:12px}
         .card-save:hover{background:#fff;transform:scale(1.08)}
         .card-save.saved{color:#e74c3c;border-color:#fecaca}
+        .type-silhouette{position:absolute;bottom:-6px;right:-6px;font-size:76px;color:rgba(24,95,165,0.06);pointer-events:none;z-index:0;line-height:1;font-family:'Plus Jakarta Sans',sans-serif}
         .card-body{padding:12px 14px;flex:1;display:flex;flex-direction:column;gap:6px}
         .card-ref{font-size:10px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:0.6px}
         .card-type{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--ink);line-height:1.2}
@@ -115,13 +124,13 @@
         .card-location-tag{display:inline-flex;align-items:center;gap:4px;background:var(--surface);border-radius:100px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--ink-muted);border:1px solid var(--card-border)}
         .card-rent{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:var(--ink);letter-spacing:-0.3px;margin-top:2px}
         .card-rent span{font-size:10px;color:var(--ink-muted);font-weight:500;margin-left:2px}
-        .card-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px}
-        .tag-pill{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:100px;font-size:10px;font-weight:500}
-        .tag-light{background:var(--orange-light);color:#b45309}
-        .tag-water{background:var(--blue-light);color:var(--blue-dark)}
-        .tag-parking{background:var(--purple-light);color:#6d28d9}
-        .tag-status{background:var(--green-light);color:var(--green-dark)}
-        .tag-building{background:#f1f5f9;color:#475569;border:1px solid var(--card-border)}
+        .card-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+        .badge-icon{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;font-size:10px;font-weight:500;color:var(--ink);background:var(--surface);border:1px solid var(--card-border)}
+        .badge-icon .icon-circle{width:18px;height:18px;border-radius:50%;background:var(--white);display:flex;align-items:center;justify-content:center;font-size:12px}
+        .badge-light .icon-circle{color:#b45309;background:var(--orange-light)}
+        .badge-water .icon-circle{color:var(--blue-dark);background:var(--blue-light)}
+        .badge-parking .icon-circle{color:#6d28d9;background:var(--purple-light)}
+        .badge-status .icon-circle{color:var(--green-dark);background:var(--green-light)}
         .card-footer{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-top:1px solid var(--card-border);gap:6px}
         .card-date{font-size:10px;color:var(--ink-faint)}
         .card-btn{font-size:11px;font-weight:600;color:var(--white);background:var(--blue);border:none;padding:5px 14px;border-radius:20px;transition:all var(--transition);white-space:nowrap}
@@ -149,6 +158,7 @@
         .detail-comment-hero .detail-quote{position:absolute;top:8px;left:16px;font-size:52px;color:rgba(24,95,165,0.08);font-family:'Georgia',serif;line-height:1;z-index:0}
         .detail-comment-hero .detail-comment-body{font-size:16px;line-height:1.7;color:#1a2634;font-style:italic;text-align:center;position:relative;z-index:1}
         .no-comment-detail{color:#7a8a9e;font-size:15px;font-style:normal}
+        .detail-comment-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;color:var(--blue-dark);margin-bottom:8px;text-align:center}
         .detail-summary{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px;align-items:flex-start}
         .detail-photo-wrap{flex:0 0 280px;max-width:280px;aspect-ratio:4/3;border-radius:var(--radius-lg);overflow:hidden;background:var(--surface);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:center}
         .detail-photo-wrap img{width:100%;height:100%;object-fit:cover}
@@ -178,7 +188,7 @@
         .unavailable-banner{background:var(--orange-light);border:1px solid #fbbf24;border-radius:var(--radius);padding:14px 18px;text-align:center;margin-bottom:16px}
         .countdown{font-size:12px;color:var(--ink-muted);margin-top:6px}
 
-        /* INTRODUCTION FORM (full) */
+        /* INTRODUCTION FORM (updated) */
         .intro-form-wrap{background:var(--white);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:22px 26px;margin-bottom:16px;animation:fadeUp 0.3s ease both}
         @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
         .form-group{margin-bottom:12px}
@@ -220,7 +230,7 @@
         <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 24h response</div>
     </div>
 
-    <!-- FILTER BAR (visible) -->
+    <!-- FILTER BAR -->
     <div class="filters-wrap" id="filters-wrap">
         <div class="filters-inner">
             <span class="filters-label">🔍 Filters</span>
@@ -300,30 +310,28 @@
                 const id = 'RP' + String(i).padStart(4, '0'), area = areas[i % areas.length];
                 const loc = area.includes('Lekki') || area.includes('Ajah') || area.includes('Ikoyi') || area.includes('Victoria Island') ? 'Island' : 'Mainland';
                 const apt = apts[i % apts.length];
+                const listingType = i % 3 === 0 ? 'both' : 'packing';   // simulate some "Also looking"
                 const rr = [{ min: 4e5, max: 6e5 }, { min: 7e5, max: 9e5 }, { min: 1e6, max: 15e5 }, { min: 16e5, max: 2e6 }, { min: 21e5, max: 3e6 }, { min: 31e5, max: 4e6 }, { min: 41e5, max: 5e6 }, { min: 5e6, max: 7e6 }][i % 8];
                 const rent = Math.round((rr.min + Math.random() * (rr.max - rr.min)) / 5e4) * 5e4;
                 const days = Math.floor(Math.random() * 45) + 1;
                 const comment = i % 4 === 0 ? 'Spacious with good natural light. Quiet neighbours.' : i % 4 === 1 ? 'Close to main road, solid security.' : i % 4 === 2 ? 'Recently repainted, responsive landlord.' : 'Well-kept compound with parking.';
                 const bldgSize = ['4 units', '6 units', '8 units', '', '12 units', ''][i % 6];
                 const bldgCond = ['Well maintained', 'Fairly maintained', '', 'Newly built', '', ''][i % 6];
-                list.push({ listingId: id, urlSlug: apt.toLowerCase().replace(/[\/ ]/g, '-') + '-' + area.toLowerCase().replace(/ /g, '-') + '-' + id, apartmentType: apt, area, location: loc, rentRange: formatNaira(rr.min) + ' – ' + formatNaira(rr.max), rentExact: rent, rentMin: rr.min, rentMax: rr.max, light: lights[i % 5], water: waters[i % 3], parking: parks[i % 4], residentStatus: statuses[i % 4], postedDate: new Date(Date.now() - days * 864e5).toISOString().split('T')[0], photosAvailable: 'No', primaryPhoto: '', buildingSize: bldgSize, buildingCondition: bldgCond, timeStayed: '2 years', comments: comment, views: Math.floor(Math.random() * 200) + 10, verificationStatus: 'Verified', listingStatus: 'Available' });
+                list.push({ listingId: id, urlSlug: apt.toLowerCase().replace(/[\/ ]/g, '-') + '-' + area.toLowerCase().replace(/ /g, '-') + '-' + id, apartmentType: apt, area, location: loc, rentRange: formatNaira(rr.min) + ' – ' + formatNaira(rr.max), rentExact: rent, rentMin: rr.min, rentMax: rr.max, light: lights[i % 5], water: waters[i % 3], parking: parks[i % 4], residentStatus: statuses[i % 4], postedDate: new Date(Date.now() - days * 864e5).toISOString().split('T')[0], photosAvailable: 'No', primaryPhoto: '', buildingSize: bldgSize, buildingCondition: bldgCond, timeStayed: '2 years', comments: comment, views: Math.floor(Math.random() * 200) + 10, verificationStatus: 'Verified', listingStatus: 'Available', listingType: listingType });
             }
             return list;
         }
 
         function getRouteInfo() {
             const p = window.location.pathname;
-            const m = p.match(/^\/listings\/(RP\d{4})\/?$/);   // ← fixed to /listings
+            const m = p.match(/^\/listings\/(RP\d{4})\/?$/);
             if (m) return { view: 'detail', listingId: m[1] };
             if (p === '/listings' || p === '/listings/') return { view: 'directory' };
             const q = new URLSearchParams(window.location.search); const id = q.get('id');
             if (id && /^RP\d{4}$/.test(id)) return { view: 'detail', listingId: id };
             return { view: 'directory' };
         }
-        function navigateTo(u, push = true) {
-            if (push) history.pushState(null, '', u);
-            handleRoute(); window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        function navigateTo(u, push = true) { if (push) history.pushState(null, '', u); handleRoute(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
         async function handleRoute() {
             const r = getRouteInfo(); const m = document.getElementById('app-main');
             if (r.view === 'directory') { state.currentDetailId = null; state.currentDetailData = null; state.introductionStatus = null; await renderDirectory(m); }
@@ -339,7 +347,7 @@
             state.allListings = all; state.filteredListings = [...all]; state.displayedCount = Math.min(CONFIG.ITEMS_PER_PAGE, all.length);
             container.innerHTML = getDirectoryHTML();
             populateFilterOptions(); applyFilters(); renderCards(); renderRecentlyViewed(); bindEvents(); updateCount(); updateClearButton();
-            startAutoRefresh();
+            startSuggestionCycle(); startAutoRefresh();
         }
         function getDirectorySkeletonHTML() { let s = ''; for (let i = 0; i < 8; i++) s += `<div class="skeleton-card"><div class="skeleton-photo"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div></div>`; return `<div class="directory-hero"><div class="hero-tag"><div class="hero-dot"></div>Available houses</div><h1>Available <em>Apartments</em></h1><div class="hero-bullets"><span><span class="bullet">•</span>Verified listings</span><span><span class="bullet">•</span>Request introduction</span><span><span class="bullet">•</span>Resident approves</span></div></div><div class="listings-section"><div class="listings-grid">${s}</div></div>`; }
 
@@ -354,6 +362,7 @@
                     <span><span class="bullet">•</span> Resident approves — then you proceed</span>
                 </div>
                 <p class="hero-note">⚠️ These apartments have not been confirmed unavailable by their tenants — availability may change.</p>
+                <div class="suggestion-row" id="suggestion-row"></div>
                 <button class="random-btn" id="random-btn">🎲 Random</button>
             </div>
             <div class="listings-section">
@@ -365,6 +374,36 @@
                 </div>
             </div>`;
         }
+
+        const suggestions = [
+            '3 bedroom in Lekki', '2 bedroom in Surulere', 'Self contain in Yaba',
+            'Mini flat in Ikoyi', '1 bedroom in Ajah', '2 bedroom in Gbagada'
+        ];
+        let suggestionIndex = 0, suggestionTimeout = null;
+        function startSuggestionCycle() {
+            const row = document.getElementById('suggestion-row');
+            if (!row) return;
+            row.innerHTML = `<button class="suggestion-chip" id="suggestion-chip">${suggestions[0]}</button>`;
+            const chip = document.getElementById('suggestion-chip');
+            chip.classList.add('show');
+            chip.addEventListener('click', () => {
+                document.getElementById('filter-search').value = chip.textContent;
+                applyFilters(); renderCards();
+            });
+            let idx = 1;
+            function next() {
+                chip.classList.remove('show');
+                suggestionTimeout = setTimeout(() => {
+                    chip.textContent = suggestions[idx % suggestions.length];
+                    idx++;
+                    chip.classList.add('show');
+                    suggestionTimeout = setTimeout(next, 12000);
+                }, 1200);
+            }
+            suggestionTimeout = setTimeout(next, 6000);
+        }
+        // cleanup on navigation
+        window.addEventListener('beforeunload', () => { if (suggestionTimeout) clearTimeout(suggestionTimeout); });
 
         function populateFilterOptions() {
             const areas = [...new Set(state.allListings.map(l => l.area))].sort();
@@ -418,22 +457,28 @@
             const comment = l.comments && l.comments.trim() ? l.comments : null;
             const commentHTML = comment ? `<div class="comment-quote">"</div><div class="comment-text">${escapeHTML(comment)}</div>` : `<div class="comment-text no-comment">📝 No description yet — tap to view details</div>`;
             const isNew = new Date(l.postedDate) > new Date(Date.now() - 2 * 86400000);
+            const tintClass = l.location === 'Mainland' ? 'card-tint-mainland' : 'card-tint-island';
+            const silhouettes = { 'Self contain': '🛏️', 'Mini flat / 1 bedroom': '🛋️', '2 bedroom flat': '🛏️🛏️', '3 bedroom flat': '🛏️🛏️🛏️' };
+            const typeSilhouette = silhouettes[l.apartmentType] || '🏠';
+            const alsoLookingBadge = (l.listingType === 'both') ? '<div class="badge-also-looking">🔍 Also looking</div>' : '';
             const newBadge = isNew ? '<div class="badge-new">New</div>' : '';
             const locDisplay = l.location === 'Mainland' ? '📍 Mainland' : '🏝️ Island';
             const savedIcon = saved ? '❤️' : '🤍';
             const tags = [
-                `<span class="tag-pill tag-light">⚡ ${escapeHTML(l.light)}</span>`,
-                `<span class="tag-pill tag-water">💧 ${escapeHTML(l.water)}</span>`,
-                `<span class="tag-pill tag-parking">🅿️ ${escapeHTML(l.parking)}</span>`,
-                `<span class="tag-pill tag-status">📅 ${escapeHTML(l.residentStatus)}</span>`
+                `<div class="badge-icon badge-light"><span class="icon-circle">⚡</span>${escapeHTML(l.light)}</div>`,
+                `<div class="badge-icon badge-water"><span class="icon-circle">💧</span>${escapeHTML(l.water)}</div>`,
+                `<div class="badge-icon badge-parking"><span class="icon-circle">🅿️</span>${escapeHTML(l.parking)}</div>`,
+                `<div class="badge-icon badge-status"><span class="icon-circle">📅</span>${escapeHTML(l.residentStatus)}</div>`
             ];
-            if (l.buildingSize) tags.push(`<span class="tag-pill tag-building">🏢 ${escapeHTML(l.buildingSize)}</span>`);
-            if (l.buildingCondition) tags.push(`<span class="tag-pill tag-building">🔨 ${escapeHTML(l.buildingCondition)}</span>`);
+            if (l.buildingSize) tags.push(`<div class="badge-icon"><span class="icon-circle">🏢</span>${escapeHTML(l.buildingSize)}</div>`);
+            if (l.buildingCondition) tags.push(`<div class="badge-icon"><span class="icon-circle">🔨</span>${escapeHTML(l.buildingCondition)}</div>`);
             return `
-            <div class="listing-card" onclick="goToDetail('${l.listingId}')">
+            <div class="listing-card ${tintClass}" onclick="goToDetail('${l.listingId}')">
                 <div class="card-comment-area">
+                    <div class="type-silhouette">${typeSilhouette}</div>
                     <div class="comment-overlay"></div>
                     ${commentHTML}
+                    ${alsoLookingBadge}
                     ${newBadge}
                     <div class="badge-real"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Real</div>
                     <button class="card-save ${saved ? 'saved' : ''}" onclick="event.stopPropagation();toggleSaveListing('${l.listingId}')" title="${saved ? 'Remove from saved' : 'Save listing'}">${savedIcon}</button>
@@ -479,7 +524,7 @@
             document.getElementById('random-btn')?.addEventListener('click', () => { if (state.allListings.length) goToDetail(state.allListings[Math.floor(Math.random() * state.allListings.length)].listingId); });
         }
 
-        // ── DETAIL PAGE (full rich version) ──
+        // ── DETAIL PAGE (rich) ──
         async function renderDetail(container, listingId) {
             container.innerHTML = `<div class="detail-page"><div class="skeleton-line short" style="width:80px;margin-bottom:20px"></div><div class="skeleton-photo" style="height:200px;margin-bottom:16px"></div><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div>`;
             let data; try { data = await apiFetch('listing', { id: listingId }); } catch (e) { data = { success: true, listing: getMockListings().find(l => l.listingId === listingId) || null }; }
@@ -495,7 +540,7 @@
 
         function getDetailHTML(l) {
             const photoHTML = l.photosAvailable === 'Yes' && l.primaryPhoto ? `<img src="${l.primaryPhoto}" alt="${l.apartmentType}">` : `<div class="no-photo-placeholder" style="text-align:center;color:var(--ink-faint);padding:20px">No photo available</div>`;
-            const commentHero = l.comments ? `<div class="detail-comment-hero"><div class="detail-quote">"</div><div class="detail-comment-body">${escapeHTML(l.comments)}</div></div>` : '';
+            const commentHero = l.comments ? `<div class="detail-comment-hero"><div class="detail-comment-label">Comment from resident</div><div class="detail-quote">"</div><div class="detail-comment-body">${escapeHTML(l.comments)}</div></div>` : '';
             const fields = [
                 { label: 'Rent', value: formatNaira(l.rentExact) + '/year', icon: '💰' },
                 { label: 'Light', value: l.light, icon: '💡' },
@@ -516,11 +561,11 @@
             <div class="intro-form-wrap">
                 <h2>Request Introduction</h2>
                 <p style="font-size:13px;color:var(--ink-muted);margin-bottom:16px">Fill in your details – the resident will review your request. No payment required now.</p>
-                <div style="background:var(--blue-light);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;display:flex;gap:8px">
-                    <span>ℹ️</span>
-                    <div style="font-size:13px;color:var(--blue-dark)">
-                        <strong>Introduction fee: ₦2,000</strong><br>
-                        This covers the cost of connecting you with the resident. It's only charged <b>after</b> the resident approves your request and you choose to proceed.
+                <div style="background:var(--orange-light);border:1px solid #fbbf24;border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;display:flex;align-items:flex-start;gap:8px">
+                    <span>⚠️</span>
+                    <div style="font-size:13px;color:#92400e">
+                        <strong>Finder's Fee</strong><br>
+                        If you <b>successfully rent this apartment</b>, you'll be invoiced a <b>finder's fee</b> (separate from any other charges). This fee ranges from <b>₦20,000 to ₦100,000</b> depending on the apartment, and covers our advertising and matching costs. We only get paid when you find your home.
                     </div>
                 </div>
                 <form id="intro-request-form" onsubmit="submitIntroductionRequest(event,'${l.listingId}')">
@@ -545,21 +590,21 @@
                     <div class="form-group">
                         <label>Additional questions for the resident</label>
                         <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
-                            <label style="display:flex;align-items:center;gap:8px;font-weight:400;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink);cursor:pointer">
-                                <input type="checkbox" class="req-extra" value="Can you share photos of the apartment?"> Can you share photos of the apartment?
+                            <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">
+                                <input type="checkbox" class="req-extra" value="Can you share photos of the apartment?" style="margin-top:0;flex-shrink:0;width:16px;height:16px;"> Can you share photos of the apartment?
                             </label>
-                            <label style="display:flex;align-items:center;gap:8px;font-weight:400;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink);cursor:pointer">
-                                <input type="checkbox" class="req-extra" value="Is there a video tour available?"> Is there a video tour available?
+                            <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">
+                                <input type="checkbox" class="req-extra" value="Is there a video tour available?" style="margin-top:0;flex-shrink:0;width:16px;height:16px;"> Is there a video tour available?
                             </label>
-                            <label style="display:flex;align-items:center;gap:8px;font-weight:400;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink);cursor:pointer">
-                                <input type="checkbox" class="req-extra" value="What is the condition of the plumbing/electrical?"> What is the condition of the plumbing/electrical?
+                            <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">
+                                <input type="checkbox" class="req-extra" value="What is the condition of the plumbing/electrical?" style="margin-top:0;flex-shrink:0;width:16px;height:16px;"> What is the condition of the plumbing/electrical?
                             </label>
-                            <label style="display:flex;align-items:center;gap:8px;font-weight:400;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink);cursor:pointer">
-                                <input type="checkbox" class="req-extra" value="Are there any additional fees?"> Are there any additional fees?
+                            <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">
+                                <input type="checkbox" class="req-extra" value="Are there any additional fees?" style="margin-top:0;flex-shrink:0;width:16px;height:16px;"> Are there any additional fees?
                             </label>
                             <div style="display:flex;align-items:center;gap:8px">
-                                <input type="checkbox" id="req-extra-other" class="req-extra" value="Other" onchange="document.getElementById('req-extra-other-text').style.display=this.checked?'block':'none'">
-                                <label for="req-extra-other" style="font-weight:400;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink);cursor:pointer">Other</label>
+                                <input type="checkbox" id="req-extra-other" class="req-extra" value="Other" onchange="document.getElementById('req-extra-other-text').style.display=this.checked?'block':'none'" style="margin-top:0;flex-shrink:0;width:16px;height:16px;">
+                                <label for="req-extra-other" style="font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">Other</label>
                                 <input type="text" id="req-extra-other-text" placeholder="Please specify" style="display:none;flex:1;padding:6px 10px;border:1px solid var(--card-border);border-radius:var(--radius-sm);font-size:13px;margin-left:8px">
                             </div>
                         </div>
@@ -574,15 +619,8 @@
                             <option>Just Exploring</option>
                         </select>
                     </div>
-                    <div style="background:var(--orange-light);border:1px solid #fbbf24;border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;display:flex;align-items:flex-start;gap:8px">
-                        <span>⚠️</span>
-                        <div style="font-size:13px;color:#92400e">
-                            <strong>Finder's Fee</strong><br>
-                            If you <b>successfully rent this apartment</b>, you'll be invoiced a <b>finder's fee</b> (separate from the introduction fee). This covers the cost of advertising and matching — we only get paid when you find your home.
-                        </div>
-                    </div>
                     <div class="form-group" style="display:flex;align-items:flex-start;gap:8px;margin-bottom:16px">
-                        <input type="checkbox" id="req-agree-finder" required style="width:18px;height:18px;margin-top:3px;flex-shrink:0;accent-color:var(--orange)">
+                        <input type="checkbox" id="req-agree-finder" required style="width:16px;height:16px;margin-top:3px;flex-shrink:0;accent-color:var(--orange)">
                         <label for="req-agree-finder" style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink-muted);font-size:13px">
                             I agree that if I rent this apartment, I will be invoiced for the <strong>finder's fee</strong> as described above.
                         </label>
