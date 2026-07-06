@@ -277,7 +277,6 @@
     </style>
 </head>
 <body>
-    <!-- Navigation, etc. unchanged -->
     <nav>
         <a href="/listings" class="nav-logo">
             <img src="rentpal_logo_blue.png" alt="RentPal" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
@@ -358,7 +357,7 @@
 
     <script>
         const CONFIG = {
-            GAS_URL: 'https://script.google.com/macros/s/AKfycbwego4EML1nSOxISgCgwa580Bbx79sHZRlyAXT2Sjm7C1KxmLTUIRHJlgq7aMjH3_j5/exec',
+            GAS_URL: 'https://script.google.com/macros/s/AKfycbyGO5d4q1rrXvFL65wsRla_I_P4tE9UPGapZO2HOvC1fT0uVbdzhg9UIjo5uOiUJgBo/exec',
             ITEMS_PER_PAGE: 12, DEBOUNCE_MS: 250
         };
         const state = {
@@ -419,23 +418,24 @@
         async function handleRoute(){const r=getRouteInfo();const m=document.getElementById('app-main');if(r.view==='directory'){state.currentDetailId=null;state.currentDetailData=null;await renderDirectory(m)}else{state.currentDetailId=r.listingId;await renderDetail(m,r.listingId)}}
         window.addEventListener('popstate',handleRoute);
 
-       async function renderDirectory(container){
-    container.innerHTML=getDirectorySkeletonHTML();
-    let data; 
-    try{
-        data=await apiFetch('listings');
-        console.log('API listings response:', data);  // debug log
-    }catch(e){
-        console.error('API fetch error:', e);
-        data={success:true,listings:getMockListings()};
-    }
-    let all=(data.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available');
-    all.sort((a,b)=>new Date(b.postedDate)-new Date(a.postedDate));
-    state.allListings=all;state.filteredListings=[...all];state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,all.length);
-    container.innerHTML=getDirectoryHTML();
-    populateFilterOptions();applyFilters();renderCards();renderRecentlyViewed();bindEvents();updateCount();updateClearButton();
-    startSuggestionCycle();startAutoRefresh();
+        async function renderDirectory(container){
+            container.innerHTML=getDirectorySkeletonHTML();
+            let data; 
+            try{
+                data=await apiFetch('listings');
+                console.log('API listings response:', data);
+            }catch(e){
+                console.error('API fetch error:', e);
+                data={success:true,listings:getMockListings()};
+            }
+            let all=(data.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available');
+            all.sort((a,b)=>new Date(b.postedDate)-new Date(a.postedDate));
+            state.allListings=all;state.filteredListings=[...all];state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,all.length);
+            container.innerHTML=getDirectoryHTML();
+            populateFilterOptions();applyFilters();renderCards();renderRecentlyViewed();bindEvents();updateCount();updateClearButton();
+            startSuggestionCycle();startAutoRefresh();
         }
+
         function getDirectorySkeletonHTML(){let s='';for(let i=0;i<8;i++)s+=`<div class="skeleton-card"><div class="skeleton-photo"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div></div>`;return`<div class="directory-hero"><div class="hero-tag"><div class="hero-dot"></div>Available houses</div><h1>Available <em>Apartments</em></h1><div class="hero-bullets"><span><span class="bullet">•</span>Verified listings</span><span><span class="bullet">•</span>Request introduction</span><span><span class="bullet">•</span>Resident approves</span></div></div><div class="listings-section"><div class="listings-grid">${s}</div></div>`}
         function getDirectoryHTML(){return `
             <div class="directory-hero">
