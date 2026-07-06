@@ -414,7 +414,7 @@
             return list;
         }
 
-        function getRouteInfo(){const p=window.location.pathname;const m=p.match(/^\/listings\/(RP\d{4})\/?$/);if(m)return{view:'detail',listingId:m[1]};if(p==='/listings'||p==='/listings/')return{view:'directory'};const q=new URLSearchParams(window.location.search);const id=q.get('id');if(id&&/^RP\d{4}$/.test(id))return{view:'detail',listingId:id};return{view:'directory'}}
+        function getRouteInfo(){const p=window.location.pathname;const m=p.match(/^\/listings\/(RP[-]?[\w]+)\/?$/i);if(m)return{view:'detail',listingId:m[1].toUpperCase()};if(p==='/listings'||p==='/listings/')return{view:'directory'};const q=new URLSearchParams(window.location.search);const id=q.get('id');if(id&&/^RP[-]?[\w]+$/i.test(id))return{view:'detail',listingId:id.toUpperCase()};return{view:'directory'}}
         function navigateTo(u,push=true){if(push)history.pushState(null,'',u);handleRoute();window.scrollTo({top:0,behavior:'smooth'})}
         async function handleRoute(){const r=getRouteInfo();const m=document.getElementById('app-main');if(r.view==='directory'){state.currentDetailId=null;state.currentDetailData=null;await renderDirectory(m)}else{state.currentDetailId=r.listingId;await renderDetail(m,r.listingId)}}
         window.addEventListener('popstate',handleRoute);
