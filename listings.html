@@ -435,7 +435,6 @@
     container.innerHTML=getDirectoryHTML();
     populateFilterOptions();applyFilters();renderCards();renderRecentlyViewed();bindEvents();updateCount();updateClearButton();
     startSuggestionCycle();startAutoRefresh();
-}
         }
         function getDirectorySkeletonHTML(){let s='';for(let i=0;i<8;i++)s+=`<div class="skeleton-card"><div class="skeleton-photo"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div></div>`;return`<div class="directory-hero"><div class="hero-tag"><div class="hero-dot"></div>Available houses</div><h1>Available <em>Apartments</em></h1><div class="hero-bullets"><span><span class="bullet">•</span>Verified listings</span><span><span class="bullet">•</span>Request introduction</span><span><span class="bullet">•</span>Resident approves</span></div></div><div class="listings-section"><div class="listings-grid">${s}</div></div>`}
         function getDirectoryHTML(){return `
