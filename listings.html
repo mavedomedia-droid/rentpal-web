@@ -420,14 +420,17 @@
         window.addEventListener('popstate',handleRoute);
 
         async function renderDirectory(container){
-            container.innerHTML=getDirectorySkeletonHTML();
-            let data;try{data=await apiFetch('listings')}catch(e){data={success:true,listings:getMockListings()}}
-            let all=(data.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available');
-            all.sort((a,b)=>new Date(b.postedDate)-new Date(a.postedDate));
-            state.allListings=all;state.filteredListings=[...all];state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,all.length);
-            container.innerHTML=getDirectoryHTML();
-            populateFilterOptions();applyFilters();renderCards();renderRecentlyViewed();bindEvents();updateCount();updateClearButton();
-            startSuggestionCycle();startAutoRefresh();
+    container.innerHTML=getDirectorySkeletonHTML();
+    let data; 
+    try{
+        data=await apiFetch('listings');
+        console.log('API listings response:', data);  // ← ADD THIS LINE
+    }catch(e){
+        console.error('API fetch error:', e);
+        data={success:true,listings:getMockListings()};
+    }
+    // ... rest unchanged
+}
         }
         function getDirectorySkeletonHTML(){let s='';for(let i=0;i<8;i++)s+=`<div class="skeleton-card"><div class="skeleton-photo"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div></div>`;return`<div class="directory-hero"><div class="hero-tag"><div class="hero-dot"></div>Available houses</div><h1>Available <em>Apartments</em></h1><div class="hero-bullets"><span><span class="bullet">•</span>Verified listings</span><span><span class="bullet">•</span>Request introduction</span><span><span class="bullet">•</span>Resident approves</span></div></div><div class="listings-section"><div class="listings-grid">${s}</div></div>`}
         function getDirectoryHTML(){return `
