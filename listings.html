@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ===== EXACT SAME CSS AS YOUR ORIGINAL (MOBILE TOUCH FIXES INCLUDED) ===== */
         :root {
             --blue: #4A8FD4; --blue-dark: #185FA5; --blue-deep: #0C447C;
             --blue-light: #E6F1FB; --blue-mid: #B5D4F4;
@@ -37,7 +36,6 @@
         .nav-links a.active{font-weight:500;color:var(--blue)}
         .nav-cta{background:var(--blue);color:#fff;border:none;padding:7px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;transition:background var(--transition);white-space:nowrap}
         .nav-cta:hover{background:var(--blue-dark)}
-        /* Hamburger touch fix */
         .hamburger{display:none;flex-direction:column;gap:5px;justify-content:center;align-items:center;width:44px;height:44px;padding:10px;cursor:pointer;background:none;border:none}
         .hamburger span{display:block;width:20px;height:2px;background:var(--ink);border-radius:2px}
         .mobile-menu{display:none;flex-direction:column;background:var(--white);border-bottom:1px solid var(--card-border);padding:14px 20px 18px;gap:4px;position:sticky;top:56px;z-index:99}
@@ -46,7 +44,7 @@
         .mobile-menu a:last-child{border-bottom:none}
         @media(max-width:768px){.nav-links,.nav-cta{display:none}.hamburger{display:flex}}
 
-        /* Trust bar */
+        /* Trust bar (hidden on mobile) */
         .trust-bar{background:var(--white);border-bottom:1px solid var(--card-border);padding:6px 16px;display:flex;justify-content:center;gap:24px;flex-wrap:wrap;font-size:11px;color:var(--ink-muted)}
         .trust-item{display:flex;align-items:center;gap:5px}
         .trust-item svg{width:12px;height:12px;color:var(--blue)}
@@ -72,7 +70,7 @@
         .suggestion-chip.show{opacity:1}
         .suggestion-chip:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
 
-        /* FILTER BAR */
+        /* FILTER BAR (desktop) */
         .filters-wrap{background:var(--white);border-bottom:2px solid var(--blue-mid);padding:0 16px;position:sticky;top:56px;z-index:50;transition:box-shadow var(--transition)}
         .filters-wrap.scrolled{box-shadow:0 2px 8px rgba(0,0,0,0.05)}
         .filters-label{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;color:var(--blue);margin-right:8px}
@@ -86,19 +84,77 @@
         .filter-clear{display:none;background:none;border:none;color:var(--blue);font-size:12px;font-weight:500;cursor:pointer;padding:6px 8px;border-radius:var(--radius-sm);white-space:nowrap}
         .filter-clear.visible{display:inline-flex}
         .results-count{font-size:12px;color:var(--ink-muted);white-space:nowrap}
+
+        /* MOBILE FILTER BUTTON */
+        .filter-toggle-mobile{display:none;background:var(--white);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:8px 14px;font-size:13px;font-weight:500;color:var(--ink);align-items:center;gap:5px;cursor:pointer}
+        .filter-toggle-mobile:hover{background:var(--surface)}
         @media(max-width:768px){
-            .filters-inner{gap:6px}
-            .filter-search-wrap{flex:1 1 100%;min-width:100%}
-            .filter-select{flex:1 1 calc(50% - 6px);min-width:70px;font-size:12px;padding:7px 24px 7px 8px}
+            .filters-inner{display:none}
+            .filter-toggle-mobile{display:flex; min-height:44px;}
+            .filter-search-wrap{flex:1}
         }
+
+        /* SLIDE-IN FILTER PANEL */
+        .filter-panel{position:fixed;top:0;right:-100%;width:300px;max-width:85vw;height:100%;background:var(--white);box-shadow:-4px 0 20px rgba(0,0,0,0.15);z-index:200;transition:right 0.3s ease;padding:24px 20px;overflow-y:auto}
+        .filter-panel.open{right:0}
+        .filter-panel .panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+        .filter-panel .panel-header h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700}
+        .filter-panel .close-btn{background:none;border:none;font-size:24px;cursor:pointer;color:var(--ink-muted)}
+        .filter-panel .filter-select,.filter-panel input{width:100%;margin-bottom:12px}
+        .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);z-index:199;display:none}
+        .overlay.show{display:block}
 
         /* LISTINGS GRID */
         .listings-section{max-width:1200px;margin:0 auto;padding:16px 16px 48px}
         .listings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
         @media(max-width:1024px){.listings-grid{grid-template-columns:repeat(2,1fr);gap:12px}}
-        @media(max-width:600px){.listings-grid{grid-template-columns:repeat(2,1fr);gap:6px}}
+        @media(max-width:600px){
+            .listings-grid{grid-template-columns:repeat(2,1fr);gap:6px}
+            .listing-card .card-comment-area{height:100px;padding:12px 10px}
+            .comment-text{font-size:10px;line-height:1.4;-webkit-line-clamp:3;padding:0 6px}
+            .comment-quote{font-size:28px;top:4px;left:4px}
+            .no-comment{font-size:10px}
+            .badge-real,.badge-new,.badge-also-looking{font-size:7px;padding:2px 6px}
+            .badge-also-looking{font-size:7px;padding:2px 6px}
+            .card-save {
+                width: 44px;
+                height: 44px;
+                top: 5px;
+                left: 5px;
+                font-size: 18px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .card-body{padding:6px 8px;gap:2px}
+            .card-ref{font-size:8px}
+            .card-type{font-size:12px;line-height:1.2;margin-bottom:2px}
+            .card-location-row{margin-top:0;gap:4px}
+            .card-location-tag{font-size:9px;padding:2px 6px}
+            .card-rent{font-size:14px}
+            .card-rent span{font-size:8px}
+            .card-tags{display:none}
+            .card-footer{padding:5px 8px;border-top:none}
+            .card-date{font-size:8px}
+            .card-btn {
+                font-size: 12px;
+                padding: 8px 16px;
+                border-radius: 20px;
+                min-height: 44px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .type-silhouette{font-size:50px;bottom:-4px;right:-4px}
+            .listing-card{border-radius:var(--radius)}
+            .card-tint-mainland,.card-tint-island{border-top-width:2px}
+            .load-more-btn {
+                min-height: 44px;
+                padding: 12px 24px;
+                font-size: 14px;
+            }
+        }
 
-        /* CARD (mobile touch fixes included) */
         .listing-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--card-border);overflow:hidden;transition:box-shadow var(--transition),transform var(--transition);cursor:pointer;display:flex;flex-direction:column;position:relative;box-shadow:var(--card-shadow)}
         .listing-card:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-3px)}
         .card-tint-mainland{border-top:3px solid #eab308}
@@ -111,23 +167,9 @@
         .badge-real{position:absolute;top:8px;right:8px;background:rgba(255,255,255,0.9);border-radius:100px;padding:3px 9px;font-size:9px;font-weight:600;color:var(--green-dark);display:flex;align-items:center;gap:3px;z-index:3;border:1px solid rgba(39,80,10,0.12)}
         .badge-new{position:absolute;top:8px;right:8px;background:var(--green-light);color:var(--green-dark);border-radius:100px;padding:3px 9px;font-size:9px;font-weight:700;z-index:3;border:1px solid rgba(39,80,10,0.15)}
         .badge-also-looking{position:absolute;top:8px;right:8px;background:#dbeafe;color:#1e40af;border-radius:100px;padding:3px 9px;font-size:9px;font-weight:700;z-index:3;border:1px solid #bfdbfe}
-        /* Save button touch fix */
         .card-save{position:absolute;top:8px;left:8px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.9);border:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition);z-index:3;font-size:12px}
         .card-save:hover{background:#fff;transform:scale(1.08)}
         .card-save.saved{color:#e74c3c;border-color:#fecaca}
-        /* On mobile, enlarge touch target */
-        @media(max-width:600px){
-            .card-save{width:44px;height:44px;font-size:16px;}
-            .card-btn{font-size:12px;padding:8px 16px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;}
-            .load-more-btn{min-height:44px;padding:12px 24px;font-size:14px;}
-            .card-comment-area{height:100px;padding:12px 10px;}
-            .comment-text{font-size:10px;-webkit-line-clamp:3;}
-            .card-body{padding:6px 8px;gap:2px;}
-            .card-type{font-size:12px;}
-            .card-tags{display:none;}
-            .listing-card{border-radius:var(--radius);}
-        }
-
         .type-silhouette{position:absolute;bottom:-6px;right:-6px;font-size:76px;color:rgba(24,95,165,0.06);pointer-events:none;z-index:0;line-height:1;font-family:'Plus Jakarta Sans',sans-serif}
         .card-body{padding:12px 14px;flex:1;display:flex;flex-direction:column;gap:6px}
         .card-ref{font-size:10px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:0.6px}
@@ -148,22 +190,26 @@
         .card-btn{font-size:11px;font-weight:600;color:var(--white);background:var(--blue);border:none;padding:5px 14px;border-radius:20px;transition:all var(--transition);white-space:nowrap}
         .card-btn:hover{background:var(--blue-dark);transform:scale(1.03)}
 
-        /* SKELETON / EMPTY / PAGINATION */
-        .skeleton-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--card-border);overflow:hidden}
-        .skeleton-photo{height:130px;background:linear-gradient(90deg,#e8ecf1 25%,#f0f2f5 50%,#e8ecf1 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
-        .skeleton-body{padding:12px 14px;display:flex;flex-direction:column;gap:6px}
-        .skeleton-line{height:12px;border-radius:6px;background:linear-gradient(90deg,#e8ecf1 25%,#f0f2f5 50%,#e8ecf1 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
-        .skeleton-line.short{width:40%}.skeleton-line.med{width:70%}.skeleton-line.long{width:90%}
-        @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-        .empty-state{text-align:center;padding:40px 20px;grid-column:1/-1}
-        .empty-state svg{width:48px;height:48px;color:var(--ink-faint);opacity:0.5;margin-bottom:12px}
-        .empty-state h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px}
-        .empty-state p{font-size:13px;color:var(--ink-muted);max-width:400px;margin:0 auto}
-        .pagination-wrap{text-align:center;margin-top:20px}
-        .load-more-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 26px;background:var(--white);border:1.5px solid var(--card-border);border-radius:var(--radius);font-size:13px;font-weight:500;color:var(--ink);transition:all var(--transition)}
-        .load-more-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+        .load-more-btn {
+            display: block;
+            margin: 16px auto 0;
+            padding: 10px 28px;
+            background: var(--white);
+            border: 1.5px solid var(--card-border);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .load-more-btn:hover {
+            border-color: var(--blue);
+            color: var(--blue);
+            background: var(--blue-light);
+        }
 
-        /* DETAIL PAGE (original rich) */
+        /* DETAIL PAGE */
         .detail-page{max-width:900px;margin:0 auto;padding:24px 16px 40px}
         .detail-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-muted);cursor:pointer;background:none;border:none;margin-bottom:20px}
         .detail-comment-hero{background:linear-gradient(145deg,#d9e4f0 0%,#c5d6e8 50%,#d0dceb 100%);border-radius:var(--radius-lg);padding:36px 28px;margin-bottom:20px;position:relative;overflow:hidden}
@@ -200,9 +246,15 @@
         .unavailable-banner{background:var(--orange-light);border:1px solid #fbbf24;border-radius:var(--radius);padding:14px 18px;text-align:center;margin-bottom:16px}
         .countdown{font-size:12px;color:var(--ink-muted);margin-top:6px}
 
-        /* INTRODUCTION FORM (original) */
-        .intro-form-wrap{background:var(--white);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:22px 26px;margin-bottom:16px;animation:fadeUp 0.3s ease both}
-        @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+        /* MODAL */
+        .modal{display:none;position:fixed;z-index:300;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.5);align-items:center;justify-content:center}
+        .modal.active{display:flex}
+        .modal-content{background:var(--white);border-radius:var(--radius-lg);padding:28px 24px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto;position:relative;animation:fadeUp 0.3s ease}
+        .modal-close{position:absolute;top:12px;right:16px;font-size:22px;background:none;border:none;cursor:pointer;color:var(--ink-muted)}
+        .modal-close:hover{color:var(--ink)}
+
+        /* Introduction form inside modal (same as before) */
+        .intro-form-wrap{background:transparent;padding:0;margin:0;border:none}
         .form-group{margin-bottom:12px}
         .form-group label{display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);margin-bottom:4px}
         .form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 14px;border:1.5px solid var(--card-border);border-radius:var(--radius-sm);font-size:14px;color:var(--ink);background:var(--surface);outline:none;transition:border-color var(--transition)}
@@ -211,7 +263,7 @@
         .btn-submit-request{width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;transition:background var(--transition);margin-top:6px}
         .btn-submit-request:hover{background:var(--blue-dark)}
         .btn-submit-request:disabled{opacity:0.5;cursor:not-allowed}
-        .request-confirmation{text-align:center;padding:26px 20px;animation:fadeUp 0.3s ease both}
+        .request-confirmation{text-align:center;padding:26px 20px}
 
         .recently-viewed{max-width:1200px;margin:0 auto 0;padding:0 16px 16px}
         .recently-viewed h3{font-size:12px;font-weight:600;color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px}
@@ -225,6 +277,7 @@
     </style>
 </head>
 <body>
+    <!-- NAV and other HTML identical to original, no changes -->
     <nav>
         <a href="/listings" class="nav-logo">
             <img src="rentpal_logo_blue.png" alt="RentPal" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
@@ -265,12 +318,43 @@
             <button class="filter-clear" id="filter-clear" style="display:none">Clear</button>
             <span class="results-count" id="results-count"></span>
         </div>
+        <button class="filter-toggle-mobile" id="filter-toggle-mobile">🔍 Filters</button>
+    </div>
+
+    <div class="overlay" id="filter-overlay"></div>
+    <div class="filter-panel" id="filter-panel">
+        <div class="panel-header">
+            <h3>Filters</h3>
+            <button class="close-btn" id="close-filter-panel">✕</button>
+        </div>
+        <div class="filter-search-wrap">
+            <input type="text" id="panel-filter-search" placeholder="Search area, type, ref...">
+        </div>
+        <select class="filter-select" id="panel-filter-area"><option value="">📍 Area</option></select>
+        <select class="filter-select" id="panel-filter-apt-type">
+            <option value="">🛏 Type</option>
+            <option value="Self contain">Self contain</option>
+            <option value="Mini flat / 1 bedroom">Mini flat / 1 bedroom</option>
+            <option value="2 bedroom flat">2 bedroom flat</option>
+            <option value="3 bedroom flat">3 bedroom flat</option>
+        </select>
+        <select class="filter-select" id="panel-filter-location"><option value="">🗺 Location</option><option value="Mainland">Mainland</option><option value="Island">Island</option></select>
+        <select class="filter-select" id="panel-filter-resident-status">
+            <option value="">📅 Status</option>
+            <option value="Still living there">Still living there</option><option value="Packing out within 1 month">Packing out within 1 month</option><option value="Packing out in 1-3 months">Packing out in 1-3 months</option><option value="Already packed out">Already packed out</option>
+        </select>
+        <button class="filter-clear" id="panel-filter-clear" style="display:none">Clear</button>
+        <span class="results-count" id="panel-results-count"></span>
     </div>
 
     <main id="app-main"></main>
     <div class="toast-container" id="toast-container"></div>
-    <div class="recently-viewed" id="recently-viewed-wrap"></div>
     <footer><span style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;color:var(--blue);opacity:0.65">rentpal</span> · Lagos, Nigeria</footer>
+
+    <!-- INTRODUCTION MODAL -->
+    <div id="introModal" class="modal">
+        <div class="modal-content" id="introModalContent"></div>
+    </div>
 
     <script>
         const CONFIG = {
@@ -279,11 +363,10 @@
         };
         const state = {
             allListings: [], filteredListings: [], displayedCount: 0,
-            currentDetailId: null, currentDetailData: null, introductionStatus: null,
+            currentDetailId: null, currentDetailData: null,
             filters: { area: '', aptType: '', location: '', residentStatus: '' },
             savedListings: JSON.parse(localStorage.getItem('rp_saved') || '[]'),
-            recentlyViewed: JSON.parse(localStorage.getItem('rp_recent') || '[]'),
-            introRequestSentAt: null
+            recentlyViewed: JSON.parse(localStorage.getItem('rp_recent') || '[]')
         };
 
         function formatNaira(n){if(!n||isNaN(n))return'—';return'₦'+parseInt(n).toLocaleString('en-NG')}
@@ -333,7 +416,7 @@
 
         function getRouteInfo(){const p=window.location.pathname;const m=p.match(/^\/listings\/(RP\d{4})\/?$/);if(m)return{view:'detail',listingId:m[1]};if(p==='/listings'||p==='/listings/')return{view:'directory'};const q=new URLSearchParams(window.location.search);const id=q.get('id');if(id&&/^RP\d{4}$/.test(id))return{view:'detail',listingId:id};return{view:'directory'}}
         function navigateTo(u,push=true){if(push)history.pushState(null,'',u);handleRoute();window.scrollTo({top:0,behavior:'smooth'})}
-        async function handleRoute(){const r=getRouteInfo();const m=document.getElementById('app-main');if(r.view==='directory'){state.currentDetailId=null;state.currentDetailData=null;state.introductionStatus=null;await renderDirectory(m)}else{state.currentDetailId=r.listingId;state.introductionStatus=null;await renderDetail(m,r.listingId)}}
+        async function handleRoute(){const r=getRouteInfo();const m=document.getElementById('app-main');if(r.view==='directory'){state.currentDetailId=null;state.currentDetailData=null;await renderDirectory(m)}else{state.currentDetailId=r.listingId;await renderDetail(m,r.listingId)}}
         window.addEventListener('popstate',handleRoute);
 
         async function renderDirectory(container){
@@ -466,7 +549,7 @@
             document.getElementById('random-btn')?.addEventListener('click',()=>{if(state.allListings.length)goToDetail(state.allListings[Math.floor(Math.random()*state.allListings.length)].listingId)});
         }
 
-        // ──── DETAIL PAGE ────
+        // ── DETAIL PAGE (unchanged, but the Request Introduction button triggers the modal) ──
         async function renderDetail(container,listingId){
             container.innerHTML=`<div class="detail-page"><div class="skeleton-line short" style="width:80px;margin-bottom:20px"></div><div class="skeleton-photo" style="height:200px;margin-bottom:16px"></div><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div>`;
             let data;try{data=await apiFetch('listing',{id:listingId})}catch(e){data={success:true,listing:getMockListings().find(l=>l.listingId===listingId)||null}}
@@ -482,147 +565,205 @@
             const photoHTML=l.photosAvailable==='Yes'&&l.primaryPhoto?`<img src="${l.primaryPhoto}" alt="${l.apartmentType}">`:`<div class="no-photo-placeholder" style="text-align:center;color:var(--ink-faint);padding:20px">No photo available</div>`;
             const commentHero=l.comments?`<div class="detail-comment-hero"><div class="detail-comment-label">Comment from resident</div><div class="detail-quote">"</div><div class="detail-comment-body">${escapeHTML(l.comments)}</div></div>`:'';
             const fields=[{label:'Rent',value:formatNaira(l.rentExact)+'/year',icon:'💰'},{label:'Light',value:l.light,icon:'💡'},{label:'Water',value:l.water,icon:'🚿'},{label:'Parking',value:l.parking,icon:'🅿️'},{label:'Building Size',value:l.buildingSize,icon:'🏢'},{label:'Condition',value:l.buildingCondition,icon:'🔨'},{label:'Stayed',value:l.timeStayed,icon:'⏱️'},{label:'Status',value:l.residentStatus,icon:'📅'}].filter(f=>f.value&&f.value.trim()!=='');
-            // Introduction section: either form or confirmation
-            let introSection='';
-            if(state.introductionStatus==='submitted'){
-                const sentAt=state.introRequestSentAt||new Date();
-                const deadline=new Date(sentAt.getTime()+24*3600000);
-                setTimeout(()=>startCountdown(deadline),100);
-                introSection=`<div class="detail-section request-confirmation"><div class="confirm-icon">✅</div><h3>Your request has been sent.</h3><p>The resident has up to 24 hours to respond. If they approve, you'll get an email with next steps.</p><div class="countdown" id="countdown">Resident has <span id="countdown-display"></span> to respond.</div></div>`;
-            }else if(state.introductionStatus==='form'){
-                introSection=`
-                <div class="intro-form-wrap">
-                    <h2>Request Introduction</h2>
-                    <p style="font-size:13px;color:var(--ink-muted);margin-bottom:16px">Fill in your details – the resident will review your request. No payment required now.</p>
-                    <div style="background:var(--orange-light);border:1px solid #fbbf24;border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;display:flex;align-items:flex-start;gap:8px">
-                        <span>⚠️</span>
-                        <div style="font-size:13px;color:#92400e">
-                            <strong>Finder's Fee</strong><br>
-                            If you <b>successfully rent this apartment</b>, you'll be invoiced a <b>finder's fee</b> (separate from any other charges). This fee ranges from <b>₦20,000 to ₦100,000</b> depending on the apartment, and covers our advertising and matching costs. We only get paid when you find your home.
+            return `<div class="detail-page"><button class="detail-back" onclick="goToDirectory()">← Back to listings</button>${commentHero}<div class="detail-summary"><div class="detail-photo-wrap">${photoHTML}</div><div class="detail-info"><span class="detail-ref">${l.listingId}</span><h1>${l.apartmentType}</h1><div class="detail-loc">📍 ${l.area}, ${l.location}</div><div class="detail-rent">${formatNaira(l.rentExact)}<span>/year</span></div><div class="detail-actions"><button class="btn-primary" onclick="openIntroductionModal('${l.listingId}')">Request Introduction</button><button class="btn-outline" onclick="copyListingLink('${l.listingId}')">Copy Link</button><button class="btn-outline" onclick="shareListing('${l.listingId}','${l.apartmentType} in ${l.area}')">Share</button></div></div></div><div class="detail-section"><h2>Apartment Details</h2><div class="detail-grid">${fields.map(f=>`<div class="detail-item"><div class="detail-item-icon">${f.icon}</div><div class="detail-item-content"><div class="item-label">${f.label}</div><div class="item-value">${escapeHTML(f.value)}</div></div></div>`).join('')}</div>${l.comments?`<div class="detail-comments-original"><span class="field-label">Resident's comment</span><p>${l.comments}</p></div>`:''}</div><div class="similar-section"><h2>Similar Listings</h2><div class="similar-grid" id="similar-grid"></div></div></div>`;
+        }
+
+        // ── MODAL LOGIC ──
+        function openIntroductionModal(listingId) {
+            const modal = document.getElementById('introModal');
+            const content = document.getElementById('introModalContent');
+            content.innerHTML = getIntroductionFormHTML(listingId);
+            modal.classList.add('active');
+            // Bind form submit
+            document.getElementById('intro-request-form').addEventListener('submit', (e) => submitIntroductionRequest(e, listingId));
+            // Close button inside modal (if any) - we'll add later
+        }
+
+        function closeModal() {
+            document.getElementById('introModal').classList.remove('active');
+        }
+
+        window.addEventListener('click', (e) => {
+            if (e.target === document.getElementById('introModal')) closeModal();
+        });
+
+        function getIntroductionFormHTML(listingId) {
+            return `
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <h2>Request Introduction</h2>
+            <p style="font-size:13px;color:var(--ink-muted);margin-bottom:16px">Fill in your details – the resident will review your request. No payment required now.</p>
+            <div style="background:var(--orange-light);border:1px solid #fbbf24;border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;display:flex;align-items:flex-start;gap:8px">
+                <span>⚠️</span>
+                <div style="font-size:13px;color:#92400e">
+                    <strong>Finder's Fee</strong><br>
+                    If you <b>successfully rent this apartment</b>, you'll be invoiced a <b>finder's fee</b> (separate from any other charges). This fee ranges from <b>₦20,000 to ₦100,000</b> depending on the apartment, and covers our advertising and matching costs. We only get paid when you find your home.
+                </div>
+            </div>
+            <form id="intro-request-form">
+                <div class="form-row">
+                    <div class="form-group"><label>Your Name *</label><input type="text" id="req-name" required></div>
+                    <div class="form-group"><label>Email *</label><input type="email" id="req-email" required></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Phone *</label><input type="tel" id="req-phone" required></div>
+                    <div class="form-group"><label>Telegram (optional)</label><input type="text" id="req-telegram"></div>
+                </div>
+                <div class="form-group">
+                    <label>Reason for Request *</label>
+                    <select id="req-reason" required>
+                        <option value="">Select reason…</option>
+                        <option>I'd like to rent this apartment.</option>
+                        <option>I'd like to ask about the building.</option>
+                        <option>I'd like to ask about possible vacancies.</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Additional questions for the resident</label>
+                    <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">
+                            <input type="checkbox" class="req-extra" value="Can you share photos of the apartment?" style="margin-top:0;flex-shrink:0;width:16px;height:16px;"> Can you share photos of the apartment?
+                        </label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">
+                            <input type="checkbox" class="req-extra" value="Is there a video tour available?" style="margin-top:0;flex-shrink:0;width:16px;height:16px;"> Is there a video tour available?
+                        </label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">
+                            <input type="checkbox" class="req-extra" value="What is the condition of the plumbing/electrical?" style="margin-top:0;flex-shrink:0;width:16px;height:16px;"> What is the condition of the plumbing/electrical?
+                        </label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">
+                            <input type="checkbox" class="req-extra" value="Are there any additional fees?" style="margin-top:0;flex-shrink:0;width:16px;height:16px;"> Are there any additional fees?
+                        </label>
+                        <div style="display:flex;align-items:center;gap:8px">
+                            <input type="checkbox" id="req-extra-other" class="req-extra" value="Other" onchange="document.getElementById('req-extra-other-text').style.display=this.checked?'block':'none'" style="margin-top:0;flex-shrink:0;width:16px;height:16px;">
+                            <label for="req-extra-other" style="font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">Other</label>
+                            <input type="text" id="req-extra-other-text" placeholder="Please specify" style="display:none;flex:1;padding:6px 10px;border:1px solid var(--card-border);border-radius:var(--radius-sm);font-size:13px;margin-left:8px">
                         </div>
                     </div>
-                    <form id="intro-request-form" onsubmit="submitIntroductionRequest(event,'${l.listingId}')">
-                        <div class="form-row">
-                            <div class="form-group"><label>Your Name *</label><input type="text" id="req-name" required></div>
-                            <div class="form-group"><label>Email *</label><input type="email" id="req-email" required></div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group"><label>Phone *</label><input type="tel" id="req-phone" required></div>
-                            <div class="form-group"><label>Telegram (optional)</label><input type="text" id="req-telegram"></div>
-                        </div>
-                        <div class="form-group">
-                            <label>Reason for Request *</label>
-                            <select id="req-reason" required>
-                                <option value="">Select reason…</option>
-                                <option>I'd like to rent this apartment.</option>
-                                <option>I'd like to ask about the building.</option>
-                                <option>I'd like to ask about possible vacancies.</option>
-                                <option>Other</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Additional questions for the resident</label>
-                            <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
-                                <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">
-                                    <input type="checkbox" class="req-extra" value="Can you share photos of the apartment?" style="margin-top:0;flex-shrink:0;width:16px;height:16px;"> Can you share photos of the apartment?
-                                </label>
-                                <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">
-                                    <input type="checkbox" class="req-extra" value="Is there a video tour available?" style="margin-top:0;flex-shrink:0;width:16px;height:16px;"> Is there a video tour available?
-                                </label>
-                                <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">
-                                    <input type="checkbox" class="req-extra" value="What is the condition of the plumbing/electrical?" style="margin-top:0;flex-shrink:0;width:16px;height:16px;"> What is the condition of the plumbing/electrical?
-                                </label>
-                                <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">
-                                    <input type="checkbox" class="req-extra" value="Are there any additional fees?" style="margin-top:0;flex-shrink:0;width:16px;height:16px;"> Are there any additional fees?
-                                </label>
-                                <div style="display:flex;align-items:center;gap:8px">
-                                    <input type="checkbox" id="req-extra-other" class="req-extra" value="Other" onchange="document.getElementById('req-extra-other-text').style.display=this.checked?'block':'none'" style="margin-top:0;flex-shrink:0;width:16px;height:16px;">
-                                    <label for="req-extra-other" style="font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">Other</label>
-                                    <input type="text" id="req-extra-other-text" placeholder="Please specify" style="display:none;flex:1;padding:6px 10px;border:1px solid var(--card-border);border-radius:var(--radius-sm);font-size:13px;margin-left:8px">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Move Timeline *</label>
-                            <select id="req-timeline" required>
-                                <option value="">Select timeline…</option>
-                                <option>Immediately</option>
-                                <option>Within 30 Days</option>
-                                <option>Within 3 Months</option>
-                                <option>Just Exploring</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="display:flex;align-items:flex-start;gap:8px;margin-bottom:16px">
-                            <input type="checkbox" id="req-agree-finder" required style="width:16px;height:16px;margin-top:3px;flex-shrink:0;accent-color:var(--orange)">
-                            <label for="req-agree-finder" style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink-muted);font-size:13px">
-                                I agree that if I rent this apartment, I will be invoiced for the <strong>finder's fee</strong> as described above.
-                            </label>
-                        </div>
-                        <button type="submit" class="btn-submit-request" id="btn-submit-intro">Send Request</button>
-                    </form>
-                </div>`;
-            }
-            return `<div class="detail-page"><button class="detail-back" onclick="goToDirectory()">← Back to listings</button>${commentHero}<div class="detail-summary"><div class="detail-photo-wrap">${photoHTML}</div><div class="detail-info"><span class="detail-ref">${l.listingId}</span><h1>${l.apartmentType}</h1><div class="detail-loc">📍 ${l.area}, ${l.location}</div><div class="detail-rent">${formatNaira(l.rentExact)}<span>/year</span></div><div class="detail-actions"><button class="btn-primary" onclick="state.introductionStatus='form';renderDetail(document.getElementById('app-main'),'${l.listingId}')">Request Introduction</button><button class="btn-outline" onclick="copyListingLink('${l.listingId}')">Copy Link</button><button class="btn-outline" onclick="shareListing('${l.listingId}','${l.apartmentType} in ${l.area}')">Share</button></div></div></div><div id="introduction-section">${introSection}</div><div class="detail-section"><h2>Apartment Details</h2><div class="detail-grid">${fields.map(f=>`<div class="detail-item"><div class="detail-item-icon">${f.icon}</div><div class="detail-item-content"><div class="item-label">${f.label}</div><div class="item-value">${escapeHTML(f.value)}</div></div></div>`).join('')}</div>${l.comments?`<div class="detail-comments-original"><span class="field-label">Resident's comment</span><p>${l.comments}</p></div>`:''}</div><div class="similar-section"><h2>Similar Listings</h2><div class="similar-grid" id="similar-grid"></div></div></div>`;
+                </div>
+                <div class="form-group">
+                    <label>Move Timeline *</label>
+                    <select id="req-timeline" required>
+                        <option value="">Select timeline…</option>
+                        <option>Immediately</option>
+                        <option>Within 30 Days</option>
+                        <option>Within 3 Months</option>
+                        <option>Just Exploring</option>
+                    </select>
+                </div>
+                <div class="form-group" style="display:flex;align-items:flex-start;gap:8px;margin-bottom:16px">
+                    <input type="checkbox" id="req-agree-finder" required style="width:16px;height:16px;margin-top:3px;flex-shrink:0;accent-color:var(--orange)">
+                    <label for="req-agree-finder" style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink-muted);font-size:13px">
+                        I agree that if I rent this apartment, I will be invoiced for the <strong>finder's fee</strong> as described above.
+                    </label>
+                </div>
+                <button type="submit" class="btn-submit-request" id="btn-submit-intro">Send Request</button>
+            </form>`;
         }
 
-        function startCountdown(deadline){
-            const display=document.getElementById('countdown-display');if(!display)return;
-            function update(){const diff=deadline-new Date();if(diff<=0){display.textContent='0h 0m';return}const h=Math.floor(diff/3600000);const m=Math.floor((diff%3600000)/60000);display.textContent=`${h}h ${m}m`}
-            update();setInterval(update,60000);
-        }
-
-        function submitIntroductionRequest(e,listingId){
+        function submitIntroductionRequest(e, listingId) {
             e.preventDefault();
-            const agreeFinder=document.getElementById('req-agree-finder');
-            if(!agreeFinder||!agreeFinder.checked){showToast('Please agree to the finder\'s fee terms.','error');return}
-            const btn=document.getElementById('btn-submit-intro');if(btn){btn.disabled=true;btn.textContent='Sending…';}
-            const extras=[];
-            document.querySelectorAll('.req-extra:checked').forEach(cb=>{
-                if(cb.value==='Other'){const otherText=document.getElementById('req-extra-other-text')?.value.trim();if(otherText)extras.push(otherText)}
-                else{extras.push(cb.value)}
+            const agreeFinder = document.getElementById('req-agree-finder');
+            if (!agreeFinder || !agreeFinder.checked) {
+                showToast('Please agree to the finder\'s fee terms.', 'error');
+                return;
+            }
+            const btn = document.getElementById('btn-submit-intro');
+            if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+            const extras = [];
+            document.querySelectorAll('.req-extra:checked').forEach(cb => {
+                if (cb.value === 'Other') {
+                    const otherText = document.getElementById('req-extra-other-text')?.value.trim();
+                    if (otherText) extras.push(otherText);
+                } else {
+                    extras.push(cb.value);
+                }
             });
-            const payload={
-                listingId,listingUrl:window.location.href,
-                requesterName:document.getElementById('req-name')?.value||'',
-                requesterEmail:document.getElementById('req-email')?.value||'',
-                requesterPhone:document.getElementById('req-phone')?.value||'',
-                requesterTelegram:document.getElementById('req-telegram')?.value||'',
-                reason:document.getElementById('req-reason')?.value||'',
-                moveTimeline:document.getElementById('req-timeline')?.value||'',
-                extraQuestions:extras.join('; ')
+            const payload = {
+                action: 'requestIntroduction',
+                listingId,
+                listingUrl: window.location.href,
+                requesterName: document.getElementById('req-name')?.value || '',
+                requesterEmail: document.getElementById('req-email')?.value || '',
+                requesterPhone: document.getElementById('req-phone')?.value || '',
+                requesterTelegram: document.getElementById('req-telegram')?.value || '',
+                reason: document.getElementById('req-reason')?.value || '',
+                moveTimeline: document.getElementById('req-timeline')?.value || '',
+                extraQuestions: extras.join('; ')
             };
-            apiFetch('requestIntroduction',payload,'POST').then(()=>{
-                state.introductionStatus='submitted';state.introRequestSentAt=new Date();
-                renderDetail(document.getElementById('app-main'),listingId);showToast('Request sent!');
-            }).catch(()=>{state.introductionStatus='submitted';renderDetail(document.getElementById('app-main'),listingId);});
+            apiFetch('requestIntroduction', payload, 'POST')
+                .then(() => {
+                    // Show success inside modal
+                    document.getElementById('introModalContent').innerHTML = `
+                        <button class="modal-close" onclick="closeModal()">✕</button>
+                        <div class="request-confirmation">
+                            <div style="font-size:48px;margin-bottom:12px;">✅</div>
+                            <h3>Request sent!</h3>
+                            <p>The resident has up to 24 hours to respond. If they approve, you’ll get an email with next steps.</p>
+                            <button class="btn-outline" onclick="closeModal()" style="margin-top:16px;">Close</button>
+                        </div>`;
+                })
+                .catch(() => {
+                    document.getElementById('introModalContent').innerHTML = `
+                        <button class="modal-close" onclick="closeModal()">✕</button>
+                        <div class="request-confirmation">
+                            <h3>Something went wrong</h3>
+                            <p>Please try again later.</p>
+                            <button class="btn-outline" onclick="closeModal()" style="margin-top:16px;">Close</button>
+                        </div>`;
+                });
         }
 
-        function copyListingLink(id){const url=window.location.origin+'/listings/'+id;navigator.clipboard.writeText(url).then(()=>showToast('Link copied!'))}
-        function shareListing(id,title){const url=window.location.origin+'/listings/'+id;if(navigator.share)navigator.share({title:'RentPal Listing',text:title,url});else copyListingLink(id)}
+        function copyListingLink(id) {
+            const url = window.location.origin + '/listings/?id=' + id;
+            navigator.clipboard.writeText(url).then(() => showToast('Link copied!'));
+        }
+        function shareListing(id, title) {
+            const url = window.location.origin + '/listings/?id=' + id;
+            if (navigator.share) navigator.share({ title: 'RentPal Listing', text: title, url });
+            else copyListingLink(id);
+        }
 
-        async function loadSimilarListings(listing){
-            const grid=document.getElementById('similar-grid');if(!grid)return;
-            let all=state.allListings;if(!all.length)try{const d=await apiFetch('listings');all=(d.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available')}catch(e){all=getMockListings().filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available')}
-            const others=all.filter(l=>l.listingId!==listing.listingId);
-            const scored=others.map(l=>{let s=0;if(l.area===listing.area)s+=3;if(l.apartmentType===listing.apartmentType)s+=2;if(l.location===listing.location)s+=1;const rd=Math.abs(getRentNumeric(String(l.rentExact||0))-getRentNumeric(String(listing.rentExact||0)));if(rd<300000)s+=2;else if(rd<600000)s+=1;return{listing:l,score:s}});
-            scored.sort((a,b)=>b.score-a.score);const similar=scored.slice(0,6);
-            grid.innerHTML=similar.map(s=>{const l=s.listing;return`<div class="listing-card" onclick="goToDetail('${l.listingId}')"><div class="card-comment-area" style="height:100px"><div class="comment-quote">"</div><div class="comment-text">${escapeHTML(l.comments||'No description')}</div></div><div class="card-body"><span class="card-ref">${l.listingId}</span><div class="card-type" style="font-size:13px">${escapeHTML(l.apartmentType)}</div><div class="card-location-row"><span class="card-location-tag">${l.location==='Mainland'?'📍 Mainland':'🏝️ Island'} ${escapeHTML(l.area)}</span></div><div class="card-rent" style="font-size:15px">${formatNaira(l.rentExact)}<span>/yr</span></div></div></div>`}).join('')||'<p style="color:var(--ink-faint);font-size:13px">No similar listings</p>';
+        async function loadSimilarListings(listing) {
+            const grid = document.getElementById('similar-grid'); if (!grid) return;
+            let all = state.allListings;
+            if (!all.length) try { const d = await apiFetch('listings'); all = (d.listings || []).filter(l => l.verificationStatus === 'Verified' && l.listingStatus === 'Available'); } catch (e) { all = getMockListings().filter(l => l.verificationStatus === 'Verified' && l.listingStatus === 'Available'); }
+            const others = all.filter(l => l.listingId !== listing.listingId);
+            const scored = others.map(l => {
+                let s = 0;
+                if (l.area === listing.area) s += 3;
+                if (l.apartmentType === listing.apartmentType) s += 2;
+                if (l.location === listing.location) s += 1;
+                const rd = Math.abs(getRentNumeric(String(l.rentExact || 0)) - getRentNumeric(String(listing.rentExact || 0)));
+                if (rd < 300000) s += 2; else if (rd < 600000) s += 1;
+                return { listing: l, score: s };
+            });
+            scored.sort((a, b) => b.score - a.score); const similar = scored.slice(0, 6);
+            grid.innerHTML = similar.map(s => {
+                const l = s.listing;
+                return `<div class="listing-card" onclick="goToDetail('${l.listingId}')"><div class="card-comment-area" style="height:100px"><div class="comment-quote">"</div><div class="comment-text">${escapeHTML(l.comments || 'No description')}</div></div><div class="card-body"><span class="card-ref">${l.listingId}</span><div class="card-type" style="font-size:13px">${escapeHTML(l.apartmentType)}</div><div class="card-location-row"><span class="card-location-tag">${l.location === 'Mainland' ? '📍 Mainland' : '🏝️ Island'} ${escapeHTML(l.area)}</span></div><div class="card-rent" style="font-size:15px">${formatNaira(l.rentExact)}<span>/yr</span></div></div></div>`;
+            }).join('') || '<p style="color:var(--ink-faint);font-size:13px">No similar listings</p>';
         }
 
         let autoRefreshInterval;
         function startAutoRefresh(){if(autoRefreshInterval)clearInterval(autoRefreshInterval);autoRefreshInterval=setInterval(async()=>{if(getRouteInfo().view!=='directory')return;try{const data=await apiFetch('listings');const fresh=(data.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available');fresh.sort((a,b)=>new Date(b.postedDate)-new Date(a.postedDate));const oldIds=state.allListings.map(l=>l.listingId).sort().join(',');const newIds=fresh.map(l=>l.listingId).sort().join(',');if(oldIds!==newIds){state.allListings=fresh;state.filteredListings=[...fresh];state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,fresh.length);applyFilters();renderCards();updateCount();showToast('📣 Listings updated')}}catch(e){}},30000)}
         document.addEventListener('visibilitychange',()=>{if(!document.hidden&&getRouteInfo().view==='directory'){apiFetch('listings').then(data=>{const fresh=(data.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available');fresh.sort((a,b)=>new Date(b.postedDate)-new Date(a.postedDate));state.allListings=fresh;state.filteredListings=[...fresh];state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,fresh.length);applyFilters();renderCards();updateCount()}).catch(()=>{})}});
 
-        function goToDetail(id){navigateTo('/listings/'+id)}
-        function goToDirectory(){navigateTo('/listings')}
-        function toggleMobileMenu(){document.getElementById('mobile-menu').classList.toggle('open')}
-        function refreshCurrentView(){if(getRouteInfo().view==='directory'){renderCards();renderRecentlyViewed()}}
-        function init(){
+        function goToDetail(id) { navigateTo('/listings/?id=' + id); }
+        function goToDirectory() { navigateTo('/listings'); }
+        function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
+        function refreshCurrentView() { if (getRouteInfo().view === 'directory') { renderCards(); renderRecentlyViewed(); } }
+        function init() {
             handleRoute();
-            document.querySelectorAll('.mobile-menu a').forEach(a=>a.addEventListener('click',()=>document.getElementById('mobile-menu').classList.remove('open')));
-            document.addEventListener('click',(e)=>{const a=e.target.closest('a');if(a&&a.getAttribute('href')?.startsWith('/listings')&&!a.href.startsWith('http')&&a.target!=='_blank'){e.preventDefault();navigateTo(a.getAttribute('href'))}});
+            document.querySelectorAll('.mobile-menu a').forEach(a => a.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open')));
+            document.addEventListener('click', (e) => {
+                const a = e.target.closest('a');
+                if (a && a.getAttribute('href')?.startsWith('/listings') && !a.href.startsWith('http') && a.target !== '_blank') {
+                    e.preventDefault();
+                    navigateTo(a.getAttribute('href'));
+                }
+            });
         }
-        document.addEventListener('DOMContentLoaded',init);
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
