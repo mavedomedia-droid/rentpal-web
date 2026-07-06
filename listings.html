@@ -109,22 +109,29 @@
         .listings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
         @media(max-width:1024px){.listings-grid{grid-template-columns:repeat(2,1fr);gap:12px}}
         @media(max-width:600px){
-            .listings-grid{grid-template-columns:repeat(2,1fr);gap:8px}
-            /* compact card */
-            .listing-card .card-comment-area{height:90px;padding:12px 10px}
-            .comment-text{font-size:11px;line-height:1.4;-webkit-line-clamp:3}
-            .card-body{padding:8px 10px;gap:3px}
-            .card-type{font-size:13px}
-            .card-location-tag{font-size:10px;padding:2px 8px}
-            .card-rent{font-size:16px}
-            .card-rent span{font-size:9px}
+            .listings-grid{grid-template-columns:repeat(2,1fr);gap:6px}
+            /* compact mobile card */
+            .listing-card .card-comment-area{height:100px;padding:12px 10px}
+            .comment-text{font-size:10px;line-height:1.4;-webkit-line-clamp:3;padding:0 6px}
+            .comment-quote{font-size:28px;top:4px;left:4px}
+            .no-comment{font-size:10px}
+            .badge-real,.badge-new,.badge-also-looking{font-size:7px;padding:2px 6px}
+            .badge-also-looking{font-size:7px;padding:2px 6px}
+            .card-save{width:22px;height:22px;top:5px;left:5px}
+            .card-body{padding:6px 8px;gap:2px}
+            .card-ref{font-size:8px}
+            .card-type{font-size:12px;line-height:1.2;margin-bottom:2px}
+            .card-location-row{margin-top:0;gap:4px}
+            .card-location-tag{font-size:9px;padding:2px 6px}
+            .card-rent{font-size:14px}
+            .card-rent span{font-size:8px}
             .card-tags{display:none}
-            .card-footer{padding:6px 10px}
-            .card-btn{padding:4px 10px;font-size:10px}
-            .badge-icon{display:none}
-            .badge-real,.badge-new,.badge-also-looking{font-size:8px;padding:2px 6px}
-            .card-save{width:24px;height:24px}
-            .type-silhouette{font-size:50px}
+            .card-footer{padding:5px 8px;border-top:none}
+            .card-date{font-size:8px}
+            .card-btn{font-size:9px;padding:3px 10px;border-radius:15px}
+            .type-silhouette{font-size:50px;bottom:-4px;right:-4px}
+            .listing-card{border-radius:var(--radius)}
+            .card-tint-mainland,.card-tint-island{border-top-width:2px}
         }
 
         .listing-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--card-border);overflow:hidden;transition:box-shadow var(--transition),transform var(--transition);cursor:pointer;display:flex;flex-direction:column;position:relative;box-shadow:var(--card-shadow)}
@@ -500,7 +507,6 @@
         function updateCount(){const el=document.getElementById('results-count');if(!el)return;const t=state.filteredListings.length;el.textContent=`${Math.min(state.displayedCount,t)}/${t}`;document.getElementById('panel-results-count').textContent=el.textContent}
 
         function bindEvents(){
-            // desktop filters
             document.getElementById('filter-search').addEventListener('input',debounce(()=>{applyFilters();renderCards();syncFiltersToPanel()},CONFIG.DEBOUNCE_MS));
             document.getElementById('filter-area').addEventListener('change',function(){state.filters.area=this.value;applyFilters();renderCards();syncFiltersToPanel()});
             document.getElementById('filter-apt-type').addEventListener('change',function(){state.filters.aptType=this.value;applyFilters();renderCards();syncFiltersToPanel()});
@@ -512,7 +518,6 @@
                 document.querySelectorAll('.filter-select').forEach(s=>s.value='');
                 applyFilters();renderCards();syncFiltersToPanel();showToast('Filters cleared')
             });
-            // mobile panel triggers
             document.getElementById('filter-toggle-mobile').addEventListener('click',()=>{
                 document.getElementById('filter-panel').classList.add('open');
                 document.getElementById('filter-overlay').classList.add('show');
@@ -526,7 +531,6 @@
                 document.getElementById('filter-panel').classList.remove('open');
                 document.getElementById('filter-overlay').classList.remove('show');
             });
-            // panel filters
             document.getElementById('panel-filter-search').addEventListener('input',debounce(()=>{
                 document.getElementById('filter-search').value=document.getElementById('panel-filter-search').value;
                 applyFilters();renderCards();syncFiltersToPanel()
@@ -558,7 +562,7 @@
             document.getElementById('random-btn')?.addEventListener('click',()=>{if(state.allListings.length)goToDetail(state.allListings[Math.floor(Math.random()*state.allListings.length)].listingId)});
         }
 
-        // ── DETAIL PAGE (identical to previous) ──
+        // ── DETAIL PAGE (unchanged) ──
         async function renderDetail(container,listingId){ /* unchanged */ }
         function getDetailHTML(l){ /* unchanged */ }
         function startCountdown(deadline){ /* unchanged */ }
