@@ -90,7 +90,7 @@
         .filter-toggle-mobile:hover{background:var(--surface)}
         @media(max-width:768px){
             .filters-inner{display:none}
-            .filter-toggle-mobile{display:flex; min-height:44px;}  /* ensure touch height */
+            .filter-toggle-mobile{display:flex; min-height:44px;}
             .filter-search-wrap{flex:1}
         }
 
@@ -110,20 +110,18 @@
         @media(max-width:1024px){.listings-grid{grid-template-columns:repeat(2,1fr);gap:12px}}
         @media(max-width:600px){
             .listings-grid{grid-template-columns:repeat(2,1fr);gap:6px}
-            /* compact mobile card */
             .listing-card .card-comment-area{height:100px;padding:12px 10px}
             .comment-text{font-size:10px;line-height:1.4;-webkit-line-clamp:3;padding:0 6px}
             .comment-quote{font-size:28px;top:4px;left:4px}
             .no-comment{font-size:10px}
             .badge-real,.badge-new,.badge-also-looking{font-size:7px;padding:2px 6px}
             .badge-also-looking{font-size:7px;padding:2px 6px}
-            /* Enlarged touch targets for mobile */
             .card-save {
                 width: 44px;
                 height: 44px;
                 top: 5px;
                 left: 5px;
-                font-size: 18px;        /* keep heart visible */
+                font-size: 18px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -154,10 +152,6 @@
                 min-height: 44px;
                 padding: 12px 24px;
                 font-size: 14px;
-            }
-            /* Make sure filter toggle is tall enough */
-            .filter-toggle-mobile {
-                min-height: 44px;
             }
         }
 
@@ -196,7 +190,6 @@
         .card-btn{font-size:11px;font-weight:600;color:var(--white);background:var(--blue);border:none;padding:5px 14px;border-radius:20px;transition:all var(--transition);white-space:nowrap}
         .card-btn:hover{background:var(--blue-dark);transform:scale(1.03)}
 
-        /* Load More button default */
         .load-more-btn {
             display: block;
             margin: 16px auto 0;
@@ -216,7 +209,7 @@
             background: var(--blue-light);
         }
 
-        /* DETAIL PAGE (unchanged) */
+        /* DETAIL PAGE */
         .detail-page{max-width:900px;margin:0 auto;padding:24px 16px 40px}
         .detail-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-muted);cursor:pointer;background:none;border:none;margin-bottom:20px}
         .detail-comment-hero{background:linear-gradient(145deg,#d9e4f0 0%,#c5d6e8 50%,#d0dceb 100%);border-radius:var(--radius-lg);padding:36px 28px;margin-bottom:20px;position:relative;overflow:hidden}
@@ -253,7 +246,6 @@
         .unavailable-banner{background:var(--orange-light);border:1px solid #fbbf24;border-radius:var(--radius);padding:14px 18px;text-align:center;margin-bottom:16px}
         .countdown{font-size:12px;color:var(--ink-muted);margin-top:6px}
 
-        /* INTRODUCTION FORM (unchanged) */
         .intro-form-wrap{background:var(--white);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:22px 26px;margin-bottom:16px;animation:fadeUp 0.3s ease both}
         @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
         .form-group{margin-bottom:12px}
@@ -278,7 +270,6 @@
     </style>
 </head>
 <body>
-    <!-- NAV and rest of HTML identical to original, no changes needed -->
     <nav>
         <a href="/listings" class="nav-logo">
             <img src="rentpal_logo_blue.png" alt="RentPal" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
@@ -296,7 +287,6 @@
         <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 24h response</div>
     </div>
 
-    <!-- FILTER BAR (desktop) -->
     <div class="filters-wrap" id="filters-wrap">
         <div class="filters-inner" id="filters-inner">
             <span class="filters-label">🔍 Filters</span>
@@ -323,7 +313,6 @@
         <button class="filter-toggle-mobile" id="filter-toggle-mobile">🔍 Filters</button>
     </div>
 
-    <!-- SLIDE-IN PANEL FOR MOBILE -->
     <div class="overlay" id="filter-overlay"></div>
     <div class="filter-panel" id="filter-panel">
         <div class="panel-header">
@@ -376,6 +365,7 @@
         function toggleSaveListing(id){const i=state.savedListings.indexOf(id);if(i>-1){state.savedListings.splice(i,1);showToast('Unsaved')}else{state.savedListings.push(id);showToast('Saved!')}localStorage.setItem('rp_saved',JSON.stringify(state.savedListings));refreshCurrentView()}
         function addToRecentlyViewed(l){const e=state.recentlyViewed.find(r=>r.listingId===l.listingId);if(e){state.recentlyViewed=[e,...state.recentlyViewed.filter(r=>r.listingId!==l.listingId)]}else{state.recentlyViewed.unshift({listingId:l.listingId,apartmentType:l.apartmentType,area:l.area,location:l.location,rentExact:l.rentExact});if(state.recentlyViewed.length>10)state.recentlyViewed.pop()}localStorage.setItem('rp_recent',JSON.stringify(state.recentlyViewed))}
         function isSaved(id){return state.savedListings.indexOf(id)>-1}
+        function escapeHTML(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 
         async function apiFetch(a,p={},m='GET'){const u=new URL(CONFIG.GAS_URL);u.searchParams.set('action',a);if(m==='GET')Object.entries(p).forEach(([k,v])=>u.searchParams.set(k,v));try{const o={method:m};if(m==='POST'){o.body=JSON.stringify(p);o.headers={'Content-Type':'application/json'}}const r=await fetch(u.toString(),o);if(!r.ok)throw new Error('API error');return await r.json()}catch(e){console.warn('API fail, mock',e);return getMockResponse(a,p)}}
         function getMockResponse(a,p){if(a==='listings')return{success:true,listings:getMockListings()};if(a==='listing'&&p.id){const l=getMockListings().find(l=>l.listingId===p.id);return{success:true,listing:l||null}}if(a==='requestIntroduction')return{success:true,requestId:'REQ'+Date.now(),message:'OK',status:'pending'};return{success:false}}
@@ -406,8 +396,9 @@
         async function handleRoute(){const r=getRouteInfo();const m=document.getElementById('app-main');if(r.view==='directory'){state.currentDetailId=null;state.currentDetailData=null;state.introductionStatus=null;await renderDirectory(m)}else{state.currentDetailId=r.listingId;state.introductionStatus=null;await renderDetail(m,r.listingId)}}
         window.addEventListener('popstate',handleRoute);
 
+        // ===== DIRECTORY RENDERING =====
         async function renderDirectory(container){
-            container.innerHTML=getDirectorySkeletonHTML();
+            container.innerHTML = getDirectorySkeletonHTML();
             let data; try{data=await apiFetch('listings')}catch(e){data={success:true,listings:getMockListings()}}
             let all=(data.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available');
             all.sort((a,b)=>new Date(b.postedDate)-new Date(a.postedDate));
@@ -418,7 +409,6 @@
             startSuggestionCycle(); startAutoRefresh();
         }
         function getDirectorySkeletonHTML(){let s='';for(let i=0;i<8;i++)s+=`<div class="skeleton-card"><div class="skeleton-photo"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div></div>`;return`<div class="directory-hero"><div class="hero-tag"><div class="hero-dot"></div>Available houses</div><h1>Available <em>Apartments</em></h1><div class="hero-bullets"><span><span class="bullet">•</span>Verified listings</span><span><span class="bullet">•</span>Request introduction</span><span><span class="bullet">•</span>Resident approves</span></div></div><div class="listings-section"><div class="listings-grid">${s}</div></div>`}
-
         function getDirectoryHTML(){
             return `
             <div class="directory-hero">
@@ -460,7 +450,6 @@
             areaSelect.innerHTML='<option value="">📍 Area</option>';
             areas.forEach(a=>{const opt=document.createElement('option');opt.value=a;opt.textContent=a;areaSelect.appendChild(opt)})
         }
-
         function applyFilters(){
             let filtered=[...state.allListings];
             const f=state.filters;
@@ -474,7 +463,6 @@
             state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,filtered.length);
             updateClearButton(); updateCount();
         }
-
         function syncFiltersToPanel(){
             document.getElementById('panel-filter-search').value=document.getElementById('filter-search').value;
             document.getElementById('panel-filter-area').value=state.filters.area;
@@ -483,13 +471,11 @@
             document.getElementById('panel-filter-resident-status').value=state.filters.residentStatus;
             updateClearButton();
         }
-
         function updateClearButton(){
             const anyActive=Object.values(state.filters).some(v=>v!=='')||(document.getElementById('filter-search')?.value||'').trim()!=='';
             document.getElementById('filter-clear').style.display=anyActive?'inline-flex':'none';
             document.getElementById('panel-filter-clear').style.display=anyActive?'block':'none';
         }
-
         function renderCards(){
             const grid=document.getElementById('listings-grid'), empty=document.getElementById('empty-state'), pag=document.getElementById('pagination-wrap');
             if(!grid)return;
@@ -502,7 +488,6 @@
             else{if(pag)pag.innerHTML=''}
             updateCount();
         }
-
         function getCardHTML(l){
             const saved=isSaved(l.listingId);
             const comment=l.comments&&l.comments.trim()?l.comments:null;
@@ -549,11 +534,26 @@
                 </div>
             </div>`;
         }
-        function escapeHTML(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 
-        function renderRecentlyViewed(){ /* unchanged */ }
+        function renderRecentlyViewed(){
+            const container = document.querySelector('.recently-viewed');
+            if(!container) return;
+            if(state.recentlyViewed.length===0){container.style.display='none';return}
+            container.style.display='block';
+            container.innerHTML = `
+                <h3>Recently viewed</h3>
+                <div class="rv-scroll">
+                    ${state.recentlyViewed.map(l=>`
+                        <div class="rv-card" onclick="goToDetail('${l.listingId}')">
+                            <div class="rv-ref">${l.listingId}</div>
+                            <div class="rv-type">${escapeHTML(l.apartmentType)}</div>
+                            <div class="rv-rent">${formatNaira(l.rentExact)}</div>
+                            <div style="font-size:10px;color:var(--ink-muted)">${l.area}</div>
+                        </div>
+                    `).join('')}
+                </div>`;
+        }
         function updateCount(){const el=document.getElementById('results-count');if(!el)return;const t=state.filteredListings.length;el.textContent=`${Math.min(state.displayedCount,t)}/${t}`;document.getElementById('panel-results-count').textContent=el.textContent}
-
         function bindEvents(){
             document.getElementById('filter-search').addEventListener('input',debounce(()=>{applyFilters();renderCards();syncFiltersToPanel()},CONFIG.DEBOUNCE_MS));
             document.getElementById('filter-area').addEventListener('change',function(){state.filters.area=this.value;applyFilters();renderCards();syncFiltersToPanel()});
@@ -610,23 +610,207 @@
             document.getElementById('random-btn')?.addEventListener('click',()=>{if(state.allListings.length)goToDetail(state.allListings[Math.floor(Math.random()*state.allListings.length)].listingId)});
         }
 
-        // ── DETAIL PAGE (unchanged) ──
-        async function renderDetail(container,listingId){ /* unchanged */ }
-        function getDetailHTML(l){ /* unchanged */ }
-        function startCountdown(deadline){ /* unchanged */ }
-        function submitIntroductionRequest(e,listingId){ /* unchanged */ }
-        function copyListingLink(id){ /* unchanged */ }
-        function shareListing(id,title){ /* unchanged */ }
-        async function loadSimilarListings(listing){ /* unchanged */ }
-        let autoRefreshInterval;
-        function startAutoRefresh(){ /* unchanged */ }
-        document.addEventListener('visibilitychange',()=>{ /* unchanged */ });
-        function goToDetail(id){navigateTo('/listings/'+id)}
-        function goToDirectory(){navigateTo('/listings')}
-        function toggleMobileMenu(){document.getElementById('mobile-menu').classList.toggle('open')}
-        function refreshCurrentView(){if(getRouteInfo().view==='directory'){renderCards();renderRecentlyViewed()}}
-        function init(){handleRoute();document.querySelectorAll('.mobile-menu a').forEach(a=>a.addEventListener('click',()=>document.getElementById('mobile-menu').classList.remove('open')));document.addEventListener('click',(e)=>{const a=e.target.closest('a');if(a&&a.getAttribute('href')?.startsWith('/listings')&&!a.href.startsWith('http')&&a.target!=='_blank'){e.preventDefault();navigateTo(a.getAttribute('href'))}})}
-        document.addEventListener('DOMContentLoaded',init);
+        // ===== DETAIL PAGE =====
+        async function renderDetail(container, listingId) {
+            container.innerHTML = `<div class="detail-page"><p style="text-align:center;padding:40px;">Loading listing...</p></div>`;
+            try {
+                const resp = await apiFetch('listing', { id: listingId });
+                if (!resp.success || !resp.listing) {
+                    container.innerHTML = `<div class="detail-page"><p style="text-align:center;padding:40px;">Listing not found.</p></div>`;
+                    return;
+                }
+                const l = resp.listing;
+                state.currentDetailData = l;
+                addToRecentlyViewed(l);
+                container.innerHTML = getDetailHTML(l);
+                document.getElementById('back-btn')?.addEventListener('click', goToDirectory);
+                document.getElementById('save-btn-detail')?.addEventListener('click', () => toggleSaveListing(l.listingId));
+                document.getElementById('share-btn')?.addEventListener('click', () => shareListing(l.listingId, l.apartmentType + ' in ' + l.area));
+                document.getElementById('request-intro-btn')?.addEventListener('click', () => {
+                    document.getElementById('intro-form').style.display = 'block';
+                });
+                document.getElementById('cancel-intro-btn')?.addEventListener('click', () => {
+                    document.getElementById('intro-form').style.display = 'none';
+                });
+                document.getElementById('intro-form-element')?.addEventListener('submit', (e) => submitIntroductionRequest(e, l.listingId));
+                loadSimilarListings(l);
+                if (l.listingType === 'both') {
+                    const unavailableBanner = document.getElementById('unavailable-banner');
+                    if (unavailableBanner) {
+                        unavailableBanner.style.display = 'block';
+                        startCountdown(l.postedDate);
+                    }
+                }
+            } catch (err) {
+                container.innerHTML = `<div class="detail-page"><p style="text-align:center;padding:40px;">Error loading listing.</p></div>`;
+                console.error(err);
+            }
+        }
+
+        function getDetailHTML(l) {
+            const saved = isSaved(l.listingId);
+            const savedIcon = saved ? '❤️' : '🤍';
+            const comment = l.comments || 'No description provided.';
+            const alsoLooking = l.listingType === 'both';
+            const lightEmoji = l.light?.includes('Band A') ? '⚡' : '💡';
+            const waterEmoji = l.water?.includes('Running') ? '💧' : '🚰';
+            const parkingEmoji = l.parking?.includes('Compound') ? '🅿️' : '🚗';
+            const statusColor = l.residentStatus === 'Already packed out' ? '#ef4444' : '#10b981';
+            const similarGridId = 'similar-grid-' + l.listingId;
+
+            return `
+            <div class="detail-page">
+                <button class="detail-back" id="back-btn">← Back to listings</button>
+                <div class="detail-comment-hero">
+                    <div class="detail-quote">"</div>
+                    <div class="detail-comment-label">Resident's comment</div>
+                    <div class="detail-comment-body">${escapeHTML(comment)}</div>
+                </div>
+                ${alsoLooking ? `<div class="unavailable-banner" id="unavailable-banner" style="display:none">
+                    <strong>⚠️ This apartment may become unavailable soon</strong><br>
+                    <span id="countdown-timer" class="countdown"></span>
+                </div>` : ''}
+                <div class="detail-summary">
+                    <div class="detail-photo-wrap" style="background:var(--surface); display:flex; align-items:center; justify-content:center; font-size:64px;">🏠</div>
+                    <div class="detail-info">
+                        <div class="detail-ref">${l.listingId} · ${timeAgo(l.postedDate)}</div>
+                        <h1>${escapeHTML(l.apartmentType)}</h1>
+                        <div class="detail-loc">📍 ${escapeHTML(l.area)} · ${l.location}</div>
+                        <div class="detail-rent">${formatNaira(l.rentExact)}<span>/year</span></div>
+                        <div class="detail-actions">
+                            <button class="btn-primary" id="request-intro-btn">✋ Request Introduction</button>
+                            <button class="btn-outline" id="save-btn-detail">${savedIcon} ${saved ? 'Saved' : 'Save'}</button>
+                            <button class="btn-outline" id="share-btn">🔗 Share</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="intro-form" class="intro-form-wrap" style="display:none;">
+                    <h3>Request an introduction</h3>
+                    <form id="intro-form-element">
+                        <div class="form-row">
+                            <div class="form-group"><label>Your name</label><input type="text" required></div>
+                            <div class="form-group"><label>Phone</label><input type="tel" required></div>
+                        </div>
+                        <div class="form-group"><label>Email</label><input type="email" required></div>
+                        <div class="form-group"><label>Message (optional)</label><textarea rows="3"></textarea></div>
+                        <button type="submit" class="btn-submit-request">Send Request</button>
+                        <button type="button" class="btn-outline" style="margin-top:8px;width:100%;" id="cancel-intro-btn">Cancel</button>
+                    </form>
+                </div>
+
+                <div class="detail-section">
+                    <h2>Apartment Details</h2>
+                    <div class="detail-grid">
+                        <div class="detail-item"><div class="detail-item-icon">${lightEmoji}</div><div class="detail-item-content"><div class="item-label">Light</div><div class="item-value">${escapeHTML(l.light)}</div></div></div>
+                        <div class="detail-item"><div class="detail-item-icon">${waterEmoji}</div><div class="detail-item-content"><div class="item-label">Water</div><div class="item-value">${escapeHTML(l.water)}</div></div></div>
+                        <div class="detail-item"><div class="detail-item-icon">${parkingEmoji}</div><div class="detail-item-content"><div class="item-label">Parking</div><div class="item-value">${escapeHTML(l.parking)}</div></div></div>
+                        <div class="detail-item"><div class="detail-item-icon">📅</div><div class="detail-item-content"><div class="item-label">Resident Status</div><div class="item-value" style="color:${statusColor}">${escapeHTML(l.residentStatus)}</div></div></div>
+                        ${l.buildingSize ? `<div class="detail-item"><div class="detail-item-icon">🏢</div><div class="detail-item-content"><div class="item-label">Building Size</div><div class="item-value">${escapeHTML(l.buildingSize)}</div></div></div>` : ''}
+                        ${l.buildingCondition ? `<div class="detail-item"><div class="detail-item-icon">🔨</div><div class="detail-item-content"><div class="item-label">Condition</div><div class="item-value">${escapeHTML(l.buildingCondition)}</div></div></div>` : ''}
+                        ${l.timeStayed ? `<div class="detail-item"><div class="detail-item-icon">⏳</div><div class="detail-item-content"><div class="item-label">Time Stayed</div><div class="item-value">${escapeHTML(l.timeStayed)}</div></div></div>` : ''}
+                    </div>
+                </div>
+                <div class="detail-comments-original">
+                    <strong>Original comment:</strong> “${escapeHTML(comment)}”
+                </div>
+                <div class="similar-section">
+                    <h2>Similar listings</h2>
+                    <div class="similar-grid" id="${similarGridId}">Loading...</div>
+                </div>
+            </div>`;
+        }
+
+        function startCountdown(deadline) {
+            const el = document.getElementById('countdown-timer');
+            if (!el) return;
+            const target = new Date(deadline);
+            target.setDate(target.getDate() + 7);
+            function update() {
+                const now = new Date();
+                const diff = target - now;
+                if (diff <= 0) {
+                    el.textContent = 'Unavailable';
+                    return;
+                }
+                const d = Math.floor(diff / (1000*60*60*24));
+                const h = Math.floor((diff / (1000*60*60)) % 24);
+                el.textContent = `Expected unavailable in ${d}d ${h}h`;
+            }
+            update();
+            setInterval(update, 60000);
+        }
+
+        function submitIntroductionRequest(e, listingId) {
+            e.preventDefault();
+            const form = e.target;
+            const name = form.querySelector('input[type="text"]').value.trim();
+            const phone = form.querySelector('input[type="tel"]').value.trim();
+            if (!name || !phone) {
+                showToast('Please fill name and phone', 'error');
+                return;
+            }
+            showToast('Request sent! (mock)', 'success');
+            form.reset();
+            document.getElementById('intro-form').style.display = 'none';
+        }
+
+        function copyListingLink(id) {
+            const url = window.location.origin + '/listings/' + id;
+            navigator.clipboard.writeText(url).then(() => showToast('Link copied!')).catch(() => showToast('Copy failed', 'error'));
+        }
+
+        function shareListing(id, title) {
+            if (navigator.share) {
+                navigator.share({ title, url: window.location.href }).catch(() => {});
+            } else {
+                copyListingLink(id);
+            }
+        }
+
+        async function loadSimilarListings(listing) {
+            const gridId = 'similar-grid-' + listing.listingId;
+            const grid = document.getElementById(gridId);
+            if (!grid) return;
+            const similar = state.allListings.filter(l => l.listingId !== listing.listingId && l.apartmentType === listing.apartmentType).slice(0, 3);
+            if (similar.length === 0) {
+                grid.innerHTML = '<p style="font-size:13px;color:var(--ink-muted);">No similar listings.</p>';
+                return;
+            }
+            grid.innerHTML = similar.map(l => {
+                return `
+                <div class="listing-card card-tint-${l.location==='Mainland'?'mainland':'island'}" onclick="goToDetail('${l.listingId}')">
+                    <div class="card-comment-area" style="height:80px;padding:12px;">
+                        <span class="card-type" style="font-size:12px;">${escapeHTML(l.apartmentType)}</span>
+                    </div>
+                    <div class="card-body" style="padding:8px;">
+                        <div class="card-ref">${l.listingId}</div>
+                        <div class="card-rent" style="font-size:14px;">${formatNaira(l.rentExact)}<span>/yr</span></div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function startAutoRefresh() { /* optional auto-refresh */ }
+        document.addEventListener('visibilitychange',()=>{});
+
+        function goToDetail(id){ navigateTo('/listings/'+id); }
+        function goToDirectory(){ navigateTo('/listings'); }
+        function toggleMobileMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
+        function refreshCurrentView(){ if(getRouteInfo().view==='directory'){ renderCards(); renderRecentlyViewed(); } }
+
+        function init(){
+            handleRoute();
+            document.querySelectorAll('.mobile-menu a').forEach(a=>a.addEventListener('click', ()=>document.getElementById('mobile-menu').classList.remove('open')));
+            document.addEventListener('click', (e)=>{
+                const a=e.target.closest('a');
+                if(a&&a.getAttribute('href')?.startsWith('/listings')&&!a.href.startsWith('http')&&a.target!=='_blank'){
+                    e.preventDefault();
+                    navigateTo(a.getAttribute('href'));
+                }
+            });
+        }
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
