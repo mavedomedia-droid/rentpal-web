@@ -166,7 +166,8 @@
         .no-comment{color:#7a8a9e;font-size:12px;font-style:normal}
         .badge-real{position:absolute;top:8px;right:8px;background:rgba(255,255,255,0.9);border-radius:100px;padding:3px 9px;font-size:9px;font-weight:600;color:var(--green-dark);display:flex;align-items:center;gap:3px;z-index:3;border:1px solid rgba(39,80,10,0.12)}
         .badge-new{position:absolute;top:8px;right:8px;background:var(--green-light);color:var(--green-dark);border-radius:100px;padding:3px 9px;font-size:9px;font-weight:700;z-index:3;border:1px solid rgba(39,80,10,0.15)}
-        .badge-also-looking{position:absolute;top:8px;right:8px;background:#dbeafe;color:#1e40af;border-radius:100px;padding:3px 9px;font-size:9px;font-weight:700;z-index:3;border:1px solid #bfdbfe}
+        /* Also looking badge – now in card body, centred */
+        .badge-also-looking{display:inline-flex;align-items:center;justify-content:center;background:#dbeafe;color:#1e40af;border-radius:100px;padding:3px 9px;font-size:9px;font-weight:700;border:1px solid #bfdbfe;margin:0 auto;width:fit-content}
         .card-save{position:absolute;top:8px;left:8px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.9);border:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition);z-index:3;font-size:12px}
         .card-save:hover{background:#fff;transform:scale(1.08)}
         .card-save.saved{color:#e74c3c;border-color:#fecaca}
@@ -498,8 +499,8 @@
             const tintClass=l.location==='Mainland'?'card-tint-mainland':'card-tint-island';
             const silhouettes={'Self contain':'🛏️','Mini flat / 1 bedroom':'🛋️','2 bedroom flat':'🛏️🛏️','3 bedroom flat':'🛏️🛏️🛏️'};
             const typeSilhouette=silhouettes[l.apartmentType]||'🏠';
-            const alsoLookingBadge=(l.listingType==='both')?'<div class="badge-also-looking">🔍 Also looking</div>':'';
-            const newBadge=isNew?'<div class="badge-new">New</div>':'';
+            const alsoLookingBadge=(l.listingType==='both')?`<div class="badge-also-looking">🔍 Also looking</div>`:'';
+            const newBadge=isNew?`<div class="badge-new">New</div>`:'';
             const locDisplay=l.location==='Mainland'?'📍 Mainland':'🏝️ Island';
             const savedIcon=saved?'❤️':'🤍';
             const tags=[`<div class="badge-icon badge-light"><span class="icon-circle">⚡</span>${escapeHTML(l.light)}</div>`,`<div class="badge-icon badge-water"><span class="icon-circle">💧</span>${escapeHTML(l.water)}</div>`,`<div class="badge-icon badge-parking"><span class="icon-circle">🅿️</span>${escapeHTML(l.parking)}</div>`,`<div class="badge-icon badge-status"><span class="icon-circle">📅</span>${escapeHTML(l.residentStatus)}</div>`];
@@ -511,7 +512,6 @@
                     <div class="type-silhouette">${typeSilhouette}</div>
                     <div class="comment-overlay"></div>
                     ${commentHTML}
-                    ${alsoLookingBadge}
                     ${newBadge}
                     <div class="badge-real"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Real</div>
                     <button class="card-save ${saved?'saved':''}" onclick="event.stopPropagation();toggleSaveListing('${l.listingId}')" title="${saved?'Remove from saved':'Save listing'}">${savedIcon}</button>
@@ -524,6 +524,7 @@
                     </div>
                     <div class="card-rent">${formatNaira(l.rentExact)}<span>/year</span></div>
                     <div class="card-tags">${tags.join('')}</div>
+                    ${alsoLookingBadge}
                 </div>
                 <div class="card-footer">
                     <span class="card-date">Posted ${timeAgo(l.postedDate)}</span>
