@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5WCRXXDQ');</script>
+    <!-- End Google Tag Manager -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>RentPal — Verified Apartment Listings in Lagos</title>
@@ -44,7 +51,7 @@
         .mobile-menu a:last-child{border-bottom:none}
         @media(max-width:768px){.nav-links,.nav-cta{display:none}.hamburger{display:flex}}
 
-        /* Trust bar (hidden on mobile) */
+        /* Trust bar */
         .trust-bar{background:var(--white);border-bottom:1px solid var(--card-border);padding:6px 16px;display:flex;justify-content:center;gap:24px;flex-wrap:wrap;font-size:11px;color:var(--ink-muted)}
         .trust-item{display:flex;align-items:center;gap:5px}
         .trust-item svg{width:12px;height:12px;color:var(--blue)}
@@ -70,7 +77,7 @@
         .suggestion-chip.show{opacity:1}
         .suggestion-chip:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
 
-        /* FILTER BAR (desktop) */
+        /* FILTER BAR */
         .filters-wrap{background:var(--white);border-bottom:2px solid var(--blue-mid);padding:0 16px;position:sticky;top:56px;z-index:50;transition:box-shadow var(--transition)}
         .filters-wrap.scrolled{box-shadow:0 2px 8px rgba(0,0,0,0.05)}
         .filters-label{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;color:var(--blue);margin-right:8px}
@@ -85,129 +92,72 @@
         .filter-clear.visible{display:inline-flex}
         .results-count{font-size:12px;color:var(--ink-muted);white-space:nowrap}
 
-        /* MOBILE FILTER BUTTON */
         .filter-toggle-mobile{display:none;background:var(--white);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:8px 14px;font-size:13px;font-weight:500;color:var(--ink);align-items:center;gap:5px;cursor:pointer}
         .filter-toggle-mobile:hover{background:var(--surface)}
         @media(max-width:768px){
             .filters-inner{display:none}
-            .filter-toggle-mobile{display:flex; min-height:44px;}
+            .filter-toggle-mobile{display:flex;min-height:44px}
             .filter-search-wrap{flex:1}
         }
-
-        /* SLIDE-IN FILTER PANEL */
-        .filter-panel{position:fixed;top:0;right:-100%;width:300px;max-width:85vw;height:100%;background:var(--white);box-shadow:-4px 0 20px rgba(0,0,0,0.15);z-index:200;transition:right 0.3s ease;padding:24px 20px;overflow-y:auto}
-        .filter-panel.open{right:0}
-        .filter-panel .panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-        .filter-panel .panel-header h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700}
-        .filter-panel .close-btn{background:none;border:none;font-size:24px;cursor:pointer;color:var(--ink-muted)}
-        .filter-panel .filter-select,.filter-panel input{width:100%;margin-bottom:12px}
-        .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);z-index:199;display:none}
-        .overlay.show{display:block}
 
         /* LISTINGS GRID */
         .listings-section{max-width:1200px;margin:0 auto;padding:16px 16px 48px}
         .listings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
         @media(max-width:1024px){.listings-grid{grid-template-columns:repeat(2,1fr);gap:12px}}
-        @media(max-width:600px){
-            .listings-grid{grid-template-columns:repeat(2,1fr);gap:6px}
-            .listing-card .card-comment-area{height:100px;padding:12px 10px}
-            .comment-text{font-size:10px;line-height:1.4;-webkit-line-clamp:3;padding:0 6px}
-            .comment-quote{font-size:28px;top:4px;left:4px}
-            .no-comment{font-size:10px}
-            .badge-real,.badge-new,.badge-also-looking{font-size:7px;padding:2px 6px}
-            .badge-also-looking{font-size:7px;padding:2px 6px}
-            .card-save {
-                width: 44px;
-                height: 44px;
-                top: 5px;
-                left: 5px;
-                font-size: 18px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .card-body{padding:6px 8px;gap:2px}
-            .card-ref{font-size:8px}
-            .card-type{font-size:12px;line-height:1.2;margin-bottom:2px}
-            .card-location-row{margin-top:0;gap:4px}
-            .card-location-tag{font-size:9px;padding:2px 6px}
-            .card-rent{font-size:14px}
-            .card-rent span{font-size:8px}
-            .card-tags{display:none}
-            .card-footer{padding:5px 8px;border-top:none}
-            .card-date{font-size:8px}
-            .card-btn {
-                font-size: 12px;
-                padding: 8px 16px;
-                border-radius: 20px;
-                min-height: 44px;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .type-silhouette{font-size:50px;bottom:-4px;right:-4px}
-            .listing-card{border-radius:var(--radius)}
-            .card-tint-mainland,.card-tint-island{border-top-width:2px}
-            .load-more-btn {
-                min-height: 44px;
-                padding: 12px 24px;
-                font-size: 14px;
-            }
-        }
 
-        .listing-card{background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--card-border);overflow:hidden;transition:box-shadow var(--transition),transform var(--transition);cursor:pointer;display:flex;flex-direction:column;position:relative;box-shadow:var(--card-shadow)}
-        .listing-card:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-3px)}
-        .card-tint-mainland{border-top:3px solid #eab308}
-        .card-tint-island{border-top:3px solid #06b6d4}
-        .card-comment-area{height:130px;background:linear-gradient(145deg,#d9e4f0 0%,#c5d6e8 50%,#d0dceb 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:18px 14px}
-        .comment-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to top,rgba(0,0,0,0.08) 0%,transparent 55%);z-index:1}
-        .comment-text{font-size:13px;line-height:1.55;color:#1a2634;font-style:italic;text-align:center;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;position:relative;z-index:2}
-        .comment-quote{position:absolute;top:6px;left:8px;font-size:34px;color:rgba(24,95,165,0.10);font-family:'Georgia',serif;line-height:1;z-index:0}
-        .no-comment{color:#7a8a9e;font-size:12px;font-style:normal}
-        .badge-real{position:absolute;top:8px;right:8px;background:rgba(255,255,255,0.9);border-radius:100px;padding:3px 9px;font-size:9px;font-weight:600;color:var(--green-dark);display:flex;align-items:center;gap:3px;z-index:3;border:1px solid rgba(39,80,10,0.12)}
-        .badge-new{position:absolute;top:8px;right:8px;background:var(--green-light);color:var(--green-dark);border-radius:100px;padding:3px 9px;font-size:9px;font-weight:700;z-index:3;border:1px solid rgba(39,80,10,0.15)}
-        .badge-also-looking{display:inline-flex;align-items:center;justify-content:center;background:#dbeafe;color:#1e40af;border-radius:100px;padding:3px 9px;font-size:9px;font-weight:700;border:1px solid #bfdbfe;margin:0 auto;width:fit-content}
-        .card-save{position:absolute;top:8px;left:8px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.9);border:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all var(--transition);z-index:3;font-size:12px}
-        .card-save:hover{background:#fff;transform:scale(1.08)}
-        .card-save.saved{color:#e74c3c;border-color:#fecaca}
-        .type-silhouette{position:absolute;bottom:-6px;right:-6px;font-size:76px;color:rgba(24,95,165,0.06);pointer-events:none;z-index:0;line-height:1;font-family:'Plus Jakarta Sans',sans-serif}
-        .card-body{padding:12px 14px;flex:1;display:flex;flex-direction:column;gap:6px}
-        .card-ref{font-size:10px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:0.6px}
-        .card-type{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--ink);line-height:1.2}
-        .card-location-row{display:flex;align-items:center;gap:6px;margin-top:2px}
-        .card-location-tag{display:inline-flex;align-items:center;gap:4px;background:var(--surface);border-radius:100px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--ink-muted);border:1px solid var(--card-border)}
-        .card-rent{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:var(--ink);letter-spacing:-0.3px;margin-top:2px}
+        /* ── COMPACT CARD ── */
+        .listing-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--card-border);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;box-shadow:var(--card-shadow);transition:all var(--transition)}
+        .listing-card:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-2px)}
+        .card-tint-mainland{border-left:3px solid #eab308}
+        .card-tint-island{border-left:3px solid #06b6d4}
+
+        .card-header-row{display:flex;align-items:center;gap:6px;padding:10px 12px 0;position:relative}
+        .card-ref{font-size:10px;font-weight:700;color:var(--blue);letter-spacing:0.4px}
+        .card-date-inline{font-size:10px;color:var(--ink-faint)}
+        .badge-new-inline{font-size:9px;font-weight:700;color:var(--green-dark);background:var(--green-light);padding:1px 6px;border-radius:4px}
+        .card-save{margin-left:auto;background:none;border:none;font-size:16px;padding:4px;cursor:pointer;line-height:1;color:var(--ink-faint);transition:transform var(--transition)}
+        .card-save:hover{transform:scale(1.15)}
+        .card-save.saved{color:#e74c3c}
+
+        .card-main{padding:6px 12px 10px}
+        .card-type{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:2px}
+        .card-loc{font-size:11px;color:var(--ink-muted);margin-bottom:8px}
+        .card-rent{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-0.5px;line-height:1}
         .card-rent span{font-size:10px;color:var(--ink-muted);font-weight:500;margin-left:2px}
-        .card-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-        .badge-icon{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;font-size:10px;font-weight:500;color:var(--ink);background:var(--surface);border:1px solid var(--card-border)}
-        .badge-icon .icon-circle{width:18px;height:18px;border-radius:50%;background:var(--white);display:flex;align-items:center;justify-content:center;font-size:12px}
-        .badge-light .icon-circle{color:#b45309;background:var(--orange-light)}
-        .badge-water .icon-circle{color:var(--blue-dark);background:var(--blue-light)}
-        .badge-parking .icon-circle{color:#6d28d9;background:var(--purple-light)}
-        .badge-status .icon-circle{color:var(--green-dark);background:var(--green-light)}
-        .card-footer{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-top:1px solid var(--card-border);gap:6px}
-        .card-date{font-size:10px;color:var(--ink-faint)}
-        .card-btn{font-size:11px;font-weight:600;color:var(--white);background:var(--blue);border:none;padding:5px 14px;border-radius:20px;transition:all var(--transition);white-space:nowrap}
-        .card-btn:hover{background:var(--blue-dark);transform:scale(1.03)}
+        .card-quote{margin-top:8px;font-size:11px;color:var(--ink-muted);font-style:italic;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
-        .load-more-btn {
-            display: block;
-            margin: 16px auto 0;
-            padding: 10px 28px;
-            background: var(--white);
-            border: 1.5px solid var(--card-border);
-            border-radius: var(--radius-sm);
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--ink);
-            cursor: pointer;
-            transition: all var(--transition);
+        .card-chips{display:flex;flex-wrap:wrap;gap:4px;padding:0 12px 10px}
+        .chip{font-size:10px;padding:2px 7px;background:var(--surface);border:1px solid var(--card-border);border-radius:100px;color:var(--ink-muted);white-space:nowrap}
+        .chip-alt{background:#dbeafe;color:#1e40af;border-color:#bfdbfe;font-weight:600}
+
+        .card-footer{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-top:1px solid var(--card-border);background:#fafbfc}
+        .card-verified{font-size:10px;font-weight:600;color:var(--green-dark);display:flex;align-items:center;gap:3px}
+        .card-btn{font-size:11px;font-weight:600;color:var(--white);background:var(--blue);border:none;padding:6px 14px;border-radius:20px;cursor:pointer;transition:background var(--transition)}
+        .card-btn:hover{background:var(--blue-dark)}
+
+        @media(max-width:600px){
+            .listings-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+            .card-type{font-size:13px}
+            .card-rent{font-size:16px}
+            .card-loc{font-size:10px}
+            .card-quote{display:none}
+            .card-chips{padding:0 10px 8px}
+            .chip{font-size:9px;padding:2px 6px}
+            .chip:nth-child(n+3){display:none}
+            .card-header-row{padding:8px 10px 0}
+            .card-main{padding:4px 10px 8px}
+            .card-footer{padding:6px 10px}
+            .card-btn{padding:5px 12px}
+            .card-save{font-size:14px;padding:2px}
         }
-        .load-more-btn:hover {
-            border-color: var(--blue);
-            color: var(--blue);
-            background: var(--blue-light);
-        }
+
+        .load-more-btn{display:block;margin:16px auto 0;padding:10px 28px;background:var(--white);border:1.5px solid var(--card-border);border-radius:var(--radius-sm);font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:all var(--transition)}
+        .load-more-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+
+        .empty-state{text-align:center;padding:40px 20px;color:var(--ink-muted)}
+        .empty-state svg{color:var(--ink-faint);margin-bottom:12px}
+        .empty-state h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px}
+        .empty-state p{font-size:13px}
 
         /* DETAIL PAGE */
         .detail-page{max-width:900px;margin:0 auto;padding:24px 16px 40px}
@@ -215,7 +165,6 @@
         .detail-comment-hero{background:linear-gradient(145deg,#d9e4f0 0%,#c5d6e8 50%,#d0dceb 100%);border-radius:var(--radius-lg);padding:36px 28px;margin-bottom:20px;position:relative;overflow:hidden}
         .detail-comment-hero .detail-quote{position:absolute;top:8px;left:16px;font-size:52px;color:rgba(24,95,165,0.08);font-family:'Georgia',serif;line-height:1;z-index:0}
         .detail-comment-hero .detail-comment-body{font-size:16px;line-height:1.7;color:#1a2634;font-style:italic;text-align:center;position:relative;z-index:1}
-        .no-comment-detail{color:#7a8a9e;font-size:15px;font-style:normal}
         .detail-comment-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;color:var(--blue-dark);margin-bottom:8px;text-align:center}
         .detail-summary{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px;align-items:flex-start}
         .detail-photo-wrap{flex:0 0 280px;max-width:280px;aspect-ratio:4/3;border-radius:var(--radius-lg);overflow:hidden;background:var(--surface);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:center}
@@ -227,9 +176,9 @@
         .detail-rent{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:700;color:var(--ink);margin-bottom:16px}
         .detail-rent span{font-size:14px;color:var(--ink-muted);font-weight:500}
         .detail-actions{display:flex;gap:8px;flex-wrap:wrap}
-        .btn-primary{display:inline-flex;align-items:center;gap:6px;padding:11px 22px;background:var(--blue);color:#fff;border:none;border-radius:var(--radius);font-size:13px;font-weight:600;box-shadow:0 2px 8px rgba(74,143,212,0.25)}
+        .btn-primary{display:inline-flex;align-items:center;gap:6px;padding:11px 22px;background:var(--blue);color:#fff;border:none;border-radius:var(--radius);font-size:13px;font-weight:600;box-shadow:0 2px 8px rgba(74,143,212,0.25);cursor:pointer}
         .btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px)}
-        .btn-outline{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;background:var(--white);color:var(--ink);border:1.5px solid var(--card-border);border-radius:var(--radius);font-size:12px;font-weight:500}
+        .btn-outline{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;background:var(--white);color:var(--ink);border:1.5px solid var(--card-border);border-radius:var(--radius);font-size:12px;font-weight:500;cursor:pointer}
         .btn-outline:hover{border-color:var(--ink-muted);background:var(--surface)}
         .detail-section{background:var(--white);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:22px 26px;margin-bottom:16px}
         .detail-section h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:18px}
@@ -239,22 +188,17 @@
         .detail-item-content{font-size:13px;color:var(--ink)}
         .detail-item-content .item-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-faint);margin-bottom:2px}
         .detail-item-content .item-value{font-weight:600}
-        .detail-comments-original{margin-top:24px;padding-top:16px;border-top:1px solid var(--card-border);font-size:14px;color:var(--ink-muted);line-height:1.7}
         .similar-section{margin-top:28px}
         .similar-section h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:12px}
         .similar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
-        .unavailable-banner{background:var(--orange-light);border:1px solid #fbbf24;border-radius:var(--radius);padding:14px 18px;text-align:center;margin-bottom:16px}
-        .countdown{font-size:12px;color:var(--ink-muted);margin-top:6px}
 
         /* MODAL */
         .modal{display:none;position:fixed;z-index:300;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.5);align-items:center;justify-content:center}
         .modal.active{display:flex !important}
-        .modal-content{background:var(--white);border-radius:var(--radius-lg);padding:28px 24px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto;position:relative;animation:fadeUp 0.3s ease}
+        .modal-content{background:var(--white);border-radius:var(--radius-lg);padding:28px 24px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto;position:relative}
         .modal-close{position:absolute;top:12px;right:16px;font-size:22px;background:none;border:none;cursor:pointer;color:var(--ink-muted)}
         .modal-close:hover{color:var(--ink)}
 
-        /* Form inside modal */
-        .intro-form-wrap{background:transparent;padding:0;margin:0;border:none}
         .form-group{margin-bottom:12px}
         .form-group label{display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);margin-bottom:4px}
         .form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 14px;border:1.5px solid var(--card-border);border-radius:var(--radius-sm);font-size:14px;color:var(--ink);background:var(--surface);outline:none;transition:border-color var(--transition)}
@@ -265,18 +209,21 @@
         .btn-submit-request:disabled{opacity:0.5;cursor:not-allowed}
         .request-confirmation{text-align:center;padding:26px 20px}
 
-        .recently-viewed{max-width:1200px;margin:0 auto 0;padding:0 16px 16px}
-        .recently-viewed h3{font-size:12px;font-weight:600;color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px}
-        .rv-scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
-        .rv-card{flex:0 0 150px;background:var(--white);border:1px solid var(--card-border);border-radius:var(--radius);padding:8px 10px;cursor:pointer;scroll-snap-align:start;transition:box-shadow var(--transition)}
-        .rv-card:hover{box-shadow:var(--card-shadow-hover)}
-        .rv-ref{font-size:10px;font-weight:600;color:var(--blue);text-transform:uppercase}
-        .rv-type{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;color:var(--ink);margin:2px 0}
-        .rv-rent{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;color:var(--ink)}
+        /* TOAST */
+        .toast-container{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:400;display:flex;flex-direction:column;gap:8px;align-items:center}
+        .toast{background:var(--ink);color:#fff;padding:10px 18px;border-radius:var(--radius);font-size:13px;font-weight:500;box-shadow:0 4px 12px rgba(0,0,0,0.15);animation:toastIn 0.3s ease}
+        .toast.error{background:#dc2626}
+        @keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
         footer{padding:16px;text-align:center;font-size:11px;color:var(--ink-faint);border-top:1px solid var(--card-border);background:var(--white)}
     </style>
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5WCRXXDQ"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <nav>
         <a href="/listings" class="nav-logo">
             <img src="rentpal_logo_blue.png" alt="RentPal" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
@@ -320,45 +267,20 @@
         <button class="filter-toggle-mobile" id="filter-toggle-mobile">🔍 Filters</button>
     </div>
 
-    <div class="overlay" id="filter-overlay"></div>
-    <div class="filter-panel" id="filter-panel">
-        <div class="panel-header">
-            <h3>Filters</h3>
-            <button class="close-btn" id="close-filter-panel">✕</button>
-        </div>
-        <div class="filter-search-wrap">
-            <input type="text" id="panel-filter-search" placeholder="Search area, type, ref...">
-        </div>
-        <select class="filter-select" id="panel-filter-area"><option value="">📍 Area</option></select>
-        <select class="filter-select" id="panel-filter-apt-type">
-            <option value="">🛏 Type</option>
-            <option value="Self contain">Self contain</option>
-            <option value="Mini flat / 1 bedroom">Mini flat / 1 bedroom</option>
-            <option value="2 bedroom flat">2 bedroom flat</option>
-            <option value="3 bedroom flat">3 bedroom flat</option>
-        </select>
-        <select class="filter-select" id="panel-filter-location"><option value="">🗺 Location</option><option value="Mainland">Mainland</option><option value="Island">Island</option></select>
-        <select class="filter-select" id="panel-filter-resident-status">
-            <option value="">📅 Status</option>
-            <option value="Still living there">Still living there</option><option value="Packing out within 1 month">Packing out within 1 month</option><option value="Packing out in 1-3 months">Packing out in 1-3 months</option><option value="Already packed out">Already packed out</option>
-        </select>
-        <button class="filter-clear" id="panel-filter-clear" style="display:none">Clear</button>
-        <span class="results-count" id="panel-results-count"></span>
-    </div>
-
     <main id="app-main"></main>
     <div class="toast-container" id="toast-container"></div>
     <footer><span style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;color:var(--blue);opacity:0.65">rentpal</span> · Lagos, Nigeria</footer>
 
-    <!-- INTRODUCTION MODAL -->
     <div id="introModal" class="modal">
         <div class="modal-content" id="introModalContent"></div>
     </div>
 
     <script>
-        // ⚠️ REPLACE WITH YOUR LATEST DEPLOYMENT URL
+        window.dataLayer = window.dataLayer || [];
+
+        // ⚠️ REPLACE WITH YOUR LISTINGS-BACKEND DEPLOYMENT URL
         const CONFIG = {
-            GAS_URL: 'https://script.google.com/macros/s/AKfycbyHby_E7i0Bc4CZuQBhyJzcp-FSUVUq_z1rxl63uTzNd9FdpgW5ZK0TY_V9l4D3180CWQ/exec',
+            GAS_URL: 'https://script.google.com/macros/s/AKfycbzIpDRS99IvqmvvPwSPcNPMNzw5O7iTSofQeKXC-E8rmm0f4D8YxGSj1MFcP_ugene_bQ/exec',
             ITEMS_PER_PAGE: 12, DEBOUNCE_MS: 250
         };
         const state = {
@@ -372,8 +294,8 @@
         function formatNaira(n){if(!n||isNaN(n))return'—';return'₦'+parseInt(n).toLocaleString('en-NG')}
         function timeAgo(d){if(!d)return'';const n=new Date(),t=new Date(d),e=n-t,a=Math.floor(e/864e5);if(a<0)return'Just now';if(a===0)return'Today';if(a===1)return'1d ago';if(a<7)return a+'d ago';if(a<30)return Math.floor(a/7)+'w ago';if(a<365)return Math.floor(a/30)+'mo ago';return Math.floor(a/365)+'y ago'}
         function debounce(fn,ms){let t;return function(...a){clearTimeout(t);t=setTimeout(()=>fn.apply(this,a),ms)}}
-        function getRentNumeric(s){if(!s)return 0;const n=parseInt(s.replace(/[^0-9]/g,''));return isNaN(n)?0:n}
-        function showToast(m,t='success'){const c=document.getElementById('toast-container');const d=document.createElement('div');d.className='toast '+(t==='success'?'success':'error');d.textContent=m;c.appendChild(d);setTimeout(()=>d.remove(),2800)}
+        function getRentNumeric(s){if(!s)return 0;const n=parseInt(String(s).replace(/[^0-9]/g,''));return isNaN(n)?0:n}
+        function showToast(m,t='success'){const c=document.getElementById('toast-container');const d=document.createElement('div');d.className='toast '+(t==='error'?'error':'');d.textContent=m;c.appendChild(d);setTimeout(()=>d.remove(),2800)}
         function toggleSaveListing(id){const i=state.savedListings.indexOf(id);if(i>-1){state.savedListings.splice(i,1);showToast('Unsaved')}else{state.savedListings.push(id);showToast('Saved!')}localStorage.setItem('rp_saved',JSON.stringify(state.savedListings));refreshCurrentView()}
         function addToRecentlyViewed(l){const e=state.recentlyViewed.find(r=>r.listingId===l.listingId);if(e){state.recentlyViewed=[e,...state.recentlyViewed.filter(r=>r.listingId!==l.listingId)]}else{state.recentlyViewed.unshift({listingId:l.listingId,apartmentType:l.apartmentType,area:l.area,location:l.location,rentExact:l.rentExact});if(state.recentlyViewed.length>10)state.recentlyViewed.pop()}localStorage.setItem('rp_recent',JSON.stringify(state.recentlyViewed))}
         function isSaved(id){return state.savedListings.indexOf(id)>-1}
@@ -407,39 +329,38 @@
                 const rent=Math.round((rr.min+Math.random()*(rr.max-rr.min))/5e4)*5e4;
                 const days=Math.floor(Math.random()*45)+1;
                 const comment=i%4===0?'Spacious with good natural light. Quiet neighbours.':i%4===1?'Close to main road, solid security.':i%4===2?'Recently repainted, responsive landlord.':'Well-kept compound with parking.';
-                const bldgSize=['4 units','6 units','8 units','','12 units',''][i%6];
-                const bldgCond=['Well maintained','Fairly maintained','','Newly built','',''][i%6];
-                list.push({listingId:id,urlSlug:apt.toLowerCase().replace(/[\/ ]/g,'-')+'-'+area.toLowerCase().replace(/ /g,'-')+'-'+id,apartmentType:apt,area,location:loc,rentRange:formatNaira(rr.min)+' – '+formatNaira(rr.max),rentExact:rent,rentMin:rr.min,rentMax:rr.max,light:lights[i%5],water:waters[i%3],parking:parks[i%4],residentStatus:statuses[i%4],postedDate:new Date(Date.now()-days*864e5).toISOString().split('T')[0],photosAvailable:'No',primaryPhoto:'',buildingSize:bldgSize,buildingCondition:bldgCond,timeStayed:'2 years',comments:comment,views:Math.floor(Math.random()*200)+10,verificationStatus:'Verified',listingStatus:'Available',listingType:listingType})
+                list.push({listingId:id,urlSlug:apt.toLowerCase().replace(/[\/ ]/g,'-')+'-'+area.toLowerCase().replace(/ /g,'-')+'-'+id,apartmentType:apt,area,location:loc,rentRange:formatNaira(rr.min)+' – '+formatNaira(rr.max),rentExact:rent,light:lights[i%5],water:waters[i%3],parking:parks[i%4],residentStatus:statuses[i%4],postedDate:new Date(Date.now()-days*864e5).toISOString().split('T')[0],photosAvailable:'No',primaryPhoto:'',comments:comment,verificationStatus:'Verified',listingStatus:'Available',listingType:listingType})
             }
             return list;
         }
 
-        function getRouteInfo(){const p=window.location.pathname;const m=p.match(/^\/listings\/(RP[-]?[\w]+)\/?$/i);if(m)return{view:'detail',listingId:m[1].toUpperCase()};if(p==='/listings'||p==='/listings/')return{view:'directory'};const q=new URLSearchParams(window.location.search);const id=q.get('id');if(id&&/^RP[-]?[\w]+$/i.test(id))return{view:'detail',listingId:id.toUpperCase()};return{view:'directory'}}
+        // ── ROUTING (FIXED: query string checked before path) ──
+        function getRouteInfo(){
+            const p=window.location.pathname;
+            const q=new URLSearchParams(window.location.search);
+            const qid=q.get('id');
+            if(qid&&/^RP[-]?[\w]+$/i.test(qid))return{view:'detail',listingId:qid.toUpperCase()};
+            const m=p.match(/^\/listings\/(RP[-]?[\w]+)\/?$/i);
+            if(m)return{view:'detail',listingId:m[1].toUpperCase()};
+            return{view:'directory'};
+        }
         function navigateTo(u,push=true){if(push)history.pushState(null,'',u);handleRoute();window.scrollTo({top:0,behavior:'smooth'})}
         async function handleRoute(){const r=getRouteInfo();const m=document.getElementById('app-main');if(r.view==='directory'){state.currentDetailId=null;state.currentDetailData=null;await renderDirectory(m)}else{state.currentDetailId=r.listingId;await renderDetail(m,r.listingId)}}
         window.addEventListener('popstate',handleRoute);
 
         async function renderDirectory(container){
-            container.innerHTML=getDirectorySkeletonHTML();
-            let data; 
-            try{
-                data=await apiFetch('listings');
-                console.log('API listings response:', data);
-            }catch(e){
-                console.error('API fetch error:', e);
-                data={success:true,listings:getMockListings()};
-            }
+            container.innerHTML=`<div class="directory-hero"><div class="hero-tag"><div class="hero-dot"></div>Available houses</div><h1>Available <em>Apartments</em></h1></div><div class="listings-section"><p style="text-align:center;color:var(--ink-muted);padding:40px 0">Loading listings…</p></div>`;
+            let data;
+            try{data=await apiFetch('listings')}catch(e){data={success:true,listings:getMockListings()}}
             let all=(data.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available');
-            // Exclude seekers – only show packing and both
-            all = all.filter(l => l.listingType !== 'seeker');
+            all=all.filter(l=>l.listingType!=='seeker');
             all.sort((a,b)=>new Date(b.postedDate)-new Date(a.postedDate));
             state.allListings=all;state.filteredListings=[...all];state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,all.length);
             container.innerHTML=getDirectoryHTML();
-            populateFilterOptions();applyFilters();renderCards();renderRecentlyViewed();bindEvents();updateCount();updateClearButton();
+            populateFilterOptions();applyFilters();renderCards();bindEvents();updateCount();updateClearButton();
             startSuggestionCycle();startAutoRefresh();
         }
 
-        function getDirectorySkeletonHTML(){let s='';for(let i=0;i<8;i++)s+=`<div class="skeleton-card"><div class="skeleton-photo"></div><div class="skeleton-body"><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div></div>`;return`<div class="directory-hero"><div class="hero-tag"><div class="hero-dot"></div>Available houses</div><h1>Available <em>Apartments</em></h1><div class="hero-bullets"><span><span class="bullet">•</span>Verified listings</span><span><span class="bullet">•</span>Request introduction</span><span><span class="bullet">•</span>Resident approves</span></div></div><div class="listings-section"><div class="listings-grid">${s}</div></div>`}
         function getDirectoryHTML(){return `
             <div class="directory-hero">
                 <div class="hero-tag"><div class="hero-dot"></div>Available houses</div>
@@ -463,11 +384,24 @@
             </div>`;}
 
         const suggestions=['3 bedroom in Lekki','2 bedroom in Surulere','Self contain in Yaba','Mini flat in Ikoyi','1 bedroom in Ajah','2 bedroom in Gbagada'];
-        let suggestionIndex=0,suggestionTimeout=null;
-        function startSuggestionCycle(){const row=document.getElementById('suggestion-row');if(!row)return;row.innerHTML=`<button class="suggestion-chip" id="suggestion-chip">${suggestions[0]}</button>`;const chip=document.getElementById('suggestion-chip');chip.classList.add('show');chip.addEventListener('click',()=>{document.getElementById('filter-search').value=chip.textContent;applyFilters();renderCards()});let idx=1;function next(){chip.classList.remove('show');suggestionTimeout=setTimeout(()=>{chip.textContent=suggestions[idx%suggestions.length];idx++;chip.classList.add('show');suggestionTimeout=setTimeout(next,12000)},1200)}suggestionTimeout=setTimeout(next,6000)}
-        window.addEventListener('beforeunload',()=>{if(suggestionTimeout)clearTimeout(suggestionTimeout)});
+        let suggestionTimeout=null;
+        function startSuggestionCycle(){
+            const row=document.getElementById('suggestion-row');if(!row)return;
+            row.innerHTML=`<button class="suggestion-chip" id="suggestion-chip">${suggestions[0]}</button>`;
+            const chip=document.getElementById('suggestion-chip');chip.classList.add('show');
+            chip.addEventListener('click',()=>{document.getElementById('filter-search').value=chip.textContent;applyFilters();renderCards()});
+            let idx=1;
+            function next(){chip.classList.remove('show');suggestionTimeout=setTimeout(()=>{chip.textContent=suggestions[idx%suggestions.length];idx++;chip.classList.add('show');suggestionTimeout=setTimeout(next,12000)},1200)}
+            suggestionTimeout=setTimeout(next,6000);
+        }
 
-        function populateFilterOptions(){const areas=[...new Set(state.allListings.map(l=>l.area))].sort();const areaSelect=document.getElementById('filter-area');areaSelect.innerHTML='<option value="">📍 Area</option>';areas.forEach(a=>{const opt=document.createElement('option');opt.value=a;opt.textContent=a;areaSelect.appendChild(opt)})}
+        function populateFilterOptions(){
+            const areas=[...new Set(state.allListings.map(l=>l.area))].sort();
+            const areaSelect=document.getElementById('filter-area');
+            areaSelect.innerHTML='<option value="">📍 Area</option>';
+            areas.forEach(a=>{const opt=document.createElement('option');opt.value=a;opt.textContent=a;areaSelect.appendChild(opt)});
+        }
+
         function applyFilters(){
             let filtered=[...state.allListings];
             const f=state.filters;
@@ -477,10 +411,17 @@
             if(f.aptType)filtered=filtered.filter(l=>{const at=l.apartmentType||'';if(f.aptType==='Mini flat / 1 bedroom')return at.includes('Mini flat')||at.includes('1 bedroom');return at===f.aptType});
             if(f.location)filtered=filtered.filter(l=>l.location===f.location);
             if(f.residentStatus)filtered=filtered.filter(l=>l.residentStatus===f.residentStatus);
-            state.filteredListings=filtered;state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,filtered.length);
+            state.filteredListings=filtered;
+            state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,filtered.length);
             updateClearButton();updateCount();
         }
-        function updateClearButton(){const anyActive=Object.values(state.filters).some(v=>v!=='')||(document.getElementById('filter-search')?.value||'').trim()!=='';document.getElementById('filter-clear').style.display=anyActive?'inline-flex':'none';}
+
+        function updateClearButton(){
+            const anyActive=Object.values(state.filters).some(v=>v!=='')||(document.getElementById('filter-search')?.value||'').trim()!=='';
+            const btn=document.getElementById('filter-clear');
+            if(btn)btn.style.display=anyActive?'inline-flex':'none';
+        }
+
         function renderCards(){
             const grid=document.getElementById('listings-grid'),empty=document.getElementById('empty-state'),pag=document.getElementById('pagination-wrap');
             if(!grid)return;
@@ -488,59 +429,45 @@
             if(state.filteredListings.length===0){grid.innerHTML='';if(empty)empty.style.display='block';if(pag)pag.innerHTML='';return}
             if(empty)empty.style.display='none';
             grid.innerHTML=visible.map(l=>getCardHTML(l)).join('');
-            if(pag&&state.displayedCount<state.filteredListings.length){pag.innerHTML=`<button class="load-more-btn" id="load-more-btn">Load More</button>`}
-            else if(pag&&state.filteredListings.length>CONFIG.ITEMS_PER_PAGE){pag.innerHTML='<span style="font-size:12px;color:var(--ink-faint)">All loaded</span>'}
-            else{if(pag)pag.innerHTML=''}
+            if(pag&&state.displayedCount<state.filteredListings.length){pag.innerHTML=`<button class="load-more-btn" id="load-more-btn">Load More</button>`;document.getElementById('load-more-btn').addEventListener('click',()=>{state.displayedCount=Math.min(state.displayedCount+CONFIG.ITEMS_PER_PAGE,state.filteredListings.length);renderCards()})}
+            else if(pag)pag.innerHTML='';
             updateCount();
         }
+
         function getCardHTML(l){
             const saved=isSaved(l.listingId);
             const comment=l.comments&&l.comments.trim()?l.comments:null;
-            const commentHTML=comment?`<div class="comment-quote">"</div><div class="comment-text">${escapeHTML(comment)}</div>`:`<div class="comment-text no-comment">📝 No description yet — tap to view details</div>`;
             const isNew=new Date(l.postedDate)>new Date(Date.now()-2*86400000);
             const tintClass=l.location==='Mainland'?'card-tint-mainland':'card-tint-island';
-            const silhouettes={'Self contain':'🛏️','Mini flat / 1 bedroom':'🛋️','2 bedroom flat':'🛏️🛏️','3 bedroom flat':'🛏️🛏️🛏️'};
-            const typeSilhouette=silhouettes[l.apartmentType]||'🏠';
-            const alsoLookingBadge=(l.listingType==='both')?`<div class="badge-also-looking">🔍 Also looking</div>`:'';
-            const newBadge=isNew?`<div class="badge-new">New</div>`:'';
             const locDisplay=l.location==='Mainland'?'📍 Mainland':'🏝️ Island';
             const savedIcon=saved?'❤️':'🤍';
-            const tags=[`<div class="badge-icon badge-light"><span class="icon-circle">⚡</span>${escapeHTML(l.light)}</div>`,`<div class="badge-icon badge-water"><span class="icon-circle">💧</span>${escapeHTML(l.water)}</div>`,`<div class="badge-icon badge-parking"><span class="icon-circle">🅿️</span>${escapeHTML(l.parking)}</div>`,`<div class="badge-icon badge-status"><span class="icon-circle">📅</span>${escapeHTML(l.residentStatus)}</div>`];
-            if(l.buildingSize)tags.push(`<div class="badge-icon"><span class="icon-circle">🏢</span>${escapeHTML(l.buildingSize)}</div>`);
-            if(l.buildingCondition)tags.push(`<div class="badge-icon"><span class="icon-circle">🔨</span>${escapeHTML(l.buildingCondition)}</div>`);
             return `
             <div class="listing-card ${tintClass}" onclick="goToDetail('${l.listingId}')">
-                <div class="card-comment-area">
-                    <div class="type-silhouette">${typeSilhouette}</div>
-                    <div class="comment-overlay"></div>
-                    ${commentHTML}
-                    ${newBadge}
-                    <div class="badge-real"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Real</div>
+                <div class="card-header-row">
+                    <span class="card-ref">${l.listingId}</span>
+                    <span class="card-date-inline">· ${timeAgo(l.postedDate)}</span>
+                    ${isNew?'<span class="badge-new-inline">NEW</span>':''}
                     <button class="card-save ${saved?'saved':''}" onclick="event.stopPropagation();toggleSaveListing('${l.listingId}')" title="${saved?'Remove from saved':'Save listing'}">${savedIcon}</button>
                 </div>
-                <div class="card-body">
-                    <span class="card-ref">${l.listingId} · ${timeAgo(l.postedDate)}</span>
+                <div class="card-main">
                     <div class="card-type">${escapeHTML(l.apartmentType)}</div>
-                    <div class="card-location-row">
-                        <span class="card-location-tag">${locDisplay} ${escapeHTML(l.area)}</span>
-                    </div>
-                    <div class="card-rent">${formatNaira(l.rentExact)}<span>/year</span></div>
-                    <div class="card-tags">${tags.join('')}</div>
-                    ${alsoLookingBadge}
+                    <div class="card-loc">${locDisplay} · ${escapeHTML(l.area)}</div>
+                    <div class="card-rent">${formatNaira(l.rentExact)}<span>/yr</span></div>
+                    ${comment?`<div class="card-quote">"${escapeHTML(comment)}"</div>`:''}
+                </div>
+                <div class="card-chips">
+                    <span class="chip">⚡ ${escapeHTML(l.light)}</span>
+                    <span class="chip">💧 ${escapeHTML(l.water)}</span>
+                    <span class="chip">📅 ${escapeHTML(l.residentStatus)}</span>
+                    ${l.listingType==='both'?'<span class="chip chip-alt">🔍 Also looking</span>':''}
                 </div>
                 <div class="card-footer">
-                    <span class="card-date">Posted ${timeAgo(l.postedDate)}</span>
+                    <span class="card-verified">✓ Verified</span>
                     <button class="card-btn" onclick="event.stopPropagation();goToDetail('${l.listingId}')">View →</button>
                 </div>
             </div>`;
         }
 
-        function renderRecentlyViewed(){
-            const wrap=document.getElementById('recently-viewed-wrap');if(!wrap)return;
-            if(state.recentlyViewed.length===0){wrap.style.display='none';return}
-            wrap.style.display='block';
-            wrap.innerHTML=`<h3>Recently Viewed</h3><div class="rv-scroll">${state.recentlyViewed.map(r=>`<div class="rv-card" onclick="goToDetail('${r.listingId}')"><span class="rv-ref">${r.listingId}</span><div class="rv-type">${escapeHTML(r.apartmentType)}</div><div class="rv-rent">${formatNaira(r.rentExact)}/yr</div><span style="font-size:10px;color:var(--ink-faint)">${escapeHTML(r.area)}</span></div>`).join('')}</div>`;
-        }
         function updateCount(){const el=document.getElementById('results-count');if(!el)return;const t=state.filteredListings.length;el.textContent=`${Math.min(state.displayedCount,t)}/${t}`}
 
         function bindEvents(){
@@ -555,74 +482,53 @@
                 document.querySelectorAll('.filter-select').forEach(s=>s.value='');
                 applyFilters();renderCards();showToast('Filters cleared')
             });
-            document.getElementById('load-more-btn')?.addEventListener('click',()=>{state.displayedCount=Math.min(state.displayedCount+CONFIG.ITEMS_PER_PAGE,state.filteredListings.length);renderCards()});
             document.getElementById('random-btn')?.addEventListener('click',()=>{if(state.allListings.length)goToDetail(state.allListings[Math.floor(Math.random()*state.allListings.length)].listingId)});
         }
 
         // ── DETAIL PAGE ──
-        async function renderDetail(container, listingId){
-            container.innerHTML = `<div class="detail-page"><p style="text-align:center;padding:40px;">Loading...</p></div>`;
+        async function renderDetail(container,listingId){
+            container.innerHTML=`<div class="detail-page"><p style="text-align:center;padding:40px;">Loading...</p></div>`;
             let data;
-            try {
-                data = await apiFetch('listing', { id: listingId });
-            } catch(e) {
-                data = { success: true, listing: getMockListings().find(l => l.listingId === listingId) || null };
-            }
-            const listing = data.listing;
-            if (!listing) {
-                container.innerHTML = '<div class="detail-page" style="text-align:center;padding:60px"><h2>Listing not found</h2><a href="/listings">← Back to listings</a></div>';
-                return;
-            }
-            state.currentDetailData = listing;
+            try{data=await apiFetch('listing',{id:listingId})}catch(e){data={success:true,listing:getMockListings().find(l=>l.listingId===listingId)||null}}
+            const listing=data.listing;
+            if(!listing){container.innerHTML='<div class="detail-page" style="text-align:center;padding:60px"><h2>Listing not found</h2><a href="/listings" style="color:var(--blue)">← Back to listings</a></div>';return}
+            state.currentDetailData=listing;
             addToRecentlyViewed(listing);
-            container.innerHTML = getDetailHTML(listing);
+            window.dataLayer.push({event:'rentpal_listing_view',listingId:listing.listingId,area:listing.area,apartmentType:listing.apartmentType,rent:listing.rentExact});
+            container.innerHTML=getDetailHTML(listing);
             loadSimilarListings(listing);
-
-            // Attach modal trigger after the button exists
-            setTimeout(() => {
-                const btn = document.querySelector('.btn-primary[data-action="intro"]');
-                if (btn) {
-                    btn.addEventListener('click', () => {
-                        openIntroductionModal(listingId);
-                    });
-                }
-            }, 100);
+            setTimeout(()=>{const btn=document.querySelector('.btn-primary[data-action="intro"]');if(btn)btn.addEventListener('click',()=>openIntroductionModal(listingId))},100);
         }
 
         function getDetailHTML(l){
-            const photoHTML=l.photosAvailable==='Yes'&&l.primaryPhoto?`<img src="${l.primaryPhoto}" alt="${l.apartmentType}">`:`<div class="no-photo-placeholder" style="text-align:center;color:var(--ink-faint);padding:20px">No photo available</div>`;
+            const photoHTML=l.photosAvailable==='Yes'&&l.primaryPhoto?`<img src="${l.primaryPhoto}" alt="${escapeHTML(l.apartmentType)}">`:`<div style="text-align:center;color:var(--ink-faint);padding:20px">No photo available</div>`;
             const commentHero=l.comments?`<div class="detail-comment-hero"><div class="detail-comment-label">Comment from resident</div><div class="detail-quote">"</div><div class="detail-comment-body">${escapeHTML(l.comments)}</div></div>`:'';
-            const fields=[{label:'Rent',value:formatNaira(l.rentExact)+'/year',icon:'💰'},{label:'Light',value:l.light,icon:'💡'},{label:'Water',value:l.water,icon:'🚿'},{label:'Parking',value:l.parking,icon:'🅿️'},{label:'Building Size',value:l.buildingSize,icon:'🏢'},{label:'Condition',value:l.buildingCondition,icon:'🔨'},{label:'Stayed',value:l.timeStayed,icon:'⏱️'},{label:'Status',value:l.residentStatus,icon:'📅'}].filter(f=>f.value&&f.value.trim()!=='');
-            return `<div class="detail-page"><button class="detail-back" onclick="goToDirectory()">← Back to listings</button>${commentHero}<div class="detail-summary"><div class="detail-photo-wrap">${photoHTML}</div><div class="detail-info"><span class="detail-ref">${l.listingId}</span><h1>${l.apartmentType}</h1><div class="detail-loc">📍 ${l.area}, ${l.location}</div><div class="detail-rent">${formatNaira(l.rentExact)}<span>/year</span></div><div class="detail-actions"><button class="btn-primary" data-action="intro">Request Introduction</button><button class="btn-outline" onclick="copyListingLink('${l.listingId}')">Copy Link</button><button class="btn-outline" onclick="shareListing('${l.listingId}','${l.apartmentType} in ${l.area}')">Share</button></div></div></div><div class="detail-section"><h2>Apartment Details</h2><div class="detail-grid">${fields.map(f=>`<div class="detail-item"><div class="detail-item-icon">${f.icon}</div><div class="detail-item-content"><div class="item-label">${f.label}</div><div class="item-value">${escapeHTML(f.value)}</div></div></div>`).join('')}</div>${l.comments?`<div class="detail-comments-original"><span class="field-label">Resident's comment</span><p>${l.comments}</p></div>`:''}</div><div class="similar-section"><h2>Similar Listings</h2><div class="similar-grid" id="similar-grid"></div></div></div>`;
+            const fields=[{label:'Rent',value:formatNaira(l.rentExact)+'/year',icon:'💰'},{label:'Light',value:l.light,icon:'💡'},{label:'Water',value:l.water,icon:'🚿'},{label:'Parking',value:l.parking,icon:'🅿️'},{label:'Status',value:l.residentStatus,icon:'📅'}].filter(f=>f.value&&String(f.value).trim()!=='');
+            return `<div class="detail-page"><button class="detail-back" onclick="goToDirectory()">← Back to listings</button>${commentHero}<div class="detail-summary"><div class="detail-photo-wrap">${photoHTML}</div><div class="detail-info"><span class="detail-ref">${l.listingId}</span><h1>${escapeHTML(l.apartmentType)}</h1><div class="detail-loc">📍 ${escapeHTML(l.area)}, ${escapeHTML(l.location)}</div><div class="detail-rent">${formatNaira(l.rentExact)}<span>/year</span></div><div class="detail-actions"><button class="btn-primary" data-action="intro">Request Introduction</button><button class="btn-outline" onclick="copyListingLink('${l.listingId}')">Copy Link</button><button class="btn-outline" onclick="shareListing('${l.listingId}','${escapeHTML(l.apartmentType)} in ${escapeHTML(l.area)}')">Share</button></div></div></div><div class="detail-section"><h2>Apartment Details</h2><div class="detail-grid">${fields.map(f=>`<div class="detail-item"><div class="detail-item-icon">${f.icon}</div><div class="detail-item-content"><div class="item-label">${f.label}</div><div class="item-value">${escapeHTML(f.value)}</div></div></div>`).join('')}</div></div><div class="similar-section"><h2>Similar Listings</h2><div class="similar-grid" id="similar-grid"></div></div></div>`;
         }
 
         // ── MODAL LOGIC ──
-        function openIntroductionModal(listingId) {
-            const modal = document.getElementById('introModal');
-            const content = document.getElementById('introModalContent');
-            content.innerHTML = getIntroductionFormHTML(listingId);
+        function openIntroductionModal(listingId){
+            const modal=document.getElementById('introModal');
+            const content=document.getElementById('introModalContent');
+            content.innerHTML=getIntroductionFormHTML(listingId);
             modal.classList.add('active');
-            document.getElementById('intro-request-form').addEventListener('submit', (e) => submitIntroductionRequest(e, listingId));
+            window.dataLayer.push({event:'rentpal_intro_open',listingId:listingId});
+            document.getElementById('intro-request-form').addEventListener('submit',(e)=>submitIntroductionRequest(e,listingId));
         }
+        function closeModal(){document.getElementById('introModal').classList.remove('active')}
+        window.addEventListener('click',(e)=>{if(e.target===document.getElementById('introModal'))closeModal()});
 
-        function closeModal() {
-            document.getElementById('introModal').classList.remove('active');
-        }
-
-        window.addEventListener('click', (e) => {
-            if (e.target === document.getElementById('introModal')) closeModal();
-        });
-
-        function getIntroductionFormHTML(listingId) {
+        function getIntroductionFormHTML(listingId){
             return `
             <button class="modal-close" onclick="closeModal()">✕</button>
-            <h2>Request Introduction</h2>
+            <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;margin-bottom:6px">Request Introduction</h2>
             <p style="font-size:13px;color:var(--ink-muted);margin-bottom:16px">Fill in your details – the resident will review your request. No payment required now.</p>
             <div style="background:var(--orange-light);border:1px solid #fbbf24;border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;display:flex;align-items:flex-start;gap:8px">
                 <span>⚠️</span>
                 <div style="font-size:13px;color:#92400e">
                     <strong>Finder's Fee</strong><br>
-                    If you <b>successfully rent this apartment</b>, you'll be invoiced a <b>finder's fee</b> (separate from any other charges). This fee ranges from <b>₦20,000 to ₦100,000</b> depending on the apartment, and covers our advertising and matching costs. We only get paid when you find your home.
+                    If you <b>successfully rent this apartment</b>, you'll be invoiced a <b>finder's fee</b> (separate from any other charges). This fee ranges from <b>₦20,000 to ₦100,000</b> depending on the apartment.
                 </div>
             </div>
             <form id="intro-request-form">
@@ -647,21 +553,21 @@
                 <div class="form-group">
                     <label>Additional questions for the resident</label>
                     <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
-                        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">
-                            <input type="checkbox" class="req-extra" value="Can you share photos of the apartment?" style="margin-top:0;flex-shrink:0;width:16px;height:16px;"> Can you share photos of the apartment?
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer;text-transform:none;letter-spacing:0">
+                            <input type="checkbox" class="req-extra" value="Can you share photos of the apartment?" style="width:16px;height:16px"> Can you share photos of the apartment?
                         </label>
-                        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">
-                            <input type="checkbox" class="req-extra" value="Is there a video tour available?" style="margin-top:0;flex-shrink:0;width:16px;height:16px;"> Is there a video tour available?
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer;text-transform:none;letter-spacing:0">
+                            <input type="checkbox" class="req-extra" value="Is there a video tour available?" style="width:16px;height:16px"> Is there a video tour available?
                         </label>
-                        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">
-                            <input type="checkbox" class="req-extra" value="What is the condition of the plumbing/electrical?" style="margin-top:0;flex-shrink:0;width:16px;height:16px;"> What is the condition of the plumbing/electrical?
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer;text-transform:none;letter-spacing:0">
+                            <input type="checkbox" class="req-extra" value="What is the condition of the plumbing/electrical?" style="width:16px;height:16px"> Condition of plumbing/electrical?
                         </label>
-                        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">
-                            <input type="checkbox" class="req-extra" value="Are there any additional fees?" style="margin-top:0;flex-shrink:0;width:16px;height:16px;"> Are there any additional fees?
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer;text-transform:none;letter-spacing:0">
+                            <input type="checkbox" class="req-extra" value="Are there any additional fees?" style="width:16px;height:16px"> Any additional fees?
                         </label>
                         <div style="display:flex;align-items:center;gap:8px">
-                            <input type="checkbox" id="req-extra-other" class="req-extra" value="Other" onchange="document.getElementById('req-extra-other-text').style.display=this.checked?'block':'none'" style="margin-top:0;flex-shrink:0;width:16px;height:16px;">
-                            <label for="req-extra-other" style="font-weight:400;font-size:14px;color:var(--ink);cursor:pointer">Other</label>
+                            <input type="checkbox" id="req-extra-other" class="req-extra" value="Other" onchange="document.getElementById('req-extra-other-text').style.display=this.checked?'block':'none'" style="width:16px;height:16px">
+                            <label for="req-extra-other" style="font-weight:400;font-size:14px;color:var(--ink);cursor:pointer;text-transform:none;letter-spacing:0">Other</label>
                             <input type="text" id="req-extra-other-text" placeholder="Please specify" style="display:none;flex:1;padding:6px 10px;border:1px solid var(--card-border);border-radius:var(--radius-sm);font-size:13px;margin-left:8px">
                         </div>
                     </div>
@@ -686,109 +592,104 @@
             </form>`;
         }
 
-        function submitIntroductionRequest(e, listingId) {
+        function submitIntroductionRequest(e,listingId){
             e.preventDefault();
-            const agreeFinder = document.getElementById('req-agree-finder');
-            if (!agreeFinder || !agreeFinder.checked) {
-                showToast('Please agree to the finder\'s fee terms.', 'error');
-                return;
-            }
-            const btn = document.getElementById('btn-submit-intro');
-            if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
-            const extras = [];
-            document.querySelectorAll('.req-extra:checked').forEach(cb => {
-                if (cb.value === 'Other') {
-                    const otherText = document.getElementById('req-extra-other-text')?.value.trim();
-                    if (otherText) extras.push(otherText);
-                } else {
-                    extras.push(cb.value);
-                }
+            const agreeFinder=document.getElementById('req-agree-finder');
+            if(!agreeFinder||!agreeFinder.checked){showToast("Please agree to the finder's fee terms.",'error');return}
+            const btn=document.getElementById('btn-submit-intro');
+            if(btn){btn.disabled=true;btn.textContent='Sending…'}
+            const extras=[];
+            document.querySelectorAll('.req-extra:checked').forEach(cb=>{
+                if(cb.value==='Other'){const otherText=document.getElementById('req-extra-other-text')?.value.trim();if(otherText)extras.push(otherText)}
+                else extras.push(cb.value);
             });
-            const payload = {
-                action: 'requestIntroduction',
+            const payload={
+                action:'requestIntroduction',
                 listingId,
-                listingUrl: window.location.href,
-                requesterName: document.getElementById('req-name')?.value || '',
-                requesterEmail: document.getElementById('req-email')?.value || '',
-                requesterPhone: document.getElementById('req-phone')?.value || '',
-                requesterTelegram: document.getElementById('req-telegram')?.value || '',
-                reason: document.getElementById('req-reason')?.value || '',
-                moveTimeline: document.getElementById('req-timeline')?.value || '',
-                extraQuestions: extras.join('; ')
+                listingUrl:window.location.href,
+                requesterName:document.getElementById('req-name')?.value||'',
+                requesterEmail:document.getElementById('req-email')?.value||'',
+                requesterPhone:document.getElementById('req-phone')?.value||'',
+                requesterTelegram:document.getElementById('req-telegram')?.value||'',
+                reason:document.getElementById('req-reason')?.value||'',
+                moveTimeline:document.getElementById('req-timeline')?.value||'',
+                extraQuestions:extras.join('; ')
             };
-            apiFetch('requestIntroduction', payload, 'POST')
-                .then(() => {
-                    document.getElementById('introModalContent').innerHTML = `
+            apiFetch('requestIntroduction',payload,'POST')
+                .then(()=>{
+                    window.dataLayer.push({event:'rentpal_intro_submitted',listingId:listingId});
+                    document.getElementById('introModalContent').innerHTML=`
                         <button class="modal-close" onclick="closeModal()">✕</button>
                         <div class="request-confirmation">
-                            <div style="font-size:48px;margin-bottom:12px;">✅</div>
-                            <h3>Request sent!</h3>
-                            <p>The resident has up to 24 hours to respond. If they approve, you’ll get an email with next steps.</p>
-                            <button class="btn-outline" onclick="closeModal()" style="margin-top:16px;">Close</button>
+                            <div style="font-size:48px;margin-bottom:12px">✅</div>
+                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px">Request sent!</h3>
+                            <p style="color:var(--ink-muted);font-size:14px;line-height:1.6">The resident has up to 24 hours to respond. If they approve, you'll get an email with next steps.</p>
+                            <button class="btn-outline" onclick="closeModal()" style="margin-top:16px">Close</button>
                         </div>`;
                 })
-                .catch(() => {
-                    document.getElementById('introModalContent').innerHTML = `
+                .catch(()=>{
+                    document.getElementById('introModalContent').innerHTML=`
                         <button class="modal-close" onclick="closeModal()">✕</button>
                         <div class="request-confirmation">
-                            <h3>Something went wrong</h3>
-                            <p>Please try again later.</p>
-                            <button class="btn-outline" onclick="closeModal()" style="margin-top:16px;">Close</button>
+                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;margin-bottom:8px">Something went wrong</h3>
+                            <p style="color:var(--ink-muted)">Please try again later.</p>
+                            <button class="btn-outline" onclick="closeModal()" style="margin-top:16px">Close</button>
                         </div>`;
                 });
         }
 
-        function copyListingLink(id) {
-            const url = window.location.origin + '/listings/?id=' + id;
-            navigator.clipboard.writeText(url).then(() => showToast('Link copied!'));
-        }
-        function shareListing(id, title) {
-            const url = window.location.origin + '/listings/?id=' + id;
-            if (navigator.share) navigator.share({ title: 'RentPal Listing', text: title, url });
-            else copyListingLink(id);
-        }
+        function copyListingLink(id){const url=window.location.origin+'/listings/?id='+id;navigator.clipboard.writeText(url).then(()=>showToast('Link copied!'))}
+        function shareListing(id,title){const url=window.location.origin+'/listings/?id='+id;if(navigator.share)navigator.share({title:'RentPal Listing',text:title,url});else copyListingLink(id)}
 
-        async function loadSimilarListings(listing) {
-            const grid = document.getElementById('similar-grid'); if (!grid) return;
-            let all = state.allListings;
-            if (!all.length) try { const d = await apiFetch('listings'); all = (d.listings || []).filter(l => l.verificationStatus === 'Verified' && l.listingStatus === 'Available'); } catch (e) { all = getMockListings().filter(l => l.verificationStatus === 'Verified' && l.listingStatus === 'Available'); }
-            const others = all.filter(l => l.listingId !== listing.listingId);
-            const scored = others.map(l => {
-                let s = 0;
-                if (l.area === listing.area) s += 3;
-                if (l.apartmentType === listing.apartmentType) s += 2;
-                if (l.location === listing.location) s += 1;
-                const rd = Math.abs(getRentNumeric(String(l.rentExact || 0)) - getRentNumeric(String(listing.rentExact || 0)));
-                if (rd < 300000) s += 2; else if (rd < 600000) s += 1;
-                return { listing: l, score: s };
-            });
-            scored.sort((a, b) => b.score - a.score); const similar = scored.slice(0, 6);
-            grid.innerHTML = similar.map(s => {
-                const l = s.listing;
-                return `<div class="listing-card" onclick="goToDetail('${l.listingId}')"><div class="card-comment-area" style="height:100px"><div class="comment-quote">"</div><div class="comment-text">${escapeHTML(l.comments || 'No description')}</div></div><div class="card-body"><span class="card-ref">${l.listingId}</span><div class="card-type" style="font-size:13px">${escapeHTML(l.apartmentType)}</div><div class="card-location-row"><span class="card-location-tag">${l.location === 'Mainland' ? '📍 Mainland' : '🏝️ Island'} ${escapeHTML(l.area)}</span></div><div class="card-rent" style="font-size:15px">${formatNaira(l.rentExact)}<span>/yr</span></div></div></div>`;
-            }).join('') || '<p style="color:var(--ink-faint);font-size:13px">No similar listings</p>';
+        async function loadSimilarListings(listing){
+            const grid=document.getElementById('similar-grid');if(!grid)return;
+            let all=state.allListings;
+            if(!all.length){try{const d=await apiFetch('listings');all=(d.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available')}catch(e){all=getMockListings().filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available')}}
+            const others=all.filter(l=>l.listingId!==listing.listingId);
+            const scored=others.map(l=>{let s=0;if(l.area===listing.area)s+=3;if(l.apartmentType===listing.apartmentType)s+=2;if(l.location===listing.location)s+=1;const rd=Math.abs(getRentNumeric(l.rentExact)-getRentNumeric(listing.rentExact));if(rd<300000)s+=2;else if(rd<600000)s+=1;return{listing:l,score:s}});
+            scored.sort((a,b)=>b.score-a.score);
+            const similar=scored.slice(0,6);
+            grid.innerHTML=similar.map(s=>{const l=s.listing;return `<div class="listing-card" onclick="goToDetail('${l.listingId}')" style="cursor:pointer"><div class="card-main"><span class="card-ref">${l.listingId}</span><div class="card-type" style="font-size:13px">${escapeHTML(l.apartmentType)}</div><div class="card-loc">${l.location==='Mainland'?'📍 Mainland':'🏝️ Island'} · ${escapeHTML(l.area)}</div><div class="card-rent" style="font-size:15px">${formatNaira(l.rentExact)}<span>/yr</span></div></div></div>`}).join('')||'<p style="color:var(--ink-faint);font-size:13px">No similar listings</p>';
         }
 
         let autoRefreshInterval;
-        function startAutoRefresh(){if(autoRefreshInterval)clearInterval(autoRefreshInterval);autoRefreshInterval=setInterval(async()=>{if(getRouteInfo().view!=='directory')return;try{const data=await apiFetch('listings');const fresh=(data.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available');fresh.sort((a,b)=>new Date(b.postedDate)-new Date(a.postedDate));const oldIds=state.allListings.map(l=>l.listingId).sort().join(',');const newIds=fresh.map(l=>l.listingId).sort().join(',');if(oldIds!==newIds){state.allListings=fresh;state.filteredListings=[...fresh];state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,fresh.length);applyFilters();renderCards();updateCount();showToast('📣 Listings updated')}}catch(e){}},30000)}
-        document.addEventListener('visibilitychange',()=>{if(!document.hidden&&getRouteInfo().view==='directory'){apiFetch('listings').then(data=>{const fresh=(data.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available');fresh.sort((a,b)=>new Date(b.postedDate)-new Date(a.postedDate));state.allListings=fresh;state.filteredListings=[...fresh];state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,fresh.length);applyFilters();renderCards();updateCount()}).catch(()=>{})}});
+        function startAutoRefresh(){
+            if(autoRefreshInterval)clearInterval(autoRefreshInterval);
+            autoRefreshInterval=setInterval(async()=>{
+                if(getRouteInfo().view!=='directory')return;
+                try{
+                    const data=await apiFetch('listings');
+                    const fresh=(data.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available'&&l.listingType!=='seeker');
+                    fresh.sort((a,b)=>new Date(b.postedDate)-new Date(a.postedDate));
+                    const oldIds=state.allListings.map(l=>l.listingId).sort().join(',');
+                    const newIds=fresh.map(l=>l.listingId).sort().join(',');
+                    if(oldIds!==newIds){
+                        state.allListings=fresh;state.filteredListings=[...fresh];
+                        state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,fresh.length);
+                        applyFilters();renderCards();updateCount();
+                        showToast('📣 Listings updated');
+                    }
+                }catch(e){}
+            },30000);
+        }
 
-        function goToDetail(id) { navigateTo('/listings/?id=' + id); }
-        function goToDirectory() { navigateTo('/listings'); }
-        function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
-        function refreshCurrentView() { if (getRouteInfo().view === 'directory') { renderCards(); renderRecentlyViewed(); } }
-        function init() {
+        function goToDetail(id){navigateTo('/listings/?id='+id)}
+        function goToDirectory(){navigateTo('/listings')}
+        function toggleMobileMenu(){document.getElementById('mobile-menu').classList.toggle('open')}
+        function refreshCurrentView(){if(getRouteInfo().view==='directory')renderCards()}
+
+        function init(){
             handleRoute();
-            document.querySelectorAll('.mobile-menu a').forEach(a => a.addEventListener('click', () => document.getElementById('mobile-menu').classList.remove('open')));
-            document.addEventListener('click', (e) => {
-                const a = e.target.closest('a');
-                if (a && a.getAttribute('href')?.startsWith('/listings') && !a.href.startsWith('http') && a.target !== '_blank') {
+            document.querySelectorAll('.mobile-menu a').forEach(a=>a.addEventListener('click',()=>document.getElementById('mobile-menu').classList.remove('open')));
+            document.addEventListener('click',(e)=>{
+                const a=e.target.closest('a');
+                if(a&&a.getAttribute('href')?.startsWith('/listings')&&!a.href.startsWith('http')&&a.target!=='_blank'){
                     e.preventDefault();
                     navigateTo(a.getAttribute('href'));
                 }
             });
         }
-        document.addEventListener('DOMContentLoaded', init);
+        document.addEventListener('DOMContentLoaded',init);
     </script>
 </body>
 </html>
