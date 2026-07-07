@@ -45,7 +45,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .mobile-menu a:last-child{border-bottom:none;}
   .mobile-menu .mob-cta{margin-top:8px;background:var(--blue);color:#fff;padding:12px 20px;border-radius:9px;text-align:center;font-weight:500;border-bottom:none;}
 
-  /* HERO / QUIZ AREA — dark gradient bg */
+  /* HERO / QUIZ AREA */
   .hero-wrap{background:var(--quiz-bg);border-bottom:1px solid #0C447C;padding:64px 24px 72px;}
   .hero-inner{max-width:620px;margin:0 auto;}
   .hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(74,143,212,0.18);color:#8fc6f5;font-size:12px;font-weight:500;padding:5px 14px;border-radius:100px;margin-bottom:18px;border:1px solid rgba(74,143,212,0.3);}
@@ -66,7 +66,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .quiz-q{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;color:#ffffff;line-height:1.25;margin-bottom:5px;}
   .quiz-hint{font-size:14px;font-weight:300;color:rgba(255,255,255,0.55);margin-bottom:18px;line-height:1.6;}
 
-  /* OPTIONS — on dark bg */
+  /* OPTIONS */
   .opts{display:flex;flex-direction:column;gap:8px;}
   .opts.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
   .opt{border:1.5px solid rgba(255,255,255,0.12);border-radius:11px;padding:13px 16px;cursor:pointer;background:rgba(255,255,255,0.05);text-align:left;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:10px;transition:border-color .15s,background .15s;width:100%;}
@@ -75,15 +75,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .opt-title{font-size:14px;font-weight:500;color:#ffffff;line-height:1.3;}
   .opt-sub{font-size:12px;font-weight:300;color:rgba(255,255,255,0.5);margin-top:1px;}
 
-  /* QUIZ INPUTS — on dark bg */
+  /* QUIZ INPUTS */
   .qinput-group{margin-bottom:13px;}
   .qinput-group label{display:block;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,0.5);margin-bottom:5px;}
   .qinput-group input,.qinput-group select,.qinput-group textarea{width:100%;padding:11px 14px;border:1.5px solid rgba(255,255,255,0.12);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:16px;color:#fff;background:rgba(255,255,255,0.07);outline:none;transition:border-color .2s,box-shadow .2s;}
   .qinput-group input:focus,.qinput-group select:focus,.qinput-group textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(74,143,212,.2);}
-  .qinput-group input::placeholder,.qinput-group textarea::placeholder{color:rgba(255,255,255,0.28);}
+  .qinput-group input.error,.qinput-group select.error,.qinput-group textarea.error{border-color:#f87171;box-shadow:0 0 0 3px rgba(248,113,113,0.15);}
+  .qinput-group input::placeholder,.qinput-group textarea::placeholder{color:rgba(255,255,255,0.4);}
   .qinput-group select{-webkit-appearance:none;appearance:none;cursor:pointer;}
   .qinput-group select option{background:#1e2a3a;color:#fff;}
   .qinput-group textarea{resize:none;line-height:1.6;}
+  .field-error{font-size:12px;color:#f87171;margin-top:4px;display:none;}
+  .field-error.show{display:block;}
+  .char-counter{font-size:11px;color:rgba(255,255,255,0.35);text-align:right;margin-top:4px;}
   .qrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
   .qgroup-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,0.35);margin:14px 0 7px;}
 
@@ -95,8 +99,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   /* BUTTONS */
   .next-btn{width:100%;padding:14px;background:var(--blue);color:#fff;border:none;border-radius:11px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:18px;transition:background .2s,transform .15s;}
   .next-btn:hover{background:var(--blue-dark);transform:translateY(-1px);}
-  .next-btn.dark{background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);}
-  .next-btn.dark:hover{background:rgba(255,255,255,0.18);}
   .next-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;}
   .back-btn{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:rgba(255,255,255,0.35);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0;margin-top:11px;}
   .back-btn:hover{color:rgba(255,255,255,0.6);}
@@ -180,14 +182,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .honesty-grid{grid-template-columns:1fr;gap:24px;}
     footer{padding:22px 20px;flex-direction:column;gap:8px;text-align:center;}
   }
-  @media(max-width:380px){.opts.g2{grid-template-columns:1fr;}}
+  @media(max-width:400px){.opts.g2{grid-template-columns:1fr;}}
 
   /* THANK YOU — Telegram block + countdown */
   .ty-tg-block{margin-top:20px;padding:16px 18px;background:rgba(74,143,212,0.12);border:1px solid rgba(74,143,212,0.25);border-radius:12px;text-align:center;}
   .ty-tg-label{font-size:14px;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.6;margin-bottom:12px;}
   .ty-tg-label span{color:rgba(255,255,255,0.45);font-size:13px;}
-  .ty-countdown{margin-top:14px;font-size:12px;color:rgba(255,255,255,0.3);letter-spacing:.3px;}
+  .ty-countdown{margin-top:14px;font-size:12px;color:rgba(255,255,255,0.3);letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:10px;}
   .ty-countdown strong{color:rgba(255,255,255,0.55);}
+  .ty-countdown-cancel{background:none;border:none;color:rgba(255,255,255,0.4);font-size:12px;text-decoration:underline;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0;}
+  .ty-countdown-cancel:hover{color:rgba(255,255,255,0.7);}
 </style>
 </head>
 <body>
@@ -203,16 +207,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
   <ul class="nav-links">
     <li><a href="#how-it-works">How it works</a></li>
-    <li><a href="#quiz-area">List apartment</a></li>
-    <li><a href="#quiz-area">Find a place</a></li>
+    <li><a href="#quiz-area">Get started</a></li>
   </ul>
   <a href="#quiz-area" class="nav-cta">Get started</a>
   <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 </nav>
 <div class="mobile-menu" id="mobile-menu">
   <a href="#how-it-works" onclick="closeMenu()">How it works</a>
-  <a href="#quiz-area" onclick="closeMenu()">List my apartment</a>
-  <a href="#quiz-area" onclick="closeMenu()">Find a place</a>
+  <a href="#quiz-area" onclick="closeMenu()">Get started</a>
   <a href="#quiz-area" class="mob-cta" onclick="closeMenu()">Get started →</a>
 </div>
 
@@ -228,7 +230,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span class="quiz-progress-label" id="qplabel"></span>
     </div>
 
-    <!-- STEP 0 — three options -->
+    <!-- STEP 0 -->
     <div class="quiz-step active" id="step-0">
       <div class="quiz-q" style="margin-bottom:14px;">What brings you here?</div>
       <div class="opts">
@@ -247,7 +249,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
 
-    <!-- PACKING OUT CONFIRMATION (disqualify check) -->
+    <!-- PACKING CONFIRM -->
     <div class="quiz-step" id="p-confirm">
       <div class="confirm-card">
         <h4>Just to confirm</h4>
@@ -259,7 +261,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
 
-    <!-- BOTH (packing + looking) CONFIRMATION -->
+    <!-- BOTH CONFIRM -->
     <div class="quiz-step" id="b-confirm">
       <div class="confirm-card">
         <h4>A couple things, then</h4>
@@ -296,9 +298,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div class="qinput-group">
         <label>Area / Bus stop</label>
-        <input type="text" id="t-area-input" placeholder="e.g. Ojota, Yaba, Lekki Phase 1" oninput="setVal('t-area',this.value)">
+        <input type="text" id="t-area-input" placeholder="e.g. Ojota, Yaba, Lekki Phase 1" autocomplete="address-level2" oninput="setVal('t-area',this.value);clearError(this)">
+        <div class="field-error" id="err-t-area">Please enter your area.</div>
       </div>
-      <button class="next-btn" onclick="if(vals['t-location']&&vals['t-area'])goTo('t-3');else alert('Please select Mainland/Island and enter your area.')">Next →</button>
+      <button class="next-btn" onclick="validateAndGo('t-2','t-3')">Next →</button>
       <button class="back-btn" onclick="goTo('t-1')">← Back</button>
     </div>
 
@@ -314,14 +317,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button class="opt" onclick="selectRentRange(this,'₦2.1m – ₦3m','2100000','3000000')"><div class="opt-title">₦2.1m – ₦3m</div></button>
         <button class="opt" onclick="selectRentRange(this,'₦3.1m – ₦4m','3100000','4000000')"><div class="opt-title">₦3.1m – ₦4m</div></button>
         <button class="opt" onclick="selectRentRange(this,'₦4.1m – ₦5m','4100000','5000000')"><div class="opt-title">₦4.1m – ₦5m</div></button>
-        <button class="opt" onclick="selectRentRange(this,'Above ₦5m','5000000','')"><div class="opt-title">Above ₦5m</div></button>
+        <button class="opt" onclick="selectRentRange(this,'Above ₦5m','5100000','')"><div class="opt-title">Above ₦5m</div></button>
       </div>
       <div class="rent-display-label">Exact amount (in Naira)</div>
       <div class="rent-display" id="rent-display">— type below —</div>
       <div class="qinput-group">
-        <input type="number" id="t-rent-exact" placeholder="e.g. 850000" min="0" oninput="updateRentDisplay(this.value)" style="text-align:center;">
+        <input type="number" id="t-rent-exact" placeholder="e.g. 850000" min="0" oninput="updateRentDisplay(this.value)" style="text-align:center;" inputmode="numeric">
+        <div class="field-error" id="err-t-rent">Please select a rent range.</div>
       </div>
-      <button class="next-btn" onclick="if(vals['t-rent-range'])goTo('t-4');else alert('Please select a rent range.')">Next →</button>
+      <button class="next-btn" onclick="validateAndGo('t-3','t-4')">Next →</button>
       <button class="back-btn" onclick="goTo('t-2')">← Back</button>
     </div>
 
@@ -371,16 +375,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="quiz-q">Almost done — how do we reach you?</div>
       <div class="quiz-hint">We'll use this to verify the listing and connect you with the right person.</div>
       <div class="qrow">
-        <div class="qinput-group"><label>First name</label><input type="text" id="t-fname" placeholder="David" oninput="setVal('firstName',this.value)"></div>
-        <div class="qinput-group"><label>Last name</label><input type="text" id="t-lname" placeholder="Prosper" oninput="setVal('lastName',this.value)"></div>
+        <div class="qinput-group"><label>First name</label><input type="text" id="t-fname" placeholder="David" autocomplete="given-name" oninput="setVal('firstName',this.value);clearError(this)"><div class="field-error" id="err-t-fname">Please enter your first name.</div></div>
+        <div class="qinput-group"><label>Last name</label><input type="text" id="t-lname" placeholder="Prosper" autocomplete="family-name" oninput="setVal('lastName',this.value)"></div>
       </div>
-      <div class="qinput-group"><label>Email</label><input type="email" id="t-email" placeholder="chat@email.com" oninput="setVal('email',this.value)"></div>
-      <div class="qinput-group"><label>Phone / WhatsApp</label><input type="tel" id="t-phone" placeholder="0801 234 5678" oninput="setVal('phone',this.value)"></div>
+      <div class="qinput-group"><label>Email</label><input type="email" id="t-email" placeholder="chat@email.com" autocomplete="email" oninput="setVal('email',this.value);clearError(this)"><div class="field-error" id="err-t-email">Please enter a valid email.</div></div>
+      <div class="qinput-group"><label>Phone / WhatsApp</label><input type="tel" id="t-phone" placeholder="0801 234 5678" autocomplete="tel" oninput="setVal('phone',this.value)"></div>
       <div class="qinput-group">
         <label>Any comments about the place? (optional)</label>
-        <textarea id="t-comments" rows="3" placeholder="Anything about the place that can help the next person know what they're getting into — good or not so good." oninput="setVal('comments',this.value)"></textarea>
+        <textarea id="t-comments" rows="3" maxlength="200" placeholder="Anything about the place that can help the next person know what they're getting into — good or not so good." oninput="setVal('comments',this.value);updateCharCount('t-comments','t-comments-count',200)"></textarea>
+        <div class="char-counter"><span id="t-comments-count">0</span>/200</div>
       </div>
-      <button class="next-btn" style="background:var(--blue);" id="t-submit-btn" onclick="if(userType==='both'){goTo('b-s-1')}else{submitQuiz('tenant')}">Submit my apartment →</button>
+      <button class="next-btn" id="t-submit-btn" onclick="if(userType==='both'){goTo('b-s-1')}else{submitQuiz('tenant')}">Submit my apartment →</button>
       <button class="back-btn" onclick="goTo('t-5')">← Back</button>
     </div>
 
@@ -391,7 +396,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p>We've received your apartment details. Someone from the RentPal team will reach out within 24–48 hours to verify everything and get your listing in front of the right people.</p>
         <div class="ty-steps">
           <div class="ty-steps-lbl">Next steps</div>
-          <div class="ty-step"><div class="ty-dot" style="background:var(--blue);"></div><span>Send photos &amp; a short video to our WhatsApp: <strong style="color:#fff;">+234 816 2373 553</strong></span></div>
+          <div class="ty-step"><div class="ty-dot" style="background:var(--blue);"></div><span>Send photos &amp; a short video to our WhatsApp: <strong style="color:#fff;" id="wa-1"></strong></span></div>
           <div class="ty-step"><div class="ty-dot" style="background:var(--blue);"></div><span>We'll confirm the details and get the listing in front of serious seekers.</span></div>
           <div class="ty-step"><div class="ty-dot" style="background:var(--blue);"></div><span>Direct connection — no agents, no unnecessary middlemen.</span></div>
         </div>
@@ -402,11 +407,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             Join t.me/rentpal_lagos
           </a>
         </div>
-        <div class="ty-countdown">Opening Telegram in <strong id="ct-packing">10</strong>s</div>
+        <div class="ty-countdown">Opening Telegram in <strong id="ct-packing">20</strong>s <button class="ty-countdown-cancel" onclick="cancelCountdown()">Cancel</button></div>
       </div>
     </div>
 
-    <!-- BOTH SEEKER FLOW (after tenant info) -->
+    <!-- BOTH SEEKER FLOW -->
     <div class="quiz-step" id="b-s-1">
       <div class="step-label">Your next place — 1 of 5</div>
       <div class="quiz-q">Where in Lagos are you looking?</div>
@@ -443,7 +448,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button class="opt" onclick="setVal('budgetMin','2100000');setVal('budgetMax','3000000');goTo('b-s-4')"><div class="opt-title">₦2.1m – ₦3m</div></button>
         <button class="opt" onclick="setVal('budgetMin','3100000');setVal('budgetMax','4000000');goTo('b-s-4')"><div class="opt-title">₦3.1m – ₦4m</div></button>
         <button class="opt" onclick="setVal('budgetMin','4100000');setVal('budgetMax','5000000');goTo('b-s-4')"><div class="opt-title">₦4.1m – ₦5m</div></button>
-        <button class="opt" onclick="setVal('budgetMin','5000000');setVal('budgetMax','');goTo('b-s-4')"><div class="opt-title">Above ₦5m</div></button>
+        <button class="opt" onclick="setVal('budgetMin','5100000');setVal('budgetMax','');goTo('b-s-4')"><div class="opt-title">Above ₦5m</div></button>
       </div>
       <button class="back-btn" onclick="goTo('b-s-2')">← Back</button>
     </div>
@@ -464,8 +469,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="step-label">Your next place — 5 of 5</div>
       <div class="quiz-q">Last step — how do we reach you?</div>
       <div class="quiz-hint">We'll alert you when a place that fits your search comes in.</div>
-      <div class="qinput-group"><label>Specific areas (optional)</label><input type="text" id="b-s-areas" placeholder="e.g. Yaba, Surulere, Ikeja" oninput="setVal('preferredAreas',this.value)"></div>
-      <button class="next-btn dark" id="both-submit-btn" onclick="submitQuiz('both')">Finish →</button>
+      <div class="qinput-group"><label>Specific areas (optional)</label><input type="text" id="b-s-areas" placeholder="e.g. Yaba, Surulere, Ikeja" autocomplete="address-level2" oninput="setVal('preferredAreas',this.value)"></div>
+      <button class="next-btn" id="both-submit-btn" onclick="submitQuiz('both')">Finish →</button>
       <button class="back-btn" onclick="goTo('b-s-4')">← Back</button>
     </div>
 
@@ -479,7 +484,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="ty-steps-lbl">What happens next</div>
           <div class="ty-step"><div class="ty-dot" style="background:var(--blue);"></div><span>We'll reach out within 24–48 hours to verify your current apartment and get it listed.</span></div>
           <div class="ty-step"><div class="ty-dot" style="background:var(--blue);"></div><span>Your search preferences are saved — we'll alert you when a match comes in.</span></div>
-          <div class="ty-step"><div class="ty-dot" style="background:var(--blue);"></div><span>Send photos of your current place to our WhatsApp: <strong style="color:#fff;">+234 816 2373 553</strong></span></div>
+          <div class="ty-step"><div class="ty-dot" style="background:var(--blue);"></div><span>Send photos of your current place to our WhatsApp: <strong style="color:#fff;" id="wa-2"></strong></span></div>
         </div>
         <div class="ty-tg-block">
           <p class="ty-tg-label">You've registered — now join our Telegram channel.<br><span>That's where it all happens.</span></p>
@@ -488,7 +493,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             Join t.me/rentpal_lagos
           </a>
         </div>
-        <div class="ty-countdown">Opening Telegram in <strong id="ct-both">10</strong>s</div>
+        <div class="ty-countdown">Opening Telegram in <strong id="ct-both">20</strong>s <button class="ty-countdown-cancel" onclick="cancelCountdown()">Cancel</button></div>
       </div>
     </div>
 
@@ -529,7 +534,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button class="opt" onclick="setVal('budgetMin','2100000');setVal('budgetMax','3000000');goTo('s-4')"><div class="opt-title">₦2.1m – ₦3m</div></button>
         <button class="opt" onclick="setVal('budgetMin','3100000');setVal('budgetMax','4000000');goTo('s-4')"><div class="opt-title">₦3.1m – ₦4m</div></button>
         <button class="opt" onclick="setVal('budgetMin','4100000');setVal('budgetMax','5000000');goTo('s-4')"><div class="opt-title">₦4.1m – ₦5m</div></button>
-        <button class="opt" onclick="setVal('budgetMin','5000000');setVal('budgetMax','');goTo('s-4')"><div class="opt-title">Above ₦5m</div></button>
+        <button class="opt" onclick="setVal('budgetMin','5100000');setVal('budgetMax','');goTo('s-4')"><div class="opt-title">Above ₦5m</div></button>
       </div>
       <button class="back-btn" onclick="goTo('s-2')">← Back</button>
     </div>
@@ -551,13 +556,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="quiz-q">Last step — how do we reach you?</div>
       <div class="quiz-hint">We'll alert you the moment a confirmed apartment is available.</div>
       <div class="qrow">
-        <div class="qinput-group"><label>First name</label><input type="text" id="s-fname" placeholder="David" oninput="setVal('firstName',this.value)"></div>
-        <div class="qinput-group"><label>Last name</label><input type="text" id="s-lname" placeholder="Prosper" oninput="setVal('lastName',this.value)"></div>
+        <div class="qinput-group"><label>First name</label><input type="text" id="s-fname" placeholder="David" autocomplete="given-name" oninput="setVal('firstName',this.value);clearError(this)"><div class="field-error" id="err-s-fname">Please enter your first name.</div></div>
+        <div class="qinput-group"><label>Last name</label><input type="text" id="s-lname" placeholder="Prosper" autocomplete="family-name" oninput="setVal('lastName',this.value)"></div>
       </div>
-      <div class="qinput-group"><label>Email</label><input type="email" id="s-email" placeholder="chat@email.com" oninput="setVal('email',this.value)"></div>
-      <div class="qinput-group"><label>Phone / WhatsApp</label><input type="tel" id="s-phone" placeholder="0801 234 5678" oninput="setVal('phone',this.value)"></div>
-      <div class="qinput-group"><label>Specific areas (optional)</label><input type="text" id="s-areas" placeholder="e.g. Yaba, Surulere, Ikeja" oninput="setVal('preferredAreas',this.value)"></div>
-      <button class="next-btn dark" id="s-submit-btn" onclick="submitQuiz('seeker')">Sign up →</button>
+      <div class="qinput-group"><label>Email</label><input type="email" id="s-email" placeholder="chat@email.com" autocomplete="email" oninput="setVal('email',this.value);clearError(this)"><div class="field-error" id="err-s-email">Please enter a valid email.</div></div>
+      <div class="qinput-group"><label>Phone / WhatsApp</label><input type="tel" id="s-phone" placeholder="0801 234 5678" autocomplete="tel" oninput="setVal('phone',this.value)"></div>
+      <div class="qinput-group"><label>Specific areas (optional)</label><input type="text" id="s-areas" placeholder="e.g. Yaba, Surulere, Ikeja" autocomplete="address-level2" oninput="setVal('preferredAreas',this.value)"></div>
+      <button class="next-btn" id="s-submit-btn" onclick="submitQuiz('seeker')">Sign up →</button>
       <button class="back-btn" onclick="goTo('s-4')">← Back</button>
     </div>
 
@@ -579,7 +584,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             Join t.me/rentpal_lagos
           </a>
         </div>
-        <div class="ty-countdown">Opening Telegram in <strong id="ct-seeker">10</strong>s</div>
+        <div class="ty-countdown">Opening Telegram in <strong id="ct-seeker">20</strong>s <button class="ty-countdown-cancel" onclick="cancelCountdown()">Cancel</button></div>
       </div>
     </div>
 
@@ -667,13 +672,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <img src="rentpal_logo_blue.png" height="22" alt="RentPal" style="opacity:.65;" onerror="this.style.display='none';document.getElementById('flogo').style.display='block'">
     <span id="flogo" style="display:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--blue);opacity:.65;">rentpal</span>
   </div>
-  <p class="footer-text">© 2026 RentPal · Lagos, Nigeria</p>
+  <p class="footer-text">© <span id="footer-year"></span> RentPal · Lagos, Nigeria</p>
   <p class="footer-text">Connecting rent seekers to existing tenants.</p>
 </footer>
 
 <script>
   window.dataLayer = window.dataLayer || [];
-  var GAS_URL = "https://script.google.com/macros/s/AKfycbyHby_E7i0Bc4CZuQBhyJzcp-FSUVUq_z1rxl63uTzNd9FdpgW5ZK0TY_V9l4D3180CWQ/exec";
+
+  // ── CONFIG ──
+  var GAS_URL = "https://script.google.com/macros/s/AKfycbxSSR5wg6k59mi3clvbAL1S_r1fs29UFsv4ZKhNP1ek8aNYYUt20pkMx9YCMeXkuD0srw/exec";
+  var WHATSAPP = "+234 816 2373 553";
+  var COUNTDOWN_SECONDS = 20;
+
+  // ── STATE ──
   var vals = {}, currentStep = 'step-0', userType = '';
   var countdownTimer = null;
 
@@ -697,6 +708,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     setVal('t-rent-range', label);
     setVal('t-rent-min', min);
     setVal('t-rent-max', max);
+    clearError(document.getElementById('t-rent-exact'));
   }
 
   function formatNaira(num){
@@ -717,12 +729,63 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
   }
 
+  function updateCharCount(inputId, counterId, max){
+    var input = document.getElementById(inputId);
+    var counter = document.getElementById(counterId);
+    if(input && counter) counter.textContent = input.value.length;
+  }
+
   function goBackFromTenant(){
     if(userType === 'packing') goTo('p-confirm');
     else if(userType === 'both') goTo('b-confirm');
     else goTo('step-0');
   }
 
+  // ── VALIDATION ──
+  function showError(inputEl, msgId){
+    if(inputEl) inputEl.classList.add('error');
+    var err = document.getElementById(msgId);
+    if(err) err.classList.add('show');
+    if(inputEl){
+      inputEl.focus();
+      inputEl.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  }
+
+  function clearError(inputEl){
+    if(!inputEl) return;
+    inputEl.classList.remove('error');
+    var errId = 'err-' + inputEl.id;
+    var err = document.getElementById(errId);
+    if(err) err.classList.remove('show');
+  }
+
+  function isValidEmail(e){
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e || '');
+  }
+
+  function validateAndGo(fromStep, nextStep){
+    if(fromStep === 't-2'){
+      if(!vals['t-location']){ alert('Please select Mainland or Island.'); return; }
+      var areaInput = document.getElementById('t-area-input');
+      if(!vals['t-area'] || !vals['t-area'].trim()){
+        showError(areaInput, 'err-t-area');
+        return;
+      }
+      goTo(nextStep);
+    } else if(fromStep === 't-3'){
+      var rentInput = document.getElementById('t-rent-exact');
+      if(!vals['t-rent-range']){
+        showError(rentInput, 'err-t-rent');
+        return;
+      }
+      goTo(nextStep);
+    } else {
+      goTo(nextStep);
+    }
+  }
+
+  // ── NAVIGATION ──
   function goTo(stepId){
     document.getElementById(currentStep).classList.remove('active');
     document.getElementById(stepId).classList.add('active');
@@ -730,7 +793,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     updateProgress();
     document.getElementById('quiz-area').scrollIntoView({behavior:'smooth',block:'start'});
 
-    // Fire dataLayer + start countdown on thank you screens
     if(countdownTimer){ clearInterval(countdownTimer); countdownTimer = null; }
     if(stepId === 't-ty'){
       window.dataLayer.push({ event: 'rentpal_packing_complete', userType: 'packing' });
@@ -744,20 +806,34 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       window.dataLayer.push({ event: 'rentpal_listing_complete', userType: 'both' });
       startCountdown('ct-both');
     }
+
+    // Clear state if returning to start
+    if(stepId === 'step-0'){
+      userType = '';
+    }
   }
 
   function startCountdown(ctId){
-    var secs = 10;
+    var secs = COUNTDOWN_SECONDS;
     var el = document.getElementById(ctId);
     if(!el) return;
+    el.textContent = secs;
     countdownTimer = setInterval(function(){
       secs--;
       el.textContent = secs;
       if(secs <= 0){
         clearInterval(countdownTimer);
+        countdownTimer = null;
         window.open('https://t.me/rentpal_lagos', '_blank');
       }
     }, 1000);
+  }
+
+  function cancelCountdown(){
+    if(countdownTimer){ clearInterval(countdownTimer); countdownTimer = null; }
+    document.querySelectorAll('.ty-countdown').forEach(function(el){
+      el.style.display = 'none';
+    });
   }
 
   function updateProgress(){
@@ -770,28 +846,55 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var pw = document.getElementById('quiz-progress');
     if(currentStep==='step-0'){ pw.style.display='none'; return; }
     pw.style.display='flex';
-    var pct = Math.round((idx/(steps.length-1))*100);
+    var totalRealSteps = steps.length - 2; // exclude step-0 and thank-you
+    var pct = Math.min(100, Math.round(((idx) / totalRealSteps) * 100));
     document.getElementById('qpfill').style.width = pct+'%';
-    document.getElementById('qplabel').textContent = currentStep.endsWith('-ty') ? 'Done ✓' : 'Step '+idx+' of '+(steps.length-2);
+    document.getElementById('qplabel').textContent = currentStep.endsWith('-ty') ? 'Done ✓' : 'Step '+idx+' of '+totalRealSteps;
   }
 
   function submitQuiz(type){
-    var fn, em;
+    var fn, em, fnInputId, emInputId;
     if(type === 'tenant'){
-      fn = document.getElementById('t-fname').value;
-      em = document.getElementById('t-email').value;
+      fnInputId = 't-fname'; emInputId = 't-email';
+      fn = document.getElementById(fnInputId).value;
+      em = document.getElementById(emInputId).value;
     } else if(type === 'seeker'){
-      fn = document.getElementById('s-fname').value;
-      em = document.getElementById('s-email').value;
+      fnInputId = 's-fname'; emInputId = 's-email';
+      fn = document.getElementById(fnInputId).value;
+      em = document.getElementById(emInputId).value;
     } else if(type === 'both'){
-      // already captured from t-6; use stored values
-      fn = vals.firstName;
-      em = vals.email;
+      fnInputId = 't-fname'; emInputId = 't-email';
+      fn = vals.firstName || document.getElementById('t-fname').value;
+      em = vals.email || document.getElementById('t-email').value;
     }
-    if(!fn || !em){ alert('Please enter your name and email.'); return; }
+
+    if(!fn || !fn.trim()){
+      var fnInput = document.getElementById(fnInputId);
+      if(type === 'both' && !document.getElementById(fnInputId).offsetParent){
+        // Sitting on b-s-5 but the name field is back on t-6 — nav them there
+        goTo('t-6');
+        setTimeout(function(){ showError(document.getElementById(fnInputId), 'err-'+fnInputId); }, 400);
+        return;
+      }
+      showError(fnInput, 'err-'+fnInputId);
+      return;
+    }
+    if(!em || !isValidEmail(em)){
+      var emInput = document.getElementById(emInputId);
+      if(type === 'both' && !document.getElementById(emInputId).offsetParent){
+        goTo('t-6');
+        setTimeout(function(){ showError(document.getElementById(emInputId), 'err-'+emInputId); }, 400);
+        return;
+      }
+      showError(emInput, 'err-'+emInputId);
+      return;
+    }
+
     var btnId = type==='tenant' ? 't-submit-btn' : (type==='seeker' ? 's-submit-btn' : 'both-submit-btn');
     var btn = document.getElementById(btnId);
+    var btnOriginalText = btn ? btn.textContent : '';
     if(btn){ btn.disabled=true; btn.textContent='Submitting…'; }
+
     vals.type = type === 'seeker' ? 'seeker' : (type === 'both' ? 'both' : userType);
     if(type !== 'both'){
       vals.firstName = fn;
@@ -800,10 +903,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       vals.phone = document.getElementById(type==='tenant'?'t-phone':'s-phone').value;
     }
     var tyScreen = type === 'seeker' ? 's-ty' : (type === 'both' ? 'b-ty' : 't-ty');
+
     fetch(GAS_URL,{method:'POST',body:JSON.stringify(vals)})
       .then(function(){ goTo(tyScreen); })
-      .catch(function(){ goTo(tyScreen); });
+      .catch(function(){
+        // Still go to TY (data may have arrived), but re-enable button just in case user hits back
+        if(btn){ btn.disabled=false; btn.textContent=btnOriginalText; }
+        goTo(tyScreen);
+      });
   }
+
+  // ── INIT ──
+  document.addEventListener('DOMContentLoaded', function(){
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+    var wa1 = document.getElementById('wa-1'); if(wa1) wa1.textContent = WHATSAPP;
+    var wa2 = document.getElementById('wa-2'); if(wa2) wa2.textContent = WHATSAPP;
+  });
 </script>
 </body>
 </html>
