@@ -609,52 +609,56 @@
         }
 
         function submitIntroductionRequest(e,listingId){
-            e.preventDefault();
-            const agreeFinder=document.getElementById('req-agree-finder');
-            if(!agreeFinder||!agreeFinder.checked){showToast("Please agree to the finder's fee terms.",'error');return}
-            const btn=document.getElementById('btn-submit-intro');
-            if(btn){btn.disabled=true;btn.textContent='Sending…'}
-            const extras=[];
-            document.querySelectorAll('.req-extra:checked').forEach(cb=>{
-                if(cb.value==='Other'){const otherText=document.getElementById('req-extra-other-text')?.value.trim();if(otherText)extras.push(otherText)}
-                else extras.push(cb.value);
-            });
-            const payload={
-                action:'requestIntroduction',
-                listingId,
-                listingUrl:window.location.href,
-                requesterName:document.getElementById('req-name')?.value||'',
-                requesterEmail:document.getElementById('req-email')?.value||'',
-                requesterPhone:document.getElementById('req-phone')?.value||'',
-                requesterTelegram:document.getElementById('req-telegram')?.value||'',
-                reason:document.getElementById('req-reason')?.value||'',
-                moveTimeline:document.getElementById('req-timeline')?.value||'',
-                extraQuestions:extras.join('; ')
-            };
-            apiFetch('requestIntroduction',payload,'POST')
-                .then(()=>{
-                    window.dataLayer.push({event:'rentpal_intro_submitted',listingId:listingId});
-                    document.getElementById('introModalContent').innerHTML=`
-                        <button class="modal-close" onclick="closeModal()">✕</button>
-                        <div class="request-confirmation">
-                            <div style="font-size:48px;margin-bottom:12px">✅</div>
-                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px">Request sent!</h3>
-                            <p style="color:var(--ink-muted);font-size:14px;line-height:1.6">The resident has up to 24 hours to respond. If they approve, you'll get an email with next steps.</p>
-                            <button class="btn-outline" onclick="closeModal()" style="margin-top:16px">Close</button>
-                        </div>`;
-                    .catch((err)=>{
-    console.error('❌ Intro request failed:', err);
-    if(btn){btn.disabled=false;btn.textContent='Send Request'}
-    document.getElementById('introModalContent').innerHTML=`
-        <button class="modal-close" onclick="closeModal()">✕</button>
-        <div class="request-confirmation">
-            <div style="font-size:48px;margin-bottom:12px">❌</div>
-            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;margin-bottom:8px">Something went wrong</h3>
-            <p style="color:var(--ink-muted)">${err.message || 'Please try again later.'}</p>
-            <button class="btn-outline" onclick="closeModal()" style="margin-top:16px">Close</button>
-        </div>`;
-});
-        }
+    e.preventDefault();
+    const agreeFinder=document.getElementById('req-agree-finder');
+    if(!agreeFinder||!agreeFinder.checked){showToast("Please agree to the finder's fee terms.",'error');return}
+    const btn=document.getElementById('btn-submit-intro');
+    if(btn){btn.disabled=true;btn.textContent='Sending…'}
+    const extras=[];
+    document.querySelectorAll('.req-extra:checked').forEach(cb=>{
+        if(cb.value==='Other'){const otherText=document.getElementById('req-extra-other-text')?.value.trim();if(otherText)extras.push(otherText)}
+        else extras.push(cb.value);
+    });
+    const payload={
+        action:'requestIntroduction',
+        listingId,
+        listingUrl:window.location.href,
+        requesterName:document.getElementById('req-name')?.value||'',
+        requesterEmail:document.getElementById('req-email')?.value||'',
+        requesterPhone:document.getElementById('req-phone')?.value||'',
+        requesterTelegram:document.getElementById('req-telegram')?.value||'',
+        reason:document.getElementById('req-reason')?.value||'',
+        moveTimeline:document.getElementById('req-timeline')?.value||'',
+        extraQuestions:extras.join('; ')
+    };
+    apiFetch('requestIntroduction',payload,'POST')
+        .then((data)=>{
+            if(!data || !data.success){
+                throw new Error(data?.message || 'Request failed');
+            }
+            window.dataLayer.push({event:'rentpal_intro_submitted',listingId:listingId});
+            document.getElementById('introModalContent').innerHTML=`
+                <button class="modal-close" onclick="closeModal()">✕</button>
+                <div class="request-confirmation">
+                    <div style="font-size:48px;margin-bottom:12px">✅</div>
+                    <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px">Request sent!</h3>
+                    <p style="color:var(--ink-muted);font-size:14px;line-height:1.6">The resident has up to 24 hours to respond. If they approve, you'll get an email with next steps.</p>
+                    <button class="btn-outline" onclick="closeModal()" style="margin-top:16px">Close</button>
+                </div>`;
+        })
+        .catch((err)=>{
+            console.error('❌ Intro request failed:', err);
+            if(btn){btn.disabled=false;btn.textContent='Send Request'}
+            document.getElementById('introModalContent').innerHTML=`
+                <button class="modal-close" onclick="closeModal()">✕</button>
+                <div class="request-confirmation">
+                    <div style="font-size:48px;margin-bottom:12px">❌</div>
+                    <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;margin-bottom:8px">Something went wrong</h3>
+                    <p style="color:var(--ink-muted)">${err.message || 'Please try again later.'}</p>
+                    <button class="btn-outline" onclick="closeModal()" style="margin-top:16px">Close</button>
+                </div>`;
+        });
+}
 
         function copyListingLink(id){const url=window.location.origin+'/listings/?id='+id;navigator.clipboard.writeText(url).then(()=>showToast('Link copied!'))}
         function shareListing(id,title){const url=window.location.origin+'/listings/?id='+id;if(navigator.share)navigator.share({title:'RentPal Listing',text:title,url});else copyListingLink(id)}
