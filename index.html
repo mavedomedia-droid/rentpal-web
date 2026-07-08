@@ -680,7 +680,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   window.dataLayer = window.dataLayer || [];
 
   // ── CONFIG ──
-  var GAS_URL = "https://script.google.com/macros/s/AKfycbz6wZYNwdJbdKd6BSizBKE-2eapmelRD_tApJx-nu_Tsdqr3NhiVld_2wQ3XLzazUxzKg/exec";
+  // ⚠️ REPLACE THIS WITH YOUR DEPLOYED QUIZ BACKEND URL (Deploy → Web app → /exec URL)
+  var GAS_URL = "https://script.google.com/macros/s/AKfycbw-RoLa5g0iu-jS7zP1UedJZ7Gbd2bmhHokQQ-HinqZMaB2tYQ8eyFzGsGgehGob0jTZg/exec";
   var WHATSAPP = "+234 816 2373 553";
   var COUNTDOWN_SECONDS = 20;
 
@@ -904,12 +905,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
     var tyScreen = type === 'seeker' ? 's-ty' : (type === 'both' ? 'b-ty' : 't-ty');
 
-    fetch(GAS_URL,{method:'POST',body:JSON.stringify(vals)})
-      .then(function(){ goTo(tyScreen); })
-      .catch(function(){
-        // Still go to TY (data may have arrived), but re-enable button just in case user hits back
+    fetch(GAS_URL,{
+        method:'POST',
+        body: JSON.stringify(vals),
+        headers: {'Content-Type':'text/plain'}
+      })
+      .then(function(r){
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        return r.json();
+      })
+      .then(function(data){
+        console.log('✅ Quiz submitted:', data);
+        if(data && data.status === 'ok'){
+          window.dataLayer.push({event:'rentpal_quiz_success', type: vals.type, userId: data.userId});
+          goTo(tyScreen);
+        } else {
+          throw new Error(data && data.message ? data.message : 'Submission failed');
+        }
+      })
+      .catch(function(err){
+        console.error('❌ Quiz submit failed:', err);
         if(btn){ btn.disabled=false; btn.textContent=btnOriginalText; }
-        goTo(tyScreen);
+        alert('Sorry — something went wrong. Please try again.\n\nDetails: ' + (err.message || err));
       });
   }
 
