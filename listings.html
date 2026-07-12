@@ -258,8 +258,11 @@
             </select>
             <select class="filter-select" id="filter-location"><option value="">🗺 Location</option><option value="Mainland">Mainland</option><option value="Island">Island</option></select>
             <select class="filter-select" id="filter-resident-status">
-                <option value="">📅 Status</option>
-                <option value="Still living there">Still living there</option><option value="Packing out within 1 month">Packing out within 1 month</option><option value="Packing out in 1-3 months">Packing out in 1-3 months</option><option value="Already packed out">Already packed out</option>
+                <option value="">📅 Pack-out</option>
+                <option value="Within 1 month">Within 1 month</option>
+                <option value="1–3 months">1–3 months</option>
+                <option value="3–6 months">3–6 months</option>
+                <option value="6–12 months">6–12 months</option>
             </select>
             <button class="filter-clear" id="filter-clear" style="display:none">Clear</button>
             <span class="results-count" id="results-count"></span>
@@ -278,7 +281,7 @@
     <script>
         window.dataLayer = window.dataLayer || [];
 
-        // ⚠️ REPLACE WITH YOUR LISTINGS-BACKEND DEPLOYMENT URL
+        // ⚠️ REPLACE WITH YOUR DEPLOYED GAS URL (the 34‑col version)
         const CONFIG = {
             GAS_URL: 'https://script.google.com/macros/s/AKfycbzBczGxJ6WCh9m98I21vkssVHxXT2cuZ1zOoIxd2X0grieLMSUZN6d5wIMnWkc5JKse9g/exec',
             ITEMS_PER_PAGE: 12, DEBOUNCE_MS: 250
@@ -309,7 +312,7 @@
         const o = {method: m};
         if(m === 'POST'){
             o.body = JSON.stringify(p);
-            o.headers = {'Content-Type': 'text/plain'};  // FIX: avoids CORS preflight
+            o.headers = {'Content-Type': 'text/plain'};  // avoids CORS preflight
         }
         const r = await fetch(u.toString(), o);
         if(!r.ok) throw new Error('HTTP ' + r.status);
@@ -334,7 +337,7 @@
             const lights=['Band A','Band B','Band C','Band D','No light'];
             const waters=['Running water','Water but not running','No water'];
             const parks=['Compound parking','Parking nearby, not in compound','Street parking only','No parking'];
-            const statuses=['Still living there','Packing out within 1 month','Packing out in 1-3 months','Already packed out'];
+            const statuses=['Within 1 month','1–3 months','3–6 months','6–12 months'];
             const list=[];
             for(let i=1;i<=24;i++){
                 const id='RP'+String(i).padStart(4,'0'), area=areas[i%areas.length];
@@ -345,12 +348,12 @@
                 const rent=Math.round((rr.min+Math.random()*(rr.max-rr.min))/5e4)*5e4;
                 const days=Math.floor(Math.random()*45)+1;
                 const comment=i%4===0?'Spacious with good natural light. Quiet neighbours.':i%4===1?'Close to main road, solid security.':i%4===2?'Recently repainted, responsive landlord.':'Well-kept compound with parking.';
-                list.push({listingId:id,urlSlug:apt.toLowerCase().replace(/[\/ ]/g,'-')+'-'+area.toLowerCase().replace(/ /g,'-')+'-'+id,apartmentType:apt,area,location:loc,rentRange:formatNaira(rr.min)+' – '+formatNaira(rr.max),rentExact:rent,light:lights[i%5],water:waters[i%3],parking:parks[i%4],residentStatus:statuses[i%4],postedDate:new Date(Date.now()-days*864e5).toISOString().split('T')[0],photosAvailable:'No',primaryPhoto:'',comments:comment,verificationStatus:'Verified',listingStatus:'Available',listingType:listingType})
+                list.push({listingId:id,apartmentType:apt,area,location:loc,rentRange:formatNaira(rr.min)+' – '+formatNaira(rr.max),rentExact:rent,light:lights[i%5],water:waters[i%3],parking:parks[i%4],residentStatus:statuses[i%4],postedDate:new Date(Date.now()-days*864e5).toISOString().split('T')[0],photosAvailable:'No',primaryPhoto:'',comments:comment,listingStatus:'Available',listingType:listingType})
             }
             return list;
         }
 
-        // ── ROUTING (FIXED: query string checked before path) ──
+        // ── ROUTING ──
         function getRouteInfo(){
             const p=window.location.pathname;
             const q=new URLSearchParams(window.location.search);
@@ -368,7 +371,8 @@
             container.innerHTML=`<div class="directory-hero"><div class="hero-tag"><div class="hero-dot"></div>Available houses</div><h1>Available <em>Apartments</em></h1></div><div class="listings-section"><p style="text-align:center;color:var(--ink-muted);padding:40px 0">Loading listings…</p></div>`;
             let data;
             try{data=await apiFetch('listings')}catch(e){data={success:true,listings:getMockListings()}}
-            let all=(data.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available');
+            // Only filter by Available status — no verification check
+            let all=(data.listings||[]).filter(l=>l.listingStatus==='Available');
             all=all.filter(l=>l.listingType!=='seeker');
             all.sort((a,b)=>new Date(b.postedDate)-new Date(a.postedDate));
             state.allListings=all;state.filteredListings=[...all];state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,all.length);
@@ -382,7 +386,7 @@
                 <div class="hero-tag"><div class="hero-dot"></div>Available houses</div>
                 <h1>Available <em>Apartments</em></h1>
                 <div class="hero-bullets">
-                    <span><span class="bullet">•</span> Verified listings</span>
+                    <span><span class="bullet">•</span> Real listings</span>
                     <span><span class="bullet">•</span> Request an introduction</span>
                     <span><span class="bullet">•</span> Resident approves — then you proceed</span>
                 </div>
@@ -478,7 +482,7 @@
                     ${l.listingType==='both'?'<span class="chip chip-alt">🔍 Also looking</span>':''}
                 </div>
                 <div class="card-footer">
-                    <span class="card-verified">✓ Verified</span>
+                    <span class="card-verified">✓ Available</span>
                     <button class="card-btn" onclick="event.stopPropagation();goToDetail('${l.listingId}')">View →</button>
                 </div>
             </div>`;
@@ -666,7 +670,7 @@
         async function loadSimilarListings(listing){
             const grid=document.getElementById('similar-grid');if(!grid)return;
             let all=state.allListings;
-            if(!all.length){try{const d=await apiFetch('listings');all=(d.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available')}catch(e){all=getMockListings().filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available')}}
+            if(!all.length){try{const d=await apiFetch('listings');all=(d.listings||[]).filter(l=>l.listingStatus==='Available')}catch(e){all=getMockListings().filter(l=>l.listingStatus==='Available')}}
             const others=all.filter(l=>l.listingId!==listing.listingId);
             const scored=others.map(l=>{let s=0;if(l.area===listing.area)s+=3;if(l.apartmentType===listing.apartmentType)s+=2;if(l.location===listing.location)s+=1;const rd=Math.abs(getRentNumeric(l.rentExact)-getRentNumeric(listing.rentExact));if(rd<300000)s+=2;else if(rd<600000)s+=1;return{listing:l,score:s}});
             scored.sort((a,b)=>b.score-a.score);
@@ -681,7 +685,7 @@
                 if(getRouteInfo().view!=='directory')return;
                 try{
                     const data=await apiFetch('listings');
-                    const fresh=(data.listings||[]).filter(l=>l.verificationStatus==='Verified'&&l.listingStatus==='Available'&&l.listingType!=='seeker');
+                    const fresh=(data.listings||[]).filter(l=>l.listingStatus==='Available'&&l.listingType!=='seeker');
                     fresh.sort((a,b)=>new Date(b.postedDate)-new Date(a.postedDate));
                     const oldIds=state.allListings.map(l=>l.listingId).sort().join(',');
                     const newIds=fresh.map(l=>l.listingId).sort().join(',');
