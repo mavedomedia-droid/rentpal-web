@@ -67,14 +67,12 @@
         .hero-bullets{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;font-size:12px;font-weight:400;color:rgba(255,255,255,0.65);max-width:550px;margin:0 auto 8px;line-height:1.4}
         .hero-bullets span{display:inline-flex;align-items:baseline;gap:4px}
         .hero-bullets .bullet{color:#4A8FD4;font-weight:700;font-size:14px;line-height:1}
-        .hero-note{font-size:11px;color:rgba(255,255,255,0.55);font-style:italic;margin-top:8px;background:rgba(255,255,255,0.08);display:inline-block;padding:4px 12px;border-radius:100px;border:1px solid rgba(255,255,255,0.12)}
 
-        /* Rotating spotlight */
-        .spotlight-wrap{margin-top:18px;position:relative;height:58px;overflow:hidden;text-align:center}
-        .spotlight-item{font-size:15px;font-weight:500;color:rgba(255,255,255,0.9);padding:10px 0;opacity:0;transition:opacity 1.2s ease;position:absolute;left:0;right:0;top:0;font-family:'DM Sans',sans-serif}
+        /* Rotating spotlight – compact single line */
+        .spotlight-wrap{margin-top:14px;position:relative;height:32px;overflow:hidden;text-align:center}
+        .spotlight-item{font-size:14px;font-weight:500;color:rgba(255,255,255,0.9);padding:4px 0;opacity:0;transition:opacity 1.2s ease;position:absolute;left:0;right:0;top:0;font-family:'DM Sans',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .spotlight-item.active{opacity:1}
-        .spotlight-disclaimer{margin-top:10px;font-size:11px;color:rgba(255,255,255,0.45);line-height:1.5}
-        .spotlight-disclaimer strong{color:rgba(255,255,255,0.7)}
+        .spotlight-disclaimer{margin-top:10px;font-size:11px;color:rgba(255,255,255,0.45);line-height:1.5;max-width:500px;margin-left:auto;margin-right:auto}
 
         /* FILTER BAR (dark) */
         .filters-wrap{background:#1a2634;border-bottom:2px solid #2d3b4f;padding:0 16px;position:sticky;top:56px;z-index:50;transition:box-shadow var(--transition)}
@@ -92,14 +90,6 @@
         .filter-clear{display:none;background:none;border:none;color:var(--blue);font-size:12px;font-weight:500;cursor:pointer;padding:6px 8px;border-radius:var(--radius-sm);white-space:nowrap}
         .filter-clear.visible{display:inline-flex}
         .results-count{font-size:12px;color:rgba(255,255,255,0.55);white-space:nowrap}
-
-        .filter-toggle-mobile{display:none;background:var(--white);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:8px 14px;font-size:13px;font-weight:500;color:var(--ink);align-items:center;gap:5px;cursor:pointer}
-        .filter-toggle-mobile:hover{background:var(--surface)}
-        @media(max-width:768px){
-            .filters-inner{display:none}
-            .filter-toggle-mobile{display:flex;min-height:44px}
-            .filter-search-wrap{flex:1}
-        }
 
         /* LISTINGS GRID */
         .listings-section{max-width:1200px;margin:0 auto;padding:16px 16px 48px}
@@ -127,7 +117,7 @@
         .card-quote{margin-top:8px;font-size:11px;color:var(--ink-muted);font-style:italic;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
         .card-chips{display:flex;flex-wrap:wrap;gap:4px;padding:0 12px 10px}
-        .chip{font-size:10px;padding:2px 7px;background:var(--surface);border:1px solid var(--card-border);border-radius:100px;color:var(--ink-muted);white-space:nowrap}
+        .chip{font-size:10px;padding:2px 7px;background:var(--surface);border:1px solid var(--card-border);border-radius:100px;color:var(--ink-muted);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
         .chip-alt{background:#dbeafe;color:#1e40af;border-color:#bfdbfe;font-weight:600}
 
         .card-footer{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-top:1px solid var(--card-border);background:#fafbfc}
@@ -135,8 +125,8 @@
         .card-btn{font-size:11px;font-weight:600;color:var(--white);background:var(--blue);border:none;padding:6px 14px;border-radius:20px;cursor:pointer;transition:background var(--transition)}
         .card-btn:hover{background:var(--blue-dark)}
 
-        /* Location pill */
-        .card-loc-pill{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;padding:2px 7px;border-radius:100px;display:inline-flex;align-items:center;gap:3px;margin-left:8px}
+        /* Location pill – super compact, emoji-free */
+        .card-loc-pill{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;padding:1px 5px;border-radius:100px;display:inline-flex;align-items:center;gap:2px;margin-left:6px;line-height:1;white-space:nowrap}
         .card-loc-pill.mainland{background:#fef9e7;color:#b45309;border:1px solid #fcd34d}
         .card-loc-pill.island{background:#ecfeff;color:#0e7490;border:1px solid #67e8f9}
 
@@ -152,14 +142,16 @@
             .card-rent{font-size:16px}
             .card-loc{font-size:10px}
             .card-quote{display:none}
+            .card-rent-range{display:none} /* hide range on mobile to prevent wrap */
             .card-chips{padding:0 10px 8px}
-            .chip{font-size:9px;padding:2px 6px}
+            .chip{font-size:9px;padding:2px 6px;max-width:80px} /* ensure single line */
             .chip:nth-child(n+3){display:none}
             .card-header-row{padding:8px 10px 0}
             .card-main{padding:4px 10px 8px}
             .card-footer{padding:6px 10px}
             .card-btn{padding:5px 12px}
             .card-save{font-size:14px;padding:2px}
+            .card-loc-pill{font-size:7px;padding:1px 4px;margin-left:4px}
         }
 
         .load-more-btn{display:block;margin:16px auto 0;padding:10px 28px;background:var(--white);border:1.5px solid var(--card-border);border-radius:var(--radius-sm);font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:all var(--transition)}
@@ -234,10 +226,8 @@
     </style>
 </head>
 <body>
-    <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5WCRXXDQ"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
 
     <nav>
         <a href="/listings" class="nav-logo">
@@ -282,7 +272,6 @@
             <button class="filter-clear" id="filter-clear" style="display:none">Clear</button>
             <span class="results-count" id="results-count"></span>
         </div>
-        <button class="filter-toggle-mobile" id="filter-toggle-mobile">🔍 Filters</button>
     </div>
 
     <main id="app-main"></main>
@@ -296,7 +285,6 @@
     <script>
         window.dataLayer = window.dataLayer || [];
 
-        // ⚠️ REPLACE WITH YOUR DEPLOYED GAS URL (the 34‑col version)
         const CONFIG = {
             GAS_URL: 'https://script.google.com/macros/s/AKfycbzBczGxJ6WCh9m98I21vkssVHxXT2cuZ1zOoIxd2X0grieLMSUZN6d5wIMnWkc5JKse9g/exec',
             ITEMS_PER_PAGE: 12, DEBOUNCE_MS: 250
@@ -384,7 +372,7 @@
         window.addEventListener('popstate',handleRoute);
 
         async function renderDirectory(container){
-            container.innerHTML=`<div class="directory-hero"><div class="hero-tag"><div class="hero-dot"></div>Available houses</div><h1>Available <em>Apartments</em></h1></div><div class="listings-section"><p style="text-align:center;color:var(--ink-muted);padding:40px 0">Loading listings…</p></div>`;
+            container.innerHTML=`<div class="directory-hero"><div class="hero-tag"><div class="hero-dot"></div>Rentpal Lagos</div><h1>Available <em>Apartments</em></h1></div><div class="listings-section"><p style="text-align:center;color:var(--ink-muted);padding:40px 0">Loading listings…</p></div>`;
             let data;
             try{data=await apiFetch('listings')}catch(e){data={success:true,listings:getMockListings()}}
             let all=(data.listings||[]).filter(l=>l.listingStatus==='Available');
@@ -399,7 +387,7 @@
         function getDirectoryHTML(){
             return `
             <div class="directory-hero">
-                <div class="hero-tag"><div class="hero-dot"></div>Available houses</div>
+                <div class="hero-tag"><div class="hero-dot"></div>Rentpal Lagos</div>
                 <h1>Available <em>Apartments</em></h1>
                 <div class="hero-bullets">
                     <span><span class="bullet">•</span> Real listings</span>
@@ -407,11 +395,7 @@
                     <span><span class="bullet">•</span> Resident approves — then you proceed</span>
                 </div>
                 <div class="spotlight-wrap" id="spotlight-wrap"></div>
-                <p class="spotlight-disclaimer">
-                    ⚡ Real apartments listed by real people — not agents.<br>
-                    The resident reviews and approves introductions themselves.<br>
-                    Only when they accept does your conversation begin.
-                </p>
+                <p class="spotlight-disclaimer">Real apartments listed by real people, not agents.</p>
             </div>
             <div class="listings-section">
                 <div class="listings-grid" id="listings-grid"></div>
@@ -428,16 +412,16 @@
             if (!wrap) return;
             const items = state.allListings.length
                 ? state.allListings.slice(0, 8).map(l =>
-                    `${formatNaira(l.rentExact) || escapeHTML(l.rentRange)} ${escapeHTML(l.apartmentType)} in ${escapeHTML(l.area)}`
+                    `Featured: ${formatNaira(l.rentExact) || escapeHTML(l.rentRange)} ${escapeHTML(l.apartmentType)} in ${escapeHTML(l.area)}`
                   )
                 : [
-                    '₦950k Mini flat in Ikoyi',
-                    '₦1.2m 2‑bedroom in Surulere',
-                    '₦850k Self contain in Yaba',
-                    '₦1.5m 3‑bedroom in Lekki',
-                    '₦650k Mini flat in Gbagada',
-                    '₦2.1m 1‑bedroom in Victoria Island',
-                    '₦700k Self contain in Ajah'
+                    'Featured: ₦950k Mini flat in Ikoyi',
+                    'Featured: ₦1.2m 2‑bedroom in Surulere',
+                    'Featured: ₦850k Self contain in Yaba',
+                    'Featured: ₦1.5m 3‑bedroom in Lekki',
+                    'Featured: ₦650k Mini flat in Gbagada',
+                    'Featured: ₦2.1m 1‑bedroom in Victoria Island',
+                    'Featured: ₦700k Self contain in Ajah'
                   ];
             wrap.innerHTML = items.map((text, i) =>
                 `<div class="spotlight-item${i === 0 ? ' active' : ''}">${text}</div>`
@@ -494,8 +478,9 @@
             const saved=isSaved(l.listingId);
             const comment=l.comments&&l.comments.trim()?l.comments:null;
             const isNew=new Date(l.postedDate)>new Date(Date.now()-2*86400000);
+            // Compact location pill – just M or I
             const locPillClass = l.location==='Mainland' ? 'card-loc-pill mainland' : 'card-loc-pill island';
-            const locDisplay = l.location==='Mainland'?'🏙️ Mainland':'🏝️ Island';
+            const locPillText = l.location==='Mainland' ? 'M' : 'I';
             const savedIcon=saved?'❤️':'🤍';
 
             // Rent display
@@ -519,12 +504,15 @@
                 ? `<img src="${photo}" alt="">`
                 : `<svg viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`;
 
+            // Truncate resident status to first word for compactness
+            const statusText = l.residentStatus ? l.residentStatus.split(' ')[0] + '…' : '';
+
             return `
             <div class="listing-card" onclick="goToDetail('${l.listingId}')">
                 <div class="card-header-row">
                     <div class="${thumbCls}">${thumbInner}</div>
                     <span class="card-ref">${l.listingId}</span>
-                    <span class="${locPillClass}">${locDisplay}</span>
+                    <span class="${locPillClass}">${locPillText}</span>
                     <span class="card-date-inline">· ${timeAgo(l.postedDate)}</span>
                     ${isNew?'<span class="badge-new-inline">NEW</span>':''}
                     <button class="card-save ${saved?'saved':''}" onclick="event.stopPropagation();toggleSaveListing('${l.listingId}')" title="${saved?'Remove from saved':'Save listing'}">${savedIcon}</button>
@@ -538,7 +526,7 @@
                 <div class="card-chips">
                     <span class="chip">⚡ ${escapeHTML(l.light)}</span>
                     <span class="chip">💧 ${escapeHTML(l.water)}</span>
-                    <span class="chip">📅 ${escapeHTML(l.residentStatus)}</span>
+                    <span class="chip">📅 ${statusText}</span>
                     ${l.listingType==='both'?'<span class="chip chip-alt">🔍 Also looking</span>':''}
                 </div>
                 <div class="card-footer">
@@ -597,7 +585,6 @@
                 {label:'Status',value:l.residentStatus,icon:'📅'}
             ].filter(f=>f.value&&String(f.value).trim()!=='');
 
-            // Rent display with range
             const exact = l.rentExact, range = l.rentRange;
             let rentBlock = '';
             if (exact && range) {
