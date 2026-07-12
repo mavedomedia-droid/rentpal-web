@@ -57,40 +57,41 @@
         .trust-item svg{width:12px;height:12px;color:var(--blue)}
         @media(max-width:768px){.trust-bar{display:none}}
 
-        /* HERO */
-        .directory-hero{background:linear-gradient(155deg,#eef3f9 0%,#e1e9f4 40%,#f8f9fc 100%);border-bottom:1px solid var(--card-border);padding:22px 16px 18px;text-align:center}
-        .hero-tag{display:inline-flex;align-items:center;gap:6px;background:var(--blue-light);color:var(--blue-dark);font-size:11px;font-weight:600;padding:4px 14px;border-radius:100px;margin-bottom:10px;border:1px solid var(--blue-mid)}
-        .hero-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);animation:pulse-dot 2s infinite}
+        /* HERO (dark) */
+        .directory-hero{background:linear-gradient(145deg, #141927 0%, #1e2a3a 60%, #0C447C 100%);border-bottom:1px solid #0C447C;padding:28px 16px 22px;text-align:center;color:#fff}
+        .hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(74,143,212,0.18);color:#8fc6f5;font-size:11px;font-weight:600;padding:4px 14px;border-radius:100px;margin-bottom:10px;border:1px solid rgba(74,143,212,0.3)}
+        .hero-dot{width:5px;height:5px;border-radius:50%;background:#4A8FD4;animation:pulse-dot 2s infinite}
         @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.6)}}
-        .directory-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:800;letter-spacing:-0.5px;color:var(--ink);margin-bottom:8px;line-height:1.2}
+        .directory-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:800;letter-spacing:-0.5px;color:#fff;margin-bottom:8px;line-height:1.2}
         .directory-hero h1 em{font-style:normal;color:var(--blue)}
-        .hero-bullets{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;font-size:12px;font-weight:400;color:var(--ink-muted);max-width:550px;margin:0 auto 8px;line-height:1.4}
+        .hero-bullets{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;font-size:12px;font-weight:400;color:rgba(255,255,255,0.65);max-width:550px;margin:0 auto 8px;line-height:1.4}
         .hero-bullets span{display:inline-flex;align-items:baseline;gap:4px}
-        .hero-bullets .bullet{color:var(--blue);font-weight:700;font-size:14px;line-height:1}
-        .hero-note{font-size:11px;color:var(--ink-faint);font-style:italic;margin-top:8px;background:var(--white);display:inline-block;padding:4px 12px;border-radius:100px;border:1px solid var(--card-border)}
-        .random-btn{background:var(--white);border:1.5px solid var(--card-border);border-radius:100px;padding:5px 14px;font-size:12px;color:var(--ink-muted);display:inline-flex;align-items:center;gap:5px;cursor:pointer;transition:all var(--transition);margin-top:10px}
-        .random-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+        .hero-bullets .bullet{color:#4A8FD4;font-weight:700;font-size:14px;line-height:1}
+        .hero-note{font-size:11px;color:rgba(255,255,255,0.55);font-style:italic;margin-top:8px;background:rgba(255,255,255,0.08);display:inline-block;padding:4px 12px;border-radius:100px;border:1px solid rgba(255,255,255,0.12)}
 
-        /* SUGGESTION CHIPS */
-        .suggestion-row{text-align:center;margin:12px 0 4px;position:relative;height:32px;overflow:hidden}
-        .suggestion-chip{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.8);border:1px solid var(--card-border);border-radius:100px;padding:5px 14px;font-size:12px;color:var(--ink-muted);cursor:pointer;position:absolute;left:50%;transform:translateX(-50%);opacity:0;transition:opacity 1.5s ease;white-space:nowrap}
-        .suggestion-chip.show{opacity:1}
-        .suggestion-chip:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+        /* Rotating spotlight */
+        .spotlight-wrap{margin-top:18px;position:relative;height:58px;overflow:hidden;text-align:center}
+        .spotlight-item{font-size:15px;font-weight:500;color:rgba(255,255,255,0.9);padding:10px 0;opacity:0;transition:opacity 1.2s ease;position:absolute;left:0;right:0;top:0;font-family:'DM Sans',sans-serif}
+        .spotlight-item.active{opacity:1}
+        .spotlight-disclaimer{margin-top:10px;font-size:11px;color:rgba(255,255,255,0.45);line-height:1.5}
+        .spotlight-disclaimer strong{color:rgba(255,255,255,0.7)}
 
-        /* FILTER BAR */
-        .filters-wrap{background:var(--white);border-bottom:2px solid var(--blue-mid);padding:0 16px;position:sticky;top:56px;z-index:50;transition:box-shadow var(--transition)}
+        /* FILTER BAR (dark) */
+        .filters-wrap{background:#1a2634;border-bottom:2px solid #2d3b4f;padding:0 16px;position:sticky;top:56px;z-index:50;transition:box-shadow var(--transition)}
         .filters-wrap.scrolled{box-shadow:0 2px 8px rgba(0,0,0,0.05)}
-        .filters-label{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;color:var(--blue);margin-right:8px}
+        .filters-label{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;color:#8fc6f5;margin-right:8px}
         .filters-inner{max-width:1200px;margin:0 auto;display:flex;gap:8px;align-items:center;padding:10px 0;flex-wrap:wrap}
         .filter-search-wrap{flex:1;position:relative;min-width:140px}
-        .filter-search-wrap input{width:100%;padding:8px 12px 8px 36px;border:1.5px solid var(--card-border);border-radius:var(--radius-sm);font-size:14px;color:var(--ink);background:var(--surface);outline:none;transition:border-color var(--transition)}
+        .filter-search-wrap input{width:100%;padding:8px 12px 8px 36px;border:1.5px solid #3b4a5e;border-radius:var(--radius-sm);font-size:14px;color:#e2e8f0;background:#263246;outline:none;transition:border-color var(--transition)}
         .filter-search-wrap input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(74,143,212,0.12)}
-        .search-icon-inside{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink-faint);width:16px;height:16px;pointer-events:none}
-        .filter-select{min-width:80px;padding:8px 28px 8px 10px;border:1.5px solid var(--card-border);border-radius:var(--radius-sm);font-size:13px;color:var(--ink);background:var(--surface);outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23929a8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;transition:border-color var(--transition)}
+        .filter-search-wrap input::placeholder{color:rgba(255,255,255,0.45)}
+        .search-icon-inside{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.45);width:16px;height:16px;pointer-events:none}
+        .filter-select{min-width:80px;padding:8px 28px 8px 10px;border:1.5px solid #3b4a5e;border-radius:var(--radius-sm);font-size:13px;color:#e2e8f0;background:#263246;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23929a8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;transition:border-color var(--transition)}
         .filter-select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(74,143,212,0.12)}
+        .filter-select option{background:#1a2634;color:#e2e8f0}
         .filter-clear{display:none;background:none;border:none;color:var(--blue);font-size:12px;font-weight:500;cursor:pointer;padding:6px 8px;border-radius:var(--radius-sm);white-space:nowrap}
         .filter-clear.visible{display:inline-flex}
-        .results-count{font-size:12px;color:var(--ink-muted);white-space:nowrap}
+        .results-count{font-size:12px;color:rgba(255,255,255,0.55);white-space:nowrap}
 
         .filter-toggle-mobile{display:none;background:var(--white);border:1px solid var(--card-border);border-radius:var(--radius-sm);padding:8px 14px;font-size:13px;font-weight:500;color:var(--ink);align-items:center;gap:5px;cursor:pointer}
         .filter-toggle-mobile:hover{background:var(--surface)}
@@ -108,8 +109,6 @@
         /* ── COMPACT CARD ── */
         .listing-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--card-border);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;box-shadow:var(--card-shadow);transition:all var(--transition)}
         .listing-card:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-2px)}
-        .card-tint-mainland{border-left:3px solid #eab308}
-        .card-tint-island{border-left:3px solid #06b6d4}
 
         .card-header-row{display:flex;align-items:center;gap:6px;padding:10px 12px 0;position:relative}
         .card-ref{font-size:10px;font-weight:700;color:var(--blue);letter-spacing:0.4px}
@@ -121,9 +120,10 @@
 
         .card-main{padding:6px 12px 10px}
         .card-type{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:2px}
-        .card-loc{font-size:11px;color:var(--ink-muted);margin-bottom:8px}
+        .card-loc{font-size:12px;font-weight:500;color:var(--ink);background:var(--surface);padding:3px 8px;border-radius:6px;display:inline-block;margin-bottom:6px}
         .card-rent{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-0.5px;line-height:1}
         .card-rent span{font-size:10px;color:var(--ink-muted);font-weight:500;margin-left:2px}
+        .card-rent-range{font-size:10px;color:var(--ink-faint);font-weight:400;margin-top:2px;line-height:1.2}
         .card-quote{margin-top:8px;font-size:11px;color:var(--ink-muted);font-style:italic;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
         .card-chips{display:flex;flex-wrap:wrap;gap:4px;padding:0 12px 10px}
@@ -134,6 +134,17 @@
         .card-verified{font-size:10px;font-weight:600;color:var(--green-dark);display:flex;align-items:center;gap:3px}
         .card-btn{font-size:11px;font-weight:600;color:var(--white);background:var(--blue);border:none;padding:6px 14px;border-radius:20px;cursor:pointer;transition:background var(--transition)}
         .card-btn:hover{background:var(--blue-dark)}
+
+        /* Location pill */
+        .card-loc-pill{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;padding:2px 7px;border-radius:100px;display:inline-flex;align-items:center;gap:3px;margin-left:8px}
+        .card-loc-pill.mainland{background:#fef9e7;color:#b45309;border:1px solid #fcd34d}
+        .card-loc-pill.island{background:#ecfeff;color:#0e7490;border:1px solid #67e8f9}
+
+        /* Card thumbnail */
+        .card-thumb{width:20px;height:20px;border-radius:4px;overflow:hidden;flex-shrink:0;opacity:0.25;background:#cbd5e1;display:flex;align-items:center;justify-content:center;margin-right:4px}
+        .card-thumb svg{width:14px;height:14px;stroke:#5a6072;stroke-width:1.5}
+        .card-thumb.has-photo{opacity:1;background:none}
+        .card-thumb.has-photo img{width:100%;height:100%;object-fit:cover}
 
         @media(max-width:600px){
             .listings-grid{grid-template-columns:repeat(2,1fr);gap:8px}
@@ -169,12 +180,15 @@
         .detail-summary{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px;align-items:flex-start}
         .detail-photo-wrap{flex:0 0 280px;max-width:280px;aspect-ratio:4/3;border-radius:var(--radius-lg);overflow:hidden;background:var(--surface);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:center}
         .detail-photo-wrap img{width:100%;height:100%;object-fit:cover}
+        .detail-photo-placeholder{width:100%;height:100%;background:linear-gradient(145deg,#eef2f7 0%,#dce3ed 100%);display:flex;align-items:center;justify-content:center;border-radius:var(--radius-lg)}
+        .detail-photo-placeholder svg{width:60px;height:60px;stroke:#b0bec5;stroke-width:1.5;opacity:0.6}
         .detail-info{flex:1;min-width:220px}
         .detail-ref{font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;margin-bottom:4px;opacity:0.8}
         .detail-info h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:800;color:var(--ink);margin-bottom:6px;line-height:1.2}
         .detail-loc{font-size:14px;color:var(--ink-muted);margin-bottom:12px;display:flex;align-items:center;gap:6px}
         .detail-rent{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:700;color:var(--ink);margin-bottom:16px}
         .detail-rent span{font-size:14px;color:var(--ink-muted);font-weight:500}
+        .detail-rent-range{font-size:13px;color:var(--ink-muted);font-weight:400;margin-top:3px}
         .detail-actions{display:flex;gap:8px;flex-wrap:wrap}
         .btn-primary{display:inline-flex;align-items:center;gap:6px;padding:11px 22px;background:var(--blue);color:#fff;border:none;border-radius:var(--radius);font-size:13px;font-weight:600;box-shadow:0 2px 8px rgba(74,143,212,0.25);cursor:pointer}
         .btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px)}
@@ -215,7 +229,8 @@
         .toast.error{background:#dc2626}
         @keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-        footer{padding:16px;text-align:center;font-size:11px;color:var(--ink-faint);border-top:1px solid var(--card-border);background:var(--white)}
+        /* Dark footer */
+        footer{background:linear-gradient(145deg, #141927 0%, #1e2a3a 100%);padding:16px;text-align:center;font-size:11px;color:rgba(255,255,255,0.5);border-top:1px solid #2d3b4f}
     </style>
 </head>
 <body>
@@ -305,26 +320,27 @@
         function escapeHTML(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 
         async function apiFetch(a, p={}, m='GET'){
-    const u = new URL(CONFIG.GAS_URL);
-    u.searchParams.set('action', a);
-    if(m === 'GET') Object.entries(p).forEach(([k,v]) => u.searchParams.set(k,v));
-    try {
-        const o = {method: m};
-        if(m === 'POST'){
-            o.body = JSON.stringify(p);
-            o.headers = {'Content-Type': 'text/plain'};  // avoids CORS preflight
+            const u = new URL(CONFIG.GAS_URL);
+            u.searchParams.set('action', a);
+            if(m === 'GET') Object.entries(p).forEach(([k,v]) => u.searchParams.set(k,v));
+            try {
+                const o = {method: m};
+                if(m === 'POST'){
+                    o.body = JSON.stringify(p);
+                    o.headers = {'Content-Type': 'text/plain'};
+                }
+                const r = await fetch(u.toString(), o);
+                if(!r.ok) throw new Error('HTTP ' + r.status);
+                const data = await r.json();
+                console.log('✅ API response for ' + a + ':', data);
+                return data;
+            } catch(e) {
+                console.error('❌ API FAILED for ' + a + ':', e.message);
+                showToast('Connection error — using demo data', 'error');
+                return getMockResponse(a, p);
+            }
         }
-        const r = await fetch(u.toString(), o);
-        if(!r.ok) throw new Error('HTTP ' + r.status);
-        const data = await r.json();
-        console.log('✅ API response for ' + a + ':', data);
-        return data;
-    } catch(e) {
-        console.error('❌ API FAILED for ' + a + ':', e.message);
-        showToast('Connection error — using demo data', 'error');
-        return getMockResponse(a, p);
-    }
-}
+
         function getMockResponse(a,p){
             if(a==='listings')return{success:true,listings:getMockListings()};
             if(a==='listing'&&p.id){const l=getMockListings().find(l=>l.listingId===p.id);return{success:true,listing:l||null}}
@@ -371,17 +387,17 @@
             container.innerHTML=`<div class="directory-hero"><div class="hero-tag"><div class="hero-dot"></div>Available houses</div><h1>Available <em>Apartments</em></h1></div><div class="listings-section"><p style="text-align:center;color:var(--ink-muted);padding:40px 0">Loading listings…</p></div>`;
             let data;
             try{data=await apiFetch('listings')}catch(e){data={success:true,listings:getMockListings()}}
-            // Only filter by Available status — no verification check
             let all=(data.listings||[]).filter(l=>l.listingStatus==='Available');
             all=all.filter(l=>l.listingType!=='seeker');
             all.sort((a,b)=>new Date(b.postedDate)-new Date(a.postedDate));
             state.allListings=all;state.filteredListings=[...all];state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,all.length);
             container.innerHTML=getDirectoryHTML();
             populateFilterOptions();applyFilters();renderCards();bindEvents();updateCount();updateClearButton();
-            startSuggestionCycle();startAutoRefresh();
+            startSpotlightCycle();startAutoRefresh();
         }
 
-        function getDirectoryHTML(){return `
+        function getDirectoryHTML(){
+            return `
             <div class="directory-hero">
                 <div class="hero-tag"><div class="hero-dot"></div>Available houses</div>
                 <h1>Available <em>Apartments</em></h1>
@@ -390,9 +406,12 @@
                     <span><span class="bullet">•</span> Request an introduction</span>
                     <span><span class="bullet">•</span> Resident approves — then you proceed</span>
                 </div>
-                <p class="hero-note">⚠️ These apartments have not been confirmed unavailable by their tenants — availability may change.</p>
-                <div class="suggestion-row" id="suggestion-row"></div>
-                <button class="random-btn" id="random-btn">🎲 Random</button>
+                <div class="spotlight-wrap" id="spotlight-wrap"></div>
+                <p class="spotlight-disclaimer">
+                    ⚡ Real apartments listed by real people — not agents.<br>
+                    The resident reviews and approves introductions themselves.<br>
+                    Only when they accept does your conversation begin.
+                </p>
             </div>
             <div class="listings-section">
                 <div class="listings-grid" id="listings-grid"></div>
@@ -401,18 +420,35 @@
                     <svg viewBox="0 0 80 80" width="48" height="48"><rect x="15" y="25" width="50" height="38" rx="4" stroke="currentColor" stroke-width="2.5" fill="none"/><line x1="22" y1="34" x2="58" y2="34" stroke="currentColor" stroke-width="2"/></svg>
                     <h3>No listings match</h3><p>Try adjusting your filters.</p>
                 </div>
-            </div>`;}
+            </div>`;
+        }
 
-        const suggestions=['3 bedroom in Lekki','2 bedroom in Surulere','Self contain in Yaba','Mini flat in Ikoyi','1 bedroom in Ajah','2 bedroom in Gbagada'];
-        let suggestionTimeout=null;
-        function startSuggestionCycle(){
-            const row=document.getElementById('suggestion-row');if(!row)return;
-            row.innerHTML=`<button class="suggestion-chip" id="suggestion-chip">${suggestions[0]}</button>`;
-            const chip=document.getElementById('suggestion-chip');chip.classList.add('show');
-            chip.addEventListener('click',()=>{document.getElementById('filter-search').value=chip.textContent;applyFilters();renderCards()});
-            let idx=1;
-            function next(){chip.classList.remove('show');suggestionTimeout=setTimeout(()=>{chip.textContent=suggestions[idx%suggestions.length];idx++;chip.classList.add('show');suggestionTimeout=setTimeout(next,12000)},1200)}
-            suggestionTimeout=setTimeout(next,6000);
+        function startSpotlightCycle() {
+            const wrap = document.getElementById('spotlight-wrap');
+            if (!wrap) return;
+            const items = state.allListings.length
+                ? state.allListings.slice(0, 8).map(l =>
+                    `${formatNaira(l.rentExact) || escapeHTML(l.rentRange)} ${escapeHTML(l.apartmentType)} in ${escapeHTML(l.area)}`
+                  )
+                : [
+                    '₦950k Mini flat in Ikoyi',
+                    '₦1.2m 2‑bedroom in Surulere',
+                    '₦850k Self contain in Yaba',
+                    '₦1.5m 3‑bedroom in Lekki',
+                    '₦650k Mini flat in Gbagada',
+                    '₦2.1m 1‑bedroom in Victoria Island',
+                    '₦700k Self contain in Ajah'
+                  ];
+            wrap.innerHTML = items.map((text, i) =>
+                `<div class="spotlight-item${i === 0 ? ' active' : ''}">${text}</div>`
+            ).join('');
+            let current = 0;
+            const divs = wrap.querySelectorAll('.spotlight-item');
+            setInterval(() => {
+                divs[current].classList.remove('active');
+                current = (current + 1) % divs.length;
+                divs[current].classList.add('active');
+            }, 5000);
         }
 
         function populateFilterOptions(){
@@ -458,21 +494,45 @@
             const saved=isSaved(l.listingId);
             const comment=l.comments&&l.comments.trim()?l.comments:null;
             const isNew=new Date(l.postedDate)>new Date(Date.now()-2*86400000);
-            const tintClass=l.location==='Mainland'?'card-tint-mainland':'card-tint-island';
-            const locDisplay=l.location==='Mainland'?'📍 Mainland':'🏝️ Island';
+            const locPillClass = l.location==='Mainland' ? 'card-loc-pill mainland' : 'card-loc-pill island';
+            const locDisplay = l.location==='Mainland'?'🏙️ Mainland':'🏝️ Island';
             const savedIcon=saved?'❤️':'🤍';
+
+            // Rent display
+            const exact = l.rentExact;
+            const range = l.rentRange;
+            let rentHTML = '';
+            if (exact && range) {
+                rentHTML = `<div class="card-rent">${formatNaira(exact)}<span>/yr</span><div class="card-rent-range">${escapeHTML(range)}</div></div>`;
+            } else if (range) {
+                rentHTML = `<div class="card-rent">${escapeHTML(range)}<span>/yr</span></div>`;
+            } else if (exact) {
+                rentHTML = `<div class="card-rent">${formatNaira(exact)}<span>/yr</span></div>`;
+            } else {
+                rentHTML = `<div class="card-rent">—<span>/yr</span></div>`;
+            }
+
+            // Thumbnail
+            const photo = l.primaryPhoto && l.photosAvailable === 'Yes' ? l.primaryPhoto : '';
+            const thumbCls = photo ? 'card-thumb has-photo' : 'card-thumb';
+            const thumbInner = photo
+                ? `<img src="${photo}" alt="">`
+                : `<svg viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`;
+
             return `
-            <div class="listing-card ${tintClass}" onclick="goToDetail('${l.listingId}')">
+            <div class="listing-card" onclick="goToDetail('${l.listingId}')">
                 <div class="card-header-row">
+                    <div class="${thumbCls}">${thumbInner}</div>
                     <span class="card-ref">${l.listingId}</span>
+                    <span class="${locPillClass}">${locDisplay}</span>
                     <span class="card-date-inline">· ${timeAgo(l.postedDate)}</span>
                     ${isNew?'<span class="badge-new-inline">NEW</span>':''}
                     <button class="card-save ${saved?'saved':''}" onclick="event.stopPropagation();toggleSaveListing('${l.listingId}')" title="${saved?'Remove from saved':'Save listing'}">${savedIcon}</button>
                 </div>
                 <div class="card-main">
                     <div class="card-type">${escapeHTML(l.apartmentType)}</div>
-                    <div class="card-loc">${locDisplay} · ${escapeHTML(l.area)}</div>
-                    <div class="card-rent">${formatNaira(l.rentExact)}<span>/yr</span></div>
+                    <div class="card-loc">${escapeHTML(l.area)}</div>
+                    ${rentHTML}
                     ${comment?`<div class="card-quote">"${escapeHTML(comment)}"</div>`:''}
                 </div>
                 <div class="card-chips">
@@ -502,7 +562,6 @@
                 document.querySelectorAll('.filter-select').forEach(s=>s.value='');
                 applyFilters();renderCards();showToast('Filters cleared')
             });
-            document.getElementById('random-btn')?.addEventListener('click',()=>{if(state.allListings.length)goToDetail(state.allListings[Math.floor(Math.random()*state.allListings.length)].listingId)});
         }
 
         // ── DETAIL PAGE ──
@@ -521,10 +580,64 @@
         }
 
         function getDetailHTML(l){
-            const photoHTML=l.photosAvailable==='Yes'&&l.primaryPhoto?`<img src="${l.primaryPhoto}" alt="${escapeHTML(l.apartmentType)}">`:`<div style="text-align:center;color:var(--ink-faint);padding:20px">No photo available</div>`;
-            const commentHero=l.comments?`<div class="detail-comment-hero"><div class="detail-comment-label">Comment from resident</div><div class="detail-quote">"</div><div class="detail-comment-body">${escapeHTML(l.comments)}</div></div>`:'';
-            const fields=[{label:'Rent',value:formatNaira(l.rentExact)+'/year',icon:'💰'},{label:'Light',value:l.light,icon:'💡'},{label:'Water',value:l.water,icon:'🚿'},{label:'Parking',value:l.parking,icon:'🅿️'},{label:'Status',value:l.residentStatus,icon:'📅'}].filter(f=>f.value&&String(f.value).trim()!=='');
-            return `<div class="detail-page"><button class="detail-back" onclick="goToDirectory()">← Back to listings</button>${commentHero}<div class="detail-summary"><div class="detail-photo-wrap">${photoHTML}</div><div class="detail-info"><span class="detail-ref">${l.listingId}</span><h1>${escapeHTML(l.apartmentType)}</h1><div class="detail-loc">📍 ${escapeHTML(l.area)}, ${escapeHTML(l.location)}</div><div class="detail-rent">${formatNaira(l.rentExact)}<span>/year</span></div><div class="detail-actions"><button class="btn-primary" data-action="intro">Request Introduction</button><button class="btn-outline" onclick="copyListingLink('${l.listingId}')">Copy Link</button><button class="btn-outline" onclick="shareListing('${l.listingId}','${escapeHTML(l.apartmentType)} in ${escapeHTML(l.area)}')">Share</button></div></div></div><div class="detail-section"><h2>Apartment Details</h2><div class="detail-grid">${fields.map(f=>`<div class="detail-item"><div class="detail-item-icon">${f.icon}</div><div class="detail-item-content"><div class="item-label">${f.label}</div><div class="item-value">${escapeHTML(f.value)}</div></div></div>`).join('')}</div></div><div class="similar-section"><h2>Similar Listings</h2><div class="similar-grid" id="similar-grid"></div></div></div>`;
+            const photoHTML = l.photosAvailable==='Yes' && l.primaryPhoto
+                ? `<img src="${l.primaryPhoto}" alt="${escapeHTML(l.apartmentType)}">`
+                : `<div class="detail-photo-placeholder">
+                     <svg viewBox="0 0 24 24" fill="none">
+                       <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                       <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                     </svg>
+                   </div>`;
+            const commentHero = l.comments ? `<div class="detail-comment-hero"><div class="detail-comment-label">Comment from resident</div><div class="detail-quote">"</div><div class="detail-comment-body">${escapeHTML(l.comments)}</div></div>` : '';
+            const fields = [
+                {label:'Rent',value:formatNaira(l.rentExact)+'/year',icon:'💰'},
+                {label:'Light',value:l.light,icon:'💡'},
+                {label:'Water',value:l.water,icon:'🚿'},
+                {label:'Parking',value:l.parking,icon:'🅿️'},
+                {label:'Status',value:l.residentStatus,icon:'📅'}
+            ].filter(f=>f.value&&String(f.value).trim()!=='');
+
+            // Rent display with range
+            const exact = l.rentExact, range = l.rentRange;
+            let rentBlock = '';
+            if (exact && range) {
+                rentBlock = `<div class="detail-rent">${formatNaira(exact)}<span>/year</span><div class="detail-rent-range">${escapeHTML(range)}</div></div>`;
+            } else if (range) {
+                rentBlock = `<div class="detail-rent">${escapeHTML(range)}<span>/year</span></div>`;
+            } else if (exact) {
+                rentBlock = `<div class="detail-rent">${formatNaira(exact)}<span>/year</span></div>`;
+            } else {
+                rentBlock = `<div class="detail-rent">—<span>/year</span></div>`;
+            }
+
+            return `<div class="detail-page">
+                <button class="detail-back" onclick="goToDirectory()">← Back to listings</button>
+                ${commentHero}
+                <div class="detail-summary">
+                    <div class="detail-photo-wrap">${photoHTML}</div>
+                    <div class="detail-info">
+                        <span class="detail-ref">${l.listingId}</span>
+                        <h1>${escapeHTML(l.apartmentType)}</h1>
+                        <div class="detail-loc">📍 ${escapeHTML(l.area)}, ${escapeHTML(l.location)}</div>
+                        ${rentBlock}
+                        <div class="detail-actions">
+                            <button class="btn-primary" data-action="intro">Request Introduction</button>
+                            <button class="btn-outline" onclick="copyListingLink('${l.listingId}')">Copy Link</button>
+                            <button class="btn-outline" onclick="shareListing('${l.listingId}','${escapeHTML(l.apartmentType)} in ${escapeHTML(l.area)}')">Share</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <h2>Apartment Details</h2>
+                    <div class="detail-grid">
+                        ${fields.map(f=>`<div class="detail-item"><div class="detail-item-icon">${f.icon}</div><div class="detail-item-content"><div class="item-label">${f.label}</div><div class="item-value">${escapeHTML(f.value)}</div></div></div>`).join('')}
+                    </div>
+                </div>
+                <div class="similar-section">
+                    <h2>Similar Listings</h2>
+                    <div class="similar-grid" id="similar-grid"></div>
+                </div>
+            </div>`;
         }
 
         // ── MODAL LOGIC ──
@@ -613,56 +726,56 @@
         }
 
         function submitIntroductionRequest(e,listingId){
-    e.preventDefault();
-    const agreeFinder=document.getElementById('req-agree-finder');
-    if(!agreeFinder||!agreeFinder.checked){showToast("Please agree to the finder's fee terms.",'error');return}
-    const btn=document.getElementById('btn-submit-intro');
-    if(btn){btn.disabled=true;btn.textContent='Sending…'}
-    const extras=[];
-    document.querySelectorAll('.req-extra:checked').forEach(cb=>{
-        if(cb.value==='Other'){const otherText=document.getElementById('req-extra-other-text')?.value.trim();if(otherText)extras.push(otherText)}
-        else extras.push(cb.value);
-    });
-    const payload={
-        action:'requestIntroduction',
-        listingId,
-        listingUrl:window.location.href,
-        requesterName:document.getElementById('req-name')?.value||'',
-        requesterEmail:document.getElementById('req-email')?.value||'',
-        requesterPhone:document.getElementById('req-phone')?.value||'',
-        requesterTelegram:document.getElementById('req-telegram')?.value||'',
-        reason:document.getElementById('req-reason')?.value||'',
-        moveTimeline:document.getElementById('req-timeline')?.value||'',
-        extraQuestions:extras.join('; ')
-    };
-    apiFetch('requestIntroduction',payload,'POST')
-        .then((data)=>{
-            if(!data || !data.success){
-                throw new Error(data?.message || 'Request failed');
-            }
-            window.dataLayer.push({event:'rentpal_intro_submitted',listingId:listingId});
-            document.getElementById('introModalContent').innerHTML=`
-                <button class="modal-close" onclick="closeModal()">✕</button>
-                <div class="request-confirmation">
-                    <div style="font-size:48px;margin-bottom:12px">✅</div>
-                    <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px">Request sent!</h3>
-                    <p style="color:var(--ink-muted);font-size:14px;line-height:1.6">The resident has up to 24 hours to respond. If they approve, you'll get an email with next steps.</p>
-                    <button class="btn-outline" onclick="closeModal()" style="margin-top:16px">Close</button>
-                </div>`;
-        })
-        .catch((err)=>{
-            console.error('❌ Intro request failed:', err);
-            if(btn){btn.disabled=false;btn.textContent='Send Request'}
-            document.getElementById('introModalContent').innerHTML=`
-                <button class="modal-close" onclick="closeModal()">✕</button>
-                <div class="request-confirmation">
-                    <div style="font-size:48px;margin-bottom:12px">❌</div>
-                    <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;margin-bottom:8px">Something went wrong</h3>
-                    <p style="color:var(--ink-muted)">${err.message || 'Please try again later.'}</p>
-                    <button class="btn-outline" onclick="closeModal()" style="margin-top:16px">Close</button>
-                </div>`;
-        });
-}
+            e.preventDefault();
+            const agreeFinder=document.getElementById('req-agree-finder');
+            if(!agreeFinder||!agreeFinder.checked){showToast("Please agree to the finder's fee terms.",'error');return}
+            const btn=document.getElementById('btn-submit-intro');
+            if(btn){btn.disabled=true;btn.textContent='Sending…'}
+            const extras=[];
+            document.querySelectorAll('.req-extra:checked').forEach(cb=>{
+                if(cb.value==='Other'){const otherText=document.getElementById('req-extra-other-text')?.value.trim();if(otherText)extras.push(otherText)}
+                else extras.push(cb.value);
+            });
+            const payload={
+                action:'requestIntroduction',
+                listingId,
+                listingUrl:window.location.href,
+                requesterName:document.getElementById('req-name')?.value||'',
+                requesterEmail:document.getElementById('req-email')?.value||'',
+                requesterPhone:document.getElementById('req-phone')?.value||'',
+                requesterTelegram:document.getElementById('req-telegram')?.value||'',
+                reason:document.getElementById('req-reason')?.value||'',
+                moveTimeline:document.getElementById('req-timeline')?.value||'',
+                extraQuestions:extras.join('; ')
+            };
+            apiFetch('requestIntroduction',payload,'POST')
+                .then((data)=>{
+                    if(!data || !data.success){
+                        throw new Error(data?.message || 'Request failed');
+                    }
+                    window.dataLayer.push({event:'rentpal_intro_submitted',listingId:listingId});
+                    document.getElementById('introModalContent').innerHTML=`
+                        <button class="modal-close" onclick="closeModal()">✕</button>
+                        <div class="request-confirmation">
+                            <div style="font-size:48px;margin-bottom:12px">✅</div>
+                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;margin-bottom:8px">Request sent!</h3>
+                            <p style="color:var(--ink-muted);font-size:14px;line-height:1.6">The resident has up to 24 hours to respond. If they approve, you'll get an email with next steps.</p>
+                            <button class="btn-outline" onclick="closeModal()" style="margin-top:16px">Close</button>
+                        </div>`;
+                })
+                .catch((err)=>{
+                    console.error('❌ Intro request failed:', err);
+                    if(btn){btn.disabled=false;btn.textContent='Send Request'}
+                    document.getElementById('introModalContent').innerHTML=`
+                        <button class="modal-close" onclick="closeModal()">✕</button>
+                        <div class="request-confirmation">
+                            <div style="font-size:48px;margin-bottom:12px">❌</div>
+                            <h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;margin-bottom:8px">Something went wrong</h3>
+                            <p style="color:var(--ink-muted)">${err.message || 'Please try again later.'}</p>
+                            <button class="btn-outline" onclick="closeModal()" style="margin-top:16px">Close</button>
+                        </div>`;
+                });
+        }
 
         function copyListingLink(id){const url=window.location.origin+'/listings/?id='+id;navigator.clipboard.writeText(url).then(()=>showToast('Link copied!'))}
         function shareListing(id,title){const url=window.location.origin+'/listings/?id='+id;if(navigator.share)navigator.share({title:'RentPal Listing',text:title,url});else copyListingLink(id)}
@@ -675,7 +788,7 @@
             const scored=others.map(l=>{let s=0;if(l.area===listing.area)s+=3;if(l.apartmentType===listing.apartmentType)s+=2;if(l.location===listing.location)s+=1;const rd=Math.abs(getRentNumeric(l.rentExact)-getRentNumeric(listing.rentExact));if(rd<300000)s+=2;else if(rd<600000)s+=1;return{listing:l,score:s}});
             scored.sort((a,b)=>b.score-a.score);
             const similar=scored.slice(0,6);
-            grid.innerHTML=similar.map(s=>{const l=s.listing;return `<div class="listing-card" onclick="goToDetail('${l.listingId}')" style="cursor:pointer"><div class="card-main"><span class="card-ref">${l.listingId}</span><div class="card-type" style="font-size:13px">${escapeHTML(l.apartmentType)}</div><div class="card-loc">${l.location==='Mainland'?'📍 Mainland':'🏝️ Island'} · ${escapeHTML(l.area)}</div><div class="card-rent" style="font-size:15px">${formatNaira(l.rentExact)}<span>/yr</span></div></div></div>`}).join('')||'<p style="color:var(--ink-faint);font-size:13px">No similar listings</p>';
+            grid.innerHTML=similar.map(s=>{const l=s.listing;return `<div class="listing-card" onclick="goToDetail('${l.listingId}')" style="cursor:pointer"><div class="card-main"><span class="card-ref">${l.listingId}</span><div class="card-type" style="font-size:13px">${escapeHTML(l.apartmentType)}</div><div class="card-loc">${escapeHTML(l.area)}</div><div class="card-rent" style="font-size:15px">${formatNaira(l.rentExact)}<span>/yr</span></div></div></div>`}).join('')||'<p style="color:var(--ink-faint);font-size:13px">No similar listings</p>';
         }
 
         let autoRefreshInterval;
