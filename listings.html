@@ -74,22 +74,16 @@
         .spotlight-item.active{opacity:1}
         .spotlight-disclaimer{margin-top:10px;font-size:11px;color:rgba(255,255,255,0.45);line-height:1.5;max-width:500px;margin-left:auto;margin-right:auto}
 
-        /* FILTER BAR (dark) */
+        /* FILTER BAR (simplified, dark) */
         .filters-wrap{background:#1a2634;border-bottom:2px solid #2d3b4f;padding:0 16px;position:sticky;top:56px;z-index:50;transition:box-shadow var(--transition)}
         .filters-wrap.scrolled{box-shadow:0 2px 8px rgba(0,0,0,0.05)}
-        .filters-label{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;color:#8fc6f5;margin-right:8px}
-        .filters-inner{max-width:1200px;margin:0 auto;display:flex;gap:8px;align-items:center;padding:10px 0;flex-wrap:wrap}
-        .filter-search-wrap{flex:1;position:relative;min-width:140px}
-        .filter-search-wrap input{width:100%;padding:8px 12px 8px 36px;border:1.5px solid #3b4a5e;border-radius:var(--radius-sm);font-size:14px;color:#e2e8f0;background:#263246;outline:none;transition:border-color var(--transition)}
-        .filter-search-wrap input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(74,143,212,0.12)}
-        .filter-search-wrap input::placeholder{color:rgba(255,255,255,0.45)}
-        .search-icon-inside{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,0.45);width:16px;height:16px;pointer-events:none}
-        .filter-select{min-width:80px;padding:8px 28px 8px 10px;border:1.5px solid #3b4a5e;border-radius:var(--radius-sm);font-size:13px;color:#e2e8f0;background:#263246;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23929a8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;transition:border-color var(--transition)}
+        .filters-inner{max-width:1200px;margin:0 auto;display:flex;gap:10px;align-items:center;padding:10px 0;flex-wrap:wrap}
+        .filter-select{min-width:100px;padding:8px 28px 8px 12px;border:1.5px solid #3b4a5e;border-radius:var(--radius-sm);font-size:14px;color:#e2e8f0;background:#263246;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23929a8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--transition)}
         .filter-select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(74,143,212,0.12)}
         .filter-select option{background:#1a2634;color:#e2e8f0}
-        .filter-clear{display:none;background:none;border:none;color:var(--blue);font-size:12px;font-weight:500;cursor:pointer;padding:6px 8px;border-radius:var(--radius-sm);white-space:nowrap}
+        .filter-clear{background:none;border:none;color:var(--blue);font-size:13px;font-weight:500;cursor:pointer;padding:8px 12px;border-radius:var(--radius-sm);white-space:nowrap;display:none}
         .filter-clear.visible{display:inline-flex}
-        .results-count{font-size:12px;color:rgba(255,255,255,0.55);white-space:nowrap}
+        .results-count{font-size:13px;color:rgba(255,255,255,0.55);white-space:nowrap;margin-left:auto}
 
         /* LISTINGS GRID */
         .listings-section{max-width:1200px;margin:0 auto;padding:16px 16px 48px}
@@ -198,19 +192,21 @@
         .similar-section h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:12px}
         .similar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
 
-        /* MODAL */
+        /* MODAL (compact) */
         .modal{display:none;position:fixed;z-index:300;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.5);align-items:center;justify-content:center}
         .modal.active{display:flex !important}
-        .modal-content{background:var(--white);border-radius:var(--radius-lg);padding:28px 24px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto;position:relative}
+        .modal-content{background:var(--white);border-radius:var(--radius-lg);padding:24px 20px;max-width:480px;width:92%;max-height:85vh;overflow-y:auto;position:relative}
         .modal-close{position:absolute;top:12px;right:16px;font-size:22px;background:none;border:none;cursor:pointer;color:var(--ink-muted)}
         .modal-close:hover{color:var(--ink)}
 
-        .form-group{margin-bottom:12px}
+        .form-group{margin-bottom:10px}
         .form-group label{display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);margin-bottom:4px}
-        .form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 14px;border:1.5px solid var(--card-border);border-radius:var(--radius-sm);font-size:14px;color:var(--ink);background:var(--surface);outline:none;transition:border-color var(--transition)}
+        .form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 12px;border:1.5px solid var(--card-border);border-radius:var(--radius-sm);font-size:14px;color:var(--ink);background:var(--surface);outline:none;transition:border-color var(--transition)}
         .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(74,143,212,0.12)}
-        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-        .btn-submit-request{width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;transition:background var(--transition);margin-top:6px}
+        .form-row-stacked{display:flex;flex-direction:column;gap:10px}
+        .check-label{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink);cursor:pointer;margin-bottom:6px}
+        .check-label input{width:16px;height:16px;accent-color:var(--blue)}
+        .btn-submit-request{width:100%;padding:12px;background:var(--blue);color:#fff;border:none;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;transition:background var(--transition);margin-top:8px}
         .btn-submit-request:hover{background:var(--blue-dark)}
         .btn-submit-request:disabled{opacity:0.5;cursor:not-allowed}
         .request-confirmation{text-align:center;padding:26px 20px}
@@ -250,26 +246,17 @@
 
     <div class="filters-wrap" id="filters-wrap">
         <div class="filters-inner">
-            <span class="filters-label">🔍 Filters</span>
-            <div class="filter-search-wrap">
-                <svg class="search-icon-inside" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input type="text" id="filter-search" placeholder="Search area, type, ref..." autocomplete="off">
-            </div>
             <select class="filter-select" id="filter-area"><option value="">📍 Area</option></select>
-            <select class="filter-select" id="filter-apt-type">
-                <option value="">🛏 Type</option>
-                <option value="Self contain">Self contain</option>
-                <option value="Mini flat / 1 bedroom">Mini flat / 1 bedroom</option>
-                <option value="2 bedroom flat">2 bedroom flat</option>
-                <option value="3 bedroom flat">3 bedroom flat</option>
-            </select>
-            <select class="filter-select" id="filter-location"><option value="">🗺 Location</option><option value="Mainland">Mainland</option><option value="Island">Island</option></select>
-            <select class="filter-select" id="filter-resident-status">
-                <option value="">📅 Pack-out</option>
-                <option value="Within 1 month">Within 1 month</option>
-                <option value="1–3 months">1–3 months</option>
-                <option value="3–6 months">3–6 months</option>
-                <option value="6–12 months">6–12 months</option>
+            <select class="filter-select" id="filter-rent-range">
+                <option value="">💰 Rent</option>
+                <option value="0-600000">Under ₦600k</option>
+                <option value="700000-900000">₦700k – ₦900k</option>
+                <option value="1000000-1500000">₦1m – ₦1.5m</option>
+                <option value="1600000-2000000">₦1.6m – ₦2m</option>
+                <option value="2100000-3000000">₦2.1m – ₦3m</option>
+                <option value="3100000-4000000">₦3.1m – ₦4m</option>
+                <option value="4100000-5000000">₦4.1m – ₦5m</option>
+                <option value="5100000-">Above ₦5m</option>
             </select>
             <button class="filter-clear" id="filter-clear" style="display:none">Clear</button>
             <span class="results-count" id="results-count"></span>
@@ -295,7 +282,7 @@
         const state = {
             allListings: [], filteredListings: [], displayedCount: 0,
             currentDetailId: null, currentDetailData: null,
-            filters: { area: '', aptType: '', location: '', residentStatus: '' },
+            filters: { area: '', rentRange: '' },
             savedListings: JSON.parse(localStorage.getItem('rp_saved') || '[]'),
             recentlyViewed: JSON.parse(localStorage.getItem('rp_recent') || '[]')
         };
@@ -448,19 +435,23 @@
         function applyFilters(){
             let filtered=[...state.allListings];
             const f=state.filters;
-            const search=(document.getElementById('filter-search')?.value||'').toLowerCase().trim();
-            if(search){filtered=filtered.filter(l=>(l.listingId||'').toLowerCase().includes(search)||(l.area||'').toLowerCase().includes(search)||(l.apartmentType||'').toLowerCase().includes(search)||(l.location||'').toLowerCase().includes(search)||(l.comments||'').toLowerCase().includes(search))}
             if(f.area)filtered=filtered.filter(l=>l.area===f.area);
-            if(f.aptType)filtered=filtered.filter(l=>{const at=l.apartmentType||'';if(f.aptType==='Mini flat / 1 bedroom')return at.includes('Mini flat')||at.includes('1 bedroom');return at===f.aptType});
-            if(f.location)filtered=filtered.filter(l=>l.location===f.location);
-            if(f.residentStatus)filtered=filtered.filter(l=>l.residentStatus===f.residentStatus);
+            if(f.rentRange){
+                const [min,max]=f.rentRange.split('-').map(Number);
+                filtered=filtered.filter(l=>{
+                    const rent=getRentNumeric(l.rentExact);
+                    if(!rent) return false;
+                    if(max) return rent>=min && rent<=max;
+                    return rent>=min; // above ₦5m
+                });
+            }
             state.filteredListings=filtered;
             state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,filtered.length);
             updateClearButton();updateCount();
         }
 
         function updateClearButton(){
-            const anyActive=Object.values(state.filters).some(v=>v!=='')||(document.getElementById('filter-search')?.value||'').trim()!=='';
+            const anyActive=Object.values(state.filters).some(v=>v!=='');
             const btn=document.getElementById('filter-clear');
             if(btn)btn.style.display=anyActive?'inline-flex':'none';
         }
@@ -481,7 +472,6 @@
             const saved=isSaved(l.listingId);
             const comment=l.comments&&l.comments.trim()?l.comments:null;
             const isNew=new Date(l.postedDate)>new Date(Date.now()-2*86400000);
-            // Compact location pill – just M or I
             const locPillClass = l.location==='Mainland' ? 'card-loc-pill mainland' : 'card-loc-pill island';
             const locPillText = l.location==='Mainland' ? 'M' : 'I';
             const savedIcon=saved?'❤️':'🤍';
@@ -507,7 +497,6 @@
                 ? `<img src="${photo}" alt="">`
                 : `<svg viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`;
 
-            // Truncate resident status to first word for compactness
             const statusText = l.residentStatus ? l.residentStatus.split(' ')[0] + '…' : '';
 
             return `
@@ -542,14 +531,10 @@
         function updateCount(){const el=document.getElementById('results-count');if(!el)return;const t=state.filteredListings.length;el.textContent=`${Math.min(state.displayedCount,t)}/${t}`}
 
         function bindEvents(){
-            document.getElementById('filter-search').addEventListener('input',debounce(()=>{applyFilters();renderCards()},CONFIG.DEBOUNCE_MS));
             document.getElementById('filter-area').addEventListener('change',function(){state.filters.area=this.value;applyFilters();renderCards()});
-            document.getElementById('filter-apt-type').addEventListener('change',function(){state.filters.aptType=this.value;applyFilters();renderCards()});
-            document.getElementById('filter-location').addEventListener('change',function(){state.filters.location=this.value;applyFilters();renderCards()});
-            document.getElementById('filter-resident-status').addEventListener('change',function(){state.filters.residentStatus=this.value;applyFilters();renderCards()});
+            document.getElementById('filter-rent-range').addEventListener('change',function(){state.filters.rentRange=this.value;applyFilters();renderCards()});
             document.getElementById('filter-clear').addEventListener('click',()=>{
-                state.filters={area:'',aptType:'',location:'',residentStatus:''};
-                document.getElementById('filter-search').value='';
+                state.filters={area:'',rentRange:''};
                 document.querySelectorAll('.filter-select').forEach(s=>s.value='');
                 applyFilters();renderCards();showToast('Filters cleared')
             });
@@ -630,7 +615,7 @@
             </div>`;
         }
 
-        // ── MODAL LOGIC ──
+        // ── MODAL LOGIC (compact, single-column) ──
         function openIntroductionModal(listingId){
             const modal=document.getElementById('introModal');
             const content=document.getElementById('introModalContent');
@@ -645,24 +630,16 @@
         function getIntroductionFormHTML(listingId){
             return `
             <button class="modal-close" onclick="closeModal()">✕</button>
-            <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;margin-bottom:6px">Request Introduction</h2>
-            <p style="font-size:13px;color:var(--ink-muted);margin-bottom:16px">Fill in your details – the resident will review your request. No payment required now.</p>
-            <div style="background:var(--orange-light);border:1px solid #fbbf24;border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;display:flex;align-items:flex-start;gap:8px">
-                <span>⚠️</span>
-                <div style="font-size:13px;color:#92400e">
-                    <strong>Finder's Fee</strong><br>
-                    If you <b>successfully rent this apartment</b>, you'll be invoiced a <b>finder's fee</b> (separate from any other charges). This fee ranges from <b>₦20,000 to ₦100,000</b> depending on the apartment.
-                </div>
-            </div>
+            <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px">Request Introduction</h2>
+            <p style="font-size:11px;color:var(--ink-muted);margin-bottom:12px;line-height:1.4;background:var(--orange-light);border-radius:6px;padding:8px 10px;">
+                ⚠️ A finder’s fee applies only if you secure the apartment. No upfront payment.
+            </p>
+
             <form id="intro-request-form">
-                <div class="form-row">
-                    <div class="form-group"><label>Your Name *</label><input type="text" id="req-name" required></div>
-                    <div class="form-group"><label>Email *</label><input type="email" id="req-email" required></div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group"><label>Phone *</label><input type="tel" id="req-phone" required></div>
-                    <div class="form-group"><label>Telegram (optional)</label><input type="text" id="req-telegram"></div>
-                </div>
+                <div class="form-group"><label>Your Name *</label><input type="text" id="req-name" required></div>
+                <div class="form-group"><label>Email *</label><input type="email" id="req-email" required></div>
+                <div class="form-group"><label>Phone *</label><input type="tel" id="req-phone" required></div>
+                <div class="form-group"><label>Telegram (optional)</label><input type="text" id="req-telegram"></div>
                 <div class="form-group">
                     <label>Reason for Request *</label>
                     <select id="req-reason" required>
@@ -674,28 +651,6 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Additional questions for the resident</label>
-                    <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
-                        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer;text-transform:none;letter-spacing:0">
-                            <input type="checkbox" class="req-extra" value="Can you share photos of the apartment?" style="width:16px;height:16px"> Can you share photos of the apartment?
-                        </label>
-                        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer;text-transform:none;letter-spacing:0">
-                            <input type="checkbox" class="req-extra" value="Is there a video tour available?" style="width:16px;height:16px"> Is there a video tour available?
-                        </label>
-                        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer;text-transform:none;letter-spacing:0">
-                            <input type="checkbox" class="req-extra" value="What is the condition of the plumbing/electrical?" style="width:16px;height:16px"> Condition of plumbing/electrical?
-                        </label>
-                        <label style="display:flex;align-items:center;gap:8px;font-weight:400;font-size:14px;color:var(--ink);cursor:pointer;text-transform:none;letter-spacing:0">
-                            <input type="checkbox" class="req-extra" value="Are there any additional fees?" style="width:16px;height:16px"> Any additional fees?
-                        </label>
-                        <div style="display:flex;align-items:center;gap:8px">
-                            <input type="checkbox" id="req-extra-other" class="req-extra" value="Other" onchange="document.getElementById('req-extra-other-text').style.display=this.checked?'block':'none'" style="width:16px;height:16px">
-                            <label for="req-extra-other" style="font-weight:400;font-size:14px;color:var(--ink);cursor:pointer;text-transform:none;letter-spacing:0">Other</label>
-                            <input type="text" id="req-extra-other-text" placeholder="Please specify" style="display:none;flex:1;padding:6px 10px;border:1px solid var(--card-border);border-radius:var(--radius-sm);font-size:13px;margin-left:8px">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
                     <label>Move Timeline *</label>
                     <select id="req-timeline" required>
                         <option value="">Select timeline…</option>
@@ -705,10 +660,22 @@
                         <option>Just Exploring</option>
                     </select>
                 </div>
-                <div class="form-group" style="display:flex;align-items:flex-start;gap:8px;margin-bottom:16px">
-                    <input type="checkbox" id="req-agree-finder" required style="width:16px;height:16px;margin-top:3px;flex-shrink:0;accent-color:var(--orange)">
-                    <label for="req-agree-finder" style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink-muted);font-size:13px">
-                        I agree that if I rent this apartment, I will be invoiced for the <strong>finder's fee</strong> as described above.
+                <div class="form-group">
+                    <label>Additional questions for the resident</label>
+                    <div class="check-label"><input type="checkbox" class="req-extra" value="Can you share photos of the apartment?"> Can you share photos?</div>
+                    <div class="check-label"><input type="checkbox" class="req-extra" value="Is there a video tour available?"> Is there a video tour?</div>
+                    <div class="check-label"><input type="checkbox" class="req-extra" value="What is the condition of the plumbing/electrical?"> Condition of plumbing/electrical?</div>
+                    <div class="check-label"><input type="checkbox" class="req-extra" value="Are there any additional fees?"> Any additional fees?</div>
+                    <div class="check-label" style="flex-wrap:wrap">
+                        <input type="checkbox" id="req-extra-other" class="req-extra" value="Other" onchange="document.getElementById('req-extra-other-text').style.display=this.checked?'inline-block':'none'">
+                        <label for="req-extra-other" style="font-weight:400;font-size:13px;margin-right:4px">Other</label>
+                        <input type="text" id="req-extra-other-text" placeholder="Please specify" style="display:none;flex:1;padding:4px 8px;border:1px solid var(--card-border);border-radius:4px;font-size:13px;margin-left:4px">
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top:8px;">
+                    <label class="check-label" style="font-weight:400;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink-muted);">
+                        <input type="checkbox" id="req-agree-finder" required style="width:16px;height:16px;accent-color:var(--orange);margin-right:8px;">
+                        I agree to the finder's fee terms.
                     </label>
                 </div>
                 <button type="submit" class="btn-submit-request" id="btn-submit-intro">Send Request</button>
