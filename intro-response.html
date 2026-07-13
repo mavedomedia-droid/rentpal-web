@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Respond to Introduction – RentPal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:#f1f5f9;color:#0f1117;line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
+    .container{max-width:640px;margin:40px auto;padding:0 20px;flex:1}
+    .logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:700;color:#4A8FD4;margin-bottom:24px}
+    h1{font-size:24px;font-weight:800;margin-bottom:8px}
+    .subtitle{color:#5a6072;margin-bottom:24px}
+    .card{background:#fff;border-radius:16px;border:1px solid rgba(0,0,0,0.06);padding:24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+    .card h2{font-size:18px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    .badge{display:inline-block;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:600;margin-bottom:12px}
+    .badge.available{background:#EAF3DE;color:#27500A}
+    .badge.unavailable{background:#fee2e2;color:#991b1b}
+    .label{font-size:12px;color:#9299a8;text-transform:uppercase;letter-spacing:0.5px}
+    .value{font-size:15px;margin-bottom:8px}
+    .actions{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+    .btn{display:block;width:100%;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;text-align:center;transition:all 0.2s}
+    .btn-approve{background:#4A8FD4;color:#fff}
+    .btn-approve:hover{background:#185FA5}
+    .btn-decline{background:#fff;color:#5a6072;border:1.5px solid rgba(0,0,0,0.12)}
+    .btn-decline:hover{background:#f1f5f9}
+    .btn-unavailable{background:#e74c3c;color:#fff}
+    .btn-unavailable:hover{background:#c0392b}
+    .empty{text-align:center;color:#9299a8;padding:40px}
+    .loading{text-align:center;padding:40px;color:#5a6072}
+    .error{color:#dc2626}
+    .seeker-prefs{margin-top:16px;background:#f8fafc;border-radius:12px;padding:16px}
+    .seeker-prefs h3{font-size:15px;font-weight:700;margin-bottom:8px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">rentpal</div>
+    <h1>Someone wants your apartment</h1>
+    <p class="subtitle">Review the request and choose how to respond.</p>
+    <div id="content">
+      <div class="loading">Loading request details…</div>
+    </div>
+  </div>
+  <script>
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycb.../exec'; // ⚠️ Replace with your deployed URL
+
+    async function fetchIntroDetails(requestId) {
+      const res = await fetch(`${GAS_URL}?action=introDetails&requestId=${encodeURIComponent(requestId)}`);
+      if (!res.ok) throw new Error('Network error');
+      return res.json();
+    }
+
+    function formatNaira(n){ if(!n||isNaN(n))return'—'; return'₦'+parseInt(n).toLocaleString('en-NG'); }
+    function escapeHTML(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+    function buildActionUrl(requestId, response) {
+      return `${GAS_URL}?action=residentResponse&requestId=${encodeURIComponent(requestId)}&response=${response}`;
+    }
+
+    function render(data) {
+      if (!data.success) {
+        document.getElementById('content').innerHTML = `<div class="empty">${escapeHTML(data.message || 'Request not found.')}</div>`;
+        return;
+      }
+
+      const { requestId, status, listing, requester, seekerPrefs } = data;
+
+      // If already processed
+      if (status !== 'Pending') {
+        document.getElementById('content').innerHTML = `
+          <div class="card">
+            <h2>Request Already Processed</h2>
+            <p>This introduction request has already been <strong>${status}</strong>.</p>
+            <p style="color:#5a6072; margin-top:8px;">No further action is needed.</p>
+          </div>`;
+        return;
+      }
+
+      // Build listing HTML
+      let listingHTML = '';
+      if (listing) {
+        listingHTML = `
+          <div class="card">
+            <h2>🏠 Your Listed Apartment</h2>
+            <div class="badge available">Available</div>
+            <div class="label">Apartment</div>
+            <div class="value"><strong>${escapeHTML(listing.apartmentType)}</strong></div>
+            <div class="label">Location</div>
+            <div class="value">${escapeHTML(listing.area)}, ${escapeHTML(listing.location)}</div>
+            <div class="label">Rent</div>
+            <div class="value">${escapeHTML(listing.rentExact)}/year</div>
+            <div class="label">Reference</div>
+            <div class="value" style="font-family:monospace">${escapeHTML(listing.listingId)}</div>
+          </div>`;
+      }
+
+      // Requester info
+      let requesterHTML = `
+        <div class="card">
+          <h2>👤 Person Interested</h2>
+          <div class="label">Name</div>
+          <div class="value"><strong>${escapeHTML(requester.name)}</strong></div>
+          <div class="label">Email</div>
+          <div class="value">${escapeHTML(requester.email)}</div>
+          <div class="label">Phone</div>
+          <div class="value">${escapeHTML(requester.phone)}</div>
+          <div class="label">Telegram</div>
+          <div class="value">${escapeHTML(requester.telegram || '—')}</div>
+          <div class="label">Reason</div>
+          <div class="value">${escapeHTML(requester.reason)}</div>
+          <div class="label">Move Timeline</div>
+          <div class="value">${escapeHTML(requester.moveTimeline)}</div>
+          ${requester.extraQuestions ? `
+          <div class="label">Extra Questions</div>
+          <div class="value">${escapeHTML(requester.extraQuestions)}</div>` : ''}
+        </div>`;
+
+      // Seeker preferences (if requester is also a seeker)
+      let seekerHTML = '';
+      if (seekerPrefs) {
+        seekerHTML = `
+          <div class="card">
+            <h2>🔍 Also Looking For</h2>
+            <div class="seeker-prefs">
+              <div class="label">Preferred Location</div>
+              <div class="value">${escapeHTML(seekerPrefs.preferredLocation || '—')}</div>
+              <div class="label">Apartment Type</div>
+              <div class="value">${escapeHTML(seekerPrefs.preferredAptType || '—')}</div>
+              <div class="label">Budget</div>
+              <div class="value">${seekerPrefs.budgetMin && seekerPrefs.budgetMax ? formatNaira(seekerPrefs.budgetMin)+' – '+formatNaira(seekerPrefs.budgetMax) : '—'}</div>
+              <div class="label">Move Timing</div>
+              <div class="value">${escapeHTML(seekerPrefs.moveTiming || '—')}</div>
+              <div class="label">Preferred Areas</div>
+              <div class="value">${escapeHTML(seekerPrefs.preferredAreas || '—')}</div>
+            </div>
+          </div>`;
+      }
+
+      // Action buttons
+      const actionsHTML = `
+        <div class="card">
+          <h2>Your Response</h2>
+          <p style="color:#5a6072; margin-bottom:16px;">Choose how you’d like to proceed with this introduction request.</p>
+          <div class="actions">
+            <a class="btn btn-approve" href="${buildActionUrl(requestId, 'approve')}">Approve Introduction</a>
+            <a class="btn btn-decline" href="${buildActionUrl(requestId, 'decline')}">Decline</a>
+            <a class="btn btn-unavailable" href="${buildActionUrl(requestId, 'noLongerAvailable')}">Apartment No Longer Available</a>
+          </div>
+        </div>`;
+
+      document.getElementById('content').innerHTML = listingHTML + requesterHTML + seekerHTML + actionsHTML;
+    }
+
+    async function init() {
+      const params = new URLSearchParams(window.location.search);
+      const requestId = params.get('requestId');
+      if (!requestId) {
+        document.getElementById('content').innerHTML = '<div class="empty">No request ID provided.</div>';
+        return;
+      }
+      try {
+        const data = await fetchIntroDetails(requestId);
+        render(data);
+      } catch(e) {
+        document.getElementById('content').innerHTML = '<div class="error">Could not load request details. Please try again later.</div>';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
