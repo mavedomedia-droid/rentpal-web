@@ -184,14 +184,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   @media(max-width:400px){.opts.g2{grid-template-columns:1fr;}}
 
-  /* THANK YOU — Telegram block + countdown */
+  /* THANK YOU — Telegram block */
   .ty-tg-block{margin-top:20px;padding:16px 18px;background:rgba(74,143,212,0.12);border:1px solid rgba(74,143,212,0.25);border-radius:12px;text-align:center;}
   .ty-tg-label{font-size:14px;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.6;margin-bottom:12px;}
   .ty-tg-label span{color:rgba(255,255,255,0.45);font-size:13px;}
-  .ty-countdown{margin-top:14px;font-size:12px;color:rgba(255,255,255,0.3);letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:10px;}
-  .ty-countdown strong{color:rgba(255,255,255,0.55);}
-  .ty-countdown-cancel{background:none;border:none;color:rgba(255,255,255,0.4);font-size:12px;text-decoration:underline;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0;}
-  .ty-countdown-cancel:hover{color:rgba(255,255,255,0.7);}
 </style>
 </head>
 <body>
@@ -223,7 +219,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="hero-inner">
     <div class="hero-tag"><div class="hero-dot"></div>Lagos, Nigeria</div>
     <h1 class="hero-title">Good places in Lagos are rare.<br>If you're leaving one, <em>don't let it go to waste.</em></h1>
-    <p class="hero-desc">Finding a decent place in Lagos is genuinely hard. If you live somewhere good and you're packing out soon — help the next person skip the agents and the rubbish listings. Or sign up to be the first to know when a verified place becomes available.</p>
+    <p class="hero-desc">Finding a decent place in Lagos is hard. If you live somewhere good and you're packing out soon, help someone find it. Or sign up to be the first to know when a verified place becomes available.</p>
 
     <div class="quiz-progress" id="quiz-progress" style="display:none;">
       <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="qpfill"></div></div>
@@ -264,8 +260,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- BOTH CONFIRM -->
     <div class="quiz-step" id="b-confirm">
       <div class="confirm-card">
-        <h4>A couple things, then</h4>
-        <p>We see that you're leaving your place soon. We'll do our best to find you a new spot at the same time. And when we connect you with someone for your current place — would you still be open to that, even if we find your new place first?</p>
+        <h4>Two things to line up, then</h4>
+        <p>A place you're leaving, and a place you need next. We'll work on both. Even if we find your new spot first, you're still open to us connecting a replacement for your current place, yes?</p>
         <div class="confirm-btns">
           <button class="confirm-yes" onclick="setVal('listApartment','yes');goTo('t-1')">Yes, list my place too →</button>
           <button class="confirm-no" onclick="setVal('listApartment','no');setType('seeker');goTo('s-1')">No, just find me a place</button>
@@ -293,9 +289,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="quiz-q">Where is it?</div>
       <div class="quiz-hint">Select Mainland or Island, then enter the area or bus stop.</div>
       <div class="opts" style="margin-bottom:12px;">
-        <button class="opt" id="opt-mainland" onclick="setVal('t-location','Mainland');selectOnly(this)"><div><div class="opt-title">Mainland</div><div class="opt-sub">Yaba, Surulere, Ikeja, Ikorodu…</div></div></button>
-        <button class="opt" id="opt-island" onclick="setVal('t-location','Island');selectOnly(this)"><div><div class="opt-title">Island</div><div class="opt-sub">Lekki, VI, Ajah, Ikoyi…</div></div></button>
+        <button class="opt" id="opt-mainland" onclick="setVal('t-location','Mainland');selectOnly(this);clearFieldError('err-t-location')"><div><div class="opt-title">Mainland</div><div class="opt-sub">Yaba, Surulere, Ikeja, Ikorodu…</div></div></button>
+        <button class="opt" id="opt-island" onclick="setVal('t-location','Island');selectOnly(this);clearFieldError('err-t-location')"><div><div class="opt-title">Island</div><div class="opt-sub">Lekki, VI, Ajah, Ikoyi…</div></div></button>
       </div>
+      <div class="field-error" id="err-t-location" style="margin-top:-6px;margin-bottom:10px;">Please select Mainland or Island.</div>
       <div class="qinput-group">
         <label>Area / Bus stop</label>
         <input type="text" id="t-area-input" placeholder="e.g. Ojota, Yaba, Lekki Phase 1" autocomplete="address-level2" oninput="setVal('t-area',this.value);clearError(this)">
@@ -382,7 +379,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="qinput-group"><label>Phone / WhatsApp</label><input type="tel" id="t-phone" placeholder="0801 234 5678" autocomplete="tel" oninput="setVal('phone',this.value)"></div>
       <div class="qinput-group">
         <label>Any comments about the place? (optional)</label>
-        <textarea id="t-comments" rows="3" maxlength="200" placeholder="Anything about the place that can help the next person know what they're getting into — good or not so good." oninput="setVal('comments',this.value);updateCharCount('t-comments','t-comments-count',200)"></textarea>
+        <textarea id="t-comments" rows="3" maxlength="200" placeholder="e.g. Water can run low end of month, but estate is quiet and security is solid." oninput="setVal('comments',this.value);updateCharCount('t-comments','t-comments-count',200)"></textarea>
         <div class="char-counter"><span id="t-comments-count">0</span>/200</div>
       </div>
       <button class="next-btn" id="t-submit-btn" onclick="if(userType==='both'){goTo('b-s-1')}else{submitQuiz('tenant')}">Submit my apartment →</button>
@@ -407,7 +404,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             Join t.me/rentpal_lagos
           </a>
         </div>
-        <div class="ty-countdown">Opening Telegram in <strong id="ct-packing">20</strong>s <button class="ty-countdown-cancel" onclick="cancelCountdown()">Cancel</button></div>
       </div>
     </div>
 
@@ -467,9 +463,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="quiz-step" id="b-s-5">
       <div class="step-label">Your next place — 5 of 5</div>
-      <div class="quiz-q">Last step — how do we reach you?</div>
-      <div class="quiz-hint">We'll alert you when a place that fits your search comes in.</div>
-      <div class="qinput-group"><label>Specific areas (optional)</label><input type="text" id="b-s-areas" placeholder="e.g. Yaba, Surulere, Ikeja" autocomplete="address-level2" oninput="setVal('preferredAreas',this.value)"></div>
+      <div class="quiz-q">Last thing, any specific areas?</div>
+      <div class="quiz-hint">Optional. Helps us prioritize matches when a place drops.</div>
+      <div class="qinput-group"><label>Preferred areas</label><input type="text" id="b-s-areas" placeholder="e.g. Yaba, Surulere, Ikeja" autocomplete="address-level2" oninput="setVal('preferredAreas',this.value)"></div>
       <button class="next-btn" id="both-submit-btn" onclick="submitQuiz('both')">Finish →</button>
       <button class="back-btn" onclick="goTo('b-s-4')">← Back</button>
     </div>
@@ -493,7 +489,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             Join t.me/rentpal_lagos
           </a>
         </div>
-        <div class="ty-countdown">Opening Telegram in <strong id="ct-both">20</strong>s <button class="ty-countdown-cancel" onclick="cancelCountdown()">Cancel</button></div>
       </div>
     </div>
 
@@ -568,14 +563,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="quiz-step" id="s-ty">
       <div class="ty-card">
-        <div class="ty-icon" style="background:rgba(76,175,133,0.15);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4CAF85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <div class="ty-icon" style="background:rgba(74,143,212,0.15);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8fc6f5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
         <h3>You're on the list.</h3>
         <p>We've saved your preferences. When a confirmed apartment that matches your search comes in, you'll be among the first to know. Check your email — and join Telegram for the fastest alerts.</p>
         <div class="ty-steps">
           <div class="ty-steps-lbl">What happens next</div>
-          <div class="ty-step"><div class="ty-dot" style="background:var(--green);"></div><span>We only share apartments that are confirmed and verified — no filler.</span></div>
-          <div class="ty-step"><div class="ty-dot" style="background:var(--green);"></div><span>Drops can be spaced out. When one lands — act fast. Good places don't sit around.</span></div>
-          <div class="ty-step"><div class="ty-dot" style="background:var(--green);"></div><span>Telegram is where listings drop first — join now.</span></div>
+          <div class="ty-step"><div class="ty-dot" style="background:var(--blue);"></div><span>We only share apartments that are confirmed and verified — no filler.</span></div>
+          <div class="ty-step"><div class="ty-dot" style="background:var(--blue);"></div><span>Drops can be spaced out. When one lands — act fast. Good places don't sit around.</span></div>
+          <div class="ty-step"><div class="ty-dot" style="background:var(--blue);"></div><span>Telegram is where listings drop first — join now.</span></div>
         </div>
         <div class="ty-tg-block">
           <p class="ty-tg-label">You've registered — now join our Telegram channel.<br><span>That's where listings drop first.</span></p>
@@ -584,7 +579,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             Join t.me/rentpal_lagos
           </a>
         </div>
-        <div class="ty-countdown">Opening Telegram in <strong id="ct-seeker">20</strong>s <button class="ty-countdown-cancel" onclick="cancelCountdown()">Cancel</button></div>
       </div>
     </div>
 
@@ -595,7 +589,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="trust-bar">
   <div class="trust-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#185FA5" stroke-width="1.3" stroke-linejoin="round"><path d="M8 1L10.163 5.382L15 6.09L11.5 9.502L12.326 14.319L8 12.045L3.674 14.319L4.5 9.502L1 6.09L5.837 5.382L8 1Z"/></svg>Every listing is submitted by a real person</div>
   <div class="trust-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#185FA5" stroke-width="1.3"><circle cx="8" cy="8" r="6.5"/><path d="M5 8L7 10L11 6" stroke-linecap="round" stroke-linejoin="round"/></svg>Every listing manually verified</div>
-  <div class="trust-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#185FA5" stroke-width="1.3"><rect x="2" y="4" width="12" height="9" rx="1.5"/><path d="M5 4V3C5 2.448 5.448 2 6 2H10C10.552 2 11 2.448 11 3V4"/></svg>Finder's fee held in escrow</div>
+  <div class="trust-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#185FA5" stroke-width="1.3"><rect x="2" y="4" width="12" height="9" rx="1.5"/><path d="M5 4V3C5 2.448 5.448 2 6 2H10C10.552 2 11 2.448 11 3V4"/></svg>Finder's fee only charged after you've gotten the place</div>
   <div class="trust-item"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#185FA5" stroke-width="1.3"><path d="M8 1.5C8 1.5 2.5 4 2.5 8.5C2.5 11.538 4.962 14 8 14C11.038 14 13.5 11.538 13.5 8.5C13.5 4 8 1.5 8 1.5Z"/></svg>Lagos-focused, built for locals</div>
 </div>
 
@@ -627,7 +621,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="steps-grid">
     <div class="step"><div class="step-num">Step 01</div><h3>Sign up above</h3><p>Tell us your budget, preferred areas, and apartment type. We save your preferences and match against them.</p></div>
     <div class="step"><div class="step-num">Step 02</div><h3>We alert you on a match</h3><p>When a verified apartment matching your search comes in, you hear about it via email and Telegram — before it goes wide.</p></div>
-    <div class="step"><div class="step-num">Step 03</div><h3>Move fast</h3><p>Good apartments go quickly. A small finder's fee applies when you confirm interest — held in escrow until everything checks out.</p></div>
+    <div class="step"><div class="step-num">Step 03</div><h3>Move fast</h3><p>Good apartments go quickly. A small finder's fee applies once you've secured the place — nothing before.</p></div>
   </div>
   <div style="margin-top:28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
     <a href="#quiz-area" class="btn-link">Sign up as a seeker →</a>
@@ -683,11 +677,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   // ⚠️ REPLACE THIS WITH YOUR DEPLOYED QUIZ BACKEND URL (Deploy → Web app → /exec URL)
   var GAS_URL = "https://script.google.com/macros/s/AKfycbzmMrwyXnu7DPIt3bp-jwVL5FtsBCGO4Zu5s0tenSu88j1FQPLTOIBLmw1SSMTetD8ItA/exec";
   var WHATSAPP = "+234 816 2373 553";
-  var COUNTDOWN_SECONDS = 20;
 
   // ── STATE ──
   var vals = {}, currentStep = 'step-0', userType = '';
-  var countdownTimer = null;
 
   var packingSteps = ['step-0','p-confirm','t-1','t-2','t-3','t-4','t-5','t-6','t-ty'];
   var bothSteps    = ['step-0','b-confirm','t-1','t-2','t-3','t-4','t-5','t-6','b-s-1','b-s-2','b-s-3','b-s-4','b-s-5','b-ty'];
@@ -761,13 +753,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if(err) err.classList.remove('show');
   }
 
+  function clearFieldError(errId){
+    var e = document.getElementById(errId);
+    if(e) e.classList.remove('show');
+  }
+
   function isValidEmail(e){
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e || '');
   }
 
   function validateAndGo(fromStep, nextStep){
     if(fromStep === 't-2'){
-      if(!vals['t-location']){ alert('Please select Mainland or Island.'); return; }
+      if(!vals['t-location']){
+        var locErr = document.getElementById('err-t-location');
+        if(locErr){
+          locErr.classList.add('show');
+          locErr.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+        return;
+      }
       var areaInput = document.getElementById('t-area-input');
       if(!vals['t-area'] || !vals['t-area'].trim()){
         showError(areaInput, 'err-t-area');
@@ -794,47 +798,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     updateProgress();
     document.getElementById('quiz-area').scrollIntoView({behavior:'smooth',block:'start'});
 
-    if(countdownTimer){ clearInterval(countdownTimer); countdownTimer = null; }
+    // Dynamic button label on t-6 depending on flow
+    if(stepId === 't-6'){
+      var tBtn = document.getElementById('t-submit-btn');
+      if(tBtn) tBtn.textContent = userType === 'both' ? 'Next: your search preferences →' : 'Submit my apartment →';
+    }
+
     if(stepId === 't-ty'){
       window.dataLayer.push({ event: 'rentpal_packing_complete', userType: 'packing' });
       window.dataLayer.push({ event: 'rentpal_listing_complete', userType: 'packing' });
-      startCountdown('ct-packing');
     } else if(stepId === 's-ty'){
       window.dataLayer.push({ event: 'rentpal_seeker_complete', userType: 'seeker' });
-      startCountdown('ct-seeker');
     } else if(stepId === 'b-ty'){
       window.dataLayer.push({ event: 'rentpal_both_complete', userType: 'both' });
       window.dataLayer.push({ event: 'rentpal_listing_complete', userType: 'both' });
-      startCountdown('ct-both');
     }
 
-    // Clear state if returning to start
+    // Fresh start when returning to landing
     if(stepId === 'step-0'){
       userType = '';
+      vals = {};
+      document.querySelectorAll('.quiz-step input, .quiz-step textarea').forEach(function(el){
+        el.value = '';
+        el.classList.remove('error');
+      });
+      document.querySelectorAll('.opt.selected').forEach(function(el){
+        el.classList.remove('selected');
+      });
+      document.querySelectorAll('.field-error.show').forEach(function(el){
+        el.classList.remove('show');
+      });
+      var rd = document.getElementById('rent-display');
+      if(rd){ rd.textContent = '— type below —'; rd.classList.remove('has-value'); }
+      var cc = document.getElementById('t-comments-count');
+      if(cc) cc.textContent = '0';
     }
-  }
-
-  function startCountdown(ctId){
-    var secs = COUNTDOWN_SECONDS;
-    var el = document.getElementById(ctId);
-    if(!el) return;
-    el.textContent = secs;
-    countdownTimer = setInterval(function(){
-      secs--;
-      el.textContent = secs;
-      if(secs <= 0){
-        clearInterval(countdownTimer);
-        countdownTimer = null;
-        window.open('https://t.me/rentpal_lagos', '_blank');
-      }
-    }, 1000);
-  }
-
-  function cancelCountdown(){
-    if(countdownTimer){ clearInterval(countdownTimer); countdownTimer = null; }
-    document.querySelectorAll('.ty-countdown').forEach(function(el){
-      el.style.display = 'none';
-    });
   }
 
   function updateProgress(){
@@ -845,7 +843,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     var idx = steps.indexOf(currentStep);
     var pw = document.getElementById('quiz-progress');
-    if(currentStep==='step-0'){ pw.style.display='none'; return; }
+    if(currentStep==='step-0' || currentStep==='p-confirm' || currentStep==='b-confirm'){
+      pw.style.display='none';
+      return;
+    }
     pw.style.display='flex';
     var totalRealSteps = steps.length - 2; // exclude step-0 and thank-you
     var pct = Math.min(100, Math.round(((idx) / totalRealSteps) * 100));
@@ -929,6 +930,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         alert('Sorry — something went wrong. Please try again.\n\nDetails: ' + (err.message || err));
       });
   }
+
+  // ── ENTER KEY: advance the active step ──
+  document.addEventListener('keydown', function(e){
+    if(e.key !== 'Enter') return;
+    if(e.target && e.target.tagName === 'TEXTAREA') return;
+    var activeStep = document.querySelector('.quiz-step.active');
+    if(!activeStep) return;
+    var btn = activeStep.querySelector('.next-btn') || activeStep.querySelector('.confirm-yes');
+    if(btn && !btn.disabled){
+      e.preventDefault();
+      btn.click();
+    }
+  });
 
   // ── INIT ──
   document.addEventListener('DOMContentLoaded', function(){
