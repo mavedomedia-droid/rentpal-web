@@ -3,66 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Introduction Request – RentPal</title>
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>Someone is interested · RentPal</title>
 </head>
-<body style="margin:0; padding:0; background-color:#f8f9fc; font-family: 'DM Sans', Arial, sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f8f9fc;">
+<body style="margin:0; padding:0; background-color:#eef1f5; font-family:'DM Sans','Helvetica Neue',Arial,sans-serif; -webkit-font-smoothing:antialiased; color:#0f1117;">
+  <div style="display:none; max-height:0; overflow:hidden; font-size:1px; line-height:1px; color:#eef1f5; opacity:0;">
+    {{requesterName}} wants to be introduced to your apartment. Review and respond within 24 hours.
+  </div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#eef1f5;">
     <tr>
-      <td align="center" style="padding: 30px 16px;">
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px; background-color:#ffffff; border-radius:16px; border:1px solid rgba(0,0,0,0.08); box-shadow:0 2px 12px rgba(0,0,0,0.04);">
-          
-          <!-- Header -->
+      <td align="center" style="padding:36px 12px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:580px; background:#ffffff; border-radius:18px; overflow:hidden; box-shadow:0 4px 18px rgba(15,17,23,0.06);">
+          <!-- Hero -->
           <tr>
-            <td style="padding: 32px 32px 20px; text-align:left;">
-              <span style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size:18px; font-weight:700; color:#4A8FD4;">rentpal</span>
-            </td>
-          </tr>
-
-          <!-- Subject -->
-          <tr>
-            <td style="padding: 0 32px 8px;">
-              <h2 style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size:20px; font-weight:700; color:#0f1117; margin:0 0 4px; line-height:1.3;">
-                Someone is interested in your apartment
-              </h2>
-              <p style="font-size:15px; color:#5a6072; line-height:1.7; margin:0;">
-                {{requesterName}} would like to be introduced. Please review their request and respond within 24 hours.
+            <td bgcolor="#0C447C" style="background-color:#0C447C; background-image:linear-gradient(145deg,#141927 0%,#1e2a3a 55%,#0C447C 100%); padding:34px 36px 40px;">
+              <img src="https://rentpal-web.netlify.app/rentpal_logo_blue.png" alt="RentPal" width="108" style="display:block; height:auto; max-width:108px; margin-bottom:26px; border:0;">
+              <div style="font-size:11px; font-weight:600; color:#8fc6f5; letter-spacing:1.6px; text-transform:uppercase; margin-bottom:12px;">Introduction Request</div>
+              <h1 style="font-family:'Plus Jakarta Sans','Helvetica Neue',Arial,sans-serif; font-size:28px; font-weight:800; color:#ffffff; line-height:1.15; letter-spacing:-0.7px; margin:0 0 8px;">
+                Someone is interested.
+              </h1>
+              <p style="font-size:14px; color:rgba(255,255,255,0.65); line-height:1.65; margin:0; font-weight:300; max-width:420px;">
+                {{requesterName}} would like to be introduced to your apartment.
               </p>
             </td>
           </tr>
 
           <!-- Listing Card -->
           <tr>
-            <td style="padding: 16px 32px;">
-              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f0f4fb; border-radius:12px; padding:16px;">
+            <td style="padding:28px 36px 4px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0f4fb; border:1px solid #B5D4F4; border-radius:12px;">
                 <tr>
-                  <td style="font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:0.6px; color:#185FA5; padding-bottom:8px;">
-                    Your Listing
-                  </td>
-                </tr>
-                <tr>
-                  <td style="font-size:15px; font-weight:700; color:#0f1117; padding-bottom:4px;">
-                    {{apartmentType}} in {{area}}, {{location}}
-                  </td>
-                </tr>
-                <tr>
-                  <td style="font-size:14px; color:#5a6072; padding-bottom:4px;">
-                    Reference: <strong style="font-family: 'DM Mono', monospace;">{{listingId}}</strong>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="font-size:14px; color:#5a6072;">
-                    Rent: <strong style="font-family: 'DM Mono', monospace;">{{rentExact}}/year</strong>
+                  <td style="padding:16px 18px;">
+                    <div style="font-size:11px; font-weight:600; color:#185FA5; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:8px;">Your Listing</div>
+                    <div style="font-family:'Plus Jakarta Sans',Arial,sans-serif; font-size:16px; font-weight:700; color:#0f1117; margin-bottom:4px;">{{apartmentType}} in {{area}}, {{location}}</div>
+                    <div style="font-size:13px; color:#5a6072; margin-bottom:4px;">Reference: <span style="font-family:'Courier New',monospace; font-weight:600;">{{listingId}}</span></div>
+                    <div style="font-size:13px; color:#5a6072;">Rent: <span style="font-family:'Courier New',monospace; font-weight:600;">{{rentExact}}/year</span></div>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
 
-          <!-- Requester Details -->
+          <!-- Requester Info -->
           <tr>
-            <td style="padding: 16px 32px 8px;">
-              <h3 style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; font-size:16px; font-weight:700; color:#0f1117; margin:0 0 8px;">About the requester</h3>
-              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px; color:#0f1117; line-height:1.8;">
+            <td style="padding:32px 36px 4px;">
+              <div style="font-size:11px; font-weight:600; letter-spacing:1.4px; text-transform:uppercase; color:#4A8FD4; margin-bottom:12px;">About the requester</div>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px; color:#0f1117; line-height:1.8;">
                 <tr><td style="color:#5a6072; width:100px; padding-bottom:4px;">Name</td><td style="padding-bottom:4px;">{{requesterName}}</td></tr>
                 <tr><td style="color:#5a6072; padding-bottom:4px;">Email</td><td style="padding-bottom:4px;">{{requesterEmail}}</td></tr>
                 <tr><td style="color:#5a6072; padding-bottom:4px;">Phone</td><td style="padding-bottom:4px;">{{requesterPhone}}</td></tr>
@@ -73,16 +60,13 @@
             </td>
           </tr>
 
-          <!-- Single Action Button -->
+          <!-- CTA Button -->
           <tr>
-            <td style="padding: 20px 32px 32px;">
-              <p style="font-size:14px; color:#0f1117; margin:0 0 16px; font-weight:500;">Tap below to view the request and choose an action:</p>
-              
-              <!-- Approve / Decline / No Longer Available – All on the same page -->
-              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <td style="padding:28px 36px 32px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  <td align="center" style="background-color:#4A8FD4; border-radius:10px; padding:14px;">
-                    <a href="{{approveUrl}}" style="font-size:16px; font-weight:600; color:#ffffff; text-decoration:none; display:block; line-height:1.4;">View Request &amp; Respond</a>
+                  <td align="center" bgcolor="#4A8FD4" style="background-color:#4A8FD4; border-radius:10px; padding:14px;">
+                    <a href="{{approveUrl}}" style="display:block; font-family:'DM Sans',Arial,sans-serif; font-size:16px; font-weight:600; color:#ffffff; text-decoration:none;">View Request &amp; Respond →</a>
                   </td>
                 </tr>
               </table>
@@ -91,8 +75,9 @@
 
           <!-- Footer -->
           <tr>
-            <td style="padding: 0 32px 24px; text-align:center;">
-              <p style="font-size:12px; color:#9299a8; margin:0;">RentPal · Lagos, Nigeria<br>You received this email because you listed an apartment on RentPal.</p>
+            <td style="padding:24px 36px 32px; text-align:center; border-top:1px solid #eef1f5;">
+              <p style="font-size:12px; color:#9299a8; line-height:1.7; margin:16px 0 0; font-weight:400;">RentPal · Lagos, Nigeria<br><a href="https://rentpal-web.netlify.app" style="color:#9299a8; text-decoration:none;">rentpal-web.netlify.app</a></p>
+              <p style="font-size:11px; color:#b0b6c3; line-height:1.6; margin:12px 0 0; font-weight:300;">You received this because you listed an apartment on RentPal.</p>
             </td>
           </tr>
         </table>
