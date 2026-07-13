@@ -15,6 +15,7 @@
     <tr>
       <td align="center" style="padding:36px 12px;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:580px; background:#ffffff; border-radius:18px; overflow:hidden; box-shadow:0 4px 18px rgba(15,17,23,0.06);">
+          
           <!-- Hero -->
           <tr>
             <td bgcolor="#0C447C" style="background-color:#0C447C; background-image:linear-gradient(145deg,#141927 0%,#1e2a3a 55%,#0C447C 100%); padding:34px 36px 40px;">
@@ -45,18 +46,19 @@
             </td>
           </tr>
 
-          <!-- Requester Info -->
+          <!-- Requester Info (only name, reason, move timeline, extra questions) -->
           <tr>
             <td style="padding:32px 36px 4px;">
               <div style="font-size:11px; font-weight:600; letter-spacing:1.4px; text-transform:uppercase; color:#4A8FD4; margin-bottom:12px;">About the requester</div>
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px; color:#0f1117; line-height:1.8;">
                 <tr><td style="color:#5a6072; width:100px; padding-bottom:4px;">Name</td><td style="padding-bottom:4px;">{{requesterName}}</td></tr>
-                <tr><td style="color:#5a6072; padding-bottom:4px;">Email</td><td style="padding-bottom:4px;">{{requesterEmail}}</td></tr>
-                <tr><td style="color:#5a6072; padding-bottom:4px;">Phone</td><td style="padding-bottom:4px;">{{requesterPhone}}</td></tr>
-                <tr><td style="color:#5a6072; padding-bottom:4px;">Telegram</td><td style="padding-bottom:4px;">{{requesterTelegram}}</td></tr>
                 <tr><td style="color:#5a6072; padding-bottom:4px;">Reason</td><td style="padding-bottom:4px;">{{reason}}</td></tr>
                 <tr><td style="color:#5a6072; padding-bottom:4px;">Move Timeline</td><td style="padding-bottom:4px;">{{moveTimeline}}</td></tr>
               </table>
+              <!-- Extra questions only if present -->
+              <div style="margin-top:12px; font-size:13px; color:#5a6072; line-height:1.6;">
+                {{extraQuestions}}
+              </div>
             </td>
           </tr>
 
