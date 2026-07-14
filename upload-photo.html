@@ -37,7 +37,7 @@
   </div>
   <script>
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbzmMrwyXnu7DPIt3bp-jwVL5FtsBCGO4Zu5s0tenSu88j1FQPLTOIBLmw1SSMTetD8ItA/exec';
-    
+
     async function getListing(id) {
       const res = await fetch(`${GAS_URL}?action=listing&id=${encodeURIComponent(id)}`);
       if (!res.ok) throw new Error('Network error');
@@ -46,11 +46,11 @@
     }
 
     let selectedFile = null;
+
     function setupUpload() {
       const dropArea = document.getElementById('drop-area');
       const fileInput = document.getElementById('file-input');
-      const preview = document.getElementById('preview');
-      
+
       dropArea.addEventListener('click', () => fileInput.click());
       fileInput.addEventListener('change', (e) => {
         if (e.target.files.length) {
@@ -80,29 +80,66 @@
       reader.readAsDataURL(file);
     }
 
+    // Read a File as pure base64 (no "data:image/…;base64," prefix)
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result || '';
+          const commaIdx = result.indexOf(',');
+          resolve(commaIdx >= 0 ? result.substring(commaIdx + 1) : result);
+        };
+        reader.onerror = () => reject(new Error('Failed to read file.'));
+        reader.readAsDataURL(file);
+      });
+    }
+
     async function upload() {
       if (!selectedFile) return alert('Please select an image.');
       const listingId = new URLSearchParams(window.location.search).get('id');
       const btn = document.getElementById('upload-btn');
+      const errorEl = document.getElementById('error-msg');
+      errorEl.textContent = '';
       btn.disabled = true;
       btn.textContent = 'Uploading…';
-      const formData = new FormData();
-      formData.append('file', selectedFile);
+
       try {
-        const res = await fetch(`${GAS_URL}?action=uploadPhoto&listingId=${encodeURIComponent(listingId)}&format=json`, {
+        // 5 MB client-side guard so we don't waste time on huge files
+        if (selectedFile.size > 5 * 1024 * 1024) {
+          throw new Error('File too large (max 5 MB).');
+        }
+
+        const base64 = await fileToBase64(selectedFile);
+
+        const payload = {
+          action: 'uploadPhoto',
+          listingId: listingId,
+          filename: selectedFile.name || (listingId + '.jpg'),
+          mimeType: selectedFile.type || 'image/jpeg',
+          data: base64
+        };
+
+        // Use text/plain to avoid CORS preflight against the GAS endpoint
+        const res = await fetch(GAS_URL, {
           method: 'POST',
-          body: formData
+          body: JSON.stringify(payload),
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' }
         });
         const result = await res.json();
+
         if (result.success) {
-          document.getElementById('upload-section').innerHTML = `<div class="success">✅ Photo uploaded! Your listing now has an image. <a href="https://rentpal-web.netlify.app/listings/?id=${listingId}" target="_blank">View listing →</a></div>`;
+          document.getElementById('upload-section').innerHTML = `
+            <div class="success">
+              ✅ Photo uploaded! Your listing now has an image.
+              <a href="https://rentpal-web.netlify.app/listings/?id=${listingId}" target="_blank">View listing →</a>
+            </div>`;
         } else {
-          document.getElementById('error-msg').textContent = result.message || 'Upload failed.';
+          errorEl.textContent = result.message || 'Upload failed.';
           btn.disabled = false;
           btn.textContent = 'Upload Photo';
         }
       } catch(e) {
-        document.getElementById('error-msg').textContent = 'Network error. Please try again.';
+        errorEl.textContent = e.message || 'Network error. Please try again.';
         btn.disabled = false;
         btn.textContent = 'Upload Photo';
       }
@@ -149,7 +186,7 @@
       }
     }
 
-    function escapeHTML(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+    function escapeHTML(s){ const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
     function formatNaira(n){ if(!n||isNaN(n))return'—'; return'₦'+parseInt(n).toLocaleString('en-NG'); }
 
     document.addEventListener('DOMContentLoaded', init);
