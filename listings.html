@@ -68,13 +68,13 @@
         .hero-bullets span{display:inline-flex;align-items:baseline;gap:4px}
         .hero-bullets .bullet{color:#4A8FD4;font-weight:700;font-size:14px;line-height:1}
 
-        /* Rotating spotlight – compact single line */
+        /* Rotating spotlight */
         .spotlight-wrap{margin-top:14px;position:relative;height:32px;overflow:hidden;text-align:center}
         .spotlight-item{font-size:14px;font-weight:500;color:rgba(255,255,255,0.9);padding:4px 0;opacity:0;transition:opacity 1.2s ease;position:absolute;left:0;right:0;top:0;font-family:'DM Sans',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .spotlight-item.active{opacity:1}
         .spotlight-disclaimer{margin-top:10px;font-size:11px;color:rgba(255,255,255,0.45);line-height:1.5;max-width:500px;margin-left:auto;margin-right:auto}
 
-        /* FILTER BAR (simplified, dark) */
+        /* FILTER BAR */
         .filters-wrap{background:#1a2634;border-bottom:2px solid #2d3b4f;padding:0 16px;position:sticky;top:56px;z-index:50;transition:box-shadow var(--transition)}
         .filters-wrap.scrolled{box-shadow:0 2px 8px rgba(0,0,0,0.05)}
         .filters-inner{max-width:1200px;margin:0 auto;display:flex;gap:10px;align-items:center;padding:10px 0;flex-wrap:wrap}
@@ -90,10 +90,9 @@
         .listings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
         @media(max-width:1024px){.listings-grid{grid-template-columns:repeat(2,1fr);gap:12px}}
 
-        /* ── COMPACT CARD ── */
+        /* COMPACT CARD */
         .listing-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--card-border);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;box-shadow:var(--card-shadow);transition:all var(--transition)}
         .listing-card:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-2px)}
-
         .card-header-row{display:flex;align-items:center;gap:6px;padding:10px 12px 0;position:relative}
         .card-ref{font-size:10px;font-weight:700;color:var(--blue);letter-spacing:0.4px}
         .card-date-inline{font-size:10px;color:var(--ink-faint)}
@@ -101,7 +100,6 @@
         .card-save{margin-left:auto;background:none;border:none;font-size:16px;padding:4px;cursor:pointer;line-height:1;color:var(--ink-faint);transition:transform var(--transition)}
         .card-save:hover{transform:scale(1.15)}
         .card-save.saved{color:#e74c3c}
-
         .card-main{padding:6px 12px 10px}
         .card-type{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:2px}
         .card-loc{font-size:12px;font-weight:500;color:var(--ink);background:var(--surface);padding:3px 8px;border-radius:6px;display:inline-block;margin-bottom:6px}
@@ -109,17 +107,15 @@
         .card-rent span{font-size:10px;color:var(--ink-muted);font-weight:500;margin-left:2px}
         .card-rent-range{font-size:10px;color:var(--ink-faint);font-weight:400;margin-top:2px;line-height:1.2}
         .card-quote{margin-top:8px;font-size:11px;color:var(--ink-muted);font-style:italic;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-
         .card-chips{display:flex;flex-wrap:wrap;gap:4px;padding:0 12px 10px}
         .chip{font-size:10px;padding:2px 7px;background:var(--surface);border:1px solid var(--card-border);border-radius:100px;color:var(--ink-muted);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
         .chip-alt{background:#dbeafe;color:#1e40af;border-color:#bfdbfe;font-weight:600}
-
         .card-footer{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-top:1px solid var(--card-border);background:#fafbfc}
         .card-verified{font-size:10px;font-weight:600;color:var(--green-dark);display:flex;align-items:center;gap:3px}
         .card-btn{font-size:11px;font-weight:600;color:var(--white);background:var(--blue);border:none;padding:6px 14px;border-radius:20px;cursor:pointer;transition:background var(--transition)}
         .card-btn:hover{background:var(--blue-dark)}
 
-        /* Location pill – super compact, emoji-free */
+        /* Location pill */
         .card-loc-pill{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;padding:1px 5px;border-radius:100px;display:inline-flex;align-items:center;gap:2px;margin-left:6px;line-height:1;white-space:nowrap}
         .card-loc-pill.mainland{background:#fef9e7;color:#b45309;border:1px solid #fcd34d}
         .card-loc-pill.island{background:#ecfeff;color:#0e7490;border:1px solid #67e8f9}
@@ -132,11 +128,8 @@
 
         @media(max-width:600px){
             .listings-grid{grid-template-columns:repeat(2,1fr);gap:8px}
-            .card-type{font-size:13px}
-            .card-rent{font-size:16px}
-            .card-loc{font-size:10px}
-            .card-quote{display:none}
-            .card-rent-range{display:none}
+            .card-type{font-size:13px}.card-rent{font-size:16px}.card-loc{font-size:10px}
+            .card-quote{display:none}.card-rent-range{display:none}
             .card-chips{padding:0 10px 8px}
             .chip{font-size:9px;padding:2px 6px;max-width:80px}
             .chip:nth-child(n+3){display:none}
@@ -150,7 +143,6 @@
 
         .load-more-btn{display:block;margin:16px auto 0;padding:10px 28px;background:var(--white);border:1.5px solid var(--card-border);border-radius:var(--radius-sm);font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:all var(--transition)}
         .load-more-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
-
         .empty-state{text-align:center;padding:40px 20px;color:var(--ink-muted)}
         .empty-state svg{color:var(--ink-faint);margin-bottom:12px}
         .empty-state h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px}
@@ -164,9 +156,9 @@
         .detail-comment-hero .detail-comment-body{font-size:16px;line-height:1.7;color:#1a2634;font-style:italic;text-align:center;position:relative;z-index:1}
         .detail-comment-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;color:var(--blue-dark);margin-bottom:8px;text-align:center}
         .detail-summary{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px;align-items:flex-start}
-        .detail-photo-wrap{flex:0 0 280px;max-width:280px;aspect-ratio:4/3;border-radius:var(--radius-lg);overflow:hidden;background:var(--surface);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:center}
-        .detail-photo-wrap img{width:100%;height:100%;object-fit:cover}
-        .detail-photo-placeholder{width:100%;height:100%;background:linear-gradient(145deg,#eef2f7 0%,#dce3ed 100%);display:flex;align-items:center;justify-content:center;border-radius:var(--radius-lg)}
+        .detail-photo-wrap{flex:0 0 280px;max-width:280px;aspect-ratio:4/3;border-radius:var(--radius-lg);overflow:hidden;background:var(--surface);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:flex-start;overflow-x:auto;scroll-snap-type:x mandatory}
+        .detail-photo-wrap img{width:280px;height:100%;object-fit:cover;flex-shrink:0;scroll-snap-align:start}
+        .detail-photo-placeholder{width:100%;height:100%;background:linear-gradient(145deg,#eef2f7 0%,#dce3ed 100%);display:flex;align-items:center;justify-content:center;border-radius:var(--radius-lg);min-width:280px}
         .detail-photo-placeholder svg{width:60px;height:60px;stroke:#b0bec5;stroke-width:1.5;opacity:0.6}
         .detail-info{flex:1;min-width:220px}
         .detail-ref{font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;margin-bottom:4px;opacity:0.8}
@@ -192,18 +184,16 @@
         .similar-section h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:12px}
         .similar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
 
-        /* MODAL (compact) */
+        /* MODAL */
         .modal{display:none;position:fixed;z-index:300;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.5);align-items:center;justify-content:center}
         .modal.active{display:flex !important}
         .modal-content{background:var(--white);border-radius:var(--radius-lg);padding:24px 20px;max-width:480px;width:92%;max-height:85vh;overflow-y:auto;position:relative}
         .modal-close{position:absolute;top:12px;right:16px;font-size:22px;background:none;border:none;cursor:pointer;color:var(--ink-muted)}
         .modal-close:hover{color:var(--ink)}
-
         .form-group{margin-bottom:10px}
         .form-group label{display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink-muted);margin-bottom:4px}
         .form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 12px;border:1.5px solid var(--card-border);border-radius:var(--radius-sm);font-size:14px;color:var(--ink);background:var(--surface);outline:none;transition:border-color var(--transition)}
         .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(74,143,212,0.12)}
-        .form-row-stacked{display:flex;flex-direction:column;gap:10px}
         .check-label{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink);cursor:pointer;margin-bottom:6px}
         .check-label input{width:16px;height:16px;accent-color:var(--blue)}
         .btn-submit-request{width:100%;padding:12px;background:var(--blue);color:#fff;border:none;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;transition:background var(--transition);margin-top:8px}
@@ -222,10 +212,7 @@
     </style>
 </head>
 <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5WCRXXDQ"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5WCRXXDQ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <nav>
         <a href="/listings" class="nav-logo">
@@ -274,7 +261,6 @@
     <script>
         window.dataLayer = window.dataLayer || [];
 
-        // ⚠️ REPLACE WITH YOUR DEPLOYED GAS URL (34‑col version)
         const CONFIG = {
             GAS_URL: 'https://script.google.com/macros/s/AKfycbzmMrwyXnu7DPIt3bp-jwVL5FtsBCGO4Zu5s0tenSu88j1FQPLTOIBLmw1SSMTetD8ItA/exec',
             ITEMS_PER_PAGE: 12, DEBOUNCE_MS: 250
@@ -342,7 +328,7 @@
                 const rent=Math.round((rr.min+Math.random()*(rr.max-rr.min))/5e4)*5e4;
                 const days=Math.floor(Math.random()*45)+1;
                 const comment=i%4===0?'Spacious with good natural light. Quiet neighbours.':i%4===1?'Close to main road, solid security.':i%4===2?'Recently repainted, responsive landlord.':'Well-kept compound with parking.';
-                list.push({listingId:id,apartmentType:apt,area,location:loc,rentRange:formatNaira(rr.min)+' – '+formatNaira(rr.max),rentExact:rent,light:lights[i%5],water:waters[i%3],parking:parks[i%4],residentStatus:statuses[i%4],postedDate:new Date(Date.now()-days*864e5).toISOString().split('T')[0],photosAvailable:'No',primaryPhoto:'',comments:comment,listingStatus:'Available',listingType:listingType})
+                list.push({listingId:id,apartmentType:apt,area,location:loc,rentRange:formatNaira(rr.min)+' – '+formatNaira(rr.max),rentExact:rent,light:lights[i%5],water:waters[i%3],parking:parks[i%4],residentStatus:statuses[i%4],postedDate:new Date(Date.now()-days*864e5).toISOString().split('T')[0],photosAvailable:'No',primaryPhoto:'',photos:[],comments:comment,listingStatus:'Available',listingType:listingType})
             }
             return list;
         }
@@ -442,7 +428,7 @@
                     const rent=getRentNumeric(l.rentExact);
                     if(!rent) return false;
                     if(max) return rent>=min && rent<=max;
-                    return rent>=min; // above ₦5m
+                    return rent>=min;
                 });
             }
             state.filteredListings=filtered;
@@ -490,8 +476,11 @@
                 rentHTML = `<div class="card-rent">—<span>/yr</span></div>`;
             }
 
-            // Thumbnail
-            const photo = l.primaryPhoto && l.photosAvailable === 'Yes' ? l.primaryPhoto : '';
+            // Thumbnail — use first available photo from photos array or primaryPhoto
+            const allPhotos = Array.isArray(l.photos) ? l.photos : [];
+            const photo = (l.primaryPhoto && l.photosAvailable === 'Yes') ? l.primaryPhoto
+                        : (allPhotos.length > 0) ? allPhotos[0]
+                        : '';
             const thumbCls = photo ? 'card-thumb has-photo' : 'card-thumb';
             const thumbInner = photo
                 ? `<img src="${photo}" alt="">`
@@ -556,14 +545,24 @@
         }
 
         function getDetailHTML(l){
-            const photoHTML = l.photosAvailable==='Yes' && l.primaryPhoto
-                ? `<img src="${l.primaryPhoto}" alt="${escapeHTML(l.apartmentType)}">`
-                : `<div class="detail-photo-placeholder">
-                     <svg viewBox="0 0 24 24" fill="none">
-                       <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                       <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                     </svg>
-                   </div>`;
+            // Build photo strip if multiple photos exist
+            const allDetailPhotos = Array.isArray(l.photos) ? l.photos : [];
+            let photoHTML = '';
+            if (allDetailPhotos.length > 1) {
+                photoHTML = `<div style="display:flex;overflow-x:auto;gap:8px;padding:0;max-width:100%;height:100%;">
+                    ${allDetailPhotos.map(p => `<img src="${p}" alt="${escapeHTML(l.apartmentType)}" style="width:280px;height:100%;object-fit:cover;border-radius:12px;flex-shrink:0;">`).join('')}
+                </div>`;
+            } else if (l.photosAvailable==='Yes' && l.primaryPhoto) {
+                photoHTML = `<img src="${l.primaryPhoto}" alt="${escapeHTML(l.apartmentType)}">`;
+            } else {
+                photoHTML = `<div class="detail-photo-placeholder">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                </div>`;
+            }
+
             const commentHero = l.comments ? `<div class="detail-comment-hero"><div class="detail-comment-label">Comment from resident</div><div class="detail-quote">"</div><div class="detail-comment-body">${escapeHTML(l.comments)}</div></div>` : '';
             const fields = [
                 {label:'Rent',value:formatNaira(l.rentExact)+'/year',icon:'💰'},
@@ -615,7 +614,7 @@
             </div>`;
         }
 
-        // ── MODAL LOGIC (compact, single-column) ──
+        // ── MODAL LOGIC ──
         function openIntroductionModal(listingId){
             const modal=document.getElementById('introModal');
             const content=document.getElementById('introModalContent');
@@ -632,7 +631,7 @@
             <button class="modal-close" onclick="closeModal()">✕</button>
             <h2 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px">Request Introduction</h2>
             <p style="font-size:11px;color:var(--ink-muted);margin-bottom:12px;line-height:1.4;background:var(--orange-light);border-radius:6px;padding:8px 10px;">
-                ⚠️ A finder’s fee applies if you eventually secure the apartment. This way you can focus on your search.
+                ⚠️ A finder's fee applies if you eventually secure the apartment. This way you can focus on your search.
             </p>
 
             <form id="intro-request-form">
