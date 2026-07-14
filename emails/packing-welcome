@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light">
 <meta name="supported-color-schemes" content="light">
-<title>Your listing is live · RentPal</title>
+<title>Your listing is live – a photo helps · RentPal</title>
 </head>
 <body style="margin:0; padding:0; background-color:#eef1f5; font-family:'DM Sans','Helvetica Neue',Arial,sans-serif; -webkit-font-smoothing:antialiased; color:#0f1117;">
   <div style="display:none; max-height:0; overflow:hidden; font-size:1px; line-height:1px; color:#eef1f5; opacity:0;">
-    Your apartment is now live on RentPal. Here's what to expect when someone reaches out.
+    Your apartment is now live on RentPal. A photo can help it get noticed.
   </div>
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#eef1f5;">
     <tr>
       <td align="center" style="padding:36px 12px;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:580px; background:#ffffff; border-radius:18px; overflow:hidden; box-shadow:0 4px 18px rgba(15,17,23,0.06);">
-          
+
           <!-- Hero -->
           <tr>
             <td bgcolor="#0C447C" style="background-color:#0C447C; background-image:linear-gradient(145deg,#141927 0%,#1e2a3a 55%,#0C447C 100%); padding:34px 36px 40px;">
@@ -36,17 +36,9 @@
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#E6F1FB; border:1px solid #B5D4F4; border-radius:12px;">
                 <tr>
                   <td style="padding:14px 18px;">
-                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-                      <tr>
-                        <td style="vertical-align:middle;">
-                          <span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#4CAF85; margin-right:9px; vertical-align:middle;"></span>
-                          <span style="font-size:13px; color:#0C447C; font-weight:600; vertical-align:middle;">Live in directory</span>
-                        </td>
-                        <td align="right" style="font-size:12px; color:#185FA5; font-family:'Courier New',monospace; letter-spacing:0.5px;">
-                          {{listingId}}
-                        </td>
-                      </tr>
-                    </table>
+                    <span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#4CAF85; margin-right:9px; vertical-align:middle;"></span>
+                    <span style="font-size:13px; color:#0C447C; font-weight:600; vertical-align:middle;">Live in directory</span>
+                    <span style="float:right; font-size:12px; color:#185FA5; font-family:'Courier New',monospace;">{{listingId}}</span>
                   </td>
                 </tr>
               </table>
@@ -60,7 +52,7 @@
             </td>
           </tr>
 
-          <!-- Step 1 -->
+          <!-- Step 1 – Soft photo prompt -->
           <tr>
             <td style="padding:14px 36px 0;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f8f9fc; border:1px solid #e8eaee; border-radius:12px;">
@@ -69,6 +61,27 @@
                     <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
                       <tr>
                         <td width="44" style="vertical-align:top;"><div style="width:38px; height:38px; background:#E6F1FB; border-radius:10px; text-align:center; line-height:38px; font-family:'Plus Jakarta Sans',Arial,sans-serif; font-size:15px; font-weight:700; color:#185FA5;">1</div></td>
+                        <td style="vertical-align:top; padding-left:14px;">
+                          <div style="font-family:'Plus Jakarta Sans',Arial,sans-serif; font-size:15px; font-weight:700; color:#0f1117; margin-bottom:4px;">A photo goes a long way</div>
+                          <div style="font-size:13px; color:#5a6072; line-height:1.65;">Photos will go a long way to help someone's decision. If you have a minute, you can upload one.</div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Step 2 – Introduction requests -->
+          <tr>
+            <td style="padding:10px 36px 0;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f8f9fc; border:1px solid #e8eaee; border-radius:12px;">
+                <tr>
+                  <td style="padding:18px; vertical-align:top;">
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                      <tr>
+                        <td width="44" style="vertical-align:top;"><div style="width:38px; height:38px; background:#E6F1FB; border-radius:10px; text-align:center; line-height:38px; font-family:'Plus Jakarta Sans',Arial,sans-serif; font-size:15px; font-weight:700; color:#185FA5;">2</div></td>
                         <td style="vertical-align:top; padding-left:14px;">
                           <div style="font-family:'Plus Jakarta Sans',Arial,sans-serif; font-size:15px; font-weight:700; color:#0f1117; margin-bottom:4px;">You'll get an email</div>
                           <div style="font-size:13px; color:#5a6072; line-height:1.65;">When someone's interested, we'll send you their details for review.</div>
@@ -81,28 +94,7 @@
             </td>
           </tr>
 
-          <!-- Step 2 -->
-          <tr>
-            <td style="padding:10px 36px 0;">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f8f9fc; border:1px solid #e8eaee; border-radius:12px;">
-                <tr>
-                  <td style="padding:18px; vertical-align:top;">
-                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
-                      <tr>
-                        <td width="44" style="vertical-align:top;"><div style="width:38px; height:38px; background:#E6F1FB; border-radius:10px; text-align:center; line-height:38px; font-family:'Plus Jakarta Sans',Arial,sans-serif; font-size:15px; font-weight:700; color:#185FA5;">2</div></td>
-                        <td style="vertical-align:top; padding-left:14px;">
-                          <div style="font-family:'Plus Jakarta Sans',Arial,sans-serif; font-size:15px; font-weight:700; color:#0f1117; margin-bottom:4px;">You decide</div>
-                          <div style="font-size:13px; color:#5a6072; line-height:1.65;">Approve, decline, or mark the place as no longer available. One click, straight from the email.</div>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          <!-- Step 3 -->
+          <!-- Step 3 – You decide -->
           <tr>
             <td style="padding:10px 36px 8px;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f8f9fc; border:1px solid #e8eaee; border-radius:12px;">
@@ -112,8 +104,8 @@
                       <tr>
                         <td width="44" style="vertical-align:top;"><div style="width:38px; height:38px; background:#E6F1FB; border-radius:10px; text-align:center; line-height:38px; font-family:'Plus Jakarta Sans',Arial,sans-serif; font-size:15px; font-weight:700; color:#185FA5;">3</div></td>
                         <td style="vertical-align:top; padding-left:14px;">
-                          <div style="font-family:'Plus Jakarta Sans',Arial,sans-serif; font-size:15px; font-weight:700; color:#0f1117; margin-bottom:4px;">You connect</div>
-                          <div style="font-size:13px; color:#5a6072; line-height:1.65;">Once you approve, they get your details. You take it from there.</div>
+                          <div style="font-family:'Plus Jakarta Sans',Arial,sans-serif; font-size:15px; font-weight:700; color:#0f1117; margin-bottom:4px;">You decide</div>
+                          <div style="font-size:13px; color:#5a6072; line-height:1.65;">Approve, decline, or mark the place as no longer available — one click.</div>
                         </td>
                       </tr>
                     </table>
@@ -123,21 +115,15 @@
             </td>
           </tr>
 
-          <!-- Dark CTA -->
+          <!-- Soft photo CTA -->
           <tr>
             <td style="padding:28px 36px 8px;">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#141927" style="background-color:#141927; background-image:linear-gradient(145deg,#141927 0%,#1a2744 100%); border-radius:14px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#E6F1FB" style="background-color:#E6F1FB; border-radius:14px; border:1px solid #B5D4F4;">
                 <tr>
-                  <td style="padding:26px 24px; text-align:center;">
-                    <div style="font-family:'Plus Jakarta Sans',Arial,sans-serif; font-size:18px; font-weight:700; color:#ffffff; margin-bottom:6px; letter-spacing:-0.3px;">See who else is on the directory.</div>
-                    <div style="font-size:13px; color:rgba(255,255,255,0.55); line-height:1.6; margin-bottom:18px;">Browse the other verified apartments people have listed.</div>
-                    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;">
-                      <tr>
-                        <td bgcolor="#4A8FD4" style="background-color:#4A8FD4; border-radius:10px;">
-                          <a href="https://rentpal-web.netlify.app/listings" style="display:inline-block; padding:12px 26px; font-family:'DM Sans',Arial,sans-serif; font-size:14px; font-weight:600; color:#ffffff; text-decoration:none;">View the directory →</a>
-                        </td>
-                      </tr>
-                    </table>
+                  <td style="padding:20px 24px; text-align:center;">
+                    <div style="font-family:'Plus Jakarta Sans',Arial,sans-serif; font-size:17px; font-weight:700; color:#185FA5; margin-bottom:4px;">Photos make things so much better</div>
+                    <div style="font-size:13px; color:#5a6072; line-height:1.6; margin-bottom:18px;">Indoor, Outdoor, Video, anything works.</div>
+                    <a href="https://rentpal-web.netlify.app/upload-photo?id={{listingId}}" style="display:inline-block; padding:12px 26px; background:#4A8FD4; color:#ffffff; border-radius:10px; font-weight:600; text-decoration:none; font-size:14px;">Add a photo</a>
                   </td>
                 </tr>
               </table>
