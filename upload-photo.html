@@ -9,185 +9,240 @@
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'DM Sans',sans-serif;background:#f1f5f9;color:#0f1117;line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
-    .container{max-width:560px;margin:40px auto;padding:0 20px;flex:1}
+    .container{max-width:600px;margin:40px auto;padding:0 20px;flex:1}
     .logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:700;color:#4A8FD4;margin-bottom:24px}
-    h1{font-size:24px;font-weight:800;margin-bottom:8px}
     .card{background:#fff;border-radius:16px;border:1px solid rgba(0,0,0,0.06);padding:24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
-    .card h2{font-size:18px;font-weight:700;margin-bottom:12px}
+    .card h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;margin-bottom:12px}
     .label{font-size:12px;color:#9299a8;text-transform:uppercase;letter-spacing:0.5px}
     .value{font-size:15px;margin-bottom:8px}
-    .upload-area{background:#f8fafc;border:2px dashed #cbd5e1;border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all 0.2s}
+    .photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 18px}
+    .photo-tile{position:relative;aspect-ratio:1/1;border-radius:10px;overflow:hidden;background:#f0f4fb;border:1px solid #e8eaee;display:flex;align-items:center;justify-content:center}
+    .photo-tile img{width:100%;height:100%;object-fit:cover;display:block}
+    .photo-badge{position:absolute;top:6px;left:6px;background:rgba(15,17,23,0.75);color:#fff;font-size:10px;padding:3px 7px;border-radius:100px;letter-spacing:0.5px;font-weight:600}
+    .photo-tile.pending{background:#eef1f5}
+    .photo-tile.uploading::after{content:'';position:absolute;inset:0;background:rgba(74,143,212,0.15);border:2px solid #4A8FD4;border-radius:10px}
+    .photo-tile.error{border-color:#dc2626}
+    .photo-tile.error::after{content:'✕';position:absolute;top:6px;right:6px;width:22px;height:22px;background:#dc2626;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+    .photo-tile.done::after{content:'✓';position:absolute;top:6px;right:6px;width:22px;height:22px;background:#27500A;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+    .photo-tile-hint{font-size:11px;color:#9299a8;padding:6px;text-align:center;line-height:1.3}
+    .status-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:10px 14px;background:#E6F1FB;border:1px solid #B5D4F4;border-radius:10px;font-size:13px;color:#0C447C;font-weight:500}
+    .status-bar.warn{background:#FEF3C7;border-color:#FDE68A;color:#78350F}
+    .status-bar.done{background:#EAF3DE;border-color:#c6dfab;color:#27500A}
+    .upload-area{background:#f8fafc;border:2px dashed #cbd5e1;border-radius:12px;padding:26px;text-align:center;cursor:pointer;transition:all 0.2s}
     .upload-area:hover{border-color:#4A8FD4;background:#f0f4fb}
     .upload-area.dragover{border-color:#4A8FD4;background:#E6F1FB}
+    .upload-area.disabled{opacity:0.5;pointer-events:none}
     .upload-area input{display:none}
-    .preview{max-width:100%;max-height:200px;border-radius:8px;margin-top:12px;display:none}
-    .btn{display:block;width:100%;padding:14px;background:#4A8FD4;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;text-align:center;transition:all 0.2s;margin-top:12px}
+    .btn{display:block;width:100%;padding:14px;background:#4A8FD4;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;text-align:center;transition:all 0.2s;margin-top:14px;font-family:'DM Sans',sans-serif}
     .btn:disabled{opacity:0.5;cursor:not-allowed}
-    .error{color:#dc2626;font-size:14px;margin-top:8px}
-    .success{color:#27500A;background:#EAF3DE;padding:16px;border-radius:8px;margin-top:12px}
+    .btn.done{background:#27500A}
+    .error{color:#dc2626;font-size:13px;margin-top:10px}
+    .success{color:#27500A;background:#EAF3DE;padding:14px;border-radius:8px;margin-top:12px;font-size:14px}
     .loading{text-align:center;padding:40px;color:#5a6072}
   </style>
 </head>
 <body>
   <div class="container">
     <div class="logo">rentpal</div>
-    <div id="content">
-      <div class="loading">Loading your listing…</div>
-    </div>
+    <div id="content"><div class="loading">Loading your listing…</div></div>
   </div>
+
   <script>
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbzmMrwyXnu7DPIt3bp-jwVL5FtsBCGO4Zu5s0tenSu88j1FQPLTOIBLmw1SSMTetD8ItA/exec';
+    const MAX_PHOTOS_DEFAULT = 6;
 
-    async function getListing(id) {
-      const res = await fetch(`${GAS_URL}?action=listing&id=${encodeURIComponent(id)}`);
-      if (!res.ok) throw new Error('Network error');
-      const data = await res.json();
-      return data.listing;
-    }
+    let listing = null;
+    let existingPhotos = [];
+    let pendingFiles = [];
+    let maxPhotos = MAX_PHOTOS_DEFAULT;
 
-    let selectedFile = null;
+    function escapeHTML(s){ const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+    function formatNaira(n){ if(!n||isNaN(n))return'—'; return'₦'+parseInt(n).toLocaleString('en-NG'); }
 
-    function setupUpload() {
-      const dropArea = document.getElementById('drop-area');
-      const fileInput = document.getElementById('file-input');
-
-      dropArea.addEventListener('click', () => fileInput.click());
-      fileInput.addEventListener('change', (e) => {
-        if (e.target.files.length) {
-          selectedFile = e.target.files[0];
-          showPreview(selectedFile);
-        }
-      });
-      dropArea.addEventListener('dragover', (e) => { e.preventDefault(); dropArea.classList.add('dragover'); });
-      dropArea.addEventListener('dragleave', () => dropArea.classList.remove('dragover'));
-      dropArea.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropArea.classList.remove('dragover');
-        if (e.dataTransfer.files.length) {
-          selectedFile = e.dataTransfer.files[0];
-          showPreview(selectedFile);
-        }
-      });
-    }
-
-    function showPreview(file) {
-      const preview = document.getElementById('preview');
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        preview.src = e.target.result;
-        preview.style.display = 'block';
-      };
-      reader.readAsDataURL(file);
-    }
-
-    // Read a File as pure base64 (no "data:image/…;base64," prefix)
-    function fileToBase64(file) {
+    function fileToBase64(file){
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => {
-          const result = reader.result || '';
-          const commaIdx = result.indexOf(',');
-          resolve(commaIdx >= 0 ? result.substring(commaIdx + 1) : result);
+          const r = reader.result || '';
+          const comma = r.indexOf(',');
+          resolve(comma >= 0 ? r.substring(comma+1) : r);
         };
         reader.onerror = () => reject(new Error('Failed to read file.'));
         reader.readAsDataURL(file);
       });
     }
 
-    async function upload() {
-      if (!selectedFile) return alert('Please select an image.');
-      const listingId = new URLSearchParams(window.location.search).get('id');
-      const btn = document.getElementById('upload-btn');
-      const errorEl = document.getElementById('error-msg');
-      errorEl.textContent = '';
-      btn.disabled = true;
-      btn.textContent = 'Uploading…';
+    async function fetchListing(id){
+      const res = await fetch(`${GAS_URL}?action=listing&id=${encodeURIComponent(id)}`);
+      if(!res.ok) throw new Error('Network error');
+      const data = await res.json();
+      return data.listing;
+    }
 
-      try {
-        // 5 MB client-side guard so we don't waste time on huge files
-        if (selectedFile.size > 5 * 1024 * 1024) {
-          throw new Error('File too large (max 5 MB).');
-        }
+    function render(){
+      const totalSlots = maxPhotos;
+      const used = existingPhotos.length + pendingFiles.length;
+      const remaining = totalSlots - used;
+      const dropDisabled = remaining <= 0;
 
-        const base64 = await fileToBase64(selectedFile);
+      const statusClass = existingPhotos.length === 0 ? 'warn' : (existingPhotos.length >= totalSlots ? 'done' : '');
+      const statusText = existingPhotos.length === 0
+        ? `No photos yet · up to ${totalSlots} allowed`
+        : `${existingPhotos.length} of ${totalSlots} uploaded${remaining > 0 ? ' · ' + remaining + ' slot' + (remaining===1?'':'s') + ' left' : ' · full'}`;
 
-        const payload = {
-          action: 'uploadPhoto',
-          listingId: listingId,
-          filename: selectedFile.name || (listingId + '.jpg'),
-          mimeType: selectedFile.type || 'image/jpeg',
-          data: base64
-        };
+      let tiles = '';
+      existingPhotos.forEach((url, i) => {
+        tiles += `<div class="photo-tile done"><img src="${escapeHTML(url)}" alt="Photo ${i+1}"><div class="photo-badge">${i===0?'Cover':'#'+(i+1)}</div></div>`;
+      });
+      pendingFiles.forEach((pf, i) => {
+        const num = existingPhotos.length + i + 1;
+        const state = pf.status || 'pending';
+        tiles += `<div class="photo-tile ${state}">${pf.previewUrl ? `<img src="${pf.previewUrl}" alt="Pending ${num}">` : `<div class="photo-tile-hint">Preparing…</div>`}<div class="photo-badge">#${num}</div></div>`;
+      });
+      for(let k = 0; k < Math.max(0, remaining); k++){
+        tiles += `<div class="photo-tile pending"><div class="photo-tile-hint">Empty slot</div></div>`;
+      }
 
-        // Use text/plain to avoid CORS preflight against the GAS endpoint
-        const res = await fetch(GAS_URL, {
-          method: 'POST',
-          body: JSON.stringify(payload),
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-        });
-        const result = await res.json();
+      const uploadAreaHTML = dropDisabled
+        ? `<div class="upload-area disabled"><div style="font-weight:500;">Photo limit reached</div><div style="font-size:12px; color:#9299a8;">${totalSlots} of ${totalSlots} uploaded</div></div>`
+        : `<div class="upload-area" id="drop-area">
+             <input type="file" id="file-input" accept="image/jpeg,image/png" multiple>
+             <div style="font-size:22px; margin-bottom:6px;">📁</div>
+             <div style="font-weight:500;">Click or drag images here</div>
+             <div style="font-size:12px; color:#9299a8;">JPG or PNG · up to 5MB each · ${remaining} slot${remaining===1?'':'s'} left</div>
+           </div>`;
 
-        if (result.success) {
-          document.getElementById('upload-section').innerHTML = `
-            <div class="success">
-              ✅ Photo uploaded! Your listing now has an image.
-              <a href="https://rentpal-web.netlify.app/listings/?id=${listingId}" target="_blank">View listing →</a>
-            </div>`;
-        } else {
-          errorEl.textContent = result.message || 'Upload failed.';
-          btn.disabled = false;
-          btn.textContent = 'Upload Photo';
-        }
-      } catch(e) {
-        errorEl.textContent = e.message || 'Network error. Please try again.';
-        btn.disabled = false;
-        btn.textContent = 'Upload Photo';
+      const buttonHTML = pendingFiles.length > 0
+        ? `<button class="btn" id="upload-btn" onclick="startUpload()">Upload ${pendingFiles.length} photo${pendingFiles.length===1?'':'s'}</button>`
+        : (existingPhotos.length > 0
+            ? `<a href="https://rentpal-web.netlify.app/listings/?id=${listing.listingId}" target="_blank" class="btn done" style="text-decoration:none;">View my listing →</a>`
+            : '');
+
+      document.getElementById('content').innerHTML = `
+        <div class="card">
+          <h2>🏠 Your Apartment</h2>
+          <div class="label">Apartment</div>
+          <div class="value"><strong>${escapeHTML(listing.apartmentType)}</strong></div>
+          <div class="label">Location</div>
+          <div class="value">${escapeHTML(listing.area)}, ${escapeHTML(listing.location)}</div>
+          <div class="label">Reference</div>
+          <div class="value" style="font-family:monospace">${listing.listingId}</div>
+        </div>
+        <div class="card">
+          <h2>📷 Photos</h2>
+          <div class="status-bar ${statusClass}"><span>${statusText}</span>${existingPhotos.length > 0 && existingPhotos.length < totalSlots ? '<span style="font-size:12px; font-weight:400;">Add more anytime</span>' : ''}</div>
+          <div class="photo-grid">${tiles}</div>
+          ${uploadAreaHTML}
+          ${buttonHTML}
+          <div id="error-msg" class="error"></div>
+        </div>`;
+
+      if(!dropDisabled) wireDropzone();
+    }
+
+    function wireDropzone(){
+      const dropArea = document.getElementById('drop-area');
+      const fileInput = document.getElementById('file-input');
+      if(!dropArea || !fileInput) return;
+      dropArea.addEventListener('click', () => fileInput.click());
+      fileInput.addEventListener('change', (e) => {
+        if(e.target.files.length) queueFiles(Array.from(e.target.files));
+        fileInput.value = '';
+      });
+      dropArea.addEventListener('dragover', (e) => { e.preventDefault(); dropArea.classList.add('dragover'); });
+      dropArea.addEventListener('dragleave', () => dropArea.classList.remove('dragover'));
+      dropArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropArea.classList.remove('dragover');
+        if(e.dataTransfer.files.length) queueFiles(Array.from(e.dataTransfer.files));
+      });
+    }
+
+    function queueFiles(files){
+      const remaining = maxPhotos - existingPhotos.length - pendingFiles.length;
+      if(remaining <= 0) return;
+      const toAdd = files.slice(0, remaining);
+      let skipped = files.length - toAdd.length;
+      toAdd.forEach(file => {
+        if(file.size > 5*1024*1024){ skipped++; return; }
+        pendingFiles.push({ file, previewUrl: URL.createObjectURL(file), status: 'pending', name: file.name });
+      });
+      render();
+      if(skipped > 0){
+        const el = document.getElementById('error-msg');
+        if(el) el.textContent = `${skipped} file${skipped===1?'':'s'} skipped (over 5MB or slot limit).`;
       }
     }
 
-    async function init() {
+    async function startUpload(){
+      const btn = document.getElementById('upload-btn');
+      if(btn){ btn.disabled = true; btn.textContent = 'Uploading…'; }
+      const errorEl = document.getElementById('error-msg');
+      if(errorEl) errorEl.textContent = '';
+
+      for(let i = 0; i < pendingFiles.length; i++){
+        const pf = pendingFiles[i];
+        if(pf.status === 'done') continue;
+        pf.status = 'uploading';
+        render();
+
+        try {
+          const base64 = await fileToBase64(pf.file);
+          const payload = {
+            action: 'uploadPhoto',
+            listingId: listing.listingId,
+            filename: pf.name || (listing.listingId + '.jpg'),
+            mimeType: pf.file.type || 'image/jpeg',
+            data: base64
+          };
+          const res = await fetch(GAS_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+          });
+          const result = await res.json();
+          if(result.success){
+            pf.status = 'done';
+            if(Array.isArray(result.photos)) existingPhotos = result.photos.slice();
+            else existingPhotos.push(result.photoUrl);
+            if(typeof result.maxPhotos === 'number') maxPhotos = result.maxPhotos;
+          } else {
+            pf.status = 'error';
+            pf.error = result.message || 'Upload failed.';
+          }
+        } catch(err){
+          pf.status = 'error';
+          pf.error = err.message || 'Network error.';
+        }
+      }
+
+      pendingFiles = pendingFiles.filter(pf => pf.status === 'error');
+      render();
+      const err2 = document.getElementById('error-msg');
+      if(pendingFiles.length > 0 && err2){
+        err2.textContent = pendingFiles.map(p => `${p.name}: ${p.error}`).join(' · ');
+      } else if(err2){
+        err2.innerHTML = '<div class="success">✅ All photos uploaded. Your listing is now visual.</div>';
+      }
+    }
+
+    async function init(){
       const params = new URLSearchParams(window.location.search);
       const id = params.get('id');
-      if (!id) {
-        document.getElementById('content').innerHTML = '<div class="error">No listing ID provided.</div>';
+      if(!id){
+        document.getElementById('content').innerHTML = '<div class="card"><div class="error">No listing ID in the URL.</div></div>';
         return;
       }
       try {
-        const listing = await getListing(id);
-        if (!listing) throw new Error('Listing not found.');
-        document.getElementById('content').innerHTML = `
-          <div class="card">
-            <h2>🏠 Your Apartment</h2>
-            <div class="label">Apartment</div>
-            <div class="value"><strong>${escapeHTML(listing.apartmentType)}</strong></div>
-            <div class="label">Location</div>
-            <div class="value">${escapeHTML(listing.area)}, ${escapeHTML(listing.location)}</div>
-            <div class="label">Rent</div>
-            <div class="value">${formatNaira(listing.rentExact)}/year</div>
-            <div class="label">Reference</div>
-            <div class="value" style="font-family:monospace">${listing.listingId}</div>
-          </div>
-          <div class="card" id="upload-section">
-            <h2>📷 Add a Photo</h2>
-            <p style="color:#5a6072; margin-bottom:12px;">Upload an image of your apartment (JPEG or PNG, max 5 MB).</p>
-            <div class="upload-area" id="drop-area">
-              <input type="file" id="file-input" accept="image/jpeg,image/png">
-              <div style="font-size:24px; margin-bottom:8px;">📁</div>
-              <div style="font-weight:500;">Click or drag an image here</div>
-              <div style="font-size:12px; color:#9299a8;">JPG, PNG up to 5MB</div>
-              <img id="preview" class="preview" alt="Preview">
-            </div>
-            <button class="btn" id="upload-btn" onclick="upload()">Upload Photo</button>
-            <div id="error-msg" class="error"></div>
-          </div>`;
-        setupUpload();
-      } catch(e) {
-        document.getElementById('content').innerHTML = `<div class="error">Could not load listing. Please check your link.</div>`;
+        listing = await fetchListing(id);
+        if(!listing) throw new Error('Listing not found.');
+        existingPhotos = Array.isArray(listing.photos) ? listing.photos.slice() : (listing.primaryPhoto ? [listing.primaryPhoto] : []);
+        if(typeof listing.maxPhotos === 'number') maxPhotos = listing.maxPhotos;
+        render();
+      } catch(e){
+        document.getElementById('content').innerHTML = '<div class="card"><div class="error">Could not load listing. Check your link.</div></div>';
       }
     }
-
-    function escapeHTML(s){ const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
-    function formatNaira(n){ if(!n||isNaN(n))return'—'; return'₦'+parseInt(n).toLocaleString('en-NG'); }
 
     document.addEventListener('DOMContentLoaded', init);
   </script>
