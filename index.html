@@ -48,11 +48,58 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   /* HERO / QUIZ AREA */
   .hero-wrap{background:var(--quiz-bg);border-bottom:1px solid #0C447C;padding:64px 24px 72px;}
   .hero-inner{max-width:620px;margin:0 auto;}
-  .hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(74,143,212,0.18);color:#8fc6f5;font-size:12px;font-weight:500;padding:5px 14px;border-radius:100px;margin-bottom:18px;border:1px solid rgba(74,143,212,0.3);}
-  .hero-dot{width:6px;height:6px;border-radius:50%;background:#4A8FD4;}
-  .hero-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:38px;font-weight:800;line-height:1.1;letter-spacing:-1.4px;color:#ffffff;margin-bottom:12px;}
-  .hero-title em{font-style:normal;color:#4A8FD4;}
-  .hero-desc{font-size:16px;font-weight:300;color:rgba(255,255,255,0.65);line-height:1.75;margin-bottom:32px;max-width:500px;}
+
+  /* ── NEW HERO STYLES ── */
+  .hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(74,143,212,0.18);color:#8fc6f5;font-size:12px;font-weight:500;padding:5px 14px;border-radius:100px;margin-bottom:22px;border:1px solid rgba(74,143,212,0.3);font-family:'DM Mono',monospace;letter-spacing:0.06em;}
+  .hero-dot{width:6px;height:6px;border-radius:50%;background:#4A8FD4;box-shadow:0 0 8px rgba(74,143,212,0.6);}
+  .hero-title-v2{
+    font-family:'Plus Jakarta Sans',sans-serif;
+    font-size:clamp(38px, 5vw, 52px);
+    font-weight:800;
+    line-height:1.02;
+    letter-spacing:-0.03em;
+    color:#ffffff;
+    margin-bottom:14px;
+  }
+  .hero-title-v2 .accent-line{
+    display:block;
+    color:#8fc6f5;
+    font-weight:500;
+    font-style:italic;
+    font-family:'Fraunces',serif;
+    font-variation-settings:"opsz" 72;
+    letter-spacing:-0.02em;
+  }
+  .hero-desc{
+    font-size:16px;
+    font-weight:300;
+    color:rgba(255,255,255,0.65);
+    line-height:1.7;
+    margin-bottom:18px;
+    max-width:500px;
+  }
+  .hero-trust{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family:'DM Mono',monospace;
+    font-size:11px;
+    font-weight:500;
+    letter-spacing:0.1em;
+    color:rgba(255,255,255,0.5);
+    padding:6px 12px;
+    border:0.5px solid rgba(255,255,255,0.12);
+    border-radius:100px;
+    background:rgba(255,255,255,0.03);
+    margin-bottom:36px;
+    text-transform:uppercase;
+  }
+  .hero-trust .pulse{
+    width:6px;height:6px;border-radius:50%;background:#4CAF85;
+    box-shadow:0 0 8px rgba(76,175,133,0.7);
+    animation:pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 
   /* QUIZ */
   .quiz-progress{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
@@ -62,23 +109,65 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .quiz-step{display:none;animation:fadeUp .28s ease both;}
   .quiz-step.active{display:block;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-  .step-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1px;color:#8fc6f5;margin-bottom:7px;}
-  .quiz-q{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;color:#ffffff;line-height:1.25;margin-bottom:5px;}
-  .quiz-hint{font-size:14px;font-weight:300;color:rgba(255,255,255,0.55);margin-bottom:18px;line-height:1.6;}
+  .step-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1px;color:#8fc6f5;margin-bottom:6px;}
+  .quiz-q{font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:700;color:#ffffff;line-height:1.25;margin-bottom:4px;}
+  .quiz-hint{font-size:13px;font-weight:300;color:rgba(255,255,255,0.55);margin-bottom:16px;line-height:1.5;}
 
-  /* OPTIONS */
+  /* OPTIONS – OLD (kept for quiz steps after step-0) */
   .opts{display:flex;flex-direction:column;gap:8px;}
   .opts.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-  .opt{border:1.5px solid rgba(255,255,255,0.12);border-radius:11px;padding:13px 16px;cursor:pointer;background:rgba(255,255,255,0.05);text-align:left;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:10px;transition:border-color .15s,background .15s;width:100%;}
+  .opt{border:1.5px solid rgba(255,255,255,0.12);border-radius:12px;padding:13px 16px;cursor:pointer;background:rgba(255,255,255,0.05);text-align:left;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:12px;transition:border-color .15s,background .15s;width:100%;}
   .opt:hover,.opt.selected{border-color:var(--blue);background:rgba(74,143,212,0.15);}
-  .opt-icon{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .opt-icon{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .opt-icon svg{stroke:#8fc6f5;stroke-width:1.8;}
   .opt-title{font-size:14px;font-weight:500;color:#ffffff;line-height:1.3;}
   .opt-sub{font-size:12px;font-weight:300;color:rgba(255,255,255,0.5);margin-top:1px;}
+
+  /* ── NEW IDENTITY CARDS (step-0 only) ── */
+  .opts-v2{display:flex;flex-direction:column;gap:10px;}
+  .opt-v2{
+    position:relative;
+    display:grid;
+    grid-template-columns:auto auto 1fr auto;
+    align-items:center;
+    gap:16px;
+    padding:18px 22px 18px 20px;
+    border:1.5px solid rgba(255,255,255,0.1);
+    border-radius:14px;
+    background:rgba(255,255,255,0.04);
+    cursor:pointer;
+    text-align:left;
+    font-family:'DM Sans',sans-serif;
+    transition:border-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
+    overflow:hidden;
+    width:100%;
+    /* no pseudo-element bar */
+  }
+  .opt-v2:hover, .opt-v2.selected{
+    border-color:var(--blue);
+    background:rgba(74,143,212,0.1);
+    transform:translateX(1px);
+    box-shadow: 0 0 16px rgba(74,143,212,0.25);
+  }
+
+  .opt-num{font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:rgba(255,255,255,0.35);letter-spacing:0.05em;align-self:flex-start;padding-top:4px;min-width:24px;}
+  .opt-v2:hover .opt-num, .opt-v2.selected .opt-num{color:var(--blue-glow);}
+  .opt-icon-v2{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.2s;}
+  .opt-icon-v2.tint-a{background:rgba(74,143,212,0.15);}
+  .opt-icon-v2.tint-b{background:rgba(143,198,245,0.15);}
+  .opt-icon-v2.tint-c{background:rgba(76,175,133,0.15);}
+  .opt-v2:hover .opt-icon-v2{background:rgba(74,143,212,0.28);}
+  .opt-body{display:flex;flex-direction:column;gap:2px;}
+  .opt-title-v2{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:#ffffff;line-height:1.3;letter-spacing:-0.005em;}
+  .opt-sub-v2{font-size:13px;font-weight:400;color:rgba(255,255,255,0.65);line-height:1.45;}
+  .opt-sub-v2 strong{color:#ffffff;font-weight:600;}
+  .opt-arrow{font-family:'DM Sans',sans-serif;font-size:20px;color:rgba(255,255,255,0.25);transition:color 0.2s,transform 0.2s;align-self:center;}
+  .opt-v2:hover .opt-arrow, .opt-v2.selected .opt-arrow{color:var(--blue-glow);transform:translateX(4px);}
 
   /* QUIZ INPUTS */
   .qinput-group{margin-bottom:13px;}
   .qinput-group label{display:block;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,0.5);margin-bottom:5px;}
-  .qinput-group input,.qinput-group select,.qinput-group textarea{width:100%;padding:11px 14px;border:1.5px solid rgba(255,255,255,0.12);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:16px;color:#fff;background:rgba(255,255,255,0.07);outline:none;transition:border-color .2s,box-shadow .2s;}
+  .qinput-group input,.qinput-group select,.qinput-group textarea{width:100%;padding:11px 14px;border:1.5px solid rgba(255,255,255,0.12);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:15px;color:#fff;background:rgba(255,255,255,0.07);outline:none;transition:border-color .2s,box-shadow .2s;}
   .qinput-group input:focus,.qinput-group select:focus,.qinput-group textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(74,143,212,.2);}
   .qinput-group input.error,.qinput-group select.error,.qinput-group textarea.error{border-color:#f87171;box-shadow:0 0 0 3px rgba(248,113,113,0.15);}
   .qinput-group input::placeholder,.qinput-group textarea::placeholder{color:rgba(255,255,255,0.4);}
@@ -97,7 +186,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .rent-display-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,0.35);text-align:center;margin-bottom:6px;}
 
   /* BUTTONS */
-  .next-btn{width:100%;padding:14px;background:var(--blue);color:#fff;border:none;border-radius:11px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:18px;transition:background .2s,transform .15s;}
+  .next-btn{width:100%;padding:14px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:18px;transition:background .2s,transform .15s;}
   .next-btn:hover{background:var(--blue-dark);transform:translateY(-1px);}
   .next-btn:disabled{opacity:.45;cursor:not-allowed;transform:none;}
   .back-btn{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:rgba(255,255,255,0.35);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0;margin-top:11px;}
@@ -115,6 +204,24 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .ty-dot{width:5px;height:5px;border-radius:50%;margin-top:7px;flex-shrink:0;}
   .tg-btn{display:inline-flex;align-items:center;gap:7px;background:var(--blue);color:#fff;padding:11px 20px;border-radius:9px;text-decoration:none;font-size:14px;font-weight:500;margin-top:16px;}
 
+  /* Soft photo prompt inside thank‑you card */
+  .photo-prompt{
+    margin-top:18px;
+    padding:12px 16px;
+    background:rgba(74,143,212,0.12);
+    border:1px solid rgba(143,198,245,0.25);
+    border-radius:10px;
+    font-size:13px;
+    color:rgba(255,255,255,0.7);
+    text-align:center;
+  }
+  .photo-prompt a{
+    color:#8fc6f5;
+    font-weight:600;
+    text-decoration:underline;
+    margin-left:4px;
+  }
+
   /* DISQUALIFY / CONFIRM CARD */
   .confirm-card{background:rgba(74,143,212,0.1);border:1.5px solid rgba(74,143,212,0.3);border-radius:14px;padding:22px 20px;margin-bottom:8px;}
   .confirm-card h4{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.3;}
@@ -129,7 +236,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .full-divider{border:none;border-top:1px solid var(--border);margin:0;}
   .section{padding:72px 48px;max-width:1100px;margin:0 auto;}
   .section-eyebrow{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;color:var(--blue);margin-bottom:10px;}
-  .section-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;font-weight:700;letter-spacing:-.7px;color:var(--ink);margin-bottom:12px;line-height:1.18;}
+  .section-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:700;letter-spacing:-0.5px;color:var(--ink);margin-bottom:12px;line-height:1.2;}
   .section-sub{font-size:15px;font-weight:300;color:var(--ink-muted);line-height:1.75;max-width:500px;margin-bottom:44px;}
   .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border-radius:16px;overflow:hidden;}
   .step{background:var(--white);padding:32px 28px;}
@@ -171,8 +278,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .nav-links,.nav-cta{display:none;}
     .hamburger{display:flex;}
     .hero-wrap{padding:44px 20px 56px;}
-    .hero-title{font-size:28px;letter-spacing:-.6px;}
-    .hero-desc{font-size:16px;}
+    .hero-title-v2{font-size:28px;letter-spacing:-0.015em;}
+    .hero-desc{font-size:15px;}
     .opts.g2{grid-template-columns:1fr 1fr;}
     .qrow{grid-template-columns:1fr;}
     .trust-bar{padding:12px 16px;gap:12px;justify-content:flex-start;}
@@ -181,6 +288,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .steps-grid{grid-template-columns:1fr;}
     .honesty-grid{grid-template-columns:1fr;gap:24px;}
     footer{padding:22px 20px;flex-direction:column;gap:8px;text-align:center;}
+    .opt-v2{grid-template-columns:auto 1fr auto;padding:16px 18px 16px 16px;gap:14px;}
+    .opt-v2 .opt-num{display:none;}
+    .opt-title-v2{font-size:15px;}
+    .opt-sub-v2{font-size:12.5px;}
   }
   @media(max-width:400px){.opts.g2{grid-template-columns:1fr;}}
 
@@ -217,30 +328,82 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- HERO + QUIZ -->
 <div class="hero-wrap" id="quiz-area">
   <div class="hero-inner">
-    <div class="hero-tag"><div class="hero-dot"></div>Lagos, Nigeria</div>
-    <h1 class="hero-title">Connecting current Lagos tenants with future ones.<br>Leaving an apartment soon,<em>Help someone find it.</em></h1>
-    <p class="hero-desc">If you live somewhere good and you're packing out soon, help someone find it. Or sign up if you're a seeker.</p>
+    <div class="hero-tag">
+      <div class="hero-dot"></div>Lagos, Nigeria
+    </div>
+
+    <h1 class="hero-title-v2">
+      Find your next apartment.<br>
+      <span class="accent-line">Or help someone find yours.</span>
+    </h1>
+
+    <p class="hero-desc">
+      Direct intros between real Lagos tenants, landlords, and seekers.
+      No agent runaround. No inflated listings.
+    </p>
+
+    <div class="hero-trust">
+      <span class="pulse"></span>
+      1,000+ VERIFIED SEEKERS · LAGOS ONLY
+    </div>
 
     <div class="quiz-progress" id="quiz-progress" style="display:none;">
       <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="qpfill"></div></div>
       <span class="quiz-progress-label" id="qplabel"></span>
     </div>
 
-    <!-- STEP 0 -->
+    <!-- STEP 0 – IDENTITY CARDS -->
     <div class="quiz-step active" id="step-0">
-      <div class="quiz-q" style="margin-bottom:14px;">What brings you here?</div>
-      <div class="opts">
-        <button class="opt" onclick="setType('packing');goTo('p-confirm')">
-          <div class="opt-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4A8FD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="16 3 12 7 8 3"/><line x1="12" y1="12" x2="12" y2="17"/><line x1="9.5" y1="14.5" x2="14.5" y2="14.5"/></svg></div>
-          <div><div class="opt-title">I am packing out soon</div><div class="opt-sub">I want to list my place to help the next person find it</div></div>
+      <div class="quiz-q" style="margin-bottom:14px;">Which one are you?</div>
+      <div class="quiz-sub-v2" style="font-size:14px;font-weight:400;color:rgba(255,255,255,0.55);margin-bottom:22px;line-height:1.55;">Pick the closest fit — we'll take it from there.</div>
+      <div class="opts-v2">
+        <!-- OPTION 01 – landlord/agent/packing-out -->
+        <button class="opt-v2" onclick="setType('packing');goTo('p-confirm')">
+          <span class="opt-num">01</span>
+          <span class="opt-icon-v2 tint-a">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8fc6f5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 21V10L12 3L21 10V21H3z"/>
+              <path d="M9 21V14H15V21"/>
+              <circle cx="17" cy="7" r="1.5" fill="#8fc6f5"/>
+            </svg>
+          </span>
+          <span class="opt-body">
+            <span class="opt-title-v2">I have a place to list</span>
+            <span class="opt-sub-v2"><strong>Landlord, agent,</strong> or a tenant packing out — we'll match you with a seeker.</span>
+          </span>
+          <span class="opt-arrow">→</span>
         </button>
-        <button class="opt" onclick="setType('seeker');goTo('s-1')">
-          <div class="opt-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4A8FD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-          <div><div class="opt-title">I'm looking for a place in Lagos</div><div class="opt-sub">Alert me when a confirmed apartment is available</div></div>
+        <!-- OPTION 02 – seeker -->
+        <button class="opt-v2" onclick="setType('seeker');goTo('s-1')">
+          <span class="opt-num">02</span>
+          <span class="opt-icon-v2 tint-b">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8fc6f5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7"/>
+              <line x1="21" y1="21" x2="16.5" y2="16.5"/>
+            </svg>
+          </span>
+          <span class="opt-body">
+            <span class="opt-title-v2">I'm looking for a place</span>
+            <span class="opt-sub-v2">Get alerts the moment a verified apartment matches your budget and area.</span>
+          </span>
+          <span class="opt-arrow">→</span>
         </button>
-        <button class="opt" onclick="setType('both');goTo('b-confirm')">
-          <div class="opt-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4A8FD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3m8 0h3a2 2 0 0 0 2-2v-3"/></svg></div>
-          <div><div class="opt-title">Both — I'm packing out and looking</div><div class="opt-sub">I'm leaving my current place and also need somewhere new</div></div>
+        <!-- OPTION 03 – both -->
+        <button class="opt-v2" onclick="setType('both');goTo('b-confirm')">
+          <span class="opt-num">03</span>
+          <span class="opt-icon-v2 tint-c">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8fc6f5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 3L21 7L17 11"/>
+              <path d="M21 7H8"/>
+              <path d="M7 21L3 17L7 13"/>
+              <path d="M3 17H16"/>
+            </svg>
+          </span>
+          <span class="opt-body">
+            <span class="opt-title-v2">Both — I have one AND I'm looking</span>
+            <span class="opt-sub-v2">Leaving your current place and need somewhere new. We handle both.</span>
+          </span>
+          <span class="opt-arrow">→</span>
         </button>
       </div>
     </div>
@@ -386,17 +549,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <button class="back-btn" onclick="goTo('t-5')">← Back</button>
     </div>
 
+    <!-- THANK YOU – PACKING (t-ty) -->
     <div class="quiz-step" id="t-ty">
       <div class="ty-card">
-        <div class="ty-icon" style="background:rgba(74,143,212,0.15);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8fc6f5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-        <h3>Your place is in good hands.</h3>
-        <p>We've received your apartment details. Someone from the RentPal team will reach out within 24–48 hours to verify everything and get your listing in front of the right people.</p>
-        <div class="ty-steps">
-          <div class="ty-steps-lbl">Next steps</div>
-          <div class="ty-step"><div class="ty-dot" style="background:var(--blue);"></div><span>Send photos &amp; a short video to our WhatsApp: <strong style="color:#fff;" id="wa-1"></strong></span></div>
-          <div class="ty-step"><div class="ty-dot" style="background:var(--blue);"></div><span>We'll confirm the details and get the listing in front of serious seekers.</span></div>
-          <div class="ty-step"><div class="ty-dot" style="background:var(--blue);"></div><span>Direct connection — no agents, no unnecessary middlemen.</span></div>
+        <div class="ty-icon" style="background:rgba(74,143,212,0.15);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8fc6f5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
         </div>
+        <h3>Thank you for listing!</h3>
+        <p>
+          Your apartment is now posted to our Telegram channel and the RentPal website.
+          When someone is interested, they'll request an introduction — you'll get an email
+          and can <strong style="color:#fff;">approve, decline, or mark it unavailable</strong>
+          with one click. You can mark it unavailable at any time.
+        </p>
+
+        <!-- Soft photo prompt -->
+        <div class="photo-prompt" id="photo-prompt">
+          📷 <span>Want to help your listing stand out?</span>
+          <a href="#" id="photo-link">Add a photo →</a>
+        </div>
+
+        <!-- Telegram channel -->
         <div class="ty-tg-block">
           <p class="ty-tg-label">You've registered — now join our Telegram channel.<br><span>That's where all the updates go.</span></p>
           <a href="https://t.me/rentpal_lagos" target="_blank" class="tg-btn">
@@ -674,7 +849,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   window.dataLayer = window.dataLayer || [];
 
   // ── CONFIG ──
-  // ⚠️ REPLACE THIS WITH YOUR DEPLOYED QUIZ BACKEND URL (Deploy → Web app → /exec URL)
   var GAS_URL = "https://script.google.com/macros/s/AKfycbzmMrwyXnu7DPIt3bp-jwVL5FtsBCGO4Zu5s0tenSu88j1FQPLTOIBLmw1SSMTetD8ItA/exec";
   var WHATSAPP = "+234 816 2373 553";
 
@@ -798,7 +972,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     updateProgress();
     document.getElementById('quiz-area').scrollIntoView({behavior:'smooth',block:'start'});
 
-    // Dynamic button label on t-6 depending on flow
     if(stepId === 't-6'){
       var tBtn = document.getElementById('t-submit-btn');
       if(tBtn) tBtn.textContent = userType === 'both' ? 'Next: your search preferences →' : 'Submit my apartment →';
@@ -807,6 +980,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if(stepId === 't-ty'){
       window.dataLayer.push({ event: 'rentpal_packing_complete', userType: 'packing' });
       window.dataLayer.push({ event: 'rentpal_listing_complete', userType: 'packing' });
+      // Set the photo upload link to the listing ID returned by submitQuiz
+      var listingId = vals.userId || '';
+      var photoLink = document.getElementById('photo-link');
+      if(photoLink && listingId){
+        photoLink.href = 'https://rentpal-web.netlify.app/upload-photo?id=' + listingId;
+      }
     } else if(stepId === 's-ty'){
       window.dataLayer.push({ event: 'rentpal_seeker_complete', userType: 'seeker' });
     } else if(stepId === 'b-ty'){
@@ -814,7 +993,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       window.dataLayer.push({ event: 'rentpal_listing_complete', userType: 'both' });
     }
 
-    // Fresh start when returning to landing
     if(stepId === 'step-0'){
       userType = '';
       vals = {};
@@ -848,7 +1026,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       return;
     }
     pw.style.display='flex';
-    var totalRealSteps = steps.length - 2; // exclude step-0 and thank-you
+    var totalRealSteps = steps.length - 2;
     var pct = Math.min(100, Math.round(((idx) / totalRealSteps) * 100));
     document.getElementById('qpfill').style.width = pct+'%';
     document.getElementById('qplabel').textContent = currentStep.endsWith('-ty') ? 'Done ✓' : 'Step '+idx+' of '+totalRealSteps;
@@ -873,7 +1051,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if(!fn || !fn.trim()){
       var fnInput = document.getElementById(fnInputId);
       if(type === 'both' && !document.getElementById(fnInputId).offsetParent){
-        // Sitting on b-s-5 but the name field is back on t-6 — nav them there
         goTo('t-6');
         setTimeout(function(){ showError(document.getElementById(fnInputId), 'err-'+fnInputId); }, 400);
         return;
@@ -919,6 +1096,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         console.log('✅ Quiz submitted:', data);
         if(data && data.status === 'ok'){
           window.dataLayer.push({event:'rentpal_quiz_success', type: vals.type, userId: data.userId});
+          vals.userId = data.userId;   // store for photo link
           goTo(tyScreen);
         } else {
           throw new Error(data && data.message ? data.message : 'Submission failed');
@@ -931,7 +1109,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       });
   }
 
-  // ── ENTER KEY: advance the active step ──
+  // ── ENTER KEY ──
   document.addEventListener('keydown', function(e){
     if(e.key !== 'Enter') return;
     if(e.target && e.target.tagName === 'TEXTAREA') return;
