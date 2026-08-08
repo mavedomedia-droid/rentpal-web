@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="color-scheme" content="light">
-<meta name="supported-color-schemes" content="light">
-<title>Someone is interested · RentPal</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>Someone is interested · RentPal</title>
 </head>
 <body style="margin:0; padding:0; background-color:#eef1f5; font-family:'DM Sans','Helvetica Neue',Arial,sans-serif; -webkit-font-smoothing:antialiased; color:#0f1117;">
   <div style="display:none; max-height:0; overflow:hidden; font-size:1px; line-height:1px; color:#eef1f5; opacity:0;">
@@ -46,32 +46,63 @@
             </td>
           </tr>
 
-          <!-- Requester Info (only name, reason, move timeline, extra questions) -->
+          <!-- Requester Info -->
           <tr>
-            <td style="padding:32px 36px 4px;">
+            <td style="padding:28px 36px 4px;">
               <div style="font-size:11px; font-weight:600; letter-spacing:1.4px; text-transform:uppercase; color:#4A8FD4; margin-bottom:12px;">About the requester</div>
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:14px; color:#0f1117; line-height:1.8;">
-                <tr><td style="color:#5a6072; width:100px; padding-bottom:4px;">Name</td><td style="padding-bottom:4px;">{{requesterName}}</td></tr>
+                <tr><td style="color:#5a6072; width:100px; padding-bottom:4px;">Name</td><td style="padding-bottom:4px; font-weight:500;">{{requesterName}}</td></tr>
                 <tr><td style="color:#5a6072; padding-bottom:4px;">Reason</td><td style="padding-bottom:4px;">{{reason}}</td></tr>
                 <tr><td style="color:#5a6072; padding-bottom:4px;">Move Timeline</td><td style="padding-bottom:4px;">{{moveTimeline}}</td></tr>
               </table>
-              <!-- Extra questions only if present -->
-              <div style="margin-top:12px; font-size:13px; color:#5a6072; line-height:1.6;">
-                {{extraQuestions}}
+
+              <!-- Extra Questions – bulleted list -->
+              {{#extraQuestionsHtml}}
+                <div style="margin-top:16px; background:#f4f7fc; border-radius:8px; padding:12px 16px; border-left:3px solid #4A8FD4;">
+                  <div style="font-size:11px; font-weight:600; color:#185FA5; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Questions for you</div>
+                  {{{extraQuestionsHtml}}}
+                </div>
+              {{/extraQuestionsHtml}}
+              {{^extraQuestionsHtml}}
+                <div style="margin-top:12px; font-size:13px; color:#9299a8; font-style:italic;">No additional questions asked.</div>
+              {{/extraQuestionsHtml}}
+
+              <!-- Privacy Note -->
+              <div style="margin-top:18px; padding:12px 14px; background:#fef9e7; border:1px solid #fcd34d; border-radius:8px; font-size:12px; color:#78350f; line-height:1.5;">
+                🔒 <strong>Privacy first:</strong> The requester’s email and phone number are <strong>not</strong> shown here. If you approve this request, we’ll connect you both via email instantly.
               </div>
             </td>
           </tr>
 
-          <!-- CTA Button -->
+          <!-- CTA Button + Next Steps -->
           <tr>
-            <td style="padding:28px 36px 32px;">
+            <td style="padding:20px 36px 24px;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  <td align="center" bgcolor="#4A8FD4" style="background-color:#4A8FD4; border-radius:10px; padding:14px;">
-                    <a href="{{approveUrl}}" style="display:block; font-family:'DM Sans',Arial,sans-serif; font-size:16px; font-weight:600; color:#ffffff; text-decoration:none;">View Request &amp; Respond →</a>
+                  <td align="center" bgcolor="#4A8FD4" style="background-color:#4A8FD4; border-radius:10px; padding:14px 20px;">
+                    <a href="{{approveUrl}}" style="display:block; font-family:'DM Sans',Arial,sans-serif; font-size:16px; font-weight:600; color:#ffffff; text-decoration:none;">Review &amp; Approve Request →</a>
                   </td>
                 </tr>
               </table>
+
+              <!-- Next steps for the resident -->
+              <div style="margin-top:20px; border-top:1px solid #eef1f5; padding-top:18px;">
+                <div style="font-size:11px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase; color:#5a6072; margin-bottom:8px;">What happens next?</div>
+                <table style="font-size:13px; color:#5a6072; line-height:1.8;">
+                  <tr><td style="padding-right:8px; vertical-align:top;">1.</td><td style="padding-bottom:4px;">Review this request and the questions above.</td></tr>
+                  <tr><td style="padding-right:8px; vertical-align:top;">2.</td><td style="padding-bottom:4px;">Click <strong>“Review &amp; Approve”</strong> — you’ll see the requester’s full contact details.</td></tr>
+                  <tr><td style="padding-right:8px; vertical-align:top;">3.</td><td style="padding-bottom:4px;">If you approve, we’ll send you both an email introduction so you can discuss directly.</td></tr>
+                </table>
+                <div style="margin-top:10px; font-size:11px; color:#9299a8; background:#f4f7fc; padding:8px 12px; border-radius:6px;">
+                  ⏳ This request expires in 48 hours if left unresponded.
+                </div>
+              </div>
+
+              <!-- Fallback plain link (in case button is blocked) -->
+              <div style="margin-top:14px; text-align:center; font-size:11px; color:#b0b6c3;">
+                Button not working? Copy this link into your browser:<br>
+                <span style="word-break:break-all; color:#4A8FD4;">{{approveUrl}}</span>
+              </div>
             </td>
           </tr>
 
