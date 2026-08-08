@@ -626,6 +626,7 @@
         function closeModal(){document.getElementById('introModal').classList.remove('active')}
         window.addEventListener('click',(e)=>{if(e.target===document.getElementById('introModal'))closeModal()});
 
+        // ─── FIXED: SIMPLIFIED 3 REALISTIC QUESTIONS ───
         function getIntroductionFormHTML(listingId){
             return `
             <button class="modal-close" onclick="closeModal()">✕</button>
@@ -659,18 +660,20 @@
                         <option>Just Exploring</option>
                     </select>
                 </div>
+
+                <!-- ✅ SIMPLIFIED 3 QUESTIONS (fixed) -->
                 <div class="form-group">
-                    <label>Additional questions for the resident</label>
-                    <div class="check-label"><input type="checkbox" class="req-extra" value="Can you share photos of the apartment?"> Can you share photos?</div>
-                    <div class="check-label"><input type="checkbox" class="req-extra" value="Is there a video tour available?"> Is there a video tour?</div>
-                    <div class="check-label"><input type="checkbox" class="req-extra" value="What is the condition of the plumbing/electrical?"> Condition of plumbing/electrical?</div>
-                    <div class="check-label"><input type="checkbox" class="req-extra" value="Are there any additional fees?"> Any additional fees?</div>
+                    <label>Quick questions for the resident (optional)</label>
+                    <div class="check-label"><input type="checkbox" class="req-extra" value="Is the road accessible for cars?"> Is the road accessible for cars?</div>
+                    <div class="check-label"><input type="checkbox" class="req-extra" value="Does the landlord live in the building?"> Does the landlord live in the building?</div>
+                    <div class="check-label"><input type="checkbox" class="req-extra" value="Are there any service charges (waste, security, etc.)?"> Are there any service charges (waste, security, etc.)?</div>
                     <div class="check-label" style="flex-wrap:wrap">
                         <input type="checkbox" id="req-extra-other" class="req-extra" value="Other" onchange="document.getElementById('req-extra-other-text').style.display=this.checked?'inline-block':'none'">
                         <label for="req-extra-other" style="font-weight:400;font-size:13px;margin-right:4px">Other</label>
                         <input type="text" id="req-extra-other-text" placeholder="Please specify" style="display:none;flex:1;padding:4px 8px;border:1px solid var(--card-border);border-radius:4px;font-size:13px;margin-left:4px">
                     </div>
                 </div>
+
                 <div class="form-group" style="margin-top:8px;">
                     <label class="check-label" style="font-weight:400;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink-muted);">
                         <input type="checkbox" id="req-agree-finder" required style="width:16px;height:16px;accent-color:var(--orange);margin-right:8px;">
