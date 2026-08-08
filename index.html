@@ -233,6 +233,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .confirm-no{flex:1;padding:12px;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.6);border:1.5px solid rgba(255,255,255,0.12);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;}
   .confirm-no:hover{background:rgba(255,255,255,0.12);color:#fff;}
 
+  /* SPINNER */
+  .spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:8px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
   /* PAGE SECTIONS */
   .full-divider{border:none;border-top:1px solid var(--border);margin:0;}
   .section{padding:72px 48px;max-width:1100px;margin:0 auto;}
@@ -546,8 +550,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <textarea id="t-comments" rows="3" maxlength="200" placeholder="e.g. Water can run low end of month, but estate is quiet and security is solid." oninput="setVal('comments',this.value);updateCharCount('t-comments','t-comments-count',200)"></textarea>
         <div class="char-counter"><span id="t-comments-count">0</span>/200</div>
       </div>
-      <button class="next-btn" id="t-submit-btn" onclick="if(userType==='both'){goTo('b-s-1')}else{submitQuiz('tenant')}">Submit my apartment →</button>
+      <!-- ✅ UPDATED: Now goes to qualification step -->
+      <button class="next-btn" onclick="goTo('t-7')">Next →</button>
       <button class="back-btn" onclick="goTo('t-5')">← Back</button>
+    </div>
+
+    <!-- ─── NEW QUALIFICATION STEP (t-7) ─── -->
+    <div class="quiz-step" id="t-7">
+      <div class="step-label">Almost there</div>
+      <div class="quiz-q">One last thing</div>
+      <div style="background:rgba(74,143,212,0.08);border-left:3px solid #4A8FD4;padding:16px 18px;border-radius:8px;margin:12px 0;">
+        <p style="font-size:14px;color:rgba(255,255,255,0.85);line-height:1.6;margin-bottom:8px;">
+          🔔 A person will request an introduction if they like your place.
+          <strong style="color:#fff;">Please accept if the place is still available.</strong>
+        </p>
+        <p style="font-size:13px;color:rgba(255,255,255,0.6);">You can decline or mark it unavailable anytime.</p>
+      </div>
+      <div style="margin:16px 0 8px;">
+        <label class="check-label" style="color:rgba(255,255,255,0.8);font-size:14px;display:flex;align-items:center;gap:10px;">
+          <input type="checkbox" id="t-confirm" style="width:18px;height:18px;accent-color:var(--blue);">
+          I understand and agree to respond to introduction requests.
+        </label>
+        <div class="field-error" id="err-t-confirm" style="font-size:13px;">Please check the box to continue.</div>
+      </div>
+      <button class="next-btn" id="t-confirm-btn" onclick="confirmListing()">Continue →</button>
+      <button class="back-btn" onclick="goTo('t-6')">← Back</button>
     </div>
 
     <!-- THANK YOU – PACKING (t-ty) -->
@@ -591,7 +618,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <button class="opt" onclick="setVal('preferredLocation','Island');goTo('b-s-2')"><div><div class="opt-title">Island</div><div class="opt-sub">Lekki, VI, Ajah, Ikoyi…</div></div></button>
         <button class="opt" onclick="setVal('preferredLocation','Both / flexible');goTo('b-s-2')"><div><div class="opt-title">Both — I'm flexible</div><div class="opt-sub">Show me the best matches anywhere in Lagos</div></div></button>
       </div>
-      <button class="back-btn" onclick="goTo('t-6')">← Back</button>
+      <button class="back-btn" onclick="goTo('t-7')">← Back</button>
     </div>
 
     <div class="quiz-step" id="b-s-2">
@@ -770,7 +797,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <hr class="full-divider">
 
 <!-- ══════════════════════════════════════════════════════ -->
-<!-- HOW IT WORKS — FOR LISTERS  (UPDATED)                 -->
+<!-- HOW IT WORKS — FOR LISTERS                           -->
 <!-- ══════════════════════════════════════════════════════ -->
 <div id="how-it-works" class="section" style="padding-bottom:48px;">
   <div class="section-eyebrow">For people with a place</div>
@@ -804,7 +831,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <hr class="full-divider">
 
 <!-- ══════════════════════════════════════════════════════ -->
-<!-- HOW IT WORKS — FOR SEEKERS (SLIGHTLY REFINED)        -->
+<!-- HOW IT WORKS — FOR SEEKERS                           -->
 <!-- ══════════════════════════════════════════════════════ -->
 <div class="dark-section">
 <div class="section" style="padding-bottom:48px;background:transparent;padding-top:0;">
@@ -844,7 +871,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <hr class="full-divider">
 
 <!-- ══════════════════════════════════════════════════════ -->
-<!-- HONESTY SECTION (KEPT, SLIGHTLY SHORTENED)            -->
+<!-- HONESTY SECTION                                       -->
 <!-- ══════════════════════════════════════════════════════ -->
 <div class="section">
   <div class="honesty-grid">
@@ -895,8 +922,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   // ── STATE ──
   var vals = {}, currentStep = 'step-0', userType = '';
 
-  var packingSteps = ['step-0','p-confirm','t-1','t-2','t-3','t-4','t-5','t-6','t-ty'];
-  var bothSteps    = ['step-0','b-confirm','t-1','t-2','t-3','t-4','t-5','t-6','b-s-1','b-s-2','b-s-3','b-s-4','b-s-5','b-ty'];
+  // ── UPDATED: Added 't-7' to packing and both flows ──
+  var packingSteps = ['step-0','p-confirm','t-1','t-2','t-3','t-4','t-5','t-6','t-7','t-ty'];
+  var bothSteps    = ['step-0','b-confirm','t-1','t-2','t-3','t-4','t-5','t-6','t-7','b-s-1','b-s-2','b-s-3','b-s-4','b-s-5','b-ty'];
   var seekerSteps  = ['step-0','s-1','s-2','s-3','s-4','s-5','s-ty'];
 
   function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
@@ -1007,10 +1035,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   // ── NAVIGATION ──
   function goTo(stepId){
     document.getElementById(currentStep).classList.remove('active');
-    document.getElementById(stepId).classList.add('active');
+    var targetEl = document.getElementById(stepId);
+    targetEl.classList.add('active');
     currentStep = stepId;
     updateProgress();
     document.getElementById('quiz-area').scrollIntoView({behavior:'smooth',block:'start'});
+
+    // Autofocus first input/select/textarea on the new step
+    setTimeout(function(){
+      var firstInput = targetEl.querySelector('input:not([type="checkbox"]), select, textarea');
+      if(firstInput) firstInput.focus();
+    }, 100);
 
     if(stepId === 't-6'){
       var tBtn = document.getElementById('t-submit-btn');
@@ -1020,7 +1055,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if(stepId === 't-ty'){
       window.dataLayer.push({ event: 'rentpal_packing_complete', userType: 'packing' });
       window.dataLayer.push({ event: 'rentpal_listing_complete', userType: 'packing' });
-      // Set the photo upload link to the listing ID returned by submitQuiz
       var listingId = vals.userId || '';
       var photoLink = document.getElementById('photo-link');
       if(photoLink && listingId){
@@ -1069,7 +1103,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var totalRealSteps = steps.length - 2;
     var pct = Math.min(100, Math.round(((idx) / totalRealSteps) * 100));
     document.getElementById('qpfill').style.width = pct+'%';
-    document.getElementById('qplabel').textContent = currentStep.endsWith('-ty') ? 'Done ✓' : 'Step '+idx+' of '+totalRealSteps;
+    // Fixed: show Step 1 of X instead of Step 0 of X
+    document.getElementById('qplabel').textContent = currentStep.endsWith('-ty') ? 'Done ✓' : 'Step '+(idx+1)+' of '+totalRealSteps;
+  }
+
+  // ── NEW: QUALIFICATION CONFIRMATION ──
+  function confirmListing() {
+    var check = document.getElementById('t-confirm');
+    if (!check.checked) {
+      showError(check, 'err-t-confirm');
+      return;
+    }
+    clearError(check);
+    if (userType === 'both') {
+      goTo('b-s-1');
+    } else {
+      submitQuiz('tenant');
+    }
   }
 
   function submitQuiz(type){
@@ -1109,10 +1159,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       return;
     }
 
-    var btnId = type==='tenant' ? 't-submit-btn' : (type==='seeker' ? 's-submit-btn' : 'both-submit-btn');
+    var btnId = type==='tenant' ? 't-confirm-btn' : (type==='seeker' ? 's-submit-btn' : 'both-submit-btn');
     var btn = document.getElementById(btnId);
     var btnOriginalText = btn ? btn.textContent : '';
-    if(btn){ btn.disabled=true; btn.textContent='Submitting…'; }
+    if(btn){
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span> Submitting…';
+    }
 
     vals.type = type === 'seeker' ? 'seeker' : (type === 'both' ? 'both' : userType);
     if(type !== 'both'){
@@ -1136,7 +1189,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         console.log('✅ Quiz submitted:', data);
         if(data && data.status === 'ok'){
           window.dataLayer.push({event:'rentpal_quiz_success', type: vals.type, userId: data.userId});
-          vals.userId = data.userId;   // store for photo link
+          vals.userId = data.userId;
           goTo(tyScreen);
         } else {
           throw new Error(data && data.message ? data.message : 'Submission failed');
@@ -1144,7 +1197,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       })
       .catch(function(err){
         console.error('❌ Quiz submit failed:', err);
-        if(btn){ btn.disabled=false; btn.textContent=btnOriginalText; }
+        if(btn){
+          btn.disabled = false;
+          btn.textContent = btnOriginalText;
+        }
         alert('Sorry — something went wrong. Please try again.\n\nDetails: ' + (err.message || err));
       });
   }
