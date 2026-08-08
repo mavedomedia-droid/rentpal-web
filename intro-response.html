@@ -35,13 +35,26 @@
     .seeker-prefs h3{font-size:15px;font-weight:700;margin-bottom:8px}
     .confirmation{text-align:center;padding:30px;color:#27500A;background:#EAF3DE;border-radius:12px;margin-top:20px}
     .confirmation.error{background:#fee2e2;color:#991b1b}
+    .question-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #eef1f5}
+    .question-row:last-child{border-bottom:none}
+    .question-text{flex:1;font-size:14px;color:#0f1117}
+    .toggle-group{display:flex;gap:6px}
+    .toggle-btn{padding:4px 14px;border-radius:6px;border:1.5px solid #ccc;background:transparent;font-weight:600;font-size:13px;cursor:pointer;transition:all 0.15s}
+    .toggle-btn.yes{color:#4CAF85;border-color:#4CAF85}
+    .toggle-btn.yes.selected{background:#4CAF85;color:#fff}
+    .toggle-btn.no{color:#e74c3c;border-color:#e74c3c}
+    .toggle-btn.no.selected{background:#e74c3c;color:#fff}
+    .toggle-btn:disabled{opacity:0.5;cursor:not-allowed}
+    .answer-status{font-size:11px;color:#5a6072;margin-left:8px}
+    .question-section-title{font-size:13px;font-weight:600;color:#4A8FD4;margin-bottom:10px}
+    .error-msg{color:#e74c3c;font-size:13px;margin-top:8px;display:none}
   </style>
 </head>
 <body>
   <div class="container">
     <div class="logo">rentpal</div>
     <h1>Someone wants your apartment</h1>
-    <p class="subtitle">Review the request and choose how to respond.</p>
+    <p class="subtitle">Review the request, answer a few questions, and choose how to respond.</p>
     <div id="content">
       <div class="loading">Loading request details…</div>
     </div>
@@ -49,14 +62,20 @@
   <script>
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbzmMrwyXnu7DPIt3bp-jwVL5FtsBCGO4Zu5s0tenSu88j1FQPLTOIBLmw1SSMTetD8ItA/exec'; // ⚠️ Replace with your deployed URL
 
+    let requestData = null; // store for later
+
     async function fetchIntroDetails(requestId) {
       const res = await fetch(`${GAS_URL}?action=introDetails&requestId=${encodeURIComponent(requestId)}`);
       if (!res.ok) throw new Error('Network error');
       return res.json();
     }
 
-    async function performAction(requestId, response) {
-      const res = await fetch(`${GAS_URL}?action=residentResponse&requestId=${encodeURIComponent(requestId)}&response=${response}&format=json`);
+    async function performAction(requestId, response, answers) {
+      let url = `${GAS_URL}?action=residentResponse&requestId=${encodeURIComponent(requestId)}&response=${response}&format=json`;
+      if (response === 'approve' && answers) {
+        url += `&answers=${encodeURIComponent(answers)}`;
+      }
+      const res = await fetch(url);
       if (!res.ok) throw new Error('Network error');
       return res.json();
     }
@@ -64,12 +83,14 @@
     function formatNaira(n){ if(!n||isNaN(n))return'—'; return'₦'+parseInt(n).toLocaleString('en-NG'); }
     function escapeHTML(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 
+    // ── RENDER ──
     function render(data) {
       if (!data.success) {
         document.getElementById('content').innerHTML = `<div class="empty">${escapeHTML(data.message || 'Request not found.')}</div>`;
         return;
       }
 
+      requestData = data;
       const { requestId, status, listing, requester, seekerPrefs } = data;
 
       if (status !== 'Pending') {
@@ -100,7 +121,7 @@
           </div>`;
       }
 
-      // Requester (only name, reason, timeline, extra questions)
+      // Requester info
       let requesterHTML = `
         <div class="card">
           <h2>👤 ${escapeHTML(requester.name)}</h2>
@@ -108,12 +129,9 @@
           <div class="value">${escapeHTML(requester.reason)}</div>
           <div class="label">Move Timeline</div>
           <div class="value">${escapeHTML(requester.moveTimeline)}</div>
-          ${requester.extraQuestions ? `
-          <div class="label">Extra Questions</div>
-          <div class="value">${escapeHTML(requester.extraQuestions)}</div>` : ''}
         </div>`;
 
-      // What we know about this person (seeker preferences)
+      // What we know about this person (seeker prefs)
       let knowHTML = '';
       if (seekerPrefs) {
         knowHTML = `
@@ -140,30 +158,125 @@
           </div>`;
       }
 
-      // Action buttons (in-page, no redirect)
+      // ── QUESTIONS SECTION (with Yes/No toggles) ──
+      const extraQuestions = requester.extraQuestions || '';
+      let questionsHTML = '';
+      let questionItems = [];
+
+      if (extraQuestions) {
+        questionItems = extraQuestions.split(';').map(s => s.trim()).filter(s => s);
+        if (questionItems.length) {
+          questionsHTML = `
+            <div class="card" id="questions-card">
+              <h2>📋 Questions from the requester</h2>
+              <p style="color:#5a6072; margin-bottom:12px;">Please answer each question with Yes or No.</p>
+              <div id="question-list">
+                ${questionItems.map((q, idx) => `
+                  <div class="question-row" data-idx="${idx}">
+                    <span class="question-text">${escapeHTML(q)}</span>
+                    <div class="toggle-group">
+                      <button class="toggle-btn yes" data-idx="${idx}" data-value="yes">Yes</button>
+                      <button class="toggle-btn no" data-idx="${idx}" data-value="no">No</button>
+                    </div>
+                    <span class="answer-status" id="status-${idx}">✗</span>
+                  </div>
+                `).join('')}
+              </div>
+              <div class="error-msg" id="questions-error">Please answer all questions before approving.</div>
+            </div>`;
+        }
+      }
+
+      // ── ACTION BUTTONS ──
       const actionsHTML = `
         <div class="card" id="action-buttons">
           <h2>Your Response</h2>
           <p style="color:#5a6072; margin-bottom:16px;">Choose how you’d like to proceed with this introduction request.</p>
           <div class="actions">
-            <button class="btn btn-approve" onclick="handleAction('${requestId}', 'approve')">Approve Introduction</button>
-            <button class="btn btn-decline" onclick="handleAction('${requestId}', 'decline')">Decline</button>
-            <button class="btn btn-unavailable" onclick="handleAction('${requestId}', 'noLongerAvailable')">Apartment No Longer Available</button>
+            <button class="btn btn-approve" id="btn-approve">Approve Introduction</button>
+            <button class="btn btn-decline" id="btn-decline">Decline</button>
+            <button class="btn btn-unavailable" id="btn-unavailable">Apartment No Longer Available</button>
           </div>
         </div>`;
 
-      document.getElementById('content').innerHTML = listingHTML + requesterHTML + knowHTML + actionsHTML;
+      // Assemble
+      document.getElementById('content').innerHTML = listingHTML + requesterHTML + knowHTML + questionsHTML + actionsHTML;
+
+      // ── SETUP TOGGLES ──
+      if (questionItems.length) {
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const row = this.closest('.question-row');
+            const idx = row.dataset.idx;
+            const yesBtn = row.querySelector('.toggle-btn.yes');
+            const noBtn = row.querySelector('.toggle-btn.no');
+            // Reset
+            [yesBtn, noBtn].forEach(b => b.classList.remove('selected'));
+            // Highlight selected
+            this.classList.add('selected');
+            // Update status
+            const statusSpan = document.getElementById(`status-${idx}`);
+            statusSpan.textContent = this.dataset.value === 'yes' ? '✅' : '❌';
+            statusSpan.style.color = this.dataset.value === 'yes' ? '#4CAF85' : '#e74c3c';
+            // Hide error if all answered
+            checkAllAnswered();
+          });
+        });
+      }
+
+      // ── BUTTON HANDLERS ──
+      document.getElementById('btn-approve').addEventListener('click', function() {
+        if (questionItems.length) {
+          // Check all answered
+          const allAnswered = document.querySelectorAll('.question-row').every(row => {
+            const status = row.querySelector('.answer-status');
+            return status.textContent === '✅' || status.textContent === '❌';
+          });
+          if (!allAnswered) {
+            document.getElementById('questions-error').style.display = 'block';
+            document.getElementById('questions-error').scrollIntoView({behavior:'smooth', block:'center'});
+            return;
+          }
+        }
+        // Collect answers
+        let answers = [];
+        document.querySelectorAll('.question-row').forEach(row => {
+          const selected = row.querySelector('.toggle-btn.selected');
+          answers.push(selected ? selected.dataset.value : '');
+        });
+        handleAction(requestId, 'approve', answers.join(';'));
+      });
+
+      document.getElementById('btn-decline').addEventListener('click', function() {
+        handleAction(requestId, 'decline', '');
+      });
+
+      document.getElementById('btn-unavailable').addEventListener('click', function() {
+        handleAction(requestId, 'noLongerAvailable', '');
+      });
     }
 
-    async function handleAction(requestId, response) {
-      // Disable buttons
+    function checkAllAnswered() {
+      const allAnswered = document.querySelectorAll('.question-row').every(row => {
+        const status = row.querySelector('.answer-status');
+        return status.textContent === '✅' || status.textContent === '❌';
+      });
+      const error = document.getElementById('questions-error');
+      if (error) {
+        if (allAnswered) error.style.display = 'none';
+        else error.style.display = 'block';
+      }
+    }
+
+    async function handleAction(requestId, response, answers) {
+      // Disable all buttons
       document.querySelectorAll('.btn').forEach(b => b.disabled = true);
       try {
-        const result = await performAction(requestId, response);
+        const result = await performAction(requestId, response, answers);
         const confirmationDiv = document.createElement('div');
         confirmationDiv.className = result.success ? 'confirmation' : 'confirmation error';
         confirmationDiv.innerHTML = `<p>${escapeHTML(result.message)}</p>`;
-        // Replace action buttons with confirmation
         const actionCard = document.getElementById('action-buttons');
         if (actionCard) {
           actionCard.innerHTML = '';
@@ -188,7 +301,7 @@
         const data = await fetchIntroDetails(requestId);
         render(data);
       } catch(e) {
-        document.getElementById('content').innerHTML = '<div class="error">Could not load request details. Please try again later.</div>';
+        document.getElementById('content').innerHTML = '<div class="empty">Could not load request details. Please try again later.</div>';
       }
     }
 
