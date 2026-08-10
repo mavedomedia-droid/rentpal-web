@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
+  <title>Your bid was approved! · RentPal</title>
+</head>
+<body style="margin:0; padding:0; background-color:#eef1f5; font-family:'DM Sans','Helvetica Neue',Arial,sans-serif; -webkit-font-smoothing:antialiased; color:#0f1117;">
+  <div style="display:none; max-height:0; overflow:hidden; font-size:1px; line-height:1px; color:#eef1f5; opacity:0;">
+    Great news! Your bid of {{bidAmount}} on Super Space {{listingId}} has been approved.
+  </div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#eef1f5;">
+    <tr>
+      <td align="center" style="padding:36px 12px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:580px; background:#ffffff; border-radius:18px; overflow:hidden; box-shadow:0 4px 18px rgba(15,17,23,0.06);">
+          <!-- Hero -->
+          <tr>
+            <td bgcolor="#0A0F0D" style="background-color:#0A0F0D; background-image:linear-gradient(145deg,#0A0F0D 0%,#0F2A1F 50%,#0C447C 100%); padding:34px 36px 40px;">
+              <img src="https://rentpal-web.netlify.app/rentpal_logo_blue.png" alt="RentPal" width="108" style="display:block; height:auto; max-width:108px; margin-bottom:26px; border:0;">
+              <div style="font-size:11px; font-weight:600; color:#34D399; letter-spacing:1.6px; text-transform:uppercase; margin-bottom:12px;">Bid Approved! 🎉</div>
+              <h1 style="font-family:'Plus Jakarta Sans','Helvetica Neue',Arial,sans-serif; font-size:28px; font-weight:800; color:#ffffff; line-height:1.15; letter-spacing:-0.7px; margin:0 0 8px;">
+                The lister said YES!
+              </h1>
+              <p style="font-size:14px; color:rgba(255,255,255,0.65); line-height:1.65; margin:0; font-weight:300; max-width:420px;">
+                Your bid of <strong style="color:#34D399;">{{bidAmount}}</strong> on Super Space <strong>{{listingId}}</strong> has been approved.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Escrow Step -->
+          <tr>
+            <td style="padding:28px 36px 4px;">
+              <div style="background:#ECFDF5; border:1px solid #10B981; border-radius:12px; padding:16px 18px;">
+                <div style="font-size:13px; color:#065F46; font-weight:600; margin-bottom:8px;">🔒 Next Step: Pay Escrow</div>
+                <p style="font-size:13px; color:#065F46; line-height:1.6; margin:0;">Pay <strong>{{escrowAmount}}</strong> (10% of your bid) to secure the deal. The lister will receive your contact details once payment is confirmed.</p>
+              </div>
+            </td>
+          </tr>
+
+          <!-- CTA -->
+          <tr>
+            <td style="padding:28px 36px 32px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center" bgcolor="#10B981" style="background-color:#10B981; border-radius:10px; padding:14px;">
+                    <a href="{{paymentLink}}" style="display:block; font-family:'DM Sans',Arial,sans-serif; font-size:16px; font-weight:600; color:#ffffff; text-decoration:none;">Pay Escrow Now →</a>
+                  </td>
+                </tr>
+              </table>
+              <p style="font-size:12px; color:#9299a8; text-align:center; margin-top:12px;">Payment is secured by Paystack. Your money is safe.</p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding:24px 36px 32px; text-align:center; border-top:1px solid #eef1f5;">
+              <p style="font-size:12px; color:#9299a8; line-height:1.7; margin:16px 0 0; font-weight:400;">RentPal SuperSpaces · Lagos, Nigeria<br><a href="https://rentpal-web.netlify.app" style="color:#9299a8; text-decoration:none;">rentpal-web.netlify.app</a></p>
+              <p style="font-size:11px; color:#b0b6c3; line-height:1.6; margin:12px 0 0; font-weight:300;">You requested this introduction on RentPal.</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
