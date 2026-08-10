@@ -120,28 +120,44 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .qualify-check:last-of-type{margin-bottom:6px;}
   .qualify-check input[type="checkbox"]{width:16px;height:16px;margin-top:2px;flex-shrink:0;accent-color:var(--green);cursor:pointer;}
   .qualify-check label{font-size:13px;color:rgba(255,255,255,0.8);line-height:1.4;cursor:pointer;}
-  .ty-card{background:rgba(255,255,255,0.06);border:1px solid rgba(16,185,129,0.25);border-radius:14px;padding:28px 24px;text-align:center;}
-  .ty-icon{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;background:rgba(16,185,129,0.12);}
-  .ty-card h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:6px;}
-  .ty-card p{font-size:13px;font-weight:300;color:rgba(255,255,255,0.55);line-height:1.7;margin-bottom:12px;max-width:400px;margin-left:auto;margin-right:auto;}
-  .ty-steps{background:rgba(0,0,0,0.2);border-radius:8px;padding:14px 16px;text-align:left;margin-top:10px;border:1px solid rgba(16,185,129,0.1);}
-  .ty-steps-lbl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,0.25);margin-bottom:6px;}
-  .ty-step{display:flex;gap:8px;font-size:12px;font-weight:300;color:rgba(255,255,255,0.5);line-height:1.5;margin-bottom:5px;}
-  .ty-step:last-child{margin-bottom:0;}
-  .ty-dot{width:4px;height:4px;border-radius:50%;margin-top:6px;flex-shrink:0;background:var(--green);}
-  .tg-btn{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:500;margin-top:14px;transition:background .2s;}
-  .tg-btn:hover{background:var(--green-dark);}
-  .photo-prompt{margin-top:14px;padding:10px 14px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.15);border-radius:8px;font-size:12px;color:rgba(255,255,255,0.6);text-align:center;}
-  .photo-prompt a{color:var(--green-mid);font-weight:500;text-decoration:underline;margin-left:4px;}
-  .ty-tg-block{margin-top:16px;padding:14px 16px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.15);border-radius:10px;text-align:center;}
-  .ty-tg-label{font-size:13px;font-weight:400;color:rgba(255,255,255,0.7);line-height:1.5;margin-bottom:10px;}
-  .ty-tg-label span{color:rgba(255,255,255,0.35);font-size:12px;}
+
+  /* ─── THANK YOU MODAL ─── */
+  .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:500;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+  .modal-overlay.active{display:flex;}
+  .modal-box{background:#0A0F0D;border:1px solid rgba(16,185,129,0.3);border-radius:18px;max-width:480px;width:100%;padding:32px 28px;text-align:center;position:relative;animation:modalIn .3s ease;}
+  @keyframes modalIn{from{opacity:0;transform:scale(0.95) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
+  .modal-close{position:absolute;top:12px;right:16px;background:none;border:none;color:rgba(255,255,255,0.3);font-size:22px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:color .2s;}
+  .modal-close:hover{color:#fff;}
+  .modal-icon{width:52px;height:52px;border-radius:13px;background:rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;}
+  .modal-icon svg{width:26px;height:26px;stroke:#10B981;stroke-width:2;fill:none;}
+  .modal-box h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:4px;}
+  .modal-box .ref{font-family:'DM Mono',monospace;font-size:14px;color:#34D399;font-weight:600;display:block;margin-bottom:6px;}
+  .modal-box .sub{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:16px;}
+  .modal-divider{border:0;border-top:1px solid rgba(255,255,255,0.06);margin:14px 0;}
+  .modal-actions{display:flex;flex-direction:column;gap:8px;}
+  .modal-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;text-decoration:none;transition:background .2s,border-color .2s;}
+  .modal-btn.primary{background:#10B981;color:#fff;border:none;}
+  .modal-btn.primary:hover{background:#059669;}
+  .modal-btn.secondary{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.1);}
+  .modal-btn.secondary:hover{background:rgba(255,255,255,0.12);}
+  .modal-btn svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;flex-shrink:0;}
+  .modal-skip{font-size:12px;color:rgba(255,255,255,0.3);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:10px;transition:color .2s;}
+  .modal-skip:hover{color:rgba(255,255,255,0.5);}
+  .modal-email-note{font-size:11px;color:rgba(255,255,255,0.25);margin-top:12px;line-height:1.5;}
+
   .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px;}
   @keyframes spin{to{transform:rotate(360deg);}}
   .disclaimer-note{font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;font-style:italic;}
+
   footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;align-items:center;justify-content:space-between;}
   .footer-text{font-size:12px;color:var(--ink-faint);}
-  @media(max-width:768px){nav{padding:0 16px;}.hero-wrap{padding:48px 16px 36px;}.hero-title{font-size:32px;}.opts.g2{grid-template-columns:1fr 1fr;}.qrow{grid-template-columns:1fr;}.section{padding:40px 16px;}.steps-grid{grid-template-columns:1fr;gap:16px;}footer{padding:18px 20px;flex-direction:column;gap:6px;text-align:center;}.form-wrap{padding:24px 16px 40px;}.qualify-card{padding:16px 18px;}.hero-stats{gap:8px 16px;}.hero-stat{font-size:12px;}}
+
+  .toast-container{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:600;display:flex;flex-direction:column;gap:8px;align-items:center;}
+  .toast{background:var(--ink);color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 4px 12px rgba(0,0,0,0.15);animation:toastIn 0.3s ease;font-family:'DM Sans',sans-serif;}
+  .toast.error{background:#dc2626;}
+  @keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+  @media(max-width:768px){nav{padding:0 16px;}.hero-wrap{padding:48px 16px 36px;}.hero-title{font-size:32px;}.opts.g2{grid-template-columns:1fr 1fr;}.qrow{grid-template-columns:1fr;}.section{padding:40px 16px;}.steps-grid{grid-template-columns:1fr;gap:16px;}footer{padding:18px 20px;flex-direction:column;gap:6px;text-align:center;}.form-wrap{padding:24px 16px 40px;}.qualify-card{padding:16px 18px;}.hero-stats{gap:8px 16px;}.hero-stat{font-size:12px;}.modal-box{padding:24px 18px;}}
   @media(max-width:400px){.opts.g2{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -198,7 +214,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </div>
 </div>
 
-<!-- FORM -->
+<!-- ──────────────── FORM ──────────────── -->
 <div id="super-form" class="form-wrap">
   <div class="form-inner">
     <div class="quiz-progress" id="quiz-progress" style="display:none;">
@@ -364,26 +380,30 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <button class="next-btn" id="space-submit-btn" onclick="submitSpace()">List Super Space →</button>
       <button class="back-btn" onclick="goTo('super-6')">← Back</button>
     </div>
+  </div>
+</div>
 
-    <!-- THANK YOU -->
-    <div class="quiz-step" id="space-ty">
-      <div class="ty-card">
-        <div class="ty-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/><path d="M12 22V12"/></svg></div>
-        <h3>Your Super Space is live!</h3>
-        <p>🎉 Your apartment is now listed. Seekers can bid on it right away. We'll email you when someone places a bid.</p>
-        <div class="ty-steps">
-          <div class="ty-steps-lbl">What happens next</div>
-          <div class="ty-step"><div class="ty-dot"></div><span>We'll send you a link to upload photos – do it now to increase your chances.</span></div>
-          <div class="ty-step"><div class="ty-dot"></div><span>When a bid comes in, you'll get an email with the amount and bidder details.</span></div>
-          <div class="ty-step"><div class="ty-dot"></div><span>You approve or decline – we broker the rest.</span></div>
-        </div>
-        <div class="photo-prompt" id="space-photo-prompt">📷 <span>Upload photos now to attract more bids —</span> <a href="#" id="space-photo-link">upload photos →</a></div>
-        <div class="ty-tg-block">
-          <p class="ty-tg-label">Join our Telegram channel for updates.<br><span>That's where bidding happens.</span></p>
-          <a href="https://t.me/rentpal_lagos" target="_blank" class="tg-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> t.me/rentpal_lagos</a>
-        </div>
-      </div>
+<!-- ─── THANK YOU MODAL ─── -->
+<div class="modal-overlay" id="ty-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/><path d="M12 22V12"/></svg></div>
+    <h2>Your Super Space is live! 🎉</h2>
+    <span class="ref" id="modal-ref">SS-000001</span>
+    <p class="sub">Your listing is now active. Complete it by adding photos and proof of tenancy.</p>
+    <hr class="modal-divider">
+    <div class="modal-actions">
+      <a href="#" id="modal-upload-link" class="modal-btn primary">
+        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Upload Photos
+      </a>
+      <a href="#" id="modal-proof-link" class="modal-btn secondary">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-4"/><path d="M8 12h8"/></svg>
+        Upload Proof of Tenancy
+      </a>
     </div>
+    <button class="modal-skip" onclick="closeModal()">Skip for now — I'll do it later</button>
+    <p class="modal-email-note">📧 We've also sent a link to your email with these options.</p>
   </div>
 </div>
 
@@ -394,21 +414,50 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </footer>
 
 <script>
+  // ── CONFIG ──
   var GAS_URL = "https://script.google.com/macros/s/AKfycbwfNimPoNlSqCnNbwz0BPi4nED0-6UQlA4s1k5nGuqKrC416B3bmTbIoG63K8AO_DoY/exec";
   var vals = {}, currentStep = 'step-0';
-  var superSteps = ['step-0','super-1','super-2','super-3','super-4','super-5','super-6','super-7','space-ty'];
+  var superSteps = ['step-0','super-1','super-2','super-3','super-4','super-5','super-6','super-7'];
 
+  // ── TOAST ──
+  function showToast(msg, type){
+    var container = document.getElementById('toast-container');
+    if(!container){
+      var c = document.createElement('div');
+      c.id = 'toast-container';
+      c.className = 'toast-container';
+      document.body.appendChild(c);
+      container = c;
+    }
+    var toast = document.createElement('div');
+    toast.className = 'toast' + (type === 'error' ? ' error' : '');
+    toast.textContent = msg;
+    container.appendChild(toast);
+    setTimeout(function(){ toast.remove(); }, 2800);
+  }
+
+  // ── NAV ──
   function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
+
+  // ── FORM HELPERS ──
   function setVal(k,v){ vals[k]=v; }
   function selectOnly(btn){ btn.closest('.opts').querySelectorAll('.opt').forEach(function(b){b.classList.remove('selected');}); btn.classList.add('selected'); }
+
   function formatNaira(num){ if(!num || isNaN(num)) return ''; return '₦ ' + parseInt(num).toLocaleString('en-NG'); }
+
   function updateRentDisplay(val){ setVal('space-rent-exact', val); var display = document.getElementById('s-rent-display'); var formatted = formatNaira(val); if(formatted){ display.textContent = formatted; display.classList.add('has-value'); } else { display.textContent = '— type below —'; display.classList.remove('has-value'); } }
+
   function updateCharCount(inputId, counterId, max){ var input = document.getElementById(inputId); var counter = document.getElementById(counterId); if(input && counter) counter.textContent = input.value.length; }
+
   function showError(inputEl, msgId){ if(inputEl) inputEl.classList.add('error'); var err = document.getElementById(msgId); if(err) err.classList.add('show'); if(inputEl){ inputEl.focus(); inputEl.scrollIntoView({behavior:'smooth', block:'center'}); } }
+
   function clearError(inputEl){ if(!inputEl) return; inputEl.classList.remove('error'); var errId = 'err-' + inputEl.id; var err = document.getElementById(errId); if(err) err.classList.remove('show'); }
+
   function clearFieldError(errId){ var e = document.getElementById(errId); if(e) e.classList.remove('show'); }
+
   function isValidEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e || ''); }
 
+  // ── VALIDATION ──
   function validateStep(fromStep, nextStep){
     if(fromStep === 'super-2'){
       if(!vals['space-location']){ document.getElementById('err-s-location').classList.add('show'); return; }
@@ -427,6 +476,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     } else { goTo(nextStep); }
   }
 
+  // ── QUALIFICATION ──
   function checkQualify() {
     var allChecked = document.querySelectorAll('.sq-check:checked').length === 3;
     var btn = document.getElementById('sq-continue');
@@ -440,6 +490,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     goTo('super-1');
   }
 
+  // ── NAVIGATION ──
   function goTo(stepId){
     document.getElementById(currentStep).classList.remove('active');
     var targetEl = document.getElementById(stepId);
@@ -448,12 +499,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     updateProgress();
     document.getElementById('super-form').scrollIntoView({behavior:'smooth', block:'start'});
     setTimeout(function(){ var firstInput = targetEl.querySelector('input:not([type="checkbox"]), select, textarea'); if(firstInput) firstInput.focus(); }, 100);
-    if(stepId === 'space-ty'){
-      window.dataLayer.push({ event: 'rentpal_super_complete', userType: 'super' });
-      var listingId = vals['space-id'] || '';
-      var photoLink = document.getElementById('space-photo-link');
-      if(photoLink && listingId){ photoLink.href = 'https://rentpal-web.netlify.app/upload-photo?id=' + listingId; }
-    }
+
     if(stepId === 'step-0'){
       vals = {};
       document.querySelectorAll('.quiz-step input, .quiz-step textarea').forEach(function(el){ el.value = ''; el.classList.remove('error'); });
@@ -472,14 +518,40 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   function updateProgress(){
     var idx = superSteps.indexOf(currentStep);
     var pw = document.getElementById('quiz-progress');
-    if(currentStep === 'step-0' || currentStep === 'space-ty'){ pw.style.display = 'none'; return; }
+    if(currentStep === 'step-0'){ pw.style.display = 'none'; return; }
     pw.style.display = 'flex';
-    var totalRealSteps = superSteps.length - 2;
+    var totalRealSteps = superSteps.length - 1;
     var pct = Math.min(100, Math.round(((idx) / totalRealSteps) * 100));
     document.getElementById('qpfill').style.width = pct + '%';
     document.getElementById('qplabel').textContent = 'Step '+(idx)+' of '+totalRealSteps;
   }
 
+  // ── MODAL ──
+  function openModal(listingId){
+    var modal = document.getElementById('ty-modal');
+    var ref = document.getElementById('modal-ref');
+    var uploadLink = document.getElementById('modal-upload-link');
+    var proofLink = document.getElementById('modal-proof-link');
+    if(ref) ref.textContent = listingId;
+    var baseUrl = window.location.origin + '/upload-photo?id=' + listingId;
+    if(uploadLink) uploadLink.href = baseUrl;
+    if(proofLink) proofLink.href = baseUrl + '&type=proof';
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(){
+    var modal = document.getElementById('ty-modal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  // Close modal on backdrop click
+  document.getElementById('ty-modal').addEventListener('click', function(e){
+    if(e.target === this) closeModal();
+  });
+
+  // ── SUBMIT SPACE ──
   function submitSpace() {
     var fn = document.getElementById('space-fname').value;
     var em = document.getElementById('space-email').value;
@@ -489,6 +561,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     if(!em || !isValidEmail(em)){ showError(document.getElementById('space-email'), 'err-s-email'); return; }
     if(!asking || parseInt(asking) <= 0){ showError(document.getElementById('space-asking-price'), 'err-s-asking'); return; }
     if(!rent || parseInt(rent) <= 0){ showError(document.getElementById('space-rent-exact'), 'err-s-rent'); return; }
+
     var payload = {
       action: 'superApartment',
       type: 'super',
@@ -511,10 +584,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       phone: vals['space-phone'] || '',
       telegram: vals['space-telegram'] || ''
     };
+
     var btn = document.getElementById('space-submit-btn');
     var originalText = btn.textContent;
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span> Submitting…';
+
     fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload), headers: {'Content-Type':'text/plain'} })
       .then(function(r){ return r.json(); })
       .then(function(data){
@@ -522,7 +597,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         if(data && data.status === 'ok'){
           window.dataLayer.push({event:'rentpal_super_success', userId: data.userId});
           vals['space-id'] = data.userId;
-          goTo('space-ty');
+          openModal(data.userId);
+          btn.disabled = false;
+          btn.textContent = originalText;
+          // Reset form state (optional)
+          goTo('step-0');
         } else { throw new Error(data && data.message ? data.message : 'Submission failed'); }
       })
       .catch(function(err){
@@ -533,6 +612,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       });
   }
 
+  // ── ENTER KEY ──
   document.addEventListener('keydown', function(e){
     if(e.key !== 'Enter') return;
     if(e.target && e.target.tagName === 'TEXTAREA') return;
@@ -542,6 +622,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     if(btn && !btn.disabled){ e.preventDefault(); btn.click(); }
   });
 
+  // ── INIT ──
   document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('footer-year').textContent = new Date().getFullYear();
   });
