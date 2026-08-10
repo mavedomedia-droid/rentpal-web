@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5WCRXXDQ');</script>
+<!-- End Google Tag Manager -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SuperSpaces – Get Paid to Leave · RentPal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green: #10B981; --green-dark: #065F46; --green-light: #ECFDF5;
+    --green-mid: #34D399; --green-deep: #064E3B;
+    --blue: #4A8FD4; --blue-dark: #185FA5;
+    --ink: #0f1117; --ink-muted: #5a6072; --ink-faint: #9299a8;
+    --surface: #f8f9fc; --white: #ffffff; --border: rgba(0,0,0,0.08);
+    --super-bg: linear-gradient(145deg, #0A0F0D 0%, #0F2A1F 50%, #0C447C 100%);
+  }
+  html{scroll-behavior:smooth;font-size:16px;}
+  body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+
+  nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+  .nav-logo img{height:28px;display:block;}
+  .nav-links{display:flex;align-items:center;gap:28px;list-style:none;}
+  .nav-links a{font-size:14px;font-weight:400;color:var(--ink-muted);text-decoration:none;transition:color .2s;}
+  .nav-links a:hover{color:var(--ink);}
+  .nav-cta{background:var(--green);color:#fff;border:none;padding:9px 20px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;text-decoration:none;display:inline-block;transition:background .2s;}
+  .nav-cta:hover{background:var(--green-dark);}
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
+  .hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px;}
+  .mobile-menu{display:none;flex-direction:column;background:var(--white);border-bottom:1px solid var(--border);padding:14px 20px 18px;gap:4px;}
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{font-size:15px;color:var(--ink-muted);text-decoration:none;padding:9px 0;border-bottom:1px solid var(--border);}
+  .mobile-menu a:last-child{border-bottom:none;}
+  .mobile-menu .mob-cta{margin-top:8px;background:var(--green);color:#fff;padding:12px 20px;border-radius:9px;text-align:center;font-weight:500;border-bottom:none;}
+  @media(max-width:768px){.nav-links,.nav-cta{display:none}.hamburger{display:flex}}
+
+  .hero-wrap{background:var(--super-bg);border-bottom:1px solid var(--green);padding:72px 24px 56px;position:relative;overflow:hidden;}
+  .hero-wrap::before{content:'';position:absolute;top:-20%;right:-10%;width:60%;height:120%;background:radial-gradient(circle at 70% 30%, rgba(16,185,129,0.12), transparent 70%);pointer-events:none;z-index:0;}
+  .hero-inner{max-width:740px;margin:0 auto;text-align:center;position:relative;z-index:1;}
+  .hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.15);color:var(--green-mid);font-size:10px;font-weight:500;padding:4px 14px;border-radius:100px;margin-bottom:16px;border:1px solid rgba(16,185,129,0.25);font-family:'DM Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;}
+  .hero-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(38px, 5.5vw, 56px);font-weight:800;line-height:1.05;letter-spacing:-0.03em;color:#fff;margin-bottom:12px;}
+  .hero-title .accent{color:var(--green);}
+  .hero-desc{font-size:16px;font-weight:300;color:rgba(255,255,255,0.6);line-height:1.6;margin:0 auto 24px;max-width:540px;}
+  .hero-cta-group{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:20px;}
+  .btn-primary{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#fff;border:none;padding:11px 28px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;transition:background .2s,transform .15s,box-shadow .2s;box-shadow:0 4px 14px rgba(16,185,129,0.3);}
+  .btn-primary:hover{background:var(--green-dark);transform:translateY(-2px);box-shadow:0 6px 20px rgba(16,185,129,0.4);}
+  .btn-secondary{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.06);color:#fff;border:1px solid rgba(255,255,255,0.12);padding:10px 24px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;text-decoration:none;transition:background .2s;}
+  .btn-secondary:hover{background:rgba(255,255,255,0.12);}
+  .hero-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 28px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.06);}
+  .hero-stat{display:flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,0.6);}
+  .hero-stat svg{width:16px;height:16px;stroke:var(--green);stroke-width:2.5;fill:none;flex-shrink:0;}
+  .hero-stat strong{color:#fff;font-weight:600;margin-right:2px;}
+
+  .section{padding:60px 24px;max-width:1100px;margin:0 auto;}
+  .section-eyebrow{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;color:var(--green);margin-bottom:8px;text-align:center;}
+  .section-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:700;letter-spacing:-0.5px;color:var(--ink);margin-bottom:12px;text-align:center;}
+  .section-sub{font-size:15px;font-weight:300;color:var(--ink-muted);line-height:1.7;max-width:500px;margin:0 auto 40px;text-align:center;}
+  .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .step-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:28px 24px;text-align:center;transition:box-shadow .2s,transform .2s;}
+  .step-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.06);transform:translateY(-2px);}
+  .step-icon{width:48px;height:48px;border-radius:12px;background:var(--green-light);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:22px;}
+  .step-card h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+  .step-card p{font-size:13px;font-weight:300;color:var(--ink-muted);line-height:1.6;}
+
+  .form-wrap{background:var(--super-bg);padding:40px 24px 64px;}
+  .form-inner{max-width:620px;margin:0 auto;}
+  .quiz-progress{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+  .quiz-progress-bar{flex:1;height:3px;background:rgba(255,255,255,0.12);border-radius:2px;overflow:hidden;}
+  .quiz-progress-fill{height:100%;background:var(--green);border-radius:2px;width:0%;transition:width .4s ease;}
+  .quiz-progress-label{font-size:11px;color:rgba(255,255,255,0.4);white-space:nowrap;}
+  .quiz-step{display:none;animation:fadeUp .28s ease both;}
+  .quiz-step.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+  .step-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1px;color:var(--green-mid);margin-bottom:4px;}
+  .quiz-q{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:4px;}
+  .quiz-hint{font-size:13px;font-weight:300;color:rgba(255,255,255,0.5);line-height:1.4;margin-bottom:14px;}
+  .opts{display:flex;flex-direction:column;gap:8px;}
+  .opts.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .opt{border:1.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:12px 14px;cursor:pointer;background:rgba(255,255,255,0.04);text-align:left;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:10px;transition:border-color .15s,background .15s;width:100%;color:#fff;}
+  .opt:hover,.opt.selected{border-color:var(--green);background:rgba(16,185,129,0.12);}
+  .opt-title{font-size:14px;font-weight:500;color:#fff;line-height:1.3;}
+  .opt-sub{font-size:11px;font-weight:300;color:rgba(255,255,255,0.45);margin-top:1px;}
+  .qinput-group{margin-bottom:12px;}
+  .qinput-group label{display:block;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,0.45);margin-bottom:4px;}
+  .qinput-group input,.qinput-group select,.qinput-group textarea{width:100%;padding:10px 14px;border:1.5px solid rgba(255,255,255,0.12);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;color:#fff;background:rgba(255,255,255,0.06);outline:none;transition:border-color .2s,box-shadow .2s;}
+  .qinput-group input:focus,.qinput-group select:focus,.qinput-group textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(16,185,129,.15);}
+  .qinput-group input.error,.qinput-group select.error,.qinput-group textarea.error{border-color:#f87171;box-shadow:0 0 0 3px rgba(248,113,113,0.12);}
+  .qinput-group input::placeholder,.qinput-group textarea::placeholder{color:rgba(255,255,255,0.3);}
+  .qinput-group select{-webkit-appearance:none;appearance:none;cursor:pointer;color:#fff;}
+  .qinput-group select option{background:#1e2a3a;color:#fff;}
+  .qinput-group textarea{resize:none;line-height:1.5;}
+  .field-error{font-size:11px;color:#f87171;margin-top:3px;display:none;}
+  .field-error.show{display:block;}
+  .char-counter{font-size:10px;color:rgba(255,255,255,0.3);text-align:right;margin-top:3px;}
+  .qrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .qgroup-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,0.3);margin:12px 0 6px;}
+  .rent-display{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:var(--green-mid);text-align:center;padding:8px 14px;background:rgba(16,185,129,0.08);border-radius:8px;border:1px solid rgba(16,185,129,0.15);letter-spacing:1px;min-height:42px;margin-bottom:10px;transition:all .2s;}
+  .rent-display.has-value{color:#fff;background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.3);}
+  .rent-display-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,0.3);text-align:center;margin-bottom:4px;}
+  .check-label{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,0.85);cursor:pointer;margin-bottom:4px;}
+  .check-label input[type="checkbox"]{width:15px;height:15px;accent-color:var(--green);cursor:pointer;}
+  .check-label input[type="radio"]{width:15px;height:15px;accent-color:var(--green);cursor:pointer;}
+  .next-btn{width:100%;padding:13px;background:var(--green);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;margin-top:14px;transition:background .2s,transform .15s;}
+  .next-btn:hover{background:var(--green-dark);transform:translateY(-1px);}
+  .next-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+  .back-btn{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,0.3);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:0;margin-top:10px;}
+  .back-btn:hover{color:rgba(255,255,255,0.5);}
+  .qualify-card{background:rgba(16,185,129,0.06);border:1.5px solid rgba(16,185,129,0.2);border-radius:12px;padding:20px 22px;}
+  .qualify-card h4{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:4px;}
+  .qualify-card p{font-size:13px;font-weight:300;color:rgba(255,255,255,0.5);line-height:1.5;margin-bottom:14px;}
+  .qualify-check{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;}
+  .qualify-check:last-of-type{margin-bottom:6px;}
+  .qualify-check input[type="checkbox"]{width:16px;height:16px;margin-top:2px;flex-shrink:0;accent-color:var(--green);cursor:pointer;}
+  .qualify-check label{font-size:13px;color:rgba(255,255,255,0.8);line-height:1.4;cursor:pointer;}
+  .ty-card{background:rgba(255,255,255,0.06);border:1px solid rgba(16,185,129,0.25);border-radius:14px;padding:28px 24px;text-align:center;}
+  .ty-icon{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;background:rgba(16,185,129,0.12);}
+  .ty-card h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:#fff;margin-bottom:6px;}
+  .ty-card p{font-size:13px;font-weight:300;color:rgba(255,255,255,0.55);line-height:1.7;margin-bottom:12px;max-width:400px;margin-left:auto;margin-right:auto;}
+  .ty-steps{background:rgba(0,0,0,0.2);border-radius:8px;padding:14px 16px;text-align:left;margin-top:10px;border:1px solid rgba(16,185,129,0.1);}
+  .ty-steps-lbl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,0.25);margin-bottom:6px;}
+  .ty-step{display:flex;gap:8px;font-size:12px;font-weight:300;color:rgba(255,255,255,0.5);line-height:1.5;margin-bottom:5px;}
+  .ty-step:last-child{margin-bottom:0;}
+  .ty-dot{width:4px;height:4px;border-radius:50%;margin-top:6px;flex-shrink:0;background:var(--green);}
+  .tg-btn{display:inline-flex;align-items:center;gap:6px;background:var(--green);color:#fff;padding:10px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:500;margin-top:14px;transition:background .2s;}
+  .tg-btn:hover{background:var(--green-dark);}
+  .photo-prompt{margin-top:14px;padding:10px 14px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.15);border-radius:8px;font-size:12px;color:rgba(255,255,255,0.6);text-align:center;}
+  .photo-prompt a{color:var(--green-mid);font-weight:500;text-decoration:underline;margin-left:4px;}
+  .ty-tg-block{margin-top:16px;padding:14px 16px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.15);border-radius:10px;text-align:center;}
+  .ty-tg-label{font-size:13px;font-weight:400;color:rgba(255,255,255,0.7);line-height:1.5;margin-bottom:10px;}
+  .ty-tg-label span{color:rgba(255,255,255,0.35);font-size:12px;}
+  .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;margin-right:6px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .disclaimer-note{font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;font-style:italic;}
+  footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;align-items:center;justify-content:space-between;}
+  .footer-text{font-size:12px;color:var(--ink-faint);}
+  @media(max-width:768px){nav{padding:0 16px;}.hero-wrap{padding:48px 16px 36px;}.hero-title{font-size:32px;}.opts.g2{grid-template-columns:1fr 1fr;}.qrow{grid-template-columns:1fr;}.section{padding:40px 16px;}.steps-grid{grid-template-columns:1fr;gap:16px;}footer{padding:18px 20px;flex-direction:column;gap:6px;text-align:center;}.form-wrap{padding:24px 16px 40px;}.qualify-card{padding:16px 18px;}.hero-stats{gap:8px 16px;}.hero-stat{font-size:12px;}}
+  @media(max-width:400px){.opts.g2{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5WCRXXDQ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<nav>
+  <div class="nav-logo">
+    <img src="rentpal_logo_blue.png" alt="RentPal" onerror="this.style.display='none';document.getElementById('nlogo').style.display='block'">
+    <span id="nlogo" style="display:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:700;color:var(--blue)">rentpal</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/ss-listings">SuperSpaces</a></li>
+    <li><a href="/listings">Listings</a></li>
+  </ul>
+  <a href="#super-form" class="nav-cta">💰 List your Space</a>
+  <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="/">Home</a>
+  <a href="/ss-listings">SuperSpaces</a>
+  <a href="/listings">Listings</a>
+  <a href="#super-form" class="mob-cta">💰 List your Space →</a>
+</div>
+
+<!-- HERO -->
+<div class="hero-wrap" id="top">
+  <div class="hero-inner">
+    <div class="hero-tag">🚀 RentPal SuperSpaces</div>
+    <h1 class="hero-title">Get paid cash <span class="accent">to leave</span> your apartment.</h1>
+    <p class="hero-desc">List your space for free, set your asking price, and let Lagos renters bid on it. We handle the deal—you walk away with cash.</p>
+    <div class="hero-cta-group">
+      <a href="#super-form" class="btn-primary">💰 List Your Space Now</a>
+      <a href="#how-it-works" class="btn-secondary">How it works →</a>
+    </div>
+    <div class="hero-stats">
+      <span class="hero-stat"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><strong>5,000+</strong> verified renters</span>
+      <span class="hero-stat"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><strong>Paystack</strong> secured</span>
+      <span class="hero-stat"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><strong>24h</strong> response on bids</span>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div id="how-it-works" class="section">
+  <div class="section-eyebrow">How it works</div>
+  <h2 class="section-title">List. Bid. Get paid.</h2>
+  <p class="section-sub">Three simple steps to turn your apartment into cash.</p>
+  <div class="steps-grid">
+    <div class="step-card"><div class="step-icon">📝</div><h3>1. List your space</h3><p>Fill in your apartment details, set your asking price, and upload photos.</p></div>
+    <div class="step-card"><div class="step-icon">💬</div><h3>2. Receive bids</h3><p>Lagos renters place bids on your space. You'll get an email for every bid.</p></div>
+    <div class="step-card"><div class="step-icon">💰</div><h3>3. Get paid</h3><p>Accept the best offer, we handle the paperwork, and you move out with cash.</p></div>
+  </div>
+</div>
+
+<!-- FORM -->
+<div id="super-form" class="form-wrap">
+  <div class="form-inner">
+    <div class="quiz-progress" id="quiz-progress" style="display:none;">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="qpfill"></div></div>
+      <span class="quiz-progress-label" id="qplabel"></span>
+    </div>
+
+    <!-- STEP 0 – QUALIFICATION -->
+    <div class="quiz-step active" id="step-0">
+      <div class="qualify-card">
+        <h4>✓ Quick check – is this for you?</h4>
+        <p>Only serious listers. You must be ready to vacate if you get your asking price.</p>
+        <div class="qualify-check"><input type="checkbox" id="sq-1" class="sq-check" onchange="checkQualify()"><label for="sq-1">I currently live in or have authority over a specific apartment in Lagos.</label></div>
+        <div class="qualify-check"><input type="checkbox" id="sq-2" class="sq-check" onchange="checkQualify()"><label for="sq-2">I am willing to vacate if someone pays my asking price.</label></div>
+        <div class="qualify-check"><input type="checkbox" id="sq-3" class="sq-check" onchange="checkQualify()"><label for="sq-3">I have a specific asking price (₦) and can vacate within a reasonable time.</label></div>
+        <div class="field-error" id="err-sq">Please check all boxes to continue.</div>
+        <button class="next-btn" id="sq-continue" onclick="confirmQualify()" disabled>Continue →</button>
+      </div>
+      <div style="margin-top:14px; text-align:center;"><a href="/" style="color:rgba(255,255,255,0.3); text-decoration:underline; font-size:12px;">← Looking for an apartment? Use our main search</a></div>
+    </div>
+
+    <!-- STEP 1 – Apartment type -->
+    <div class="quiz-step" id="super-1">
+      <div class="step-label">1 of 7</div>
+      <div class="quiz-q">What type of space is it?</div>
+      <div class="opts g2" style="margin-top:12px;">
+        <button class="opt" onclick="setVal('space-apt-type','Self contain');goTo('super-2')"><div class="opt-title">Self contain</div></button>
+        <button class="opt" onclick="setVal('space-apt-type','1 bedroom / Mini flat');goTo('super-2')"><div class="opt-title">1 bedroom / Mini flat</div></button>
+        <button class="opt" onclick="setVal('space-apt-type','2 bedroom flat');goTo('super-2')"><div class="opt-title">2 bedroom flat</div></button>
+        <button class="opt" onclick="setVal('space-apt-type','3 bedroom flat');goTo('super-2')"><div class="opt-title">3 bedroom flat</div></button>
+        <button class="opt" onclick="setVal('space-apt-type','4+ bedroom flat');goTo('super-2')"><div class="opt-title">4+ bedroom flat</div></button>
+        <button class="opt" onclick="setVal('space-apt-type','Room & parlour');goTo('super-2')"><div class="opt-title">Room &amp; parlour</div></button>
+      </div>
+      <button class="back-btn" onclick="goTo('step-0')">← Back</button>
+    </div>
+
+    <!-- STEP 2 – Location -->
+    <div class="quiz-step" id="super-2">
+      <div class="step-label">2 of 7</div>
+      <div class="quiz-q">Where is it?</div>
+      <div class="quiz-hint">Select Mainland or Island, then enter the area.</div>
+      <div class="opts" style="margin-bottom:10px;">
+        <button class="opt" id="opt-s-mainland" onclick="setVal('space-location','Mainland');selectOnly(this);clearFieldError('err-s-location')"><div><div class="opt-title">Mainland</div><div class="opt-sub">Yaba, Surulere, Ikeja, Ikorodu…</div></div></button>
+        <button class="opt" id="opt-s-island" onclick="setVal('space-location','Island');selectOnly(this);clearFieldError('err-s-location')"><div><div class="opt-title">Island</div><div class="opt-sub">Lekki, VI, Ajah, Ikoyi…</div></div></button>
+      </div>
+      <div class="field-error" id="err-s-location" style="margin-top:-4px;margin-bottom:8px;">Please select Mainland or Island.</div>
+      <div class="qinput-group">
+        <label>Area / Bus stop</label>
+        <input type="text" id="space-area-input" placeholder="e.g. Onike Yaba, GRA Ikeja, Ojuelegba, Surulere" autocomplete="address-level2" oninput="setVal('space-area',this.value);clearError(this)">
+        <div class="field-error" id="err-s-area">Please enter your area.</div>
+      </div>
+      <button class="next-btn" onclick="validateStep('super-2','super-3')">Next →</button>
+      <button class="back-btn" onclick="goTo('super-1')">← Back</button>
+    </div>
+
+    <!-- STEP 3 – Current rent + Asking price -->
+    <div class="quiz-step" id="super-3">
+      <div class="step-label">3 of 7</div>
+      <div class="quiz-q">What's the current yearly rent?</div>
+      <div class="quiz-hint">Enter the exact amount you pay per year.</div>
+      <div class="rent-display-label">Current rent (₦ / year)</div>
+      <div class="rent-display" id="s-rent-display">— type below —</div>
+      <div class="qinput-group">
+        <input type="number" id="space-rent-exact" placeholder="e.g. 850000" min="0" oninput="updateRentDisplay(this.value)" style="text-align:center;" inputmode="numeric">
+        <div class="field-error" id="err-s-rent">Please enter your current rent.</div>
+      </div>
+      <div class="qinput-group" style="margin-top:14px; border-top:1px solid rgba(255,255,255,0.06); padding-top:14px;">
+        <label style="color:#34D399;">💰 Your asking price to vacate (₦) *</label>
+        <input type="number" id="space-asking-price" placeholder="e.g. 2000000" min="0" oninput="setVal('space-asking-price',this.value);clearError(this)" style="text-align:center;" inputmode="numeric">
+        <div class="field-error" id="err-s-asking">Please enter your asking price.</div>
+        <div class="disclaimer-note">💡 Renters can bid higher or lower than this amount.</div>
+      </div>
+      <button class="next-btn" onclick="validateStep('super-3','super-4')">Next →</button>
+      <button class="back-btn" onclick="goTo('super-2')">← Back</button>
+    </div>
+
+    <!-- STEP 4 – Move-out timeline -->
+    <div class="quiz-step" id="super-4">
+      <div class="step-label">4 of 7</div>
+      <div class="quiz-q">How soon can you vacate if you get your asking price?</div>
+      <div class="opts" style="margin-top:12px;">
+        <button class="opt" onclick="setVal('space-move-out','Within 1 week');goTo('super-5')"><div class="opt-title">Within 1 week</div></button>
+        <button class="opt" onclick="setVal('space-move-out','Within 2 weeks');goTo('super-5')"><div class="opt-title">Within 2 weeks</div></button>
+        <button class="opt" onclick="setVal('space-move-out','Within 1 month');goTo('super-5')"><div class="opt-title">Within 1 month</div></button>
+        <button class="opt" onclick="setVal('space-move-out','Flexible / negotiable');goTo('super-5')"><div class="opt-title">Flexible / negotiable</div></button>
+      </div>
+      <button class="back-btn" onclick="goTo('super-3')">← Back</button>
+    </div>
+
+    <!-- STEP 5 – Light / Water / Parking -->
+    <div class="quiz-step" id="super-5">
+      <div class="step-label">5 of 7</div>
+      <div class="quiz-q">A few quick details</div>
+      <div class="quiz-hint">Things every serious bidder wants to know.</div>
+      <div class="qgroup-label">Light situation</div>
+      <div class="opts g2">
+        <button class="opt" onclick="setVal('space-light','Band A');selectOnly(this)"><div><div class="opt-title">Band A</div><div class="opt-sub">24/7 supply</div></div></button>
+        <button class="opt" onclick="setVal('space-light','Band B');selectOnly(this)"><div><div class="opt-title">Band B</div><div class="opt-sub">16–20 hrs/day</div></div></button>
+        <button class="opt" onclick="setVal('space-light','Band C');selectOnly(this)"><div><div class="opt-title">Band C</div><div class="opt-sub">12 hrs/day</div></div></button>
+        <button class="opt" onclick="setVal('space-light','Band D');selectOnly(this)"><div><div class="opt-title">Band D</div><div class="opt-sub">8 hrs/day</div></div></button>
+        <button class="opt" onclick="setVal('space-light','No light');selectOnly(this)"><div class="opt-title">No light</div></button>
+      </div>
+      <div class="qgroup-label">Water situation</div>
+      <div class="opts g2">
+        <button class="opt" onclick="setVal('space-water','Running water');selectOnly(this)"><div class="opt-title">Running water</div></button>
+        <button class="opt" onclick="setVal('space-water','Water but not running');selectOnly(this)"><div class="opt-title">Water, not running</div></button>
+        <button class="opt" onclick="setVal('space-water','No water');selectOnly(this)"><div class="opt-title">No water</div></button>
+      </div>
+      <div class="qgroup-label">Parking</div>
+      <div class="opts g2">
+        <button class="opt" onclick="setVal('space-parking','Compound parking');selectOnly(this)"><div class="opt-title">Compound parking</div></button>
+        <button class="opt" onclick="setVal('space-parking','Parking nearby, not in compound');selectOnly(this)"><div class="opt-title">Nearby, outside compound</div></button>
+        <button class="opt" onclick="setVal('space-parking','Street parking only');selectOnly(this)"><div class="opt-title">Street parking</div></button>
+        <button class="opt" onclick="setVal('space-parking','No parking');selectOnly(this)"><div class="opt-title">No parking</div></button>
+      </div>
+      <button class="next-btn" onclick="goTo('super-6')">Next →</button>
+      <button class="back-btn" onclick="goTo('super-4')">← Back</button>
+    </div>
+
+    <!-- STEP 6 – Photos + Proof -->
+    <div class="quiz-step" id="super-6">
+      <div class="step-label">6 of 7</div>
+      <div class="quiz-q">Photos &amp; Proof of Tenancy</div>
+      <div class="quiz-hint">Good photos increase your chances of a high bid. We'll email you a link to upload photos after submission.</div>
+      <div class="qinput-group" style="margin-top:8px;">
+        <label style="color:#34D399;">📷 Do you have photos of the apartment? (Required)</label>
+        <div style="display:flex; gap:12px; margin-top:4px;">
+          <label class="check-label"><input type="radio" name="space-photos" value="yes" onchange="setVal('space-photos-available','Yes')"> Yes</label>
+          <label class="check-label"><input type="radio" name="space-photos" value="no" onchange="setVal('space-photos-available','No')"> No</label>
+        </div>
+      </div>
+      <div class="qinput-group">
+        <label style="color:#34D399;">🔐 Proof of Tenancy</label>
+        <div style="display:flex; gap:12px; margin-top:4px; flex-wrap:wrap;">
+          <label class="check-label"><input type="radio" name="space-proof" value="yes" onchange="setVal('space-proof-provided','Yes')"> I have it and can upload</label>
+          <label class="check-label"><input type="radio" name="space-proof" value="maybe" onchange="setVal('space-proof-provided','Maybe')"> I can provide upon request</label>
+          <label class="check-label"><input type="radio" name="space-proof" value="no" onchange="setVal('space-proof-provided','No')"> No</label>
+        </div>
+        <div class="field-error" id="err-s-proof">Please select an option for proof of tenancy.</div>
+        <div style="margin-top:4px; font-size:11px; color:rgba(255,255,255,0.35);">A tenancy agreement, rent receipt, or utility bill linking you to the address.</div>
+      </div>
+      <button class="next-btn" onclick="validateStep('super-6','super-7')">Next →</button>
+      <button class="back-btn" onclick="goTo('super-5')">← Back</button>
+    </div>
+
+    <!-- STEP 7 – Contact info -->
+    <div class="quiz-step" id="super-7">
+      <div class="step-label">7 of 7</div>
+      <div class="quiz-q">Almost done — how do we reach you?</div>
+      <div class="quiz-hint">We'll use this to verify the listing and connect you with serious bidders.</div>
+      <div class="qrow">
+        <div class="qinput-group"><label>First name</label><input type="text" id="space-fname" placeholder="David" autocomplete="given-name" oninput="setVal('space-firstName',this.value);clearError(this)"><div class="field-error" id="err-s-fname">Please enter your first name.</div></div>
+        <div class="qinput-group"><label>Last name</label><input type="text" id="space-lname" placeholder="Prosper" autocomplete="family-name" oninput="setVal('space-lastName',this.value)"></div>
+      </div>
+      <div class="qinput-group"><label>Email</label><input type="email" id="space-email" placeholder="chat@email.com" autocomplete="email" oninput="setVal('space-email',this.value);clearError(this)"><div class="field-error" id="err-s-email">Please enter a valid email.</div></div>
+      <div class="qinput-group"><label>Phone / WhatsApp</label><input type="tel" id="space-phone" placeholder="0801 234 5678" autocomplete="tel" oninput="setVal('space-phone',this.value)"></div>
+      <div class="qinput-group"><label>Telegram (optional)</label><input type="text" id="space-telegram" placeholder="@username" oninput="setVal('space-telegram',this.value)"></div>
+      <div class="qinput-group">
+        <label>Additional comments about the place (optional)</label>
+        <textarea id="space-comments" rows="3" maxlength="200" placeholder="e.g. Water can run low end of month, but estate is quiet." oninput="setVal('space-comments',this.value);updateCharCount('space-comments','space-comments-count',200)"></textarea>
+        <div class="char-counter"><span id="space-comments-count">0</span>/200</div>
+      </div>
+      <button class="next-btn" id="space-submit-btn" onclick="submitSpace()">List Super Space →</button>
+      <button class="back-btn" onclick="goTo('super-6')">← Back</button>
+    </div>
+
+    <!-- THANK YOU -->
+    <div class="quiz-step" id="space-ty">
+      <div class="ty-card">
+        <div class="ty-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/><path d="M12 22V12"/></svg></div>
+        <h3>Your Super Space is live!</h3>
+        <p>🎉 Your apartment is now listed. Seekers can bid on it right away. We'll email you when someone places a bid.</p>
+        <div class="ty-steps">
+          <div class="ty-steps-lbl">What happens next</div>
+          <div class="ty-step"><div class="ty-dot"></div><span>We'll send you a link to upload photos – do it now to increase your chances.</span></div>
+          <div class="ty-step"><div class="ty-dot"></div><span>When a bid comes in, you'll get an email with the amount and bidder details.</span></div>
+          <div class="ty-step"><div class="ty-dot"></div><span>You approve or decline – we broker the rest.</span></div>
+        </div>
+        <div class="photo-prompt" id="space-photo-prompt">📷 <span>Upload photos now to attract more bids —</span> <a href="#" id="space-photo-link">upload photos →</a></div>
+        <div class="ty-tg-block">
+          <p class="ty-tg-label">Join our Telegram channel for updates.<br><span>That's where bidding happens.</span></p>
+          <a href="https://t.me/rentpal_lagos" target="_blank" class="tg-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> t.me/rentpal_lagos</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div><img src="rentpal_logo_blue.png" height="20" alt="RentPal" style="opacity:.65;" onerror="this.style.display='none';document.getElementById('flogo').style.display='block'"><span id="flogo" style="display:none;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--blue);opacity:.65;">rentpal</span></div>
+  <p class="footer-text">© <span id="footer-year"></span> RentPal · Lagos, Nigeria</p>
+  <p class="footer-text">SuperSpaces – Get paid to leave.</p>
+</footer>
+
+<script>
+  var GAS_URL = "https://script.google.com/macros/s/AKfycbwfNimPoNlSqCnNbwz0BPi4nED0-6UQlA4s1k5nGuqKrC416B3bmTbIoG63K8AO_DoY/exec";
+  var vals = {}, currentStep = 'step-0';
+  var superSteps = ['step-0','super-1','super-2','super-3','super-4','super-5','super-6','super-7','space-ty'];
+
+  function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
+  function setVal(k,v){ vals[k]=v; }
+  function selectOnly(btn){ btn.closest('.opts').querySelectorAll('.opt').forEach(function(b){b.classList.remove('selected');}); btn.classList.add('selected'); }
+  function formatNaira(num){ if(!num || isNaN(num)) return ''; return '₦ ' + parseInt(num).toLocaleString('en-NG'); }
+  function updateRentDisplay(val){ setVal('space-rent-exact', val); var display = document.getElementById('s-rent-display'); var formatted = formatNaira(val); if(formatted){ display.textContent = formatted; display.classList.add('has-value'); } else { display.textContent = '— type below —'; display.classList.remove('has-value'); } }
+  function updateCharCount(inputId, counterId, max){ var input = document.getElementById(inputId); var counter = document.getElementById(counterId); if(input && counter) counter.textContent = input.value.length; }
+  function showError(inputEl, msgId){ if(inputEl) inputEl.classList.add('error'); var err = document.getElementById(msgId); if(err) err.classList.add('show'); if(inputEl){ inputEl.focus(); inputEl.scrollIntoView({behavior:'smooth', block:'center'}); } }
+  function clearError(inputEl){ if(!inputEl) return; inputEl.classList.remove('error'); var errId = 'err-' + inputEl.id; var err = document.getElementById(errId); if(err) err.classList.remove('show'); }
+  function clearFieldError(errId){ var e = document.getElementById(errId); if(e) e.classList.remove('show'); }
+  function isValidEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e || ''); }
+
+  function validateStep(fromStep, nextStep){
+    if(fromStep === 'super-2'){
+      if(!vals['space-location']){ document.getElementById('err-s-location').classList.add('show'); return; }
+      var areaInput = document.getElementById('space-area-input');
+      if(!vals['space-area'] || !vals['space-area'].trim()){ showError(areaInput, 'err-s-area'); return; }
+      goTo(nextStep);
+    } else if(fromStep === 'super-3'){
+      var rentInput = document.getElementById('space-rent-exact');
+      if(!vals['space-rent-exact'] || parseInt(vals['space-rent-exact']) <= 0){ showError(rentInput, 'err-s-rent'); return; }
+      var askingInput = document.getElementById('space-asking-price');
+      if(!vals['space-asking-price'] || parseInt(vals['space-asking-price']) <= 0){ showError(askingInput, 'err-s-asking'); return; }
+      goTo(nextStep);
+    } else if(fromStep === 'super-6'){
+      if(!vals['space-proof-provided']){ document.getElementById('err-s-proof').classList.add('show'); return; }
+      goTo(nextStep);
+    } else { goTo(nextStep); }
+  }
+
+  function checkQualify() {
+    var allChecked = document.querySelectorAll('.sq-check:checked').length === 3;
+    var btn = document.getElementById('sq-continue');
+    if(btn) btn.disabled = !allChecked;
+    var err = document.getElementById('err-sq');
+    if(err) { if(allChecked) err.classList.remove('show'); else err.classList.add('show'); }
+  }
+
+  function confirmQualify() {
+    if (document.querySelectorAll('.sq-check:checked').length !== 3) { document.getElementById('err-sq').classList.add('show'); return; }
+    goTo('super-1');
+  }
+
+  function goTo(stepId){
+    document.getElementById(currentStep).classList.remove('active');
+    var targetEl = document.getElementById(stepId);
+    targetEl.classList.add('active');
+    currentStep = stepId;
+    updateProgress();
+    document.getElementById('super-form').scrollIntoView({behavior:'smooth', block:'start'});
+    setTimeout(function(){ var firstInput = targetEl.querySelector('input:not([type="checkbox"]), select, textarea'); if(firstInput) firstInput.focus(); }, 100);
+    if(stepId === 'space-ty'){
+      window.dataLayer.push({ event: 'rentpal_super_complete', userType: 'super' });
+      var listingId = vals['space-id'] || '';
+      var photoLink = document.getElementById('space-photo-link');
+      if(photoLink && listingId){ photoLink.href = 'https://rentpal-web.netlify.app/upload-photo?id=' + listingId; }
+    }
+    if(stepId === 'step-0'){
+      vals = {};
+      document.querySelectorAll('.quiz-step input, .quiz-step textarea').forEach(function(el){ el.value = ''; el.classList.remove('error'); });
+      document.querySelectorAll('.opt.selected').forEach(function(el){ el.classList.remove('selected'); });
+      document.querySelectorAll('.field-error.show').forEach(function(el){ el.classList.remove('show'); });
+      var rdS = document.getElementById('s-rent-display');
+      if(rdS){ rdS.textContent = '— type below —'; rdS.classList.remove('has-value'); }
+      var sc = document.getElementById('space-comments-count');
+      if(sc) sc.textContent = '0';
+      var btn = document.getElementById('sq-continue');
+      if(btn) btn.disabled = true;
+      document.querySelectorAll('.sq-check').forEach(function(cb){ cb.checked = false; });
+    }
+  }
+
+  function updateProgress(){
+    var idx = superSteps.indexOf(currentStep);
+    var pw = document.getElementById('quiz-progress');
+    if(currentStep === 'step-0' || currentStep === 'space-ty'){ pw.style.display = 'none'; return; }
+    pw.style.display = 'flex';
+    var totalRealSteps = superSteps.length - 2;
+    var pct = Math.min(100, Math.round(((idx) / totalRealSteps) * 100));
+    document.getElementById('qpfill').style.width = pct + '%';
+    document.getElementById('qplabel').textContent = 'Step '+(idx)+' of '+totalRealSteps;
+  }
+
+  function submitSpace() {
+    var fn = document.getElementById('space-fname').value;
+    var em = document.getElementById('space-email').value;
+    var asking = document.getElementById('space-asking-price').value;
+    var rent = document.getElementById('space-rent-exact').value;
+    if(!fn.trim()){ showError(document.getElementById('space-fname'), 'err-s-fname'); return; }
+    if(!em || !isValidEmail(em)){ showError(document.getElementById('space-email'), 'err-s-email'); return; }
+    if(!asking || parseInt(asking) <= 0){ showError(document.getElementById('space-asking-price'), 'err-s-asking'); return; }
+    if(!rent || parseInt(rent) <= 0){ showError(document.getElementById('space-rent-exact'), 'err-s-rent'); return; }
+    var payload = {
+      action: 'superApartment',
+      type: 'super',
+      apartmentType: vals['space-apt-type'] || '',
+      location: vals['space-location'] || '',
+      area: vals['space-area'] || '',
+      currentRent: vals['space-rent-exact'] || '',
+      rentRange: '',
+      askingPrice: vals['space-asking-price'] || '',
+      moveOutTimeline: vals['space-move-out'] || '',
+      light: vals['space-light'] || '',
+      water: vals['space-water'] || '',
+      parking: vals['space-parking'] || '',
+      comments: vals['space-comments'] || '',
+      photosAvailable: vals['space-photos-available'] || 'No',
+      proofProvided: vals['space-proof-provided'] || 'No',
+      firstName: vals['space-firstName'] || '',
+      lastName: vals['space-lastName'] || '',
+      email: vals['space-email'] || '',
+      phone: vals['space-phone'] || '',
+      telegram: vals['space-telegram'] || ''
+    };
+    var btn = document.getElementById('space-submit-btn');
+    var originalText = btn.textContent;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Submitting…';
+    fetch(GAS_URL, { method: 'POST', body: JSON.stringify(payload), headers: {'Content-Type':'text/plain'} })
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        console.log('✅ Super Space submitted:', data);
+        if(data && data.status === 'ok'){
+          window.dataLayer.push({event:'rentpal_super_success', userId: data.userId});
+          vals['space-id'] = data.userId;
+          goTo('space-ty');
+        } else { throw new Error(data && data.message ? data.message : 'Submission failed'); }
+      })
+      .catch(function(err){
+        console.error('❌ Super Space submit failed:', err);
+        btn.disabled = false;
+        btn.textContent = originalText;
+        alert('Sorry — something went wrong. Please try again.\n\nDetails: ' + (err.message || err));
+      });
+  }
+
+  document.addEventListener('keydown', function(e){
+    if(e.key !== 'Enter') return;
+    if(e.target && e.target.tagName === 'TEXTAREA') return;
+    var activeStep = document.querySelector('.quiz-step.active');
+    if(!activeStep) return;
+    var btn = activeStep.querySelector('.next-btn');
+    if(btn && !btn.disabled){ e.preventDefault(); btn.click(); }
+  });
+
+  document.addEventListener('DOMContentLoaded', function(){
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+  });
+</script>
+</body>
+</html>
