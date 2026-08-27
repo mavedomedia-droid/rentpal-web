@@ -15,22 +15,14 @@
     <tr>
       <td align="center" style="padding:36px 12px;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:580px; background:#ffffff; border-radius:18px; overflow:hidden; box-shadow:0 4px 18px rgba(15,17,23,0.06);">
-          
-          <!-- Hero -->
           <tr>
             <td bgcolor="#0C447C" style="background-color:#0C447C; background-image:linear-gradient(145deg,#141927 0%,#1e2a3a 55%,#0C447C 100%); padding:34px 36px 40px;">
               <img src="https://rentpal-web.netlify.app/rentpal_logo_blue.png" alt="RentPal" width="108" style="display:block; height:auto; max-width:108px; margin-bottom:26px; border:0;">
               <div style="font-size:11px; font-weight:600; color:#8fc6f5; letter-spacing:1.6px; text-transform:uppercase; margin-bottom:12px;">Introduction Request</div>
-              <h1 style="font-family:'Plus Jakarta Sans','Helvetica Neue',Arial,sans-serif; font-size:28px; font-weight:800; color:#ffffff; line-height:1.15; letter-spacing:-0.7px; margin:0 0 8px;">
-                Someone is interested.
-              </h1>
-              <p style="font-size:14px; color:rgba(255,255,255,0.65); line-height:1.65; margin:0; font-weight:300; max-width:420px;">
-                {{requesterName}} would like to be introduced to your apartment.
-              </p>
+              <h1 style="font-family:'Plus Jakarta Sans','Helvetica Neue',Arial,sans-serif; font-size:28px; font-weight:800; color:#ffffff; line-height:1.15; letter-spacing:-0.7px; margin:0 0 8px;">Someone is interested.</h1>
+              <p style="font-size:14px; color:rgba(255,255,255,0.65); line-height:1.65; margin:0; font-weight:300; max-width:420px;">{{requesterName}} would like to be introduced to your apartment.</p>
             </td>
           </tr>
-
-          <!-- Listing Card -->
           <tr>
             <td style="padding:28px 36px 4px;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0f4fb; border:1px solid #B5D4F4; border-radius:12px;">
@@ -45,8 +37,6 @@
               </table>
             </td>
           </tr>
-
-          <!-- Requester Info -->
           <tr>
             <td style="padding:28px 36px 4px;">
               <div style="font-size:11px; font-weight:600; letter-spacing:1.4px; text-transform:uppercase; color:#4A8FD4; margin-bottom:12px;">About the requester</div>
@@ -55,8 +45,6 @@
                 <tr><td style="color:#5a6072; padding-bottom:4px;">Reason</td><td style="padding-bottom:4px;">{{reason}}</td></tr>
                 <tr><td style="color:#5a6072; padding-bottom:4px;">Move Timeline</td><td style="padding-bottom:4px;">{{moveTimeline}}</td></tr>
               </table>
-
-              <!-- Extra Questions – bulleted list -->
               {{#extraQuestionsHtml}}
                 <div style="margin-top:16px; background:#f4f7fc; border-radius:8px; padding:12px 16px; border-left:3px solid #4A8FD4;">
                   <div style="font-size:11px; font-weight:600; color:#185FA5; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Questions for you</div>
@@ -66,15 +54,11 @@
               {{^extraQuestionsHtml}}
                 <div style="margin-top:12px; font-size:13px; color:#9299a8; font-style:italic;">No additional questions asked.</div>
               {{/extraQuestionsHtml}}
-
-              <!-- Privacy Note -->
               <div style="margin-top:18px; padding:12px 14px; background:#fef9e7; border:1px solid #fcd34d; border-radius:8px; font-size:12px; color:#78350f; line-height:1.5;">
-                🔒 <strong>Privacy first:</strong> The requester’s email and phone number are <strong>not</strong> shown here. If you approve this request, we’ll connect you both via email instantly.
+                🔒 <strong>Privacy first:</strong> The requester's email and phone number are <strong>not</strong> shown here. If you approve this request, we'll connect you both via email instantly.
               </div>
             </td>
           </tr>
-
-          <!-- CTA Button + Next Steps -->
           <tr>
             <td style="padding:20px 36px 24px;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -84,29 +68,23 @@
                   </td>
                 </tr>
               </table>
-
-              <!-- Next steps for the resident -->
               <div style="margin-top:20px; border-top:1px solid #eef1f5; padding-top:18px;">
                 <div style="font-size:11px; font-weight:600; letter-spacing:1.2px; text-transform:uppercase; color:#5a6072; margin-bottom:8px;">What happens next?</div>
                 <table style="font-size:13px; color:#5a6072; line-height:1.8;">
                   <tr><td style="padding-right:8px; vertical-align:top;">1.</td><td style="padding-bottom:4px;">Review this request and the questions above.</td></tr>
-                  <tr><td style="padding-right:8px; vertical-align:top;">2.</td><td style="padding-bottom:4px;">Click <strong>“Review &amp; Approve”</strong> — you’ll see the requester’s full contact details.</td></tr>
-                  <tr><td style="padding-right:8px; vertical-align:top;">3.</td><td style="padding-bottom:4px;">If you approve, we’ll send you both an email introduction so you can discuss directly.</td></tr>
+                  <tr><td style="padding-right:8px; vertical-align:top;">2.</td><td style="padding-bottom:4px;">Click <strong>"Review &amp; Approve"</strong> — you'll see the requester's full contact details.</td></tr>
+                  <tr><td style="padding-right:8px; vertical-align:top;">3.</td><td style="padding-bottom:4px;">If you approve, we'll send you both an email introduction so you can discuss directly.</td></tr>
                 </table>
                 <div style="margin-top:10px; font-size:11px; color:#9299a8; background:#f4f7fc; padding:8px 12px; border-radius:6px;">
                   ⏳ This request expires in 48 hours if left unresponded.
                 </div>
               </div>
-
-              <!-- Fallback plain link (in case button is blocked) -->
               <div style="margin-top:14px; text-align:center; font-size:11px; color:#b0b6c3;">
                 Button not working? Copy this link into your browser:<br>
                 <span style="word-break:break-all; color:#4A8FD4;">{{approveUrl}}</span>
               </div>
             </td>
           </tr>
-
-          <!-- Footer -->
           <tr>
             <td style="padding:24px 36px 32px; text-align:center; border-top:1px solid #eef1f5;">
               <p style="font-size:12px; color:#9299a8; line-height:1.7; margin:16px 0 0; font-weight:400;">RentPal · Lagos, Nigeria<br><a href="https://rentpal-web.netlify.app" style="color:#9299a8; text-decoration:none;">rentpal-web.netlify.app</a></p>
