@@ -60,9 +60,10 @@
     </div>
   </div>
   <script>
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbzmMrwyXnu7DPIt3bp-jwVL5FtsBCGO4Zu5s0tenSu88j1FQPLTOIBLmw1SSMTetD8ItA/exec'; // ⚠️ Replace with your deployed URL
+    // ── CONFIG: REPLACE WITH YOUR MAIN RENTPAL GAS URL ──
+    const GAS_URL = 'https://script.google.com/macros/s/YOUR_MAIN_RENTPAL_DEPLOYMENT_ID/exec';
 
-    let requestData = null; // store for later
+    let requestData = null;
 
     async function fetchIntroDetails(requestId) {
       const res = await fetch(`${GAS_URL}?action=introDetails&requestId=${encodeURIComponent(requestId)}`);
@@ -83,7 +84,6 @@
     function formatNaira(n){ if(!n||isNaN(n))return'—'; return'₦'+parseInt(n).toLocaleString('en-NG'); }
     function escapeHTML(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 
-    // ── RENDER ──
     function render(data) {
       if (!data.success) {
         document.getElementById('content').innerHTML = `<div class="empty">${escapeHTML(data.message || 'Request not found.')}</div>`;
@@ -103,7 +103,6 @@
         return;
       }
 
-      // Your listing
       let listingHTML = '';
       if (listing) {
         listingHTML = `
@@ -121,7 +120,6 @@
           </div>`;
       }
 
-      // Requester info
       let requesterHTML = `
         <div class="card">
           <h2>👤 ${escapeHTML(requester.name)}</h2>
@@ -131,7 +129,6 @@
           <div class="value">${escapeHTML(requester.moveTimeline)}</div>
         </div>`;
 
-      // What we know about this person (seeker prefs)
       let knowHTML = '';
       if (seekerPrefs) {
         knowHTML = `
@@ -158,7 +155,6 @@
           </div>`;
       }
 
-      // ── QUESTIONS SECTION (with Yes/No toggles) ──
       const extraQuestions = requester.extraQuestions || '';
       let questionsHTML = '';
       let questionItems = [];
@@ -187,11 +183,10 @@
         }
       }
 
-      // ── ACTION BUTTONS ──
       const actionsHTML = `
         <div class="card" id="action-buttons">
           <h2>Your Response</h2>
-          <p style="color:#5a6072; margin-bottom:16px;">Choose how you’d like to proceed with this introduction request.</p>
+          <p style="color:#5a6072; margin-bottom:16px;">Choose how you'd like to proceed with this introduction request.</p>
           <div class="actions">
             <button class="btn btn-approve" id="btn-approve">Approve Introduction</button>
             <button class="btn btn-decline" id="btn-decline">Decline</button>
@@ -199,10 +194,8 @@
           </div>
         </div>`;
 
-      // Assemble
       document.getElementById('content').innerHTML = listingHTML + requesterHTML + knowHTML + questionsHTML + actionsHTML;
 
-      // ── SETUP TOGGLES ──
       if (questionItems.length) {
         document.querySelectorAll('.toggle-btn').forEach(btn => {
           btn.addEventListener('click', function(e) {
@@ -211,24 +204,18 @@
             const idx = row.dataset.idx;
             const yesBtn = row.querySelector('.toggle-btn.yes');
             const noBtn = row.querySelector('.toggle-btn.no');
-            // Reset
             [yesBtn, noBtn].forEach(b => b.classList.remove('selected'));
-            // Highlight selected
             this.classList.add('selected');
-            // Update status
             const statusSpan = document.getElementById(`status-${idx}`);
             statusSpan.textContent = this.dataset.value === 'yes' ? '✅' : '❌';
             statusSpan.style.color = this.dataset.value === 'yes' ? '#4CAF85' : '#e74c3c';
-            // Hide error if all answered
             checkAllAnswered();
           });
         });
       }
 
-      // ── BUTTON HANDLERS ──
       document.getElementById('btn-approve').addEventListener('click', function() {
         if (questionItems.length) {
-          // Check all answered
           const allAnswered = document.querySelectorAll('.question-row').every(row => {
             const status = row.querySelector('.answer-status');
             return status.textContent === '✅' || status.textContent === '❌';
@@ -239,7 +226,6 @@
             return;
           }
         }
-        // Collect answers
         let answers = [];
         document.querySelectorAll('.question-row').forEach(row => {
           const selected = row.querySelector('.toggle-btn.selected');
@@ -270,7 +256,6 @@
     }
 
     async function handleAction(requestId, response, answers) {
-      // Disable all buttons
       document.querySelectorAll('.btn').forEach(b => b.disabled = true);
       try {
         const result = await performAction(requestId, response, answers);
