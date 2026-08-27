@@ -33,7 +33,6 @@
         body{font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column;height:100%}
         main{flex:1}a{text-decoration:none;color:inherit}img{max-width:100%;display:block}button{cursor:pointer;font-family:'DM Sans',sans-serif}
 
-        /* NAV */
         nav{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:56px;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--card-border);position:sticky;top:0;z-index:100}
         .nav-logo{display:flex;align-items:center;gap:6px;font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:700;color:var(--blue)}
         .nav-logo img{height:28px;width:auto}
@@ -51,13 +50,11 @@
         .mobile-menu a:last-child{border-bottom:none}
         @media(max-width:768px){.nav-links,.nav-cta{display:none}.hamburger{display:flex}}
 
-        /* Trust bar */
         .trust-bar{background:var(--white);border-bottom:1px solid var(--card-border);padding:6px 16px;display:flex;justify-content:center;gap:24px;flex-wrap:wrap;font-size:11px;color:var(--ink-muted)}
         .trust-item{display:flex;align-items:center;gap:5px}
         .trust-item svg{width:12px;height:12px;color:var(--blue)}
         @media(max-width:768px){.trust-bar{display:none}}
 
-        /* HERO (dark) */
         .directory-hero{background:linear-gradient(145deg, #141927 0%, #1e2a3a 60%, #0C447C 100%);border-bottom:1px solid #0C447C;padding:28px 16px 22px;text-align:center;color:#fff}
         .hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(74,143,212,0.18);color:#8fc6f5;font-size:11px;font-weight:600;padding:4px 14px;border-radius:100px;margin-bottom:10px;border:1px solid rgba(74,143,212,0.3)}
         .hero-dot{width:5px;height:5px;border-radius:50%;background:#4A8FD4;animation:pulse-dot 2s infinite}
@@ -68,13 +65,11 @@
         .hero-bullets span{display:inline-flex;align-items:baseline;gap:4px}
         .hero-bullets .bullet{color:#4A8FD4;font-weight:700;font-size:14px;line-height:1}
 
-        /* Rotating spotlight */
         .spotlight-wrap{margin-top:14px;position:relative;height:32px;overflow:hidden;text-align:center}
         .spotlight-item{font-size:14px;font-weight:500;color:rgba(255,255,255,0.9);padding:4px 0;opacity:0;transition:opacity 1.2s ease;position:absolute;left:0;right:0;top:0;font-family:'DM Sans',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .spotlight-item.active{opacity:1}
         .spotlight-disclaimer{margin-top:10px;font-size:11px;color:rgba(255,255,255,0.45);line-height:1.5;max-width:500px;margin-left:auto;margin-right:auto}
 
-        /* FILTER BAR */
         .filters-wrap{background:#1a2634;border-bottom:2px solid #2d3b4f;padding:0 16px;position:sticky;top:56px;z-index:50;transition:box-shadow var(--transition)}
         .filters-wrap.scrolled{box-shadow:0 2px 8px rgba(0,0,0,0.05)}
         .filters-inner{max-width:1200px;margin:0 auto;display:flex;gap:10px;align-items:center;padding:10px 0;flex-wrap:wrap}
@@ -85,12 +80,10 @@
         .filter-clear.visible{display:inline-flex}
         .results-count{font-size:13px;color:rgba(255,255,255,0.55);white-space:nowrap;margin-left:auto}
 
-        /* LISTINGS GRID */
         .listings-section{max-width:1200px;margin:0 auto;padding:16px 16px 48px}
         .listings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
         @media(max-width:1024px){.listings-grid{grid-template-columns:repeat(2,1fr);gap:12px}}
 
-        /* COMPACT CARD */
         .listing-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--card-border);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;box-shadow:var(--card-shadow);transition:all var(--transition)}
         .listing-card:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-2px)}
         .card-header-row{display:flex;align-items:center;gap:6px;padding:10px 12px 0;position:relative}
@@ -115,12 +108,10 @@
         .card-btn{font-size:11px;font-weight:600;color:var(--white);background:var(--blue);border:none;padding:6px 14px;border-radius:20px;cursor:pointer;transition:background var(--transition)}
         .card-btn:hover{background:var(--blue-dark)}
 
-        /* Location pill */
         .card-loc-pill{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;padding:1px 5px;border-radius:100px;display:inline-flex;align-items:center;gap:2px;margin-left:6px;line-height:1;white-space:nowrap}
         .card-loc-pill.mainland{background:#fef9e7;color:#b45309;border:1px solid #fcd34d}
         .card-loc-pill.island{background:#ecfeff;color:#0e7490;border:1px solid #67e8f9}
 
-        /* Card thumbnail */
         .card-thumb{width:20px;height:20px;border-radius:4px;overflow:hidden;flex-shrink:0;opacity:0.25;background:#cbd5e1;display:flex;align-items:center;justify-content:center;margin-right:4px}
         .card-thumb svg{width:14px;height:14px;stroke:#5a6072;stroke-width:1.5}
         .card-thumb.has-photo{opacity:1;background:none}
@@ -148,7 +139,6 @@
         .empty-state h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px}
         .empty-state p{font-size:13px}
 
-        /* DETAIL PAGE */
         .detail-page{max-width:900px;margin:0 auto;padding:24px 16px 40px}
         .detail-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-muted);cursor:pointer;background:none;border:none;margin-bottom:20px}
         .detail-comment-hero{background:linear-gradient(145deg,#d9e4f0 0%,#c5d6e8 50%,#d0dceb 100%);border-radius:var(--radius-lg);padding:36px 28px;margin-bottom:20px;position:relative;overflow:hidden}
@@ -184,7 +174,6 @@
         .similar-section h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:12px}
         .similar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
 
-        /* MODAL */
         .modal{display:none;position:fixed;z-index:300;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.5);align-items:center;justify-content:center}
         .modal.active{display:flex !important}
         .modal-content{background:var(--white);border-radius:var(--radius-lg);padding:24px 20px;max-width:480px;width:92%;max-height:85vh;overflow-y:auto;position:relative}
@@ -201,18 +190,19 @@
         .btn-submit-request:disabled{opacity:0.5;cursor:not-allowed}
         .request-confirmation{text-align:center;padding:26px 20px}
 
-        /* TOAST */
         .toast-container{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:400;display:flex;flex-direction:column;gap:8px;align-items:center}
         .toast{background:var(--ink);color:#fff;padding:10px 18px;border-radius:var(--radius);font-size:13px;font-weight:500;box-shadow:0 4px 12px rgba(0,0,0,0.15);animation:toastIn 0.3s ease}
         .toast.error{background:#dc2626}
         @keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-        /* Dark footer */
         footer{background:linear-gradient(145deg, #141927 0%, #1e2a3a 100%);padding:16px;text-align:center;font-size:11px;color:rgba(255,255,255,0.5);border-top:1px solid #2d3b4f}
     </style>
 </head>
 <body>
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5WCRXXDQ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <!-- ===== LOAD CONFIG ===== -->
+    <script src="/rentpal-config.js"></script>
 
     <nav>
         <a href="/listings" class="nav-logo">
@@ -261,8 +251,14 @@
     <script>
         window.dataLayer = window.dataLayer || [];
 
+        // ── CONFIG ──
+        // Load from external config file
+        var GAS_URL = (typeof RENTPAL_CONFIG !== 'undefined' && RENTPAL_CONFIG.GAS_URL) 
+            ? RENTPAL_CONFIG.GAS_URL 
+            : 'https://script.google.com/macros/s/YOUR_MAIN_RENTPAL_DEPLOYMENT_ID/exec';
+
         const CONFIG = {
-            GAS_URL: 'https://script.google.com/macros/s/AKfycbzmMrwyXnu7DPIt3bp-jwVL5FtsBCGO4Zu5s0tenSu88j1FQPLTOIBLmw1SSMTetD8ItA/exec',
+            GAS_URL: GAS_URL,
             ITEMS_PER_PAGE: 12, DEBOUNCE_MS: 250
         };
         const state = {
@@ -462,7 +458,6 @@
             const locPillText = l.location==='Mainland' ? 'M' : 'I';
             const savedIcon=saved?'❤️':'🤍';
 
-            // Rent display
             const exact = l.rentExact;
             const range = l.rentRange;
             let rentHTML = '';
@@ -476,7 +471,6 @@
                 rentHTML = `<div class="card-rent">—<span>/yr</span></div>`;
             }
 
-            // Thumbnail — use first available photo from photos array or primaryPhoto
             const allPhotos = Array.isArray(l.photos) ? l.photos : [];
             const photo = (l.primaryPhoto && l.photosAvailable === 'Yes') ? l.primaryPhoto
                         : (allPhotos.length > 0) ? allPhotos[0]
@@ -545,7 +539,6 @@
         }
 
         function getDetailHTML(l){
-            // Build photo strip if multiple photos exist
             const allDetailPhotos = Array.isArray(l.photos) ? l.photos : [];
             let photoHTML = '';
             if (allDetailPhotos.length > 1) {
@@ -626,7 +619,6 @@
         function closeModal(){document.getElementById('introModal').classList.remove('active')}
         window.addEventListener('click',(e)=>{if(e.target===document.getElementById('introModal'))closeModal()});
 
-        // ─── FIXED: SIMPLIFIED 3 REALISTIC QUESTIONS ───
         function getIntroductionFormHTML(listingId){
             return `
             <button class="modal-close" onclick="closeModal()">✕</button>
@@ -661,7 +653,6 @@
                     </select>
                 </div>
 
-                <!-- ✅ SIMPLIFIED 3 QUESTIONS (fixed) -->
                 <div class="form-group">
                     <label>Quick questions for the resident (optional)</label>
                     <div class="check-label"><input type="checkbox" class="req-extra" value="Is the road accessible for cars?"> Is the road accessible for cars?</div>
