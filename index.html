@@ -310,6 +310,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
+<!-- ===== LOAD CONFIG ===== -->
+<script src="/rentpal-config.js"></script>
+
 <nav>
   <div class="nav-logo">
     <img src="rentpal_logo_blue.png" alt="RentPal" onerror="this.style.display='none';document.getElementById('nlogo').style.display='block'">
@@ -550,12 +553,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <textarea id="t-comments" rows="3" maxlength="200" placeholder="e.g. Water can run low end of month, but estate is quiet and security is solid." oninput="setVal('comments',this.value);updateCharCount('t-comments','t-comments-count',200)"></textarea>
         <div class="char-counter"><span id="t-comments-count">0</span>/200</div>
       </div>
-      <!-- ✅ UPDATED: Now goes to qualification step -->
       <button class="next-btn" onclick="goTo('t-7')">Next →</button>
       <button class="back-btn" onclick="goTo('t-5')">← Back</button>
     </div>
 
-    <!-- ─── NEW QUALIFICATION STEP (t-7) ─── -->
+    <!-- QUALIFICATION STEP (t-7) -->
     <div class="quiz-step" id="t-7">
       <div class="step-label">Almost there</div>
       <div class="quiz-q">One last thing</div>
@@ -796,9 +798,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <hr class="full-divider">
 
-<!-- ══════════════════════════════════════════════════════ -->
-<!-- HOW IT WORKS — FOR LISTERS                           -->
-<!-- ══════════════════════════════════════════════════════ -->
+<!-- HOW IT WORKS — FOR LISTERS -->
 <div id="how-it-works" class="section" style="padding-bottom:48px;">
   <div class="section-eyebrow">For people with a place</div>
   <h2 class="section-title">Got an apartment you're leaving?<br>List it here — it takes two minutes.</h2>
@@ -830,9 +830,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <hr class="full-divider">
 
-<!-- ══════════════════════════════════════════════════════ -->
-<!-- HOW IT WORKS — FOR SEEKERS                           -->
-<!-- ══════════════════════════════════════════════════════ -->
+<!-- HOW IT WORKS — FOR SEEKERS -->
 <div class="dark-section">
 <div class="section" style="padding-bottom:48px;background:transparent;padding-top:0;">
   <div class="section-eyebrow">For seekers</div>
@@ -870,9 +868,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <hr class="full-divider">
 
-<!-- ══════════════════════════════════════════════════════ -->
-<!-- HONESTY SECTION                                       -->
-<!-- ══════════════════════════════════════════════════════ -->
+<!-- HONESTY SECTION -->
 <div class="section">
   <div class="honesty-grid">
     <div>
@@ -916,13 +912,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   window.dataLayer = window.dataLayer || [];
 
   // ── CONFIG ──
-  var GAS_URL = "https://script.google.com/macros/s/AKfycbzmMrwyXnu7DPIt3bp-jwVL5FtsBCGO4Zu5s0tenSu88j1FQPLTOIBLmw1SSMTetD8ItA/exec";
-  var WHATSAPP = "+234 816 2373 553";
+  // Load from external config file
+  var GAS_URL = (typeof RENTPAL_CONFIG !== 'undefined' && RENTPAL_CONFIG.GAS_URL) 
+    ? RENTPAL_CONFIG.GAS_URL 
+    : 'https://script.google.com/macros/s/YOUR_MAIN_RENTPAL_DEPLOYMENT_ID/exec';
+  var WHATSAPP = (typeof RENTPAL_CONFIG !== 'undefined' && RENTPAL_CONFIG.WHATSAPP) 
+    ? RENTPAL_CONFIG.WHATSAPP 
+    : '+234 816 2373 553';
 
   // ── STATE ──
   var vals = {}, currentStep = 'step-0', userType = '';
 
-  // ── UPDATED: Added 't-7' to packing and both flows ──
   var packingSteps = ['step-0','p-confirm','t-1','t-2','t-3','t-4','t-5','t-6','t-7','t-ty'];
   var bothSteps    = ['step-0','b-confirm','t-1','t-2','t-3','t-4','t-5','t-6','t-7','b-s-1','b-s-2','b-s-3','b-s-4','b-s-5','b-ty'];
   var seekerSteps  = ['step-0','s-1','s-2','s-3','s-4','s-5','s-ty'];
@@ -1041,7 +1041,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     updateProgress();
     document.getElementById('quiz-area').scrollIntoView({behavior:'smooth',block:'start'});
 
-    // Autofocus first input/select/textarea on the new step
     setTimeout(function(){
       var firstInput = targetEl.querySelector('input:not([type="checkbox"]), select, textarea');
       if(firstInput) firstInput.focus();
@@ -1103,11 +1102,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var totalRealSteps = steps.length - 2;
     var pct = Math.min(100, Math.round(((idx) / totalRealSteps) * 100));
     document.getElementById('qpfill').style.width = pct+'%';
-    // Fixed: show Step 1 of X instead of Step 0 of X
     document.getElementById('qplabel').textContent = currentStep.endsWith('-ty') ? 'Done ✓' : 'Step '+(idx+1)+' of '+totalRealSteps;
   }
 
-  // ── NEW: QUALIFICATION CONFIRMATION ──
+  // ── QUALIFICATION CONFIRMATION ──
   function confirmListing() {
     var check = document.getElementById('t-confirm');
     if (!check.checked) {
