@@ -15,6 +15,7 @@
     <tr>
       <td align="center" style="padding:36px 12px;">
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:580px; background:#ffffff; border-radius:18px; overflow:hidden; box-shadow:0 4px 18px rgba(15,17,23,0.06);">
+          <!-- Hero -->
           <tr>
             <td bgcolor="#27500A" style="background-color:#27500A; background-image:linear-gradient(145deg,#1a3a0a 0%,#27500A 55%,#1e4a0a 100%); padding:34px 36px 40px;">
               <img src="https://rentpal-web.netlify.app/rentpal_logo_blue.png" alt="RentPal" width="108" style="display:block; height:auto; max-width:108px; margin-bottom:26px; border:0;">
@@ -23,6 +24,8 @@
               <p style="font-size:14px; color:rgba(255,255,255,0.75); line-height:1.65; margin:0; font-weight:300; max-width:420px;">{{residentName}} has accepted your introduction request.</p>
             </td>
           </tr>
+
+          <!-- Apartment details -->
           <tr>
             <td style="padding:28px 36px 4px;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0f4fb; border:1px solid #B5D4F4; border-radius:12px;">
@@ -37,24 +40,60 @@
               </table>
             </td>
           </tr>
+
+          <!-- ─── WHAT YOU'RE PAYING FOR ─── -->
           <tr>
             <td style="padding:32px 36px 4px;">
-              <div style="font-size:11px; font-weight:600; letter-spacing:1.4px; text-transform:uppercase; color:#4A8FD4; margin-bottom:12px;">Next step</div>
-              <p style="font-size:14px; color:#5a6072; line-height:1.7; margin:0;">To get the resident's contact details, you'll need to complete the introduction process.</p>
-              <p style="font-size:13px; color:#5a6072; margin:8px 0 0;">An introduction fee of ₦2,000 applies – finder's fee only if you secure the place.</p>
+              <div style="background:#E6F1FB; border:1px solid #B5D4F4; border-radius:8px; padding:14px 16px;">
+                <div style="font-size:11px; font-weight:600; letter-spacing:1.4px; text-transform:uppercase; color:#185FA5; margin-bottom:6px;">What you're paying for</div>
+                <p style="font-size:13px; color:#0C447C; line-height:1.6; margin:0;">
+                  The <strong>₦2,000 introduction fee</strong> gives you the <strong>verified contact details</strong> (email &amp; phone) of the resident who approved your request. 
+                  They have confirmed they are the current tenant and are open to being contacted about the apartment.
+                </p>
+                <p style="font-size:12px; color:#185FA5; margin:6px 0 0; font-style:italic;">
+                  ✅ The resident's email has been verified – you'll be connecting with a real person, not an agent.
+                </p>
+              </div>
             </td>
           </tr>
+
+          <!-- Next step + Policy -->
           <tr>
-            <td style="padding:28px 36px 32px;">
+            <td style="padding:28px 36px 4px;">
+              <div style="font-size:11px; font-weight:600; letter-spacing:1.4px; text-transform:uppercase; color:#4A8FD4; margin-bottom:12px;">Next step</div>
+              <p style="font-size:14px; color:#5a6072; line-height:1.7; margin:0;">Complete the introduction payment to unlock the resident's contact details.</p>
+            </td>
+          </tr>
+
+          <!-- CTA -->
+          <tr>
+            <td style="padding:28px 36px 24px;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                   <td align="center" bgcolor="#4A8FD4" style="background-color:#4A8FD4; border-radius:10px; padding:14px;">
-                    <a href="{{completeIntroductionUrl}}" style="display:block; font-family:'DM Sans',Arial,sans-serif; font-size:16px; font-weight:600; color:#ffffff; text-decoration:none;">Complete Introduction →</a>
+                    <a href="{{completeIntroductionUrl}}" style="display:block; font-family:'DM Sans',Arial,sans-serif; font-size:16px; font-weight:600; color:#ffffff; text-decoration:none;">Pay &amp; Get Contact Details →</a>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
+
+          <!-- ─── 48-HOUR POLICY ─── -->
+          <tr>
+            <td style="padding:4px 36px 24px;">
+              <div style="background:#fef9e7; border:1px solid #fcd34d; border-radius:8px; padding:12px 14px; font-size:12px; color:#78350f; line-height:1.6;">
+                <strong>⏳ What happens after you pay:</strong>
+                <ul style="margin:4px 0 0 18px; padding:0;">
+                  <li>You'll receive the resident's email and phone number instantly.</li>
+                  <li>You're free to reach out directly and arrange a viewing.</li>
+                  <li>If the resident doesn't respond within <strong>48 hours</strong>, email us at <a href="mailto:mavedomedia@gmail.com" style="color:#185FA5; font-weight:600;">hello@rentpal.com</a>.</li>
+                  <li>We'll nudge them once. If they're still unresponsive, we'll issue a <strong>full refund</strong>.</li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Footer -->
           <tr>
             <td style="padding:24px 36px 32px; text-align:center; border-top:1px solid #eef1f5;">
               <p style="font-size:12px; color:#9299a8; line-height:1.7; margin:16px 0 0; font-weight:400;">RentPal · Lagos, Nigeria<br><a href="https://rentpal-web.netlify.app" style="color:#9299a8; text-decoration:none;">rentpal-web.netlify.app</a></p>
