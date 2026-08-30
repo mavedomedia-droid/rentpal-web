@@ -59,9 +59,15 @@
       <div class="loading">Loading request details…</div>
     </div>
   </div>
+  
+  <!-- LOAD CONFIG -->
+  <script src="/rentpal-config.js"></script>
+
   <script>
-    // ── CONFIG: REPLACE WITH YOUR MAIN RENTPAL GAS URL ──
-    const GAS_URL = 'https://script.google.com/macros/s/YOUR_MAIN_RENTPAL_DEPLOYMENT_ID/exec';
+    // ── LOAD GAS_URL FROM CONFIG (with fallback) ──
+    const GAS_URL = (typeof RENTPAL_CONFIG !== 'undefined' && RENTPAL_CONFIG.GAS_URL) 
+      ? RENTPAL_CONFIG.GAS_URL 
+      : 'https://script.google.com/macros/s/YOUR_MAIN_RENTPAL_DEPLOYMENT_ID/exec';
 
     let requestData = null;
 
