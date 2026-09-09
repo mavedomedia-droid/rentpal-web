@@ -21,20 +21,28 @@
     .label{font-size:12px;color:#9299a8;text-transform:uppercase;letter-spacing:0.5px}
     .value{font-size:15px;margin-bottom:8px}
     .actions{display:flex;flex-direction:column;gap:10px;margin-top:20px}
-    .btn{display:block;width:100%;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;text-align:center;transition:all 0.2s}
+    .btn{display:block;width:100%;padding:14px;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;text-align:center;transition:all 0.2s;position:relative;overflow:hidden}
+    .btn:active{transform:scale(0.98)}
     .btn-approve{background:#4A8FD4;color:#fff}
     .btn-approve:hover{background:#185FA5}
     .btn-decline{background:#fff;color:#5a6072;border:1.5px solid rgba(0,0,0,0.12)}
     .btn-decline:hover{background:#f1f5f9}
     .btn-unavailable{background:#e74c3c;color:#fff}
     .btn-unavailable:hover{background:#c0392b}
-    .btn:disabled{opacity:0.6;cursor:not-allowed}
+    .btn:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+    .btn .spinner{display:none;width:20px;height:20px;border:3px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto}
+    .btn.loading .spinner{display:block}
+    .btn.loading .btn-text{display:none}
+    @keyframes spin{to{transform:rotate(360deg)}}
     .empty{text-align:center;color:#9299a8;padding:40px}
-    .loading{text-align:center;padding:40px;color:#5a6072}
+    .skeleton{background:linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px;height:16px;margin-bottom:12px}
+    .skeleton.card{height:120px;border-radius:16px;margin-bottom:20px;padding:20px}
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
     .seeker-prefs{margin-top:16px;background:#f8fafc;border-radius:12px;padding:16px}
     .seeker-prefs h3{font-size:15px;font-weight:700;margin-bottom:8px}
-    .confirmation{text-align:center;padding:30px;color:#27500A;background:#EAF3DE;border-radius:12px;margin-top:20px}
+    .confirmation{text-align:center;padding:30px;color:#27500A;background:#EAF3DE;border-radius:12px;margin-top:20px;animation:fadeIn 0.3s ease}
     .confirmation.error{background:#fee2e2;color:#991b1b}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
     .question-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #eef1f5}
     .question-row:last-child{border-bottom:none}
     .question-text{flex:1;font-size:14px;color:#0f1117}
@@ -46,7 +54,6 @@
     .toggle-btn.no.selected{background:#e74c3c;color:#fff}
     .toggle-btn:disabled{opacity:0.5;cursor:not-allowed}
     .answer-status{font-size:11px;color:#5a6072;margin-left:8px}
-    .question-section-title{font-size:13px;font-weight:600;color:#4A8FD4;margin-bottom:10px}
     .error-msg{color:#e74c3c;font-size:13px;margin-top:8px;display:none}
     .support-link{display:block;text-align:center;margin-top:12px;font-size:13px;color:#4A8FD4;text-decoration:none}
   </style>
@@ -57,7 +64,10 @@
     <h1>Someone wants your apartment</h1>
     <p class="subtitle">Review the request, answer a few questions, and choose how to respond.</p>
     <div id="content">
-      <div class="loading">Loading request details…</div>
+      <!-- Skeleton loading -->
+      <div class="skeleton card"></div>
+      <div class="skeleton card"></div>
+      <div class="skeleton card" style="height:80px"></div>
     </div>
   </div>
   
@@ -65,7 +75,6 @@
   <script src="/rentpal-config.js"></script>
 
   <script>
-    // ── LOAD GAS_URL FROM CONFIG (with fallback) ──
     const GAS_URL = (typeof RENTPAL_CONFIG !== 'undefined' && RENTPAL_CONFIG.GAS_URL) 
       ? RENTPAL_CONFIG.GAS_URL 
       : 'https://script.google.com/macros/s/YOUR_MAIN_RENTPAL_DEPLOYMENT_ID/exec';
@@ -195,9 +204,9 @@
           <h2>Your Response</h2>
           <p style="color:#5a6072; margin-bottom:16px;">Choose how you'd like to proceed with this introduction request.</p>
           <div class="actions">
-            <button class="btn btn-approve" id="btn-approve">Approve Introduction</button>
-            <button class="btn btn-decline" id="btn-decline">Decline</button>
-            <button class="btn btn-unavailable" id="btn-unavailable">Apartment No Longer Available</button>
+            <button class="btn btn-approve" id="btn-approve"><span class="btn-text">Approve Introduction</span><span class="spinner"></span></button>
+            <button class="btn btn-decline" id="btn-decline"><span class="btn-text">Decline</span><span class="spinner"></span></button>
+            <button class="btn btn-unavailable" id="btn-unavailable"><span class="btn-text">Apartment No Longer Available</span><span class="spinner"></span></button>
           </div>
           <a href="mailto:support@rentpal.ng" class="support-link">Need help? Contact support</a>
         </div>`;
@@ -264,7 +273,11 @@
     }
 
     async function handleAction(requestId, response, answers) {
-      document.querySelectorAll('.btn').forEach(b => b.disabled = true);
+      const buttons = document.querySelectorAll('.btn');
+      buttons.forEach(b => {
+        b.disabled = true;
+        b.classList.add('loading');
+      });
       try {
         const result = await performAction(requestId, response, answers);
         const confirmationDiv = document.createElement('div');
@@ -286,7 +299,10 @@
         }
       } catch(e) {
         alert('Something went wrong. Please try again.');
-        document.querySelectorAll('.btn').forEach(b => b.disabled = false);
+        buttons.forEach(b => {
+          b.disabled = false;
+          b.classList.remove('loading');
+        });
       }
     }
 
@@ -294,14 +310,23 @@
       const params = new URLSearchParams(window.location.search);
       const requestId = params.get('requestId');
       if (!requestId) {
-        document.getElementById('content').innerHTML = '<div class="empty">No request ID provided.</div>';
+        document.getElementById('content').innerHTML = `
+          <div class="card">
+            <h2>Missing Request ID</h2>
+            <p>No request ID was provided in the link. Please check the link and try again.</p>
+          </div>`;
         return;
       }
       try {
         const data = await fetchIntroDetails(requestId);
         render(data);
       } catch(e) {
-        document.getElementById('content').innerHTML = '<div class="empty">Could not load request details. Please try again later.</div>';
+        document.getElementById('content').innerHTML = `
+          <div class="card">
+            <h2>Could Not Load Request</h2>
+            <p>We couldn't load the request details. Please try again later or contact support.</p>
+            <a href="mailto:support@rentpal.ng" class="support-link">Contact support</a>
+          </div>`;
       }
     }
 
