@@ -48,6 +48,7 @@
     .answer-status{font-size:11px;color:#5a6072;margin-left:8px}
     .question-section-title{font-size:13px;font-weight:600;color:#4A8FD4;margin-bottom:10px}
     .error-msg{color:#e74c3c;font-size:13px;margin-top:8px;display:none}
+    .support-link{display:block;text-align:center;margin-top:12px;font-size:13px;color:#4A8FD4;text-decoration:none}
   </style>
 </head>
 <body>
@@ -198,6 +199,7 @@
             <button class="btn btn-decline" id="btn-decline">Decline</button>
             <button class="btn btn-unavailable" id="btn-unavailable">Apartment No Longer Available</button>
           </div>
+          <a href="mailto:support@rentpal.ng" class="support-link">Need help? Contact support</a>
         </div>`;
 
       document.getElementById('content').innerHTML = listingHTML + requesterHTML + knowHTML + questionsHTML + actionsHTML;
@@ -267,7 +269,14 @@
         const result = await performAction(requestId, response, answers);
         const confirmationDiv = document.createElement('div');
         confirmationDiv.className = result.success ? 'confirmation' : 'confirmation error';
-        confirmationDiv.innerHTML = `<p>${escapeHTML(result.message)}</p>`;
+        let message = escapeHTML(result.message);
+        if (response === 'approve' && result.success) {
+          message += '<br><small>The requester will receive a payment link to complete the intro fee.</small>';
+        }
+        confirmationDiv.innerHTML = `<p>${message}</p>`;
+        if (!result.success) {
+          confirmationDiv.innerHTML += '<a href="mailto:support@rentpal.ng" class="support-link">Contact support</a>';
+        }
         const actionCard = document.getElementById('action-buttons');
         if (actionCard) {
           actionCard.innerHTML = '';
