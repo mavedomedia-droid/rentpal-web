@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* (keep your existing styles – unchanged) */
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'DM Sans',sans-serif;background:#f1f5f9;color:#0f1117;line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
     .container{max-width:640px;margin:40px auto;padding:0 20px;flex:1}
@@ -64,27 +65,49 @@
     <h1>Someone wants your apartment</h1>
     <p class="subtitle">Review the request, answer a few questions, and choose how to respond.</p>
     <div id="content">
-      <!-- Skeleton loading -->
       <div class="skeleton card"></div>
       <div class="skeleton card"></div>
       <div class="skeleton card" style="height:80px"></div>
     </div>
   </div>
-  
-  <!-- LOAD CONFIG -->
+
+  <!-- Load config, but also provide fallback if missing -->
+  <script>
+    // Fallback URL (replace with your actual deployment if needed)
+    const FALLBACK_GAS_URL = 'https://script.google.com/macros/s/AKfycbyspUyz-Lg_RaaT5bgxWKUrPNaSFsVJMSsCO8alRwJJZ86s7HUOFa6UnTSivcTTTsPR0Q/exec';
+    let GAS_URL = FALLBACK_GAS_URL;
+  </script>
   <script src="/rentpal-config.js"></script>
+  <script>
+    // If config loaded, override
+    if (typeof RENTPAL_CONFIG !== 'undefined' && RENTPAL_CONFIG.GAS_URL) {
+      GAS_URL = RENTPAL_CONFIG.GAS_URL;
+    } else {
+      console.warn('rentpal-config.js not loaded or missing GAS_URL. Using fallback.');
+    }
+    console.log('Using GAS_URL:', GAS_URL);
+  </script>
 
   <script>
-    const GAS_URL = (typeof RENTPAL_CONFIG !== 'undefined' && RENTPAL_CONFIG.GAS_URL) 
-      ? RENTPAL_CONFIG.GAS_URL 
-      : 'https://script.google.com/macros/s/YOUR_MAIN_RENTPAL_DEPLOYMENT_ID/exec';
-
     let requestData = null;
 
+    // Helper: fetch with timeout
+    async function fetchWithTimeout(url, timeout = 10000) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeout);
+      try {
+        const res = await fetch(url, { signal: controller.signal });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.json();
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
     async function fetchIntroDetails(requestId) {
-      const res = await fetch(`${GAS_URL}?action=introDetails&requestId=${encodeURIComponent(requestId)}`);
-      if (!res.ok) throw new Error('Network error');
-      return res.json();
+      const url = `${GAS_URL}?action=introDetails&requestId=${encodeURIComponent(requestId)}`;
+      console.log('Fetching intro details:', url);
+      return fetchWithTimeout(url);
     }
 
     async function performAction(requestId, response, answers) {
@@ -92,9 +115,8 @@
       if (response === 'approve' && answers) {
         url += `&answers=${encodeURIComponent(answers)}`;
       }
-      const res = await fetch(url);
-      if (!res.ok) throw new Error('Network error');
-      return res.json();
+      console.log('Performing action:', url);
+      return fetchWithTimeout(url);
     }
 
     function formatNaira(n){ if(!n||isNaN(n))return'—'; return'₦'+parseInt(n).toLocaleString('en-NG'); }
@@ -232,6 +254,7 @@
       }
 
       document.getElementById('btn-approve').addEventListener('click', function() {
+        console.log('Approve button clicked');
         if (questionItems.length) {
           const allAnswered = document.querySelectorAll('.question-row').every(row => {
             const status = row.querySelector('.answer-status');
@@ -252,10 +275,12 @@
       });
 
       document.getElementById('btn-decline').addEventListener('click', function() {
+        console.log('Decline button clicked');
         handleAction(requestId, 'decline', '');
       });
 
       document.getElementById('btn-unavailable').addEventListener('click', function() {
+        console.log('Unavailable button clicked');
         handleAction(requestId, 'noLongerAvailable', '');
       });
     }
@@ -273,6 +298,7 @@
     }
 
     async function handleAction(requestId, response, answers) {
+      console.log('handleAction called:', { requestId, response, answers });
       const buttons = document.querySelectorAll('.btn');
       buttons.forEach(b => {
         b.disabled = true;
@@ -280,6 +306,7 @@
       });
       try {
         const result = await performAction(requestId, response, answers);
+        console.log('Backend response:', result);
         const confirmationDiv = document.createElement('div');
         confirmationDiv.className = result.success ? 'confirmation' : 'confirmation error';
         let message = escapeHTML(result.message);
@@ -298,7 +325,8 @@
           document.getElementById('content').appendChild(confirmationDiv);
         }
       } catch(e) {
-        alert('Something went wrong. Please try again.');
+        console.error('Error in handleAction:', e);
+        alert('Something went wrong. Please try again.\n' + e.message);
         buttons.forEach(b => {
           b.disabled = false;
           b.classList.remove('loading');
@@ -309,6 +337,7 @@
     async function init() {
       const params = new URLSearchParams(window.location.search);
       const requestId = params.get('requestId');
+      console.log('Request ID from URL:', requestId);
       if (!requestId) {
         document.getElementById('content').innerHTML = `
           <div class="card">
@@ -319,12 +348,15 @@
       }
       try {
         const data = await fetchIntroDetails(requestId);
+        console.log('Intro details:', data);
         render(data);
       } catch(e) {
+        console.error('Error fetching intro details:', e);
         document.getElementById('content').innerHTML = `
           <div class="card">
             <h2>Could Not Load Request</h2>
             <p>We couldn't load the request details. Please try again later or contact support.</p>
+            <p style="color:#e74c3c; font-size:13px;">${escapeHTML(e.message)}</p>
             <a href="mailto:support@rentpal.ng" class="support-link">Contact support</a>
           </div>`;
       }
