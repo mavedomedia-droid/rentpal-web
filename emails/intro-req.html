@@ -45,15 +45,10 @@
                 <tr><td style="color:#5a6072; padding-bottom:4px;">Reason</td><td style="padding-bottom:4px;">{{reason}}</td></tr>
                 <tr><td style="color:#5a6072; padding-bottom:4px;">Move Timeline</td><td style="padding-bottom:4px;">{{moveTimeline}}</td></tr>
               </table>
-              {{#extraQuestionsHtml}}
-                <div style="margin-top:16px; background:#f4f7fc; border-radius:8px; padding:12px 16px; border-left:3px solid #4A8FD4;">
-                  <div style="font-size:11px; font-weight:600; color:#185FA5; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Questions for you</div>
-                  {{{extraQuestionsHtml}}}
-                </div>
-              {{/extraQuestionsHtml}}
-              {{^extraQuestionsHtml}}
-                <div style="margin-top:12px; font-size:13px; color:#9299a8; font-style:italic;">No additional questions asked.</div>
-              {{/extraQuestionsHtml}}
+              <div style="margin-top:16px; background:#f4f7fc; border-radius:8px; padding:12px 16px; border-left:3px solid #4A8FD4;">
+                <div style="font-size:11px; font-weight:600; color:#185FA5; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Questions for you</div>
+                {{extraQuestionsHtml}}
+              </div>
               <div style="margin-top:18px; padding:12px 14px; background:#fef9e7; border:1px solid #fcd34d; border-radius:8px; font-size:12px; color:#78350f; line-height:1.5;">
                 🔒 <strong>Privacy first:</strong> The requester's email and phone number are <strong>not</strong> shown here. If you approve this request, we'll connect you both via email instantly.
               </div>
