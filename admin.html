@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RentPal Ops</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;background:#f1f5f9;color:#0f1117;line-height:1.5;min-height:100vh}
+  .gate{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+  .gate-box{background:#fff;border-radius:16px;padding:32px;max-width:380px;width:100%;box-shadow:0 4px 18px rgba(15,17,23,0.06)}
+  .gate-box h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;margin-bottom:8px;color:#0C447C}
+  .gate-box p{color:#5a6072;font-size:14px;margin-bottom:20px}
+  .gate-box input{width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;font-family:inherit;margin-bottom:12px}
+  .gate-box input:focus{outline:none;border-color:#4A8FD4}
+  .gate-box button{width:100%;padding:12px;background:#4A8FD4;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+  .gate-box button:hover{background:#185FA5}
+  header{background:#fff;border-bottom:1px solid #e5e7eb;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;flex-wrap:wrap;gap:12px}
+  .brand{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:#4A8FD4}
+  .brand span{color:#0f1117;font-weight:600;font-size:14px;margin-left:8px}
+  .header-actions{display:flex;gap:8px;align-items:center}
+  .btn-sm{padding:8px 14px;border-radius:8px;border:1.5px solid #e5e7eb;background:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:#5a6072}
+  .btn-sm:hover{background:#f1f5f9}
+  .btn-sm.primary{background:#4A8FD4;color:#fff;border-color:#4A8FD4}
+  .btn-sm.primary:hover{background:#185FA5}
+  .container{max-width:1200px;margin:0 auto;padding:20px}
+  .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:24px}
+  .stat{background:#fff;border-radius:12px;padding:16px 18px;border:1px solid #e5e7eb}
+  .stat-label{font-size:11px;color:#9299a8;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;margin-bottom:6px}
+  .stat-value{font-family:'Plus Jakarta Sans',sans-serif;font-size:24px;font-weight:800;color:#0f1117}
+  .stat.warn .stat-value{color:#e74c3c}
+  .tabs{display:flex;gap:4px;border-bottom:1px solid #e5e7eb;margin-bottom:20px;overflow-x:auto}
+  .tab{padding:10px 16px;border:none;background:none;font-size:14px;font-weight:600;color:#5a6072;cursor:pointer;border-bottom:2px solid transparent;font-family:inherit;white-space:nowrap}
+  .tab.active{color:#4A8FD4;border-bottom-color:#4A8FD4}
+  .tab .badge-count{display:inline-block;background:#e74c3c;color:#fff;font-size:10px;padding:2px 7px;border-radius:100px;margin-left:6px;font-weight:700}
+  .filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .filters input,.filters select{padding:8px 12px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:13px;font-family:inherit;background:#fff}
+  .filters input{flex:1;min-width:180px}
+  .card{background:#fff;border-radius:14px;padding:18px 20px;margin-bottom:12px;border:1px solid #e5e7eb}
+  .card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+  .card-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:#0f1117}
+  .card-sub{font-size:13px;color:#5a6072;margin-top:2px}
+  .card-meta{font-size:12px;color:#9299a8;font-family:'Courier New',monospace;margin-top:4px}
+  .chip{display:inline-block;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px}
+  .chip.pending{background:#e5e7eb;color:#4b5563}
+  .chip.approved{background:#dbeafe;color:#185FA5}
+  .chip.paid{background:#EAF3DE;color:#27500A}
+  .chip.declined{background:#fee2e2;color:#991b1b}
+  .chip.unavailable{background:#fef3c7;color:#78350f}
+  .chip.available{background:#EAF3DE;color:#27500A}
+  .chip.warn{background:#fee2e2;color:#991b1b}
+  .card-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid #f1f5f9}
+  .btn{padding:6px 12px;border-radius:8px;border:1.5px solid #e5e7eb;background:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:#5a6072}
+  .btn:hover{background:#f1f5f9}
+  .btn.primary{background:#4A8FD4;color:#fff;border-color:#4A8FD4}
+  .btn.primary:hover{background:#185FA5}
+  .btn.danger{background:#e74c3c;color:#fff;border-color:#e74c3c}
+  .btn.danger:hover{background:#c0392b}
+  .empty{text-align:center;padding:60px 20px;color:#9299a8;font-size:14px}
+  .loading{text-align:center;padding:40px;color:#5a6072;font-size:14px}
+  .issue-section{background:#fff;border-radius:14px;padding:18px 20px;margin-bottom:12px;border:1px solid #e5e7eb}
+  .issue-section h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  .issue-item{padding:10px 12px;border-radius:8px;background:#f8fafc;font-size:13px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .issue-item.empty{background:#EAF3DE;color:#27500A;font-weight:500}
+  .toast{position:fixed;bottom:20px;right:20px;background:#0f1117;color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:500;z-index:100;animation:slideIn 0.2s ease}
+  .toast.error{background:#e74c3c}
+  .toast.success{background:#27500A}
+  @keyframes slideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .detail-grid{display:grid;grid-template-columns:100px 1fr;gap:6px 12px;font-size:13px;margin-top:10px}
+  .detail-grid .lbl{color:#9299a8}
+  .detail-grid .val{color:#0f1117;word-break:break-word}
+  @media (max-width: 640px) {
+    .stats-row{grid-template-columns:repeat(2,1fr)}
+    .container{padding:12px}
+  }
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <h1>rentpal ops</h1>
+    <p>Admin access only.</p>
+    <input type="password" id="keyInput" placeholder="Admin key" autocomplete="off">
+    <button onclick="unlock()">Unlock</button>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+  <header>
+    <div class="brand">rentpal <span>ops</span></div>
+    <div class="header-actions">
+      <span id="lastUpdated" style="font-size:12px;color:#9299a8"></span>
+      <button class="btn-sm primary" onclick="refresh()">🔄 Refresh</button>
+      <button class="btn-sm" onclick="logout()">Logout</button>
+    </div>
+  </header>
+  <div class="container">
+    <div class="stats-row" id="statsRow"></div>
+    <div class="tabs" id="tabs">
+      <button class="tab active" data-tab="requests">Requests</button>
+      <button class="tab" data-tab="issues">Issues <span class="badge-count" id="issuesCount" style="display:none"></span></button>
+      <button class="tab" data-tab="listings">Listings</button>
+      <button class="tab" data-tab="seekers">Seekers</button>
+    </div>
+    <div id="tabContent"></div>
+  </div>
+</div>
+
+<script>
+let ADMIN_KEY = sessionStorage.getItem('rp_admin_key') || '';
+let GAS_URL = '';
+let activeTab = 'requests';
+let cache = { requests: [], listings: [], seekers: [], issues: null, stats: null };
+
+// Load config
+(function loadConfig(){
+  const fallback = 'https://script.google.com/macros/s/AKfycbyspUyz-Lg_RaaT5bgxWKUrPNaSFsVJMSsCO8alRwJJZ86s7HUOFa6UnTSivcTTTsPR0Q/exec';
+  const script = document.createElement('script');
+  script.src = '/rentpal-config.js';
+  script.onload = () => {
+    GAS_URL = (typeof RENTPAL_CONFIG !== 'undefined' && RENTPAL_CONFIG.GAS_URL) ? RENTPAL_CONFIG.GAS_URL : fallback;
+  };
+  script.onerror = () => { GAS_URL = fallback; };
+  document.head.appendChild(script);
+  setTimeout(() => { if (!GAS_URL) GAS_URL = fallback; }, 500);
+})();
+
+function unlock(){
+  const val = document.getElementById('keyInput').value.trim();
+  if (!val) return;
+  ADMIN_KEY = val;
+  sessionStorage.setItem('rp_admin_key', val);
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  refresh();
+}
+
+function logout(){
+  sessionStorage.removeItem('rp_admin_key');
+  location.reload();
+}
+
+async function api(action, extraParams = {}){
+  const params = new URLSearchParams({ action, adminKey: ADMIN_KEY, ...extraParams });
+  const res = await fetch(`${GAS_URL}?${params.toString()}`);
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+
+async function apiPost(payload){
+  const body = { ...payload, adminKey: ADMIN_KEY };
+  const res = await fetch(GAS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+
+async function refresh(){
+  const content = document.getElementById('tabContent');
+  content.innerHTML = '<div class="loading">Loading…</div>';
+  try {
+    const [stats, requests, listings, seekers, issues] = await Promise.all([
+      api('dashboardStats'),
+      api('dashboardRequests'),
+      api('dashboardListings'),
+      api('dashboardSeekers'),
+      api('dashboardIssues')
+    ]);
+    if (!stats.success) throw new Error(stats.message || 'Unauthorized');
+    cache.stats = stats.stats;
+    cache.requests = requests.requests || [];
+    cache.listings = listings.listings || [];
+    cache.seekers = seekers.seekers || [];
+    cache.issues = issues.issues;
+    renderStats();
+    renderTab();
+    document.getElementById('lastUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString('en-NG', { hour:'2-digit', minute:'2-digit' });
+    updateIssuesBadge();
+  } catch(e){
+    content.innerHTML = `<div class="empty">Failed to load: ${e.message}<br><small>Check the admin key and try again.</small></div>`;
+  }
+}
+
+function updateIssuesBadge(){
+  if (!cache.issues) return;
+  const total = (cache.issues.stuck?.length||0) + (cache.issues.unpaid?.length||0) + (cache.issues.badEmails?.length||0);
+  const badge = document.getElementById('issuesCount');
+  if (total > 0) { badge.textContent = total; badge.style.display = 'inline-block'; }
+  else { badge.style.display = 'none'; }
+}
+
+function renderStats(){
+  const s = cache.stats || {};
+  const fee = 200000;
+  document.getElementById('statsRow').innerHTML = `
+    <div class="stat"><div class="stat-label">Active Listings</div><div class="stat-value">${s.activeListings||0}</div></div>
+    <div class="stat"><div class="stat-label">Pending Requests</div><div class="stat-value">${s.pendingRequests||0}</div></div>
+    <div class="stat ${s.approvedUnpaid>0?'warn':''}"><div class="stat-label">Approved Unpaid</div><div class="stat-value">${s.approvedUnpaid||0}</div></div>
+    <div class="stat"><div class="stat-label">Paid Today</div><div class="stat-value">${s.paidToday||0}</div></div>
+    <div class="stat"><div class="stat-label">Revenue MTD</div><div class="stat-value">₦${((s.revenueMTD||0)).toLocaleString('en-NG')}</div></div>
+  `;
+}
+
+function timeAgo(iso){
+  if (!iso) return '';
+  const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+  if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+  return Math.floor(diff/86400) + 'd ago';
+}
+
+function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function renderTab(){
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === activeTab);
+  });
+  const c = document.getElementById('tabContent');
+  if (activeTab === 'requests') return renderRequests(c);
+  if (activeTab === 'issues') return renderIssues(c);
+  if (activeTab === 'listings') return renderListings(c);
+  if (activeTab === 'seekers') return renderSeekers(c);
+}
+
+let requestFilter = { status: 'all', search: '' };
+
+function renderRequests(el){
+  const filtered = cache.requests.filter(r => {
+    if (requestFilter.status !== 'all') {
+      if (requestFilter.status === 'unpaid' && !(r.status === 'Approved' && r.paymentStatus !== 'Paid')) return false;
+      else if (requestFilter.status !== 'unpaid' && r.status !== requestFilter.status) return false;
+    }
+    if (requestFilter.search) {
+      const q = requestFilter.search.toLowerCase();
+      const hay = [r.requestId, r.listingId, r.requesterName, r.requesterEmail, r.residentName, r.residentEmail].join(' ').toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  el.innerHTML = `
+    <div class="filters">
+      <input type="text" id="searchInput" placeholder="Search by ID, name or email…" value="${escapeHtml(requestFilter.search)}">
+      <select id="statusFilter">
+        <option value="all"${requestFilter.status==='all'?' selected':''}>All statuses</option>
+        <option value="Pending"${requestFilter.status==='Pending'?' selected':''}>Pending</option>
+        <option value="Approved"${requestFilter.status==='Approved'?' selected':''}>Approved</option>
+        <option value="unpaid"${requestFilter.status==='unpaid'?' selected':''}>Approved · Unpaid</option>
+        <option value="Declined"${requestFilter.status==='Declined'?' selected':''}>Declined</option>
+        <option value="Unavailable"${requestFilter.status==='Unavailable'?' selected':''}>Unavailable</option>
+      </select>
+    </div>
+    <div id="requestsList"></div>
+  `;
+
+  document.getElementById('searchInput').addEventListener('input', e => {
+    requestFilter.search = e.target.value;
+    renderRequestsList();
+  });
+  document.getElementById('statusFilter').addEventListener('change', e => {
+    requestFilter.status = e.target.value;
+    renderRequestsList();
+  });
+  renderRequestsList();
+}
+
+function renderRequestsList(){
+  const el = document.getElementById('requestsList');
+  const filtered = cache.requests.filter(r => {
+    if (requestFilter.status !== 'all') {
+      if (requestFilter.status === 'unpaid') {
+        if (!(r.status === 'Approved' && r.paymentStatus !== 'Paid')) return false;
+      } else if (r.status !== requestFilter.status) return false;
+    }
+    if (requestFilter.search) {
+      const q = requestFilter.search.toLowerCase();
+      const hay = [r.requestId, r.listingId, r.requesterName, r.requesterEmail, r.residentName, r.residentEmail].join(' ').toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  if (!filtered.length) { el.innerHTML = '<div class="empty">No requests match.</div>'; return; }
+
+  el.innerHTML = filtered.map(r => {
+    const statusClass = r.status === 'Pending' ? 'pending' : r.status === 'Approved' ? 'approved' : r.status === 'Declined' ? 'declined' : 'unavailable';
+    const paidChip = r.paymentStatus === 'Paid' ? '<span class="chip paid">Paid</span>' : (r.status === 'Approved' ? '<span class="chip warn">Unpaid</span>' : '');
+    const actions = [];
+    if (r.status === 'Pending') {
+      actions.push(`<button class="btn" onclick="act('resendResident','${r.requestId}')">Resend to resident</button>`);
+      actions.push(`<button class="btn primary" onclick="act('forceApprove','${r.requestId}')">Force approve</button>`);
+      actions.push(`<button class="btn danger" onclick="act('cancel','${r.requestId}')">Cancel</button>`);
+    } else if (r.status === 'Approved' && r.paymentStatus !== 'Paid') {
+      actions.push(`<button class="btn primary" onclick="act('resendRequester','${r.requestId}')">Resend payment link</button>`);
+      actions.push(`<button class="btn" onclick="act('markPaid','${r.requestId}')">Mark paid</button>`);
+    } else if (r.status === 'Approved' && r.paymentStatus === 'Paid') {
+      actions.push(`<span style="font-size:12px;color:#27500A;font-weight:600">✅ Contact released</span>`);
+    }
+    return `
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">${escapeHtml(r.requestId)} · ${escapeHtml(r.listingId)}</div>
+            <div class="card-sub">${escapeHtml(r.requesterName)} → ${escapeHtml(r.residentName)}</div>
+            <div class="card-meta">${escapeHtml(r.requesterEmail)} → ${escapeHtml(r.residentEmail)}</div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span class="chip ${statusClass}">${r.status||'—'}</span>
+            ${paidChip}
+          </div>
+        </div>
+        <div class="detail-grid">
+          <div class="lbl">Sent</div><div class="val">${timeAgo(r.sentAt) || '—'}</div>
+          ${r.responseAt ? `<div class="lbl">Responded</div><div class="val">${timeAgo(r.responseAt)} (${escapeHtml(r.response||'')})</div>` : ''}
+          ${r.paymentDate ? `<div class="lbl">Paid</div><div class="val">${timeAgo(r.paymentDate)}</div>` : ''}
+          ${r.paystackRef ? `<div class="lbl">Ref</div><div class="val" style="font-family:monospace;font-size:12px">${escapeHtml(r.paystackRef)}</div>` : ''}
+        </div>
+        ${actions.length ? `<div class="card-actions">${actions.join('')}</div>` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+function renderIssues(el){
+  const i = cache.issues || { stuck: [], unpaid: [], badEmails: [] };
+  const total = i.stuck.length + i.unpaid.length + i.badEmails.length;
+  if (!total) { el.innerHTML = '<div class="empty">🎉 All clear. No issues found.</div>'; return; }
+
+  const section = (title, items, renderFn) => `
+    <div class="issue-section">
+      <h3>${title} <span class="chip ${items.length?'warn':'paid'}">${items.length}</span></h3>
+      ${items.length ? items.map(renderFn).join('') : '<div class="issue-item empty">All clear</div>'}
+    </div>
+  `;
+
+  el.innerHTML =
+    section('⏳ Stuck pending (&gt;48h)', i.stuck, x => `
+      <div class="issue-item">
+        <div><strong>${escapeHtml(x.requestId)}</strong> · resident: ${escapeHtml(x.residentEmail)}</div>
+        <div style="font-size:12px;color:#9299a8">${x.hoursOld}h old</div>
+      </div>
+    `) +
+    section('💰 Approved but unpaid (&gt;24h)', i.unpaid, x => `
+      <div class="issue-item">
+        <div><strong>${escapeHtml(x.requestId)}</strong> · ${escapeHtml(x.requesterName)} &lt;${escapeHtml(x.requesterEmail)}&gt;</div>
+        <button class="btn primary" onclick="act('resendRequester','${x.requestId}')">Resend</button>
+      </div>
+    `) +
+    section('❌ Invalid emails', i.badEmails, x => `
+      <div class="issue-item">
+        <div><strong>${escapeHtml(x.requestId)}</strong> · <code>${escapeHtml(x.email)}</code></div>
+      </div>
+    `);
+}
+
+function renderListings(el){
+  if (!cache.listings.length) { el.innerHTML = '<div class="empty">No listings yet.</div>'; return; }
+  el.innerHTML = cache.listings.map(l => `
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">${escapeHtml(l.aptType||'—')} · ${escapeHtml(l.area||'')}, ${escapeHtml(l.location||'')}</div>
+          <div class="card-sub">${escapeHtml(l.ownerName)} · ${escapeHtml(l.email)}</div>
+          <div class="card-meta">${escapeHtml(l.listingId)} · ₦${Number(l.rentExact||0).toLocaleString('en-NG')}/yr</div>
+        </div>
+        <span class="chip ${l.listingStatus === 'Available' ? 'available' : 'unavailable'}">${escapeHtml(l.listingStatus||'—')}</span>
+      </div>
+      <div class="detail-grid">
+        <div class="lbl">Intro requests</div><div class="val">${l.introCount||0}</div>
+        ${l.lastRequest ? `<div class="lbl">Last request</div><div class="val">${timeAgo(l.lastRequest)}</div>` : ''}
+        <div class="lbl">Photos</div><div class="val">${l.photosAvailable === 'Yes' ? '✅ Yes' : '❌ No'}</div>
+      </div>
+      <div class="card-actions">
+        <a href="https://rentpal-web.netlify.app/listings/?id=${encodeURIComponent(l.listingId)}" target="_blank" class="btn">View listing</a>
+        ${l.tgUrl ? `<a href="${escapeHtml(l.tgUrl)}" target="_blank" class="btn">Telegram post</a>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderSeekers(el){
+  if (!cache.seekers.length) { el.innerHTML = '<div class="empty">No seekers yet.</div>'; return; }
+  el.innerHTML = cache.seekers.map(s => `
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">${escapeHtml(s.name)}</div>
+          <div class="card-meta">${escapeHtml(s.email)} · ${escapeHtml(s.phone)}</div>
+        </div>
+      </div>
+      <div class="detail-grid">
+        <div class="lbl">Looking for</div><div class="val">${escapeHtml(s.prefAptType)} in ${escapeHtml(s.prefLocation)}</div>
+        <div class="lbl">Budget</div><div class="val">₦${Number(s.budgetMin||0).toLocaleString('en-NG')} – ₦${Number(s.budgetMax||0).toLocaleString('en-NG')}</div>
+        <div class="lbl">Timing</div><div class="val">${escapeHtml(s.moveTiming)}</div>
+        <div class="lbl">Areas</div><div class="val">${escapeHtml(s.prefAreas)}</div>
+      </div>
+      <div class="card-actions">
+        <a href="https://wa.me/${(s.phone||'').replace(/[^0-9]/g,'')}" target="_blank" class="btn">WhatsApp</a>
+        <a href="mailto:${escapeHtml(s.email)}" class="btn">Email</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function act(type, requestId){
+  const labels = {
+    resendResident: 'Resend resident notification?',
+    resendRequester: 'Resend requester email?',
+    markPaid: 'Mark as paid + release contact?',
+    forceApprove: 'Force approve this request? (Sends payment link to requester)',
+    cancel: 'Cancel this request?'
+  };
+  if (!confirm(labels[type] || 'Confirm action?')) return;
+  toast('Working…');
+  try {
+    const res = await apiPost({ action: 'dashboardAction', type, requestId });
+    if (res.success) { toast(res.message || 'Done', 'success'); refresh(); }
+    else { toast(res.message || 'Failed', 'error'); }
+  } catch(e) {
+    toast('Error: ' + e.message, 'error');
+  }
+}
+
+function toast(msg, type){
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+  const t = document.createElement('div');
+  t.className = 'toast ' + (type || '');
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// Event listeners
+document.getElementById('tabs').addEventListener('click', e => {
+  const btn = e.target.closest('.tab');
+  if (!btn) return;
+  activeTab = btn.dataset.tab;
+  renderTab();
+});
+
+// Boot
+if (ADMIN_KEY){
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  setTimeout(refresh, 800);
+} else {
+  document.getElementById('keyInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') unlock();
+  });
+}
+</script>
+</body>
+</html>
