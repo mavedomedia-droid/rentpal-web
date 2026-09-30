@@ -55,30 +55,37 @@
         .trust-item svg{width:12px;height:12px;color:var(--blue)}
         @media(max-width:768px){.trust-bar{display:none}}
 
-        .directory-hero{background:linear-gradient(145deg, #141927 0%, #1e2a3a 60%, #0C447C 100%);border-bottom:1px solid #0C447C;padding:28px 16px 22px;text-align:center;color:#fff}
+        .directory-hero{background:linear-gradient(145deg, #141927 0%, #1e2a3a 60%, #0C447C 100%);border-bottom:1px solid #0C447C;padding:22px 16px 16px;text-align:center;color:#fff}
         .hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(74,143,212,0.18);color:#8fc6f5;font-size:11px;font-weight:600;padding:4px 14px;border-radius:100px;margin-bottom:10px;border:1px solid rgba(74,143,212,0.3)}
         .hero-dot{width:5px;height:5px;border-radius:50%;background:#4A8FD4;animation:pulse-dot 2s infinite}
         @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.6)}}
         .directory-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:26px;font-weight:800;letter-spacing:-0.5px;color:#fff;margin-bottom:8px;line-height:1.2}
         .directory-hero h1 em{font-style:normal;color:var(--blue)}
-        .hero-bullets{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;font-size:12px;font-weight:400;color:rgba(255,255,255,0.65);max-width:550px;margin:0 auto 8px;line-height:1.4}
+        .hero-bullets{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;font-size:12px;font-weight:400;color:rgba(255,255,255,0.65);max-width:550px;margin:0 auto 6px;line-height:1.4}
         .hero-bullets span{display:inline-flex;align-items:baseline;gap:4px}
         .hero-bullets .bullet{color:#4A8FD4;font-weight:700;font-size:14px;line-height:1}
 
-        .spotlight-wrap{margin-top:14px;position:relative;height:32px;overflow:hidden;text-align:center}
-        .spotlight-item{font-size:14px;font-weight:500;color:rgba(255,255,255,0.9);padding:4px 0;opacity:0;transition:opacity 1.2s ease;position:absolute;left:0;right:0;top:0;font-family:'DM Sans',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .spotlight-wrap{margin-top:8px;position:relative;height:26px;overflow:hidden;text-align:center}
+        .spotlight-item{font-size:13px;font-weight:500;color:rgba(255,255,255,0.9);padding:4px 0;opacity:0;transition:opacity 1.2s ease;position:absolute;left:0;right:0;top:0;font-family:'DM Sans',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .spotlight-item.active{opacity:1}
-        .spotlight-disclaimer{margin-top:10px;font-size:11px;color:rgba(255,255,255,0.45);line-height:1.5;max-width:500px;margin-left:auto;margin-right:auto}
 
-        .filters-wrap{background:#1a2634;border-bottom:2px solid #2d3b4f;padding:0 16px;position:sticky;top:56px;z-index:50;transition:box-shadow var(--transition)}
-        .filters-wrap.scrolled{box-shadow:0 2px 8px rgba(0,0,0,0.05)}
-        .filters-inner{max-width:1200px;margin:0 auto;display:flex;gap:10px;align-items:center;padding:10px 0;flex-wrap:wrap}
-        .filter-select{min-width:100px;padding:8px 28px 8px 12px;border:1.5px solid #3b4a5e;border-radius:var(--radius-sm);font-size:14px;color:#e2e8f0;background:#263246;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23929a8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color var(--transition)}
-        .filter-select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(74,143,212,0.12)}
+        /* ── FILTERS — one thin line, no wrapping ── */
+        .filters-wrap{background:linear-gradient(180deg,#1a2634 0%,#1e2a3a 100%);border-bottom:2px solid #2d3b4f;padding:0;position:sticky;top:56px;z-index:50;transition:box-shadow var(--transition)}
+        .filters-wrap.scrolled{box-shadow:0 4px 12px rgba(0,0,0,0.12)}
+        .filters-inner{max-width:1200px;margin:0 auto;display:flex;gap:6px;align-items:center;padding:8px 16px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+        .filters-inner::-webkit-scrollbar{display:none}
+        .filter-search{flex:1;min-width:140px;max-width:280px;padding:7px 12px;border:1.5px solid rgba(74,143,212,0.25);border-radius:var(--radius-sm);font-size:12.5px;color:#e2e8f0;background:rgba(74,143,212,0.08);outline:none;font-family:'DM Sans',sans-serif;transition:all var(--transition);height:32px}
+        .filter-search::placeholder{color:rgba(226,232,240,0.5)}
+        .filter-search:hover{border-color:rgba(74,143,212,0.5);background:rgba(74,143,212,0.12)}
+        .filter-search:focus{border-color:var(--blue);box-shadow:0 0 0 2px rgba(74,143,212,0.18);background:rgba(74,143,212,0.15)}
+        .filter-select{padding:7px 24px 7px 10px;border:1.5px solid rgba(74,143,212,0.25);border-radius:var(--radius-sm);font-size:12.5px;color:#e2e8f0;background:rgba(74,143,212,0.08);outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%238fc6f5' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;transition:all var(--transition);height:32px;white-space:nowrap;flex-shrink:0}
+        .filter-select:hover{border-color:rgba(74,143,212,0.5);background:rgba(74,143,212,0.12)}
+        .filter-select:focus{border-color:var(--blue);box-shadow:0 0 0 2px rgba(74,143,212,0.18);background:rgba(74,143,212,0.15)}
         .filter-select option{background:#1a2634;color:#e2e8f0}
-        .filter-clear{background:none;border:none;color:var(--blue);font-size:13px;font-weight:500;cursor:pointer;padding:8px 12px;border-radius:var(--radius-sm);white-space:nowrap;display:none}
-        .filter-clear.visible{display:inline-flex}
-        .results-count{font-size:13px;color:rgba(255,255,255,0.55);white-space:nowrap;margin-left:auto}
+        .filter-clear{background:none;border:1.5px solid rgba(74,143,212,0.3);color:#8fc6f5;font-size:12px;font-weight:500;cursor:pointer;padding:6px 10px;border-radius:var(--radius-sm);white-space:nowrap;display:none;height:32px;flex-shrink:0}
+        .filter-clear:hover{background:rgba(74,143,212,0.15)}
+        .filter-clear.visible{display:inline-flex;align-items:center}
+        .results-count{font-size:12px;color:rgba(255,255,255,0.55);white-space:nowrap;margin-left:auto;flex-shrink:0;padding-left:8px}
 
         .listings-section{max-width:1200px;margin:0 auto;padding:16px 16px 48px}
         .listings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -86,6 +93,8 @@
 
         .listing-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--card-border);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;box-shadow:var(--card-shadow);transition:all var(--transition)}
         .listing-card:hover{box-shadow:var(--card-shadow-hover);transform:translateY(-2px)}
+        .listing-card.stale{opacity:0.85}
+        .listing-card.stale .card-ref{color:var(--ink-faint)}
         .card-header-row{display:flex;align-items:center;gap:6px;padding:10px 12px 0;position:relative}
         .card-ref{font-size:10px;font-weight:700;color:var(--blue);letter-spacing:0.4px}
         .card-date-inline{font-size:10px;color:var(--ink-faint)}
@@ -100,6 +109,9 @@
         .card-rent span{font-size:10px;color:var(--ink-muted);font-weight:500;margin-left:2px}
         .card-rent-range{font-size:10px;color:var(--ink-faint);font-weight:400;margin-top:2px;line-height:1.2}
         .card-quote{margin-top:8px;font-size:11px;color:var(--ink-muted);font-style:italic;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+        .photo-strip{display:flex;gap:3px;padding:0 12px 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+        .photo-strip::-webkit-scrollbar{display:none}
+        .photo-strip img{width:52px;height:52px;border-radius:6px;object-fit:cover;flex-shrink:0;border:1px solid var(--card-border)}
         .card-chips{display:flex;flex-wrap:wrap;gap:4px;padding:0 12px 10px}
         .chip{font-size:10px;padding:2px 7px;background:var(--surface);border:1px solid var(--card-border);border-radius:100px;color:var(--ink-muted);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
         .chip-alt{background:#dbeafe;color:#1e40af;border-color:#bfdbfe;font-weight:600}
@@ -117,6 +129,11 @@
         .card-thumb.has-photo{opacity:1;background:none}
         .card-thumb.has-photo img{width:100%;height:100%;object-fit:cover}
 
+        /* ── Skeleton loading ── */
+        .skeleton-card{background:var(--white);border-radius:var(--radius);border:1px solid var(--card-border);overflow:hidden;pointer-events:none;box-shadow:var(--card-shadow)}
+        .skeleton-bar{background:linear-gradient(90deg,#eef1f5 25%,#e1e7ee 50%,#eef1f5 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:4px}
+        @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
         @media(max-width:600px){
             .listings-grid{grid-template-columns:repeat(2,1fr);gap:8px}
             .card-type{font-size:13px}.card-rent{font-size:16px}.card-loc{font-size:10px}
@@ -130,6 +147,16 @@
             .card-btn{padding:5px 12px}
             .card-save{font-size:14px;padding:2px}
             .card-loc-pill{font-size:7px;padding:1px 4px;margin-left:4px}
+            .hero-bullets{font-size:11px;gap:4px 12px}
+            .directory-hero{padding:18px 14px 14px}
+            .directory-hero h1{font-size:22px}
+            .filters-inner{padding:7px 12px;gap:5px}
+            .filter-search{min-width:120px;font-size:12px;padding:6px 10px;height:30px}
+            .filter-select{font-size:12px;padding:6px 22px 6px 8px;height:30px}
+            .filter-clear{font-size:11px;padding:5px 8px;height:30px}
+            .results-count{font-size:11px;padding-left:6px}
+            .photo-strip{padding:0 10px 6px}
+            .photo-strip img{width:44px;height:44px}
         }
 
         .load-more-btn{display:block;margin:16px auto 0;padding:10px 28px;background:var(--white);border:1.5px solid var(--card-border);border-radius:var(--radius-sm);font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;transition:all var(--transition)}
@@ -173,6 +200,8 @@
         .similar-section{margin-top:28px}
         .similar-section h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:12px}
         .similar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+        .report-link{font-size:11px;color:var(--ink-faint);margin-top:12px;display:inline-block}
+        .report-link:hover{color:var(--ink-muted)}
 
         .modal{display:none;position:fixed;z-index:300;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.5);align-items:center;justify-content:center}
         .modal.active{display:flex !important}
@@ -201,7 +230,6 @@
 <body>
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5WCRXXDQ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-    <!-- ===== LOAD CONFIG ===== -->
     <script src="/rentpal-config.js"></script>
 
     <nav>
@@ -221,8 +249,10 @@
         <div class="trust-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 24h response</div>
     </div>
 
+    <!-- One thin filter bar, no wrapping -->
     <div class="filters-wrap" id="filters-wrap">
         <div class="filters-inner">
+            <input type="text" class="filter-search" id="filter-search" placeholder="🔎 Search…">
             <select class="filter-select" id="filter-area"><option value="">📍 Area</option></select>
             <select class="filter-select" id="filter-rent-range">
                 <option value="">💰 Rent</option>
@@ -235,7 +265,12 @@
                 <option value="4100000-5000000">₦4.1m – ₦5m</option>
                 <option value="5100000-">Above ₦5m</option>
             </select>
-            <button class="filter-clear" id="filter-clear" style="display:none">Clear</button>
+            <select class="filter-select" id="filter-sort">
+                <option value="newest">🕐 Newest</option>
+                <option value="price-asc">₦ ↑</option>
+                <option value="price-desc">₦ ↓</option>
+            </select>
+            <button class="filter-clear" id="filter-clear">Clear</button>
             <span class="results-count" id="results-count"></span>
         </div>
     </div>
@@ -251,23 +286,20 @@
     <script>
         window.dataLayer = window.dataLayer || [];
 
-        // ── CONFIG ──
-        // Load from external config file
-        var GAS_URL = (typeof RENTPAL_CONFIG !== 'undefined' && RENTPAL_CONFIG.GAS_URL) 
-            ? RENTPAL_CONFIG.GAS_URL 
+        var GAS_URL = (typeof RENTPAL_CONFIG !== 'undefined' && RENTPAL_CONFIG.GAS_URL)
+            ? RENTPAL_CONFIG.GAS_URL
             : 'https://script.google.com/macros/s/YOUR_MAIN_RENTPAL_DEPLOYMENT_ID/exec';
 
-        const CONFIG = {
-            GAS_URL: GAS_URL,
-            ITEMS_PER_PAGE: 12, DEBOUNCE_MS: 250
-        };
+        const CONFIG = { GAS_URL: GAS_URL, ITEMS_PER_PAGE: 12, DEBOUNCE_MS: 250 };
+
         const state = {
             allListings: [], filteredListings: [], displayedCount: 0,
             currentDetailId: null, currentDetailData: null,
-            filters: { area: '', rentRange: '' },
+            filters: { area: '', rentRange: '', search: '', sort: 'newest' },
             savedListings: JSON.parse(localStorage.getItem('rp_saved') || '[]'),
             recentlyViewed: JSON.parse(localStorage.getItem('rp_recent') || '[]')
         };
+        let introSubmitted = false;
 
         function formatNaira(n){if(!n||isNaN(n))return'—';return'₦'+parseInt(n).toLocaleString('en-NG')}
         function timeAgo(d){if(!d)return'';const n=new Date(),t=new Date(d),e=n-t,a=Math.floor(e/864e5);if(a<0)return'Just now';if(a===0)return'Today';if(a===1)return'1d ago';if(a<7)return a+'d ago';if(a<30)return Math.floor(a/7)+'w ago';if(a<365)return Math.floor(a/30)+'mo ago';return Math.floor(a/365)+'y ago'}
@@ -285,10 +317,7 @@
             if(m === 'GET') Object.entries(p).forEach(([k,v]) => u.searchParams.set(k,v));
             try {
                 const o = {method: m};
-                if(m === 'POST'){
-                    o.body = JSON.stringify(p);
-                    o.headers = {'Content-Type': 'text/plain'};
-                }
+                if(m === 'POST'){ o.body = JSON.stringify(p); o.headers = {'Content-Type': 'text/plain'}; }
                 const r = await fetch(u.toString(), o);
                 if(!r.ok) throw new Error('HTTP ' + r.status);
                 const data = await r.json();
@@ -329,7 +358,6 @@
             return list;
         }
 
-        // ── ROUTING ──
         function getRouteInfo(){
             const p=window.location.pathname;
             const q=new URLSearchParams(window.location.search);
@@ -343,23 +371,69 @@
         async function handleRoute(){const r=getRouteInfo();const m=document.getElementById('app-main');if(r.view==='directory'){state.currentDetailId=null;state.currentDetailData=null;await renderDirectory(m)}else{state.currentDetailId=r.listingId;await renderDetail(m,r.listingId)}}
         window.addEventListener('popstate',handleRoute);
 
+        function restoreFiltersFromURL(){
+            const params = new URLSearchParams(window.location.search);
+            state.filters.area = params.get('area') || '';
+            state.filters.rentRange = params.get('rent') || '';
+            state.filters.search = params.get('q') || '';
+            state.filters.sort = params.get('sort') || 'newest';
+        }
+
+        function getSkeletonHTML(){
+            const skelCard = `
+                <div class="skeleton-card">
+                    <div style="padding:10px 12px 0;"><div class="skeleton-bar" style="width:60px;height:12px;"></div></div>
+                    <div style="padding:6px 12px 10px;">
+                        <div class="skeleton-bar" style="height:16px;width:70%;margin-bottom:6px;"></div>
+                        <div class="skeleton-bar" style="height:12px;width:40%;margin-bottom:10px;"></div>
+                        <div class="skeleton-bar" style="height:22px;width:55%;"></div>
+                    </div>
+                    <div style="padding:0 12px 10px;"><div class="skeleton-bar" style="height:18px;width:80%;"></div></div>
+                    <div style="height:34px;background:#f8fafc;border-top:1px solid var(--card-border);"></div>
+                </div>`;
+            return `
+                <div class="directory-hero">
+                    <div class="hero-tag"><div class="hero-dot"></div>Rentpal Lagos</div>
+                    <h1>Available <em>Apartments</em></h1>
+                </div>
+                <div class="listings-section">
+                    <div class="listings-grid">${Array(6).fill(skelCard).join('')}</div>
+                </div>`;
+        }
+
         async function renderDirectory(container){
-            container.innerHTML=`<div class="directory-hero"><div class="hero-tag"><div class="hero-dot"></div>Rentpal Lagos</div><h1>Available <em>Apartments</em></h1></div><div class="listings-section"><p style="text-align:center;color:var(--ink-muted);padding:40px 0">Loading listings…</p></div>`;
+            container.innerHTML = getSkeletonHTML();
             let data;
             try{data=await apiFetch('listings')}catch(e){data={success:true,listings:getMockListings()}}
             let all=(data.listings||[]).filter(l=>l.listingStatus==='Available');
             all=all.filter(l=>l.listingType!=='seeker');
             all.sort((a,b)=>new Date(b.postedDate)-new Date(a.postedDate));
             state.allListings=all;state.filteredListings=[...all];state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,all.length);
+
+            restoreFiltersFromURL();
+
             container.innerHTML=getDirectoryHTML();
-            populateFilterOptions();applyFilters();renderCards();bindEvents();updateCount();updateClearButton();
-            startSpotlightCycle();startAutoRefresh();
+            populateFilterOptions();
+            applyFilters();
+            renderCards();
+            bindEvents();
+            updateCount();
+            updateClearButton();
+            restoreFilterUI();
+            updateHeroCount();
+            startSpotlightCycle();
+            startAutoRefresh();
+        }
+
+        function updateHeroCount(){
+            const el = document.getElementById('hero-count');
+            if(el) el.textContent = state.allListings.length;
         }
 
         function getDirectoryHTML(){
             return `
             <div class="directory-hero">
-                <div class="hero-tag"><div class="hero-dot"></div>Rentpal Lagos</div>
+                <div class="hero-tag"><div class="hero-dot"></div>Live now · <span id="hero-count">…</span> listings</div>
                 <h1>Available <em>Apartments</em></h1>
                 <div class="hero-bullets">
                     <span><span class="bullet">•</span> Real listings</span>
@@ -367,7 +441,6 @@
                     <span><span class="bullet">•</span> Resident approves — then you proceed</span>
                 </div>
                 <div class="spotlight-wrap" id="spotlight-wrap"></div>
-                <p class="spotlight-disclaimer">Real apartments listed by real people, not agents.</p>
             </div>
             <div class="listings-section">
                 <div class="listings-grid" id="listings-grid"></div>
@@ -400,6 +473,7 @@
             ).join('');
             let current = 0;
             const divs = wrap.querySelectorAll('.spotlight-item');
+            if(divs.length < 2) return;
             setInterval(() => {
                 divs[current].classList.remove('active');
                 current = (current + 1) % divs.length;
@@ -412,6 +486,17 @@
             const areaSelect=document.getElementById('filter-area');
             areaSelect.innerHTML='<option value="">📍 Area</option>';
             areas.forEach(a=>{const opt=document.createElement('option');opt.value=a;opt.textContent=a;areaSelect.appendChild(opt)});
+        }
+
+        function restoreFilterUI(){
+            const areaSel = document.getElementById('filter-area');
+            const rentSel = document.getElementById('filter-rent-range');
+            const sortSel = document.getElementById('filter-sort');
+            const searchInp = document.getElementById('filter-search');
+            if(areaSel) areaSel.value = state.filters.area || '';
+            if(rentSel) rentSel.value = state.filters.rentRange || '';
+            if(sortSel) sortSel.value = state.filters.sort || 'newest';
+            if(searchInp) searchInp.value = state.filters.search || '';
         }
 
         function applyFilters(){
@@ -427,15 +512,41 @@
                     return rent>=min;
                 });
             }
+            if(f.search){
+                const q = f.search.toLowerCase().trim();
+                filtered = filtered.filter(l =>
+                    String(l.listingId||'').toLowerCase().includes(q) ||
+                    String(l.area||'').toLowerCase().includes(q) ||
+                    String(l.apartmentType||'').toLowerCase().includes(q) ||
+                    String(l.location||'').toLowerCase().includes(q)
+                );
+            }
+            const sort = f.sort || 'newest';
+            if(sort === 'price-asc')  filtered.sort((a,b)=>getRentNumeric(a.rentExact)-getRentNumeric(b.rentExact));
+            else if(sort === 'price-desc') filtered.sort((a,b)=>getRentNumeric(b.rentExact)-getRentNumeric(a.rentExact));
+            else filtered.sort((a,b)=>new Date(b.postedDate)-new Date(a.postedDate));
+
             state.filteredListings=filtered;
             state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,filtered.length);
             updateClearButton();updateCount();
+            syncFiltersToURL();
+        }
+
+        function syncFiltersToURL(){
+            if(getRouteInfo().view !== 'directory') return;
+            const f = state.filters;
+            const url = new URL(window.location.href);
+            if(f.area) url.searchParams.set('area', f.area); else url.searchParams.delete('area');
+            if(f.rentRange) url.searchParams.set('rent', f.rentRange); else url.searchParams.delete('rent');
+            if(f.search) url.searchParams.set('q', f.search); else url.searchParams.delete('q');
+            if(f.sort && f.sort !== 'newest') url.searchParams.set('sort', f.sort); else url.searchParams.delete('sort');
+            history.replaceState(null, '', url.toString());
         }
 
         function updateClearButton(){
-            const anyActive=Object.values(state.filters).some(v=>v!=='');
+            const anyActive=Object.values(state.filters).some(v=>v!==''&&v!=='newest');
             const btn=document.getElementById('filter-clear');
-            if(btn)btn.style.display=anyActive?'inline-flex':'none';
+            if(btn)btn.classList.toggle('visible', anyActive);
         }
 
         function renderCards(){
@@ -445,7 +556,7 @@
             if(state.filteredListings.length===0){grid.innerHTML='';if(empty)empty.style.display='block';if(pag)pag.innerHTML='';return}
             if(empty)empty.style.display='none';
             grid.innerHTML=visible.map(l=>getCardHTML(l)).join('');
-            if(pag&&state.displayedCount<state.filteredListings.length){pag.innerHTML=`<button class="load-more-btn" id="load-more-btn">Load More</button>`;document.getElementById('load-more-btn').addEventListener('click',()=>{state.displayedCount=Math.min(state.displayedCount+CONFIG.ITEMS_PER_PAGE,state.filteredListings.length);renderCards()})}
+            if(pag&&state.displayedCount<state.filteredListings.length){pag.innerHTML=`<button class="load-more-btn" id="load-more-btn">Load More</button>`;document.getElementById('load-more-btn').addEventListener('click',()=>{state.displayedCount=Math.min(state.displayedCount+CONFIG.ITEMS_PER_PAGE,state.filteredListings.length);if(window.dataLayer)window.dataLayer.push({event:'rentpal_load_more_clicked',shownCount:state.displayedCount});renderCards()})}
             else if(pag)pag.innerHTML='';
             updateCount();
         }
@@ -457,6 +568,9 @@
             const locPillClass = l.location==='Mainland' ? 'card-loc-pill mainland' : 'card-loc-pill island';
             const locPillText = l.location==='Mainland' ? 'M' : 'I';
             const savedIcon=saved?'❤️':'🤍';
+            const ageDays = Math.floor((Date.now() - new Date(l.postedDate).getTime()) / 86400000);
+            const staleClass = ageDays > 30 ? 'stale' : '';
+            const ageLabel = ageDays > 30 ? ` · ${ageDays}d old` : '';
 
             const exact = l.rentExact;
             const range = l.rentRange;
@@ -482,13 +596,17 @@
 
             const statusText = l.residentStatus ? l.residentStatus.split(' ')[0] + '…' : '';
 
+            const photoStrip = allPhotos.length > 0
+                ? `<div class="photo-strip">${allPhotos.slice(0,4).map(p => `<img src="${p}" alt="">`).join('')}</div>`
+                : '';
+
             return `
-            <div class="listing-card" onclick="goToDetail('${l.listingId}')">
+            <div class="listing-card ${staleClass}" onclick="onCardClick('${l.listingId}')">
                 <div class="card-header-row">
                     <div class="${thumbCls}">${thumbInner}</div>
                     <span class="card-ref">${l.listingId}</span>
                     <span class="${locPillClass}">${locPillText}</span>
-                    <span class="card-date-inline">· ${timeAgo(l.postedDate)}</span>
+                    <span class="card-date-inline">· ${timeAgo(l.postedDate)}${ageLabel}</span>
                     ${isNew?'<span class="badge-new-inline">NEW</span>':''}
                     <button class="card-save ${saved?'saved':''}" onclick="event.stopPropagation();toggleSaveListing('${l.listingId}')" title="${saved?'Remove from saved':'Save listing'}">${savedIcon}</button>
                 </div>
@@ -498,6 +616,7 @@
                     ${rentHTML}
                     ${comment?`<div class="card-quote">"${escapeHTML(comment)}"</div>`:''}
                 </div>
+                ${photoStrip}
                 <div class="card-chips">
                     <span class="chip">⚡ ${escapeHTML(l.light)}</span>
                     <span class="chip">💧 ${escapeHTML(l.water)}</span>
@@ -506,24 +625,48 @@
                 </div>
                 <div class="card-footer">
                     <span class="card-verified">✓ Available</span>
-                    <button class="card-btn" onclick="event.stopPropagation();goToDetail('${l.listingId}')">View →</button>
+                    <button class="card-btn" onclick="event.stopPropagation();onCardClick('${l.listingId}')">View →</button>
                 </div>
             </div>`;
+        }
+
+        function onCardClick(id){
+            if(window.dataLayer) window.dataLayer.push({event:'rentpal_listing_card_click', listingId:id, source:'directory'});
+            goToDetail(id);
         }
 
         function updateCount(){const el=document.getElementById('results-count');if(!el)return;const t=state.filteredListings.length;el.textContent=`${Math.min(state.displayedCount,t)}/${t}`}
 
         function bindEvents(){
-            document.getElementById('filter-area').addEventListener('change',function(){state.filters.area=this.value;applyFilters();renderCards()});
-            document.getElementById('filter-rent-range').addEventListener('change',function(){state.filters.rentRange=this.value;applyFilters();renderCards()});
-            document.getElementById('filter-clear').addEventListener('click',()=>{
-                state.filters={area:'',rentRange:''};
-                document.querySelectorAll('.filter-select').forEach(s=>s.value='');
-                applyFilters();renderCards();showToast('Filters cleared')
-            });
+            const areaSel = document.getElementById('filter-area');
+            const rentSel = document.getElementById('filter-rent-range');
+            const sortSel = document.getElementById('filter-sort');
+            const searchInp = document.getElementById('filter-search');
+            const clearBtn = document.getElementById('filter-clear');
+
+            if(areaSel){ areaSel.addEventListener('change', function(){ state.filters.area = this.value; if(window.dataLayer) window.dataLayer.push({event:'rentpal_filter_used', filter:'area', value:this.value}); applyFilters(); renderCards(); }); }
+            if(rentSel){ rentSel.addEventListener('change', function(){ state.filters.rentRange = this.value; if(window.dataLayer) window.dataLayer.push({event:'rentpal_filter_used', filter:'rent', value:this.value}); applyFilters(); renderCards(); }); }
+            if(sortSel){ sortSel.addEventListener('change', function(){ state.filters.sort = this.value; if(window.dataLayer) window.dataLayer.push({event:'rentpal_filter_used', filter:'sort', value:this.value}); applyFilters(); renderCards(); }); }
+            if(searchInp){ searchInp.addEventListener('input', debounce(function(){ state.filters.search = this.value; applyFilters(); renderCards(); }, CONFIG.DEBOUNCE_MS)); }
+            if(clearBtn){
+                clearBtn.addEventListener('click', ()=>{
+                    state.filters = { area:'', rentRange:'', search:'', sort:'newest' };
+                    if(areaSel) areaSel.value='';
+                    if(rentSel) rentSel.value='';
+                    if(sortSel) sortSel.value='newest';
+                    if(searchInp) searchInp.value='';
+                    applyFilters(); renderCards(); showToast('Filters cleared');
+                });
+            }
+
+            const fw = document.getElementById('filters-wrap');
+            if(fw){
+                const onScroll = () => fw.classList.toggle('scrolled', window.scrollY > 20);
+                window.removeEventListener('scroll', onScroll);
+                window.addEventListener('scroll', onScroll, { passive: true });
+            }
         }
 
-        // ── DETAIL PAGE ──
         async function renderDetail(container,listingId){
             container.innerHTML=`<div class="detail-page"><p style="text-align:center;padding:40px;">Loading...</p></div>`;
             let data;
@@ -592,6 +735,7 @@
                             <button class="btn-outline" onclick="copyListingLink('${l.listingId}')">Copy Link</button>
                             <button class="btn-outline" onclick="shareListing('${l.listingId}','${escapeHTML(l.apartmentType)} in ${escapeHTML(l.area)}')">Share</button>
                         </div>
+                        <a href="mailto:support@rentpal.ng?subject=Report%20listing%20${encodeURIComponent(l.listingId)}" class="report-link">Report this listing</a>
                     </div>
                 </div>
                 <div class="detail-section">
@@ -607,16 +751,19 @@
             </div>`;
         }
 
-        // ── MODAL LOGIC ──
         function openIntroductionModal(listingId){
             const modal=document.getElementById('introModal');
             const content=document.getElementById('introModalContent');
+            introSubmitted = false;
             content.innerHTML=getIntroductionFormHTML(listingId);
             modal.classList.add('active');
             window.dataLayer.push({event:'rentpal_intro_open',listingId:listingId});
             document.getElementById('intro-request-form').addEventListener('submit',(e)=>submitIntroductionRequest(e,listingId));
         }
-        function closeModal(){document.getElementById('introModal').classList.remove('active')}
+        function closeModal(){
+            if(!introSubmitted && window.dataLayer) window.dataLayer.push({event:'rentpal_intro_form_abandoned'});
+            document.getElementById('introModal').classList.remove('active');
+        }
         window.addEventListener('click',(e)=>{if(e.target===document.getElementById('introModal'))closeModal()});
 
         function getIntroductionFormHTML(listingId){
@@ -675,12 +822,22 @@
             </form>`;
         }
 
-        function submitIntroductionRequest(e,listingId){
+        async function submitIntroductionRequest(e,listingId){
             e.preventDefault();
             const agreeFinder=document.getElementById('req-agree-finder');
             if(!agreeFinder||!agreeFinder.checked){showToast("Please agree to the finder's fee terms.",'error');return}
             const btn=document.getElementById('btn-submit-intro');
             if(btn){btn.disabled=true;btn.textContent='Sending…'}
+
+            try {
+                const check = await apiFetch('listing', {id: listingId});
+                if(!check.listing || check.listing.listingStatus !== 'Available'){
+                    showToast('This listing is no longer available.', 'error');
+                    if(btn){btn.disabled=false;btn.textContent='Send Request'}
+                    return;
+                }
+            } catch(err) { /* continue anyway */ }
+
             const extras=[];
             document.querySelectorAll('.req-extra:checked').forEach(cb=>{
                 if(cb.value==='Other'){const otherText=document.getElementById('req-extra-other-text')?.value.trim();if(otherText)extras.push(otherText)}
@@ -700,9 +857,8 @@
             };
             apiFetch('requestIntroduction',payload,'POST')
                 .then((data)=>{
-                    if(!data || !data.success){
-                        throw new Error(data?.message || 'Request failed');
-                    }
+                    if(!data || !data.success){ throw new Error(data?.message || 'Request failed'); }
+                    introSubmitted = true;
                     window.dataLayer.push({event:'rentpal_intro_submitted',listingId:listingId});
                     document.getElementById('introModalContent').innerHTML=`
                         <button class="modal-close" onclick="closeModal()">✕</button>
@@ -743,24 +899,30 @@
 
         let autoRefreshInterval;
         function startAutoRefresh(){
-            if(autoRefreshInterval)clearInterval(autoRefreshInterval);
-            autoRefreshInterval=setInterval(async()=>{
-                if(getRouteInfo().view!=='directory')return;
+            if(autoRefreshInterval) clearInterval(autoRefreshInterval);
+            autoRefreshInterval = setInterval(async () => {
+                if(document.hidden) return;
+                if(getRouteInfo().view !== 'directory') return;
                 try{
-                    const data=await apiFetch('listings');
-                    const fresh=(data.listings||[]).filter(l=>l.listingStatus==='Available'&&l.listingType!=='seeker');
+                    const data = await apiFetch('listings');
+                    const fresh = (data.listings||[]).filter(l => l.listingStatus==='Available' && l.listingType!=='seeker');
                     fresh.sort((a,b)=>new Date(b.postedDate)-new Date(a.postedDate));
-                    const oldIds=state.allListings.map(l=>l.listingId).sort().join(',');
-                    const newIds=fresh.map(l=>l.listingId).sort().join(',');
-                    if(oldIds!==newIds){
-                        state.allListings=fresh;state.filteredListings=[...fresh];
-                        state.displayedCount=Math.min(CONFIG.ITEMS_PER_PAGE,fresh.length);
-                        applyFilters();renderCards();updateCount();
+                    const oldIds = state.allListings.map(l=>l.listingId).sort().join(',');
+                    const newIds = fresh.map(l=>l.listingId).sort().join(',');
+                    if(oldIds !== newIds){
+                        state.allListings = fresh;
+                        state.filteredListings = [...fresh];
+                        state.displayedCount = Math.min(CONFIG.ITEMS_PER_PAGE, fresh.length);
+                        applyFilters();
+                        renderCards();
+                        updateCount();
+                        updateHeroCount();
                         showToast('📣 Listings updated');
                     }
-                }catch(e){}
-            },30000);
+                } catch(e){}
+            }, 45000);
         }
+        document.addEventListener('visibilitychange', () => { if(!document.hidden) startAutoRefresh(); });
 
         function goToDetail(id){navigateTo('/listings/?id='+id)}
         function goToDirectory(){navigateTo('/listings')}
