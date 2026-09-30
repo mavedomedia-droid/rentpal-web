@@ -16,16 +16,21 @@
     .label{font-size:12px;color:#9299a8;text-transform:uppercase;letter-spacing:0.5px}
     .value{font-size:15px;margin-bottom:8px}
     .photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 18px}
-    .photo-tile{position:relative;aspect-ratio:1/1;border-radius:10px;overflow:hidden;background:#f0f4fb;border:1px solid #e8eaee;display:flex;align-items:center;justify-content:center}
-    .photo-tile img{width:100%;height:100%;object-fit:cover;display:block}
-    .photo-badge{position:absolute;top:6px;left:6px;background:rgba(15,17,23,0.75);color:#fff;font-size:10px;padding:3px 7px;border-radius:100px;letter-spacing:0.5px;font-weight:600}
+    .photo-tile{position:relative;aspect-ratio:1/1;border-radius:10px;overflow:hidden;background:#f0f4fb;border:1px solid #e8eaee;display:flex;align-items:center;justify-content:center;transition:border-color 0.25s, box-shadow 0.25s}
+    .photo-tile img{width:100%;height:100%;object-fit:cover;display:block;animation:fadeIn 0.35s ease}
+    @keyframes fadeIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+    .photo-badge{position:absolute;top:6px;left:6px;background:rgba(15,17,23,0.75);color:#fff;font-size:10px;padding:3px 7px;border-radius:100px;letter-spacing:0.5px;font-weight:600;z-index:2}
     .photo-tile.pending{background:#eef1f5}
-    .photo-tile.uploading::after{content:'';position:absolute;inset:0;background:rgba(74,143,212,0.15);border:2px solid #4A8FD4;border-radius:10px}
-    .photo-tile.error{border-color:#dc2626}
-    .photo-tile.error::after{content:'✕';position:absolute;top:6px;right:6px;width:22px;height:22px;background:#dc2626;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
-    .photo-tile.done::after{content:'✓';position:absolute;top:6px;right:6px;width:22px;height:22px;background:#27500A;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+    .photo-tile.uploading{border-color:#4A8FD4;box-shadow:0 0 0 2px rgba(74,143,212,0.15)}
+    .photo-tile.uploading::before{content:'';position:absolute;inset:0;background:rgba(74,143,212,0.18);z-index:1}
+    .photo-tile.uploading::after{content:'';position:absolute;width:28px;height:28px;border:3px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite;z-index:3}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .photo-tile.error{border-color:#dc2626;box-shadow:0 0 0 2px rgba(220,38,38,0.15)}
+    .photo-tile.error::after{content:'✕';position:absolute;top:6px;right:6px;width:22px;height:22px;background:#dc2626;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;z-index:2}
+    .photo-tile.done::after{content:'✓';position:absolute;top:6px;right:6px;width:24px;height:24px;background:#27500A;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;z-index:2;animation:popIn 0.35s cubic-bezier(0.34,1.56,0.64,1)}
+    @keyframes popIn{0%{transform:scale(0)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
     .photo-tile-hint{font-size:11px;color:#9299a8;padding:6px;text-align:center;line-height:1.3}
-    .status-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:10px 14px;background:#E6F1FB;border:1px solid #B5D4F4;border-radius:10px;font-size:13px;color:#0C447C;font-weight:500}
+    .status-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:10px 14px;background:#E6F1FB;border:1px solid #B5D4F4;border-radius:10px;font-size:13px;color:#0C447C;font-weight:500;transition:all 0.25s}
     .status-bar.warn{background:#FEF3C7;border-color:#FDE68A;color:#78350F}
     .status-bar.done{background:#EAF3DE;border-color:#c6dfab;color:#27500A}
     .upload-area{background:#f8fafc;border:2px dashed #cbd5e1;border-radius:12px;padding:26px;text-align:center;cursor:pointer;transition:all 0.2s}
@@ -33,12 +38,15 @@
     .upload-area.dragover{border-color:#4A8FD4;background:#E6F1FB}
     .upload-area.disabled{opacity:0.5;pointer-events:none}
     .upload-area input{display:none}
-    .btn{display:block;width:100%;padding:14px;background:#4A8FD4;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;text-align:center;transition:all 0.2s;margin-top:14px;font-family:'DM Sans',sans-serif}
-    .btn:disabled{opacity:0.5;cursor:not-allowed}
+    .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px;background:#4A8FD4;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;text-align:center;transition:all 0.2s;margin-top:14px;font-family:'DM Sans',sans-serif;text-decoration:none}
+    .btn:disabled{opacity:0.7;cursor:not-allowed}
     .btn.done{background:#27500A}
+    .btn .spinner-sm{width:18px;height:18px;border:2.5px solid rgba(255,255,255,0.35);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite}
+    .btn .checkmark{font-size:16px;animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1)}
     .error{color:#dc2626;font-size:13px;margin-top:10px}
-    .success{color:#27500A;background:#EAF3DE;padding:14px;border-radius:8px;margin-top:12px;font-size:14px}
+    .success{color:#27500A;background:#EAF3DE;padding:14px;border-radius:8px;margin-top:12px;font-size:14px;display:flex;align-items:center;gap:8px;animation:fadeIn 0.3s ease}
     .loading{text-align:center;padding:40px;color:#5a6072}
+    .file-progress{font-size:12px;color:#5a6072;margin-top:8px;text-align:center}
   </style>
 </head>
 <body>
@@ -55,6 +63,8 @@
     let existingPhotos = [];
     let pendingFiles = [];
     let maxPhotos = MAX_PHOTOS_DEFAULT;
+    let isUploading = false;
+    let lastCompletedCount = 0;
 
     function escapeHTML(s){ const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
     function formatNaira(n){ if(!n||isNaN(n))return'—'; return'₦'+parseInt(n).toLocaleString('en-NG'); }
@@ -79,44 +89,64 @@
       return data.listing;
     }
 
+    function fileKey(f){ return (f.name || '') + '::' + (f.size || 0); }
+
+    function isDuplicate(file){
+      const key = fileKey(file);
+      // Already queued?
+      if(pendingFiles.some(p => fileKey(p.file) === key)) return true;
+      return false;
+    }
+
     function render(){
       const totalSlots = maxPhotos;
       const used = existingPhotos.length + pendingFiles.length;
       const remaining = totalSlots - used;
-      const dropDisabled = remaining <= 0;
+      const dropDisabled = remaining <= 0 || isUploading;
 
       const statusClass = existingPhotos.length === 0 ? 'warn' : (existingPhotos.length >= totalSlots ? 'done' : '');
       const statusText = existingPhotos.length === 0
         ? `No photos yet · up to ${totalSlots} allowed`
         : `${existingPhotos.length} of ${totalSlots} uploaded${remaining > 0 ? ' · ' + remaining + ' slot' + (remaining===1?'':'s') + ' left' : ' · full'}`;
 
+      // Existing (uploaded) photos
       let tiles = '';
       existingPhotos.forEach((url, i) => {
         tiles += `<div class="photo-tile done"><img src="${escapeHTML(url)}" alt="Photo ${i+1}"><div class="photo-badge">${i===0?'Cover':'#'+(i+1)}</div></div>`;
       });
+      // Pending (queued or uploading) photos
       pendingFiles.forEach((pf, i) => {
         const num = existingPhotos.length + i + 1;
         const state = pf.status || 'pending';
         tiles += `<div class="photo-tile ${state}">${pf.previewUrl ? `<img src="${pf.previewUrl}" alt="Pending ${num}">` : `<div class="photo-tile-hint">Preparing…</div>`}<div class="photo-badge">#${num}</div></div>`;
       });
+      // Empty slots
       for(let k = 0; k < Math.max(0, remaining); k++){
         tiles += `<div class="photo-tile pending"><div class="photo-tile-hint">Empty slot</div></div>`;
       }
 
-      const uploadAreaHTML = dropDisabled
+      const uploadAreaHTML = dropDisabled && !isUploading
         ? `<div class="upload-area disabled"><div style="font-weight:500;">Photo limit reached</div><div style="font-size:12px; color:#9299a8;">${totalSlots} of ${totalSlots} uploaded</div></div>`
-        : `<div class="upload-area" id="drop-area">
-             <input type="file" id="file-input" accept="image/jpeg,image/png" multiple>
-             <div style="font-size:22px; margin-bottom:6px;">📁</div>
-             <div style="font-weight:500;">Click or drag images here</div>
-             <div style="font-size:12px; color:#9299a8;">JPG or PNG · up to 5MB each · ${remaining} slot${remaining===1?'':'s'} left</div>
-           </div>`;
+        : (isUploading
+            ? `<div class="upload-area disabled"><div style="font-size:22px; margin-bottom:6px;">⏳</div><div style="font-weight:500;">Upload in progress…</div><div style="font-size:12px; color:#9299a8;">Please don't close this page</div></div>`
+            : `<div class="upload-area" id="drop-area">
+                 <input type="file" id="file-input" accept="image/jpeg,image/png" multiple>
+                 <div style="font-size:22px; margin-bottom:6px;">📁</div>
+                 <div style="font-weight:500;">Click or drag images here</div>
+                 <div style="font-size:12px; color:#9299a8;">JPG or PNG · up to 5MB each · ${remaining} slot${remaining===1?'':'s'} left</div>
+               </div>`);
 
-      const buttonHTML = pendingFiles.length > 0
-        ? `<button class="btn" id="upload-btn" onclick="startUpload()">Upload ${pendingFiles.length} photo${pendingFiles.length===1?'':'s'}</button>`
-        : (existingPhotos.length > 0
-            ? `<a href="https://rentpal-web.netlify.app/listings/?id=${listing.listingId}" target="_blank" class="btn done" style="text-decoration:none;">View my listing →</a>`
-            : '');
+      // Button
+      let buttonHTML = '';
+      if(isUploading){
+        const doneCount = pendingFiles.filter(p => p.status === 'done').length;
+        const total = pendingFiles.length;
+        buttonHTML = `<button class="btn" disabled><span class="spinner-sm"></span> Uploading ${doneCount+1} of ${total}…</button>`;
+      } else if(pendingFiles.length > 0){
+        buttonHTML = `<button class="btn" id="upload-btn" onclick="startUpload()">Upload ${pendingFiles.length} photo${pendingFiles.length===1?'':'s'}</button>`;
+      } else if(existingPhotos.length > 0){
+        buttonHTML = `<a href="https://rentpal-web.netlify.app/listings/?id=${listing.listingId}" target="_blank" class="btn done"><span class="checkmark">✓</span> View my listing</a>`;
+      }
 
       document.getElementById('content').innerHTML = `
         <div class="card">
@@ -130,7 +160,7 @@
         </div>
         <div class="card">
           <h2>📷 Photos</h2>
-          <div class="status-bar ${statusClass}"><span>${statusText}</span>${existingPhotos.length > 0 && existingPhotos.length < totalSlots ? '<span style="font-size:12px; font-weight:400;">Add more anytime</span>' : ''}</div>
+          <div class="status-bar ${statusClass}"><span>${statusText}</span>${existingPhotos.length > 0 && existingPhotos.length < totalSlots && !isUploading ? '<span style="font-size:12px; font-weight:400;">Add more anytime</span>' : ''}</div>
           <div class="photo-grid">${tiles}</div>
           ${uploadAreaHTML}
           ${buttonHTML}
@@ -159,30 +189,43 @@
     }
 
     function queueFiles(files){
+      if(isUploading) return;
       const remaining = maxPhotos - existingPhotos.length - pendingFiles.length;
       if(remaining <= 0) return;
-      const toAdd = files.slice(0, remaining);
-      let skipped = files.length - toAdd.length;
-      toAdd.forEach(file => {
-        if(file.size > 5*1024*1024){ skipped++; return; }
+
+      let added = 0, skipped = 0, dupes = 0;
+      for(const file of files){
+        if(added >= remaining) { skipped++; continue; }
+        if(file.size > 5*1024*1024){ skipped++; continue; }
+        if(!file.type.startsWith('image/')){ skipped++; continue; }
+        if(isDuplicate(file)){ dupes++; continue; }
         pendingFiles.push({ file, previewUrl: URL.createObjectURL(file), status: 'pending', name: file.name });
-      });
+        added++;
+      }
       render();
-      if(skipped > 0){
-        const el = document.getElementById('error-msg');
-        if(el) el.textContent = `${skipped} file${skipped===1?'':'s'} skipped (over 5MB or slot limit).`;
+      const el = document.getElementById('error-msg');
+      if(el){
+        const msgs = [];
+        if(skipped) msgs.push(`${skipped} file${skipped===1?'':'s'} skipped (too large, not an image, or slot limit)`);
+        if(dupes)   msgs.push(`${dupes} duplicate${dupes===1?'':'s'} ignored`);
+        el.textContent = msgs.join(' · ');
       }
     }
 
     async function startUpload(){
-      const btn = document.getElementById('upload-btn');
-      if(btn){ btn.disabled = true; btn.textContent = 'Uploading…'; }
-      const errorEl = document.getElementById('error-msg');
-      if(errorEl) errorEl.textContent = '';
+      if(isUploading) return;
+      if(pendingFiles.length === 0) return;
+      isUploading = true;
+      lastCompletedCount = 0;
 
-      for(let i = 0; i < pendingFiles.length; i++){
-        const pf = pendingFiles[i];
-        if(pf.status === 'done') continue;
+      // Snapshot the files to upload
+      const toUpload = pendingFiles.slice();
+      const failed = [];
+
+      render();
+
+      for(let i = 0; i < toUpload.length; i++){
+        const pf = toUpload[i];
         pf.status = 'uploading';
         render();
 
@@ -202,27 +245,43 @@
           });
           const result = await res.json();
           if(result.success){
-            pf.status = 'done';
+            // Update photo list from backend
             if(Array.isArray(result.photos)) existingPhotos = result.photos.slice();
-            else existingPhotos.push(result.photoUrl);
+            else if(result.photoUrl) existingPhotos.push(result.photoUrl);
             if(typeof result.maxPhotos === 'number') maxPhotos = result.maxPhotos;
+
+            // Remove this file from pendingFiles so it doesn't render twice
+            pendingFiles = pendingFiles.filter(p => p !== pf);
+
+            // Brief pause so the checkmark pop-in animation is visible
+            await new Promise(r => setTimeout(r, 250));
+            render();
           } else {
             pf.status = 'error';
             pf.error = result.message || 'Upload failed.';
+            failed.push(pf);
+            render();
           }
         } catch(err){
           pf.status = 'error';
           pf.error = err.message || 'Network error.';
+          failed.push(pf);
+          render();
         }
       }
 
-      pendingFiles = pendingFiles.filter(pf => pf.status === 'error');
+      // Only failures remain in pendingFiles
+      pendingFiles = failed;
+      isUploading = false;
       render();
+
       const err2 = document.getElementById('error-msg');
-      if(pendingFiles.length > 0 && err2){
-        err2.textContent = pendingFiles.map(p => `${p.name}: ${p.error}`).join(' · ');
-      } else if(err2){
-        err2.innerHTML = '<div class="success">✅ All photos uploaded. Your listing is now visual.</div>';
+      if(err2){
+        if(failed.length > 0){
+          err2.textContent = failed.map(p => `${p.name}: ${p.error}`).join(' · ');
+        } else if(existingPhotos.length > 0){
+          err2.innerHTML = '<div class="success"><span class="checkmark">✓</span> All photos uploaded. Your listing is now visual.</div>';
+        }
       }
     }
 
