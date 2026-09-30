@@ -256,7 +256,7 @@
       document.getElementById('btn-approve').addEventListener('click', function() {
         console.log('Approve button clicked');
         if (questionItems.length) {
-          const allAnswered = document.querySelectorAll('.question-row').every(row => {
+          const allAnswered = Array.from(document.querySelectorAll('.question-row')).every(row => {
             const status = row.querySelector('.answer-status');
             return status.textContent === '✅' || status.textContent === '❌';
           });
@@ -286,7 +286,7 @@
     }
 
     function checkAllAnswered() {
-      const allAnswered = document.querySelectorAll('.question-row').every(row => {
+      const allAnswered = Array.from(document.querySelectorAll('.question-row')).every(row => {
         const status = row.querySelector('.answer-status');
         return status.textContent === '✅' || status.textContent === '❌';
       });
